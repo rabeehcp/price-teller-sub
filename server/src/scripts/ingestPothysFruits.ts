@@ -208,6 +208,8 @@ export async function ingestPothysFruits() {
         unit_multiplier = EXCLUDED.unit_multiplier,
         badge = EXCLUDED.badge,
         nutritional_note = EXCLUDED.nutritional_note,
+        prices = EXCLUDED.prices,
+        stock_status = EXCLUDED.stock_status,
         last_updated = NOW();
       `,
       [
@@ -223,8 +225,14 @@ export async function ingestPothysFruits() {
         normalized.isSeasonal,
         normalized.badge,
         normalized.nutritionalNote,
-        JSON.stringify({}),
-        JSON.stringify({}),
+        JSON.stringify({
+          'Al-Iqwan': normalized.sellingPrice,
+          'Malabar supermarker': normalized.sellingPrice,
+        }),
+        JSON.stringify({
+          'Al-Iqwan': 'in_stock',
+          'Malabar supermarker': 'in_stock',
+        }),
       ]
     );
     dbInsertCount++;

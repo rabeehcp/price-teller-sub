@@ -60,8 +60,22 @@ export async function seedZeevMasterCatalog(): Promise<{ totalProcessed: number;
           p.isSeasonal,
           p.badge,
           p.nutritionalNote,
-          JSON.stringify(p.prices || {}),
-          JSON.stringify(p.stockStatus || {}),
+          JSON.stringify(
+            Object.keys(p.prices || {}).length > 0
+              ? p.prices
+              : {
+                  'Al-Iqwan': p.originalOfferPrice || p.originalMrp || 50,
+                  'Malabar supermarker': p.originalOfferPrice || p.originalMrp || 50,
+                }
+          ),
+          JSON.stringify(
+            Object.keys(p.stockStatus || {}).length > 0
+              ? p.stockStatus
+              : {
+                  'Al-Iqwan': 'in_stock',
+                  'Malabar supermarker': 'in_stock',
+                }
+          ),
           now
         );
         paramIdx += 15;

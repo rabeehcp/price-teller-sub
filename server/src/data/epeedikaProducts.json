@@ -14,12 +14,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 70,
     "sellingPrice": 62.5,
     "source": "epeedikaonline",
-    "originalId": "778"
+    "originalId": "778",
+    "prices": {
+      "Al-Iqwan": 62.5,
+      "Malabar supermarker": 62.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1127",
@@ -40,12 +48,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 55,
     "sellingPrice": 45,
     "source": "epeedikaonline",
-    "originalId": "1127"
+    "originalId": "1127",
+    "prices": {
+      "Al-Iqwan": 45,
+      "Malabar supermarker": 45
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2463",
@@ -62,12 +78,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 58,
     "sellingPrice": 55,
     "source": "epeedikaonline",
-    "originalId": "2463"
+    "originalId": "2463",
+    "prices": {
+      "Al-Iqwan": 55,
+      "Malabar supermarker": 55
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2604",
@@ -84,12 +108,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "13% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 80,
     "sellingPrice": 70,
     "source": "epeedikaonline",
-    "originalId": "2604"
+    "originalId": "2604",
+    "prices": {
+      "Al-Iqwan": 70,
+      "Malabar supermarker": 70
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1537",
@@ -106,12 +138,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 110,
     "sellingPrice": 100,
     "source": "epeedikaonline",
-    "originalId": "1537"
+    "originalId": "1537",
+    "prices": {
+      "Al-Iqwan": 100,
+      "Malabar supermarker": 100
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1982",
@@ -133,7 +173,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1982"
+    "originalId": "1982",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1981",
@@ -155,7 +203,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1981"
+    "originalId": "1981",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1983",
@@ -172,12 +228,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
     "mrp": 12,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1983"
+    "originalId": "1983",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2087",
@@ -194,12 +258,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
     "mrp": 12,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "2087"
+    "originalId": "2087",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-533",
@@ -218,12 +290,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 96,
     "sellingPrice": 80,
     "source": "epeedikaonline",
-    "originalId": "533"
+    "originalId": "533",
+    "prices": {
+      "Al-Iqwan": 80,
+      "Malabar supermarker": 80
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-761",
@@ -240,12 +320,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 145,
     "sellingPrice": 132,
     "source": "epeedikaonline",
-    "originalId": "761"
+    "originalId": "761",
+    "prices": {
+      "Al-Iqwan": 132,
+      "Malabar supermarker": 132
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1377",
@@ -264,12 +352,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "13% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 32,
     "sellingPrice": 28,
     "source": "epeedikaonline",
-    "originalId": "1377"
+    "originalId": "1377",
+    "prices": {
+      "Al-Iqwan": 28,
+      "Malabar supermarker": 28
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2289",
@@ -286,12 +382,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 44,
     "sellingPrice": 40,
     "source": "epeedikaonline",
-    "originalId": "2289"
+    "originalId": "2289",
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1370",
@@ -308,12 +412,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 93,
     "sellingPrice": 83,
     "source": "epeedikaonline",
-    "originalId": "1370"
+    "originalId": "1370",
+    "prices": {
+      "Al-Iqwan": 83,
+      "Malabar supermarker": 83
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1260",
@@ -336,12 +448,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
     "mrp": 325,
     "sellingPrice": 310,
     "source": "epeedikaonline",
-    "originalId": "1260"
+    "originalId": "1260",
+    "prices": {
+      "Al-Iqwan": 310,
+      "Malabar supermarker": 310
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-238",
@@ -358,12 +478,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 40,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "238"
+    "originalId": "238",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2301",
@@ -385,7 +513,15 @@
     "mrp": 30,
     "sellingPrice": 29,
     "source": "epeedikaonline",
-    "originalId": "2301"
+    "originalId": "2301",
+    "prices": {
+      "Al-Iqwan": 29,
+      "Malabar supermarker": 29
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2568",
@@ -402,12 +538,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 99,
     "sellingPrice": 89,
     "source": "epeedikaonline",
-    "originalId": "2568"
+    "originalId": "2568",
+    "prices": {
+      "Al-Iqwan": 89,
+      "Malabar supermarker": 89
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1081",
@@ -429,7 +573,15 @@
     "mrp": 27,
     "sellingPrice": 26,
     "source": "epeedikaonline",
-    "originalId": "1081"
+    "originalId": "1081",
+    "prices": {
+      "Al-Iqwan": 26,
+      "Malabar supermarker": 26
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1058",
@@ -451,7 +603,15 @@
     "mrp": 30,
     "sellingPrice": 29,
     "source": "epeedikaonline",
-    "originalId": "1058"
+    "originalId": "1058",
+    "prices": {
+      "Al-Iqwan": 29,
+      "Malabar supermarker": 29
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-190",
@@ -473,7 +633,15 @@
     "mrp": 16,
     "sellingPrice": 15.5,
     "source": "epeedikaonline",
-    "originalId": "190"
+    "originalId": "190",
+    "prices": {
+      "Al-Iqwan": 15.5,
+      "Malabar supermarker": 15.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1589",
@@ -490,12 +658,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 80,
     "sellingPrice": 68,
     "source": "epeedikaonline",
-    "originalId": "1589"
+    "originalId": "1589",
+    "prices": {
+      "Al-Iqwan": 68,
+      "Malabar supermarker": 68
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-239",
@@ -512,12 +688,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 15,
     "source": "epeedikaonline",
-    "originalId": "239"
+    "originalId": "239",
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-203",
@@ -534,12 +718,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 45,
     "sellingPrice": 40,
     "source": "epeedikaonline",
-    "originalId": "203"
+    "originalId": "203",
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1985",
@@ -556,12 +748,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 174,
     "sellingPrice": 156,
     "source": "epeedikaonline",
-    "originalId": "1985"
+    "originalId": "1985",
+    "prices": {
+      "Al-Iqwan": 156,
+      "Malabar supermarker": 156
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-240",
@@ -583,7 +783,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "240"
+    "originalId": "240",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-235",
@@ -600,12 +808,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 95,
     "sellingPrice": 85,
     "source": "epeedikaonline",
-    "originalId": "235"
+    "originalId": "235",
+    "prices": {
+      "Al-Iqwan": 85,
+      "Malabar supermarker": 85
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-326",
@@ -627,7 +843,15 @@
     "mrp": 90,
     "sellingPrice": 89,
     "source": "epeedikaonline",
-    "originalId": "326"
+    "originalId": "326",
+    "prices": {
+      "Al-Iqwan": 89,
+      "Malabar supermarker": 89
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1756",
@@ -649,7 +873,15 @@
     "mrp": 225,
     "sellingPrice": 223,
     "source": "epeedikaonline",
-    "originalId": "1756"
+    "originalId": "1756",
+    "prices": {
+      "Al-Iqwan": 223,
+      "Malabar supermarker": 223
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-334",
@@ -671,7 +903,15 @@
     "mrp": 60,
     "sellingPrice": 59.4,
     "source": "epeedikaonline",
-    "originalId": "334"
+    "originalId": "334",
+    "prices": {
+      "Al-Iqwan": 59.4,
+      "Malabar supermarker": 59.4
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-333",
@@ -693,7 +933,15 @@
     "mrp": 155,
     "sellingPrice": 154,
     "source": "epeedikaonline",
-    "originalId": "333"
+    "originalId": "333",
+    "prices": {
+      "Al-Iqwan": 154,
+      "Malabar supermarker": 154
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-327",
@@ -715,7 +963,15 @@
     "mrp": 235,
     "sellingPrice": 233,
     "source": "epeedikaonline",
-    "originalId": "327"
+    "originalId": "327",
+    "prices": {
+      "Al-Iqwan": 233,
+      "Malabar supermarker": 233
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2419",
@@ -732,12 +988,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "33% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 99,
     "sellingPrice": 66,
     "source": "epeedikaonline",
-    "originalId": "2419"
+    "originalId": "2419",
+    "prices": {
+      "Al-Iqwan": 66,
+      "Malabar supermarker": 66
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1874",
@@ -759,7 +1023,15 @@
     "mrp": 29,
     "sellingPrice": 28,
     "source": "epeedikaonline",
-    "originalId": "1874"
+    "originalId": "1874",
+    "prices": {
+      "Al-Iqwan": 28,
+      "Malabar supermarker": 28
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1873",
@@ -781,7 +1053,15 @@
     "mrp": 29,
     "sellingPrice": 28,
     "source": "epeedikaonline",
-    "originalId": "1873"
+    "originalId": "1873",
+    "prices": {
+      "Al-Iqwan": 28,
+      "Malabar supermarker": 28
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1416",
@@ -798,12 +1078,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 20,
     "sellingPrice": 19,
     "source": "epeedikaonline",
-    "originalId": "1416"
+    "originalId": "1416",
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-228",
@@ -820,12 +1108,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 200,
     "sellingPrice": 165,
     "source": "epeedikaonline",
-    "originalId": "228"
+    "originalId": "228",
+    "prices": {
+      "Al-Iqwan": 165,
+      "Malabar supermarker": 165
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1763",
@@ -842,12 +1138,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 275,
     "sellingPrice": 227.5,
     "source": "epeedikaonline",
-    "originalId": "1763"
+    "originalId": "1763",
+    "prices": {
+      "Al-Iqwan": 227.5,
+      "Malabar supermarker": 227.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-296",
@@ -864,12 +1168,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 65,
     "sellingPrice": 55,
     "source": "epeedikaonline",
-    "originalId": "296"
+    "originalId": "296",
+    "prices": {
+      "Al-Iqwan": 55,
+      "Malabar supermarker": 55
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-302",
@@ -886,12 +1198,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "19% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 40,
     "sellingPrice": 32.5,
     "source": "epeedikaonline",
-    "originalId": "302"
+    "originalId": "302",
+    "prices": {
+      "Al-Iqwan": 32.5,
+      "Malabar supermarker": 32.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1392",
@@ -908,12 +1228,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 88,
     "sellingPrice": 83,
     "source": "epeedikaonline",
-    "originalId": "1392"
+    "originalId": "1392",
+    "prices": {
+      "Al-Iqwan": 83,
+      "Malabar supermarker": 83
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1391",
@@ -930,12 +1258,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "8% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 45,
     "sellingPrice": 41.5,
     "source": "epeedikaonline",
-    "originalId": "1391"
+    "originalId": "1391",
+    "prices": {
+      "Al-Iqwan": 41.5,
+      "Malabar supermarker": 41.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-17",
@@ -952,12 +1288,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "8% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 49,
     "sellingPrice": 45,
     "source": "epeedikaonline",
-    "originalId": "17"
+    "originalId": "17",
+    "prices": {
+      "Al-Iqwan": 45,
+      "Malabar supermarker": 45
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-35",
@@ -974,12 +1318,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 49,
     "sellingPrice": 46,
     "source": "epeedikaonline",
-    "originalId": "35"
+    "originalId": "35",
+    "prices": {
+      "Al-Iqwan": 46,
+      "Malabar supermarker": 46
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2092",
@@ -1001,7 +1353,15 @@
     "mrp": 60,
     "sellingPrice": 59,
     "source": "epeedikaonline",
-    "originalId": "2092"
+    "originalId": "2092",
+    "prices": {
+      "Al-Iqwan": 59,
+      "Malabar supermarker": 59
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2172",
@@ -1018,12 +1378,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Pantry Essential",
+    "badge": "9% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
-    "mrp": 110,
+    "mrp": 129,
     "sellingPrice": 117,
     "source": "epeedikaonline",
-    "originalId": "2172"
+    "originalId": "2172",
+    "prices": {
+      "Al-Iqwan": 117,
+      "Malabar supermarker": 117
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-232",
@@ -1040,12 +1408,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 25,
     "sellingPrice": 20,
     "source": "epeedikaonline",
-    "originalId": "232"
+    "originalId": "232",
+    "prices": {
+      "Al-Iqwan": 20,
+      "Malabar supermarker": 20
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-230",
@@ -1062,12 +1438,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "230"
+    "originalId": "230",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-231",
@@ -1089,7 +1473,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "231"
+    "originalId": "231",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2607",
@@ -1106,12 +1498,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 65,
     "sellingPrice": 55,
     "source": "epeedikaonline",
-    "originalId": "2607"
+    "originalId": "2607",
+    "prices": {
+      "Al-Iqwan": 55,
+      "Malabar supermarker": 55
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2359",
@@ -1128,12 +1528,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
     "mrp": 55,
     "sellingPrice": 50,
     "source": "epeedikaonline",
-    "originalId": "2359"
+    "originalId": "2359",
+    "prices": {
+      "Al-Iqwan": 50,
+      "Malabar supermarker": 50
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2228",
@@ -1152,12 +1560,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 62,
     "sellingPrice": 59,
     "source": "epeedikaonline",
-    "originalId": "2228"
+    "originalId": "2228",
+    "prices": {
+      "Al-Iqwan": 59,
+      "Malabar supermarker": 59
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-220",
@@ -1174,12 +1590,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 30,
     "sellingPrice": 24,
     "source": "epeedikaonline",
-    "originalId": "220"
+    "originalId": "220",
+    "prices": {
+      "Al-Iqwan": 24,
+      "Malabar supermarker": 24
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2201",
@@ -1196,12 +1620,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 40,
     "sellingPrice": 38,
     "source": "epeedikaonline",
-    "originalId": "2201"
+    "originalId": "2201",
+    "prices": {
+      "Al-Iqwan": 38,
+      "Malabar supermarker": 38
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2525",
@@ -1218,12 +1650,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 40,
     "sellingPrice": 38,
     "source": "epeedikaonline",
-    "originalId": "2525"
+    "originalId": "2525",
+    "prices": {
+      "Al-Iqwan": 38,
+      "Malabar supermarker": 38
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-74",
@@ -1245,7 +1685,15 @@
     "mrp": 19,
     "sellingPrice": 18.5,
     "source": "epeedikaonline",
-    "originalId": "74"
+    "originalId": "74",
+    "prices": {
+      "Al-Iqwan": 18.5,
+      "Malabar supermarker": 18.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1372",
@@ -1262,12 +1710,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 37,
     "sellingPrice": 35,
     "source": "epeedikaonline",
-    "originalId": "1372"
+    "originalId": "1372",
+    "prices": {
+      "Al-Iqwan": 35,
+      "Malabar supermarker": 35
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1470",
@@ -1284,12 +1740,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "7% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 41,
     "sellingPrice": 38,
     "source": "epeedikaonline",
-    "originalId": "1470"
+    "originalId": "1470",
+    "prices": {
+      "Al-Iqwan": 38,
+      "Malabar supermarker": 38
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2288",
@@ -1306,12 +1770,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 38,
     "sellingPrice": 36,
     "source": "epeedikaonline",
-    "originalId": "2288"
+    "originalId": "2288",
+    "prices": {
+      "Al-Iqwan": 36,
+      "Malabar supermarker": 36
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-14",
@@ -1328,12 +1800,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "13% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 195,
     "sellingPrice": 170,
     "source": "epeedikaonline",
-    "originalId": "14"
+    "originalId": "14",
+    "prices": {
+      "Al-Iqwan": 170,
+      "Malabar supermarker": 170
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1411",
@@ -1352,12 +1832,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 36,
     "sellingPrice": 32,
     "source": "epeedikaonline",
-    "originalId": "1411"
+    "originalId": "1411",
+    "prices": {
+      "Al-Iqwan": 32,
+      "Malabar supermarker": 32
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-233",
@@ -1374,12 +1862,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 19,
     "source": "epeedikaonline",
-    "originalId": "233"
+    "originalId": "233",
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-295",
@@ -1396,12 +1892,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 40,
     "sellingPrice": 32,
     "source": "epeedikaonline",
-    "originalId": "295"
+    "originalId": "295",
+    "prices": {
+      "Al-Iqwan": 32,
+      "Malabar supermarker": 32
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1680",
@@ -1418,12 +1922,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 10,
     "sellingPrice": 9.5,
     "source": "epeedikaonline",
-    "originalId": "1680"
+    "originalId": "1680",
+    "prices": {
+      "Al-Iqwan": 9.5,
+      "Malabar supermarker": 9.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-779",
@@ -1440,12 +1952,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 72,
     "sellingPrice": 62,
     "source": "epeedikaonline",
-    "originalId": "779"
+    "originalId": "779",
+    "prices": {
+      "Al-Iqwan": 62,
+      "Malabar supermarker": 62
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1148",
@@ -1464,12 +1984,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 31,
     "sellingPrice": 29,
     "source": "epeedikaonline",
-    "originalId": "1148"
+    "originalId": "1148",
+    "prices": {
+      "Al-Iqwan": 29,
+      "Malabar supermarker": 29
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1149",
@@ -1488,12 +2016,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 18.5,
     "sellingPrice": 17.5,
     "source": "epeedikaonline",
-    "originalId": "1149"
+    "originalId": "1149",
+    "prices": {
+      "Al-Iqwan": 17.5,
+      "Malabar supermarker": 17.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-279",
@@ -1515,7 +2051,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "279"
+    "originalId": "279",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2096",
@@ -1537,7 +2081,15 @@
     "mrp": 46,
     "sellingPrice": 45,
     "source": "epeedikaonline",
-    "originalId": "2096"
+    "originalId": "2096",
+    "prices": {
+      "Al-Iqwan": 45,
+      "Malabar supermarker": 45
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-120",
@@ -1554,12 +2106,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 53,
     "sellingPrice": 50,
     "source": "epeedikaonline",
-    "originalId": "120"
+    "originalId": "120",
+    "prices": {
+      "Al-Iqwan": 50,
+      "Malabar supermarker": 50
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2592",
@@ -1581,7 +2141,15 @@
     "mrp": 75,
     "sellingPrice": 75,
     "source": "epeedikaonline",
-    "originalId": "2592"
+    "originalId": "2592",
+    "prices": {
+      "Al-Iqwan": 75,
+      "Malabar supermarker": 75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2097",
@@ -1598,12 +2166,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 100,
     "sellingPrice": 95,
     "source": "epeedikaonline",
-    "originalId": "2097"
+    "originalId": "2097",
+    "prices": {
+      "Al-Iqwan": 95,
+      "Malabar supermarker": 95
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1679",
@@ -1620,12 +2196,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 40,
     "sellingPrice": 32,
     "source": "epeedikaonline",
-    "originalId": "1679"
+    "originalId": "1679",
+    "prices": {
+      "Al-Iqwan": 32,
+      "Malabar supermarker": 32
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1256",
@@ -1642,12 +2226,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 90,
     "sellingPrice": 75,
     "source": "epeedikaonline",
-    "originalId": "1256"
+    "originalId": "1256",
+    "prices": {
+      "Al-Iqwan": 75,
+      "Malabar supermarker": 75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-244",
@@ -1664,12 +2256,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 19,
     "source": "epeedikaonline",
-    "originalId": "244"
+    "originalId": "244",
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-242",
@@ -1686,12 +2286,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 60,
     "sellingPrice": 45,
     "source": "epeedikaonline",
-    "originalId": "242"
+    "originalId": "242",
+    "prices": {
+      "Al-Iqwan": 45,
+      "Malabar supermarker": 45
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-227",
@@ -1708,12 +2316,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 20,
     "sellingPrice": 15,
     "source": "epeedikaonline",
-    "originalId": "227"
+    "originalId": "227",
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-245",
@@ -1730,12 +2346,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 40,
     "sellingPrice": 33,
     "source": "epeedikaonline",
-    "originalId": "245"
+    "originalId": "245",
+    "prices": {
+      "Al-Iqwan": 33,
+      "Malabar supermarker": 33
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1254",
@@ -1754,12 +2378,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "26% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 35,
     "sellingPrice": 26,
     "source": "epeedikaonline",
-    "originalId": "1254"
+    "originalId": "1254",
+    "prices": {
+      "Al-Iqwan": 26,
+      "Malabar supermarker": 26
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2102",
@@ -1781,7 +2413,15 @@
     "mrp": 45,
     "sellingPrice": 43,
     "source": "epeedikaonline",
-    "originalId": "2102"
+    "originalId": "2102",
+    "prices": {
+      "Al-Iqwan": 43,
+      "Malabar supermarker": 43
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2434",
@@ -1805,7 +2445,15 @@
     "mrp": 165,
     "sellingPrice": 164,
     "source": "epeedikaonline",
-    "originalId": "2434"
+    "originalId": "2434",
+    "prices": {
+      "Al-Iqwan": 164,
+      "Malabar supermarker": 164
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2166",
@@ -1827,7 +2475,15 @@
     "mrp": 124,
     "sellingPrice": 119,
     "source": "epeedikaonline",
-    "originalId": "2166"
+    "originalId": "2166",
+    "prices": {
+      "Al-Iqwan": 119,
+      "Malabar supermarker": 119
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2302",
@@ -1849,7 +2505,15 @@
     "mrp": 26,
     "sellingPrice": 25,
     "source": "epeedikaonline",
-    "originalId": "2302"
+    "originalId": "2302",
+    "prices": {
+      "Al-Iqwan": 25,
+      "Malabar supermarker": 25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2543",
@@ -1871,7 +2535,15 @@
     "mrp": 86,
     "sellingPrice": 83,
     "source": "epeedikaonline",
-    "originalId": "2543"
+    "originalId": "2543",
+    "prices": {
+      "Al-Iqwan": 83,
+      "Malabar supermarker": 83
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2006",
@@ -1893,7 +2565,15 @@
     "mrp": 38,
     "sellingPrice": 37,
     "source": "epeedikaonline",
-    "originalId": "2006"
+    "originalId": "2006",
+    "prices": {
+      "Al-Iqwan": 37,
+      "Malabar supermarker": 37
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-34",
@@ -1910,12 +2590,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "16% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 310,
     "sellingPrice": 260,
     "source": "epeedikaonline",
-    "originalId": "34"
+    "originalId": "34",
+    "prices": {
+      "Al-Iqwan": 260,
+      "Malabar supermarker": 260
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2580",
@@ -1932,12 +2620,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 60,
     "sellingPrice": 57,
     "source": "epeedikaonline",
-    "originalId": "2580"
+    "originalId": "2580",
+    "prices": {
+      "Al-Iqwan": 57,
+      "Malabar supermarker": 57
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-26",
@@ -1954,12 +2650,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "13% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 55,
     "sellingPrice": 48,
     "source": "epeedikaonline",
-    "originalId": "26"
+    "originalId": "26",
+    "prices": {
+      "Al-Iqwan": 48,
+      "Malabar supermarker": 48
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1408",
@@ -1976,12 +2680,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "13% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 160,
     "sellingPrice": 140,
     "source": "epeedikaonline",
-    "originalId": "1408"
+    "originalId": "1408",
+    "prices": {
+      "Al-Iqwan": 140,
+      "Malabar supermarker": 140
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-36",
@@ -1998,12 +2710,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "12% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 125,
     "sellingPrice": 110,
     "source": "epeedikaonline",
-    "originalId": "36"
+    "originalId": "36",
+    "prices": {
+      "Al-Iqwan": 110,
+      "Malabar supermarker": 110
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1401",
@@ -2020,12 +2740,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 60,
     "sellingPrice": 50,
     "source": "epeedikaonline",
-    "originalId": "1401"
+    "originalId": "1401",
+    "prices": {
+      "Al-Iqwan": 50,
+      "Malabar supermarker": 50
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1754",
@@ -2042,12 +2770,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 90,
     "sellingPrice": 72,
     "source": "epeedikaonline",
-    "originalId": "1754"
+    "originalId": "1754",
+    "prices": {
+      "Al-Iqwan": 72,
+      "Malabar supermarker": 72
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-759",
@@ -2064,12 +2800,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "16% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 50,
     "sellingPrice": 42,
     "source": "epeedikaonline",
-    "originalId": "759"
+    "originalId": "759",
+    "prices": {
+      "Al-Iqwan": 42,
+      "Malabar supermarker": 42
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-289",
@@ -2086,12 +2830,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 70,
     "sellingPrice": 62,
     "source": "epeedikaonline",
-    "originalId": "289"
+    "originalId": "289",
+    "prices": {
+      "Al-Iqwan": 62,
+      "Malabar supermarker": 62
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-297",
@@ -2108,12 +2860,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 30,
     "sellingPrice": 25,
     "source": "epeedikaonline",
-    "originalId": "297"
+    "originalId": "297",
+    "prices": {
+      "Al-Iqwan": 25,
+      "Malabar supermarker": 25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-205",
@@ -2130,12 +2890,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "205"
+    "originalId": "205",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-206",
@@ -2152,12 +2920,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "206"
+    "originalId": "206",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1262",
@@ -2176,12 +2952,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 350,
     "sellingPrice": 316,
     "source": "epeedikaonline",
-    "originalId": "1262"
+    "originalId": "1262",
+    "prices": {
+      "Al-Iqwan": 316,
+      "Malabar supermarker": 316
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1818",
@@ -2198,12 +2982,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 19,
     "source": "epeedikaonline",
-    "originalId": "1818"
+    "originalId": "1818",
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-247",
@@ -2220,12 +3012,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "8% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 95,
     "sellingPrice": 87.5,
     "source": "epeedikaonline",
-    "originalId": "247"
+    "originalId": "247",
+    "prices": {
+      "Al-Iqwan": 87.5,
+      "Malabar supermarker": 87.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1960",
@@ -2242,12 +3042,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "1960"
+    "originalId": "1960",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-28",
@@ -2266,12 +3074,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 600,
     "sellingPrice": 515,
     "source": "epeedikaonline",
-    "originalId": "28"
+    "originalId": "28",
+    "prices": {
+      "Al-Iqwan": 515,
+      "Malabar supermarker": 515
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1400",
@@ -2288,12 +3104,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 395,
     "sellingPrice": 315,
     "source": "epeedikaonline",
-    "originalId": "1400"
+    "originalId": "1400",
+    "prices": {
+      "Al-Iqwan": 315,
+      "Malabar supermarker": 315
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-6",
@@ -2310,12 +3134,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 365,
     "sellingPrice": 315,
     "source": "epeedikaonline",
-    "originalId": "6"
+    "originalId": "6",
+    "prices": {
+      "Al-Iqwan": 315,
+      "Malabar supermarker": 315
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2194",
@@ -2337,7 +3169,15 @@
     "mrp": 80,
     "sellingPrice": 76.8,
     "source": "epeedikaonline",
-    "originalId": "2194"
+    "originalId": "2194",
+    "prices": {
+      "Al-Iqwan": 76.8,
+      "Malabar supermarker": 76.8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2176",
@@ -2361,7 +3201,15 @@
     "mrp": 149,
     "sellingPrice": 144,
     "source": "epeedikaonline",
-    "originalId": "2176"
+    "originalId": "2176",
+    "prices": {
+      "Al-Iqwan": 144,
+      "Malabar supermarker": 144
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-136",
@@ -2383,7 +3231,15 @@
     "mrp": 302,
     "sellingPrice": 296,
     "source": "epeedikaonline",
-    "originalId": "136"
+    "originalId": "136",
+    "prices": {
+      "Al-Iqwan": 296,
+      "Malabar supermarker": 296
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1253",
@@ -2400,12 +3256,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 20,
     "sellingPrice": 18,
     "source": "epeedikaonline",
-    "originalId": "1253"
+    "originalId": "1253",
+    "prices": {
+      "Al-Iqwan": 18,
+      "Malabar supermarker": 18
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-221",
@@ -2422,12 +3286,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "21% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 38,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "221"
+    "originalId": "221",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1209",
@@ -2446,12 +3318,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 200,
     "sellingPrice": 181,
     "source": "epeedikaonline",
-    "originalId": "1209"
+    "originalId": "1209",
+    "prices": {
+      "Al-Iqwan": 181,
+      "Malabar supermarker": 181
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1134",
@@ -2470,12 +3350,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 195,
     "sellingPrice": 178,
     "source": "epeedikaonline",
-    "originalId": "1134"
+    "originalId": "1134",
+    "prices": {
+      "Al-Iqwan": 178,
+      "Malabar supermarker": 178
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-138",
@@ -2492,12 +3380,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "27% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 549,
     "sellingPrice": 400,
     "source": "epeedikaonline",
-    "originalId": "138"
+    "originalId": "138",
+    "prices": {
+      "Al-Iqwan": 400,
+      "Malabar supermarker": 400
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1738",
@@ -2519,7 +3415,15 @@
     "mrp": 25,
     "sellingPrice": 24,
     "source": "epeedikaonline",
-    "originalId": "1738"
+    "originalId": "1738",
+    "prices": {
+      "Al-Iqwan": 24,
+      "Malabar supermarker": 24
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2394",
@@ -2543,7 +3447,15 @@
     "mrp": 56,
     "sellingPrice": 56,
     "source": "epeedikaonline",
-    "originalId": "2394"
+    "originalId": "2394",
+    "prices": {
+      "Al-Iqwan": 56,
+      "Malabar supermarker": 56
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2395",
@@ -2565,7 +3477,15 @@
     "mrp": 15,
     "sellingPrice": 15,
     "source": "epeedikaonline",
-    "originalId": "2395"
+    "originalId": "2395",
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-248",
@@ -2582,12 +3502,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 60,
     "sellingPrice": 51.5,
     "source": "epeedikaonline",
-    "originalId": "248"
+    "originalId": "248",
+    "prices": {
+      "Al-Iqwan": 51.5,
+      "Malabar supermarker": 51.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-237",
@@ -2604,12 +3532,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "12% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 65,
     "sellingPrice": 57.5,
     "source": "epeedikaonline",
-    "originalId": "237"
+    "originalId": "237",
+    "prices": {
+      "Al-Iqwan": 57.5,
+      "Malabar supermarker": 57.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-301",
@@ -2626,12 +3562,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 55,
     "sellingPrice": 47,
     "source": "epeedikaonline",
-    "originalId": "301"
+    "originalId": "301",
+    "prices": {
+      "Al-Iqwan": 47,
+      "Malabar supermarker": 47
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1734",
@@ -2653,7 +3597,15 @@
     "mrp": 50,
     "sellingPrice": 49,
     "source": "epeedikaonline",
-    "originalId": "1734"
+    "originalId": "1734",
+    "prices": {
+      "Al-Iqwan": 49,
+      "Malabar supermarker": 49
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2227",
@@ -2670,12 +3622,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 44,
     "sellingPrice": 40,
     "source": "epeedikaonline",
-    "originalId": "2227"
+    "originalId": "2227",
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1244",
@@ -2705,7 +3665,15 @@
     "mrp": 81,
     "sellingPrice": 80,
     "source": "epeedikaonline",
-    "originalId": "1244"
+    "originalId": "1244",
+    "prices": {
+      "Al-Iqwan": 80,
+      "Malabar supermarker": 80
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1251",
@@ -2722,12 +3690,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "1251"
+    "originalId": "1251",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2099",
@@ -2746,12 +3722,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 16.5,
     "sellingPrice": 15.5,
     "source": "epeedikaonline",
-    "originalId": "2099"
+    "originalId": "2099",
+    "prices": {
+      "Al-Iqwan": 15.5,
+      "Malabar supermarker": 15.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-243",
@@ -2770,12 +3754,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "9% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 16.5,
     "sellingPrice": 15,
     "source": "epeedikaonline",
-    "originalId": "243"
+    "originalId": "243",
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-288",
@@ -2792,12 +3784,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 45,
     "sellingPrice": 37,
     "source": "epeedikaonline",
-    "originalId": "288"
+    "originalId": "288",
+    "prices": {
+      "Al-Iqwan": 37,
+      "Malabar supermarker": 37
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1590",
@@ -2814,12 +3814,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 50,
     "sellingPrice": 40,
     "source": "epeedikaonline",
-    "originalId": "1590"
+    "originalId": "1590",
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-315",
@@ -2841,7 +3849,15 @@
     "mrp": 124,
     "sellingPrice": 124,
     "source": "epeedikaonline",
-    "originalId": "315"
+    "originalId": "315",
+    "prices": {
+      "Al-Iqwan": 124,
+      "Malabar supermarker": 124
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1822",
@@ -2863,7 +3879,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1822"
+    "originalId": "1822",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1410",
@@ -2880,12 +3904,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 25,
     "sellingPrice": 20,
     "source": "epeedikaonline",
-    "originalId": "1410"
+    "originalId": "1410",
+    "prices": {
+      "Al-Iqwan": 20,
+      "Malabar supermarker": 20
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2017",
@@ -2913,7 +3945,15 @@
     "mrp": 65,
     "sellingPrice": 64,
     "source": "epeedikaonline",
-    "originalId": "2017"
+    "originalId": "2017",
+    "prices": {
+      "Al-Iqwan": 64,
+      "Malabar supermarker": 64
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1376",
@@ -2936,12 +3976,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 285,
     "sellingPrice": 237,
     "source": "epeedikaonline",
-    "originalId": "1376"
+    "originalId": "1376",
+    "prices": {
+      "Al-Iqwan": 237,
+      "Malabar supermarker": 237
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-39",
@@ -2958,12 +4006,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 44,
     "sellingPrice": 41.8,
     "source": "epeedikaonline",
-    "originalId": "39"
+    "originalId": "39",
+    "prices": {
+      "Al-Iqwan": 41.8,
+      "Malabar supermarker": 41.8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1172",
@@ -2982,12 +4038,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 40,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "1172"
+    "originalId": "1172",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1257",
@@ -3004,12 +4068,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 18,
     "source": "epeedikaonline",
-    "originalId": "1257"
+    "originalId": "1257",
+    "prices": {
+      "Al-Iqwan": 18,
+      "Malabar supermarker": 18
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2393",
@@ -3026,12 +4098,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 30,
     "sellingPrice": 27,
     "source": "epeedikaonline",
-    "originalId": "2393"
+    "originalId": "2393",
+    "prices": {
+      "Al-Iqwan": 27,
+      "Malabar supermarker": 27
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1227",
@@ -3048,12 +4128,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "23% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 13,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1227"
+    "originalId": "1227",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2567",
@@ -3075,7 +4163,15 @@
     "mrp": 48,
     "sellingPrice": 46,
     "source": "epeedikaonline",
-    "originalId": "2567"
+    "originalId": "2567",
+    "prices": {
+      "Al-Iqwan": 46,
+      "Malabar supermarker": 46
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2067",
@@ -3092,12 +4188,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 56,
     "sellingPrice": 53,
     "source": "epeedikaonline",
-    "originalId": "2067"
+    "originalId": "2067",
+    "prices": {
+      "Al-Iqwan": 53,
+      "Malabar supermarker": 53
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-32",
@@ -3114,12 +4218,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 55,
     "sellingPrice": 47,
     "source": "epeedikaonline",
-    "originalId": "32"
+    "originalId": "32",
+    "prices": {
+      "Al-Iqwan": 47,
+      "Malabar supermarker": 47
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1721",
@@ -3136,12 +4248,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 12,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "1721"
+    "originalId": "1721",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2490",
@@ -3163,7 +4283,15 @@
     "mrp": 50,
     "sellingPrice": 49,
     "source": "epeedikaonline",
-    "originalId": "2490"
+    "originalId": "2490",
+    "prices": {
+      "Al-Iqwan": 49,
+      "Malabar supermarker": 49
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2163",
@@ -3180,12 +4308,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 70,
     "sellingPrice": 60,
     "source": "epeedikaonline",
-    "originalId": "2163"
+    "originalId": "2163",
+    "prices": {
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2489",
@@ -3202,12 +4338,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 10,
     "sellingPrice": 9.5,
     "source": "epeedikaonline",
-    "originalId": "2489"
+    "originalId": "2489",
+    "prices": {
+      "Al-Iqwan": 9.5,
+      "Malabar supermarker": 9.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-23",
@@ -3224,12 +4368,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "15% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 32.5,
     "sellingPrice": 27.5,
     "source": "epeedikaonline",
-    "originalId": "23"
+    "originalId": "23",
+    "prices": {
+      "Al-Iqwan": 27.5,
+      "Malabar supermarker": 27.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-78",
@@ -3246,12 +4398,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "23% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 240,
     "sellingPrice": 185,
     "source": "epeedikaonline",
-    "originalId": "78"
+    "originalId": "78",
+    "prices": {
+      "Al-Iqwan": 185,
+      "Malabar supermarker": 185
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-290",
@@ -3268,12 +4428,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 35,
     "sellingPrice": 29,
     "source": "epeedikaonline",
-    "originalId": "290"
+    "originalId": "290",
+    "prices": {
+      "Al-Iqwan": 29,
+      "Malabar supermarker": 29
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1761",
@@ -3290,12 +4458,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 75,
     "sellingPrice": 67,
     "source": "epeedikaonline",
-    "originalId": "1761"
+    "originalId": "1761",
+    "prices": {
+      "Al-Iqwan": 67,
+      "Malabar supermarker": 67
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-38",
@@ -3312,12 +4488,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "24% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 270,
     "sellingPrice": 205,
     "source": "epeedikaonline",
-    "originalId": "38"
+    "originalId": "38",
+    "prices": {
+      "Al-Iqwan": 205,
+      "Malabar supermarker": 205
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1542",
@@ -3336,12 +4520,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 95,
     "sellingPrice": 78,
     "source": "epeedikaonline",
-    "originalId": "1542"
+    "originalId": "1542",
+    "prices": {
+      "Al-Iqwan": 78,
+      "Malabar supermarker": 78
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2320",
@@ -3363,7 +4555,15 @@
     "mrp": 240,
     "sellingPrice": 237,
     "source": "epeedikaonline",
-    "originalId": "2320"
+    "originalId": "2320",
+    "prices": {
+      "Al-Iqwan": 237,
+      "Malabar supermarker": 237
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1927",
@@ -3385,7 +4585,15 @@
     "mrp": 28,
     "sellingPrice": 27,
     "source": "epeedikaonline",
-    "originalId": "1927"
+    "originalId": "1927",
+    "prices": {
+      "Al-Iqwan": 27,
+      "Malabar supermarker": 27
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1866",
@@ -3402,12 +4610,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "7% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 44,
     "sellingPrice": 41,
     "source": "epeedikaonline",
-    "originalId": "1866"
+    "originalId": "1866",
+    "prices": {
+      "Al-Iqwan": 41,
+      "Malabar supermarker": 41
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2497",
@@ -3429,7 +4645,15 @@
     "mrp": 10,
     "sellingPrice": 10,
     "source": "epeedikaonline",
-    "originalId": "2497"
+    "originalId": "2497",
+    "prices": {
+      "Al-Iqwan": 10,
+      "Malabar supermarker": 10
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2411",
@@ -3453,7 +4677,15 @@
     "mrp": 70,
     "sellingPrice": 69,
     "source": "epeedikaonline",
-    "originalId": "2411"
+    "originalId": "2411",
+    "prices": {
+      "Al-Iqwan": 69,
+      "Malabar supermarker": 69
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1232",
@@ -3470,12 +4702,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "5% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 10,
     "sellingPrice": 9.5,
     "source": "epeedikaonline",
-    "originalId": "1232"
+    "originalId": "1232",
+    "prices": {
+      "Al-Iqwan": 9.5,
+      "Malabar supermarker": 9.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-222",
@@ -3492,12 +4732,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 40,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "222"
+    "originalId": "222",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-223",
@@ -3514,12 +4762,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 40,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "223"
+    "originalId": "223",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-773",
@@ -3536,12 +4792,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "24% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 290,
     "sellingPrice": 220,
     "source": "epeedikaonline",
-    "originalId": "773"
+    "originalId": "773",
+    "prices": {
+      "Al-Iqwan": 220,
+      "Malabar supermarker": 220
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-769",
@@ -3560,12 +4824,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
     "mrp": 103,
     "sellingPrice": 92,
     "source": "epeedikaonline",
-    "originalId": "769"
+    "originalId": "769",
+    "prices": {
+      "Al-Iqwan": 92,
+      "Malabar supermarker": 92
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2315",
@@ -3582,12 +4854,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "6% OFF",
     "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
     "mrp": 24,
     "sellingPrice": 22.5,
     "source": "epeedikaonline",
-    "originalId": "2315"
+    "originalId": "2315",
+    "prices": {
+      "Al-Iqwan": 22.5,
+      "Malabar supermarker": 22.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2400",
@@ -3609,7 +4889,15 @@
     "mrp": 40,
     "sellingPrice": 39,
     "source": "epeedikaonline",
-    "originalId": "2400"
+    "originalId": "2400",
+    "prices": {
+      "Al-Iqwan": 39,
+      "Malabar supermarker": 39
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1210",
@@ -3626,12 +4914,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "30% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 20,
     "sellingPrice": 14,
     "source": "epeedikaonline",
-    "originalId": "1210"
+    "originalId": "1210",
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2464",
@@ -3648,12 +4944,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "8% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 38,
     "sellingPrice": 35,
     "source": "epeedikaonline",
-    "originalId": "2464"
+    "originalId": "2464",
+    "prices": {
+      "Al-Iqwan": 35,
+      "Malabar supermarker": 35
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2528",
@@ -3670,12 +4974,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 52,
     "sellingPrice": 47,
     "source": "epeedikaonline",
-    "originalId": "2528"
+    "originalId": "2528",
+    "prices": {
+      "Al-Iqwan": 47,
+      "Malabar supermarker": 47
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1959",
@@ -3692,12 +5004,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 20,
     "sellingPrice": 18,
     "source": "epeedikaonline",
-    "originalId": "1959"
+    "originalId": "1959",
+    "prices": {
+      "Al-Iqwan": 18,
+      "Malabar supermarker": 18
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1896",
@@ -3719,7 +5039,15 @@
     "mrp": 96,
     "sellingPrice": 94,
     "source": "epeedikaonline",
-    "originalId": "1896"
+    "originalId": "1896",
+    "prices": {
+      "Al-Iqwan": 94,
+      "Malabar supermarker": 94
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-2457",
@@ -3736,12 +5064,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 36,
     "sellingPrice": 32,
     "source": "epeedikaonline",
-    "originalId": "2457"
+    "originalId": "2457",
+    "prices": {
+      "Al-Iqwan": 32,
+      "Malabar supermarker": 32
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1897",
@@ -3763,7 +5099,15 @@
     "mrp": 52.5,
     "sellingPrice": 51,
     "source": "epeedikaonline",
-    "originalId": "1897"
+    "originalId": "1897",
+    "prices": {
+      "Al-Iqwan": 51,
+      "Malabar supermarker": 51
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-292",
@@ -3780,12 +5124,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 70,
     "sellingPrice": 60,
     "source": "epeedikaonline",
-    "originalId": "292"
+    "originalId": "292",
+    "prices": {
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-18",
@@ -3802,12 +5154,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "8% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 60,
     "sellingPrice": 55,
     "source": "epeedikaonline",
-    "originalId": "18"
+    "originalId": "18",
+    "prices": {
+      "Al-Iqwan": 55,
+      "Malabar supermarker": 55
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-19",
@@ -3824,12 +5184,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "16% OFF",
     "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
     "mrp": 55,
     "sellingPrice": 46,
     "source": "epeedikaonline",
-    "originalId": "19"
+    "originalId": "19",
+    "prices": {
+      "Al-Iqwan": 46,
+      "Malabar supermarker": 46
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-300",
@@ -3846,12 +5214,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "11% OFF",
     "nutritionalNote": "Carefully sourced premium pantry grocery essential",
     "mrp": 70,
     "sellingPrice": 62,
     "source": "epeedikaonline",
-    "originalId": "300"
+    "originalId": "300",
+    "prices": {
+      "Al-Iqwan": 62,
+      "Malabar supermarker": 62
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-298",
@@ -3868,12 +5244,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 37.5,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "298"
+    "originalId": "298",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-291",
@@ -3890,12 +5274,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "12% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 65,
     "sellingPrice": 57,
     "source": "epeedikaonline",
-    "originalId": "291"
+    "originalId": "291",
+    "prices": {
+      "Al-Iqwan": 57,
+      "Malabar supermarker": 57
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-293",
@@ -3912,12 +5304,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 70,
     "sellingPrice": 63,
     "source": "epeedikaonline",
-    "originalId": "293"
+    "originalId": "293",
+    "prices": {
+      "Al-Iqwan": 63,
+      "Malabar supermarker": 63
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-304",
@@ -3934,12 +5334,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
     "mrp": 35,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "304"
+    "originalId": "304",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1056",
@@ -3956,12 +5364,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "16% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 25,
     "sellingPrice": 21,
     "source": "epeedikaonline",
-    "originalId": "1056"
+    "originalId": "1056",
+    "prices": {
+      "Al-Iqwan": 21,
+      "Malabar supermarker": 21
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1258",
@@ -3982,12 +5398,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "10% OFF",
     "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
     "mrp": 10,
     "sellingPrice": 9,
     "source": "epeedikaonline",
-    "originalId": "1258"
+    "originalId": "1258",
+    "prices": {
+      "Al-Iqwan": 9,
+      "Malabar supermarker": 9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1347",
@@ -4009,7 +5433,15 @@
     "mrp": 60,
     "sellingPrice": 60,
     "source": "epeedikaonline",
-    "originalId": "1347"
+    "originalId": "1347",
+    "prices": {
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-180",
@@ -4033,7 +5465,15 @@
     "mrp": 90,
     "sellingPrice": 89,
     "source": "epeedikaonline",
-    "originalId": "180"
+    "originalId": "180",
+    "prices": {
+      "Al-Iqwan": 89,
+      "Malabar supermarker": 89
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "epeedika-grocery-1345",
@@ -4055,6 +5495,14 @@
     "mrp": 30,
     "sellingPrice": 30,
     "source": "epeedikaonline",
-    "originalId": "1345"
+    "originalId": "1345",
+    "prices": {
+      "Al-Iqwan": 30,
+      "Malabar supermarker": 30
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   }
 ]

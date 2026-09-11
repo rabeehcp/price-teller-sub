@@ -14,12 +14,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "75% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 50,
     "sellingPrice": 12.5,
     "source": "pothysmart",
-    "originalId": 3137759
+    "originalId": 3137759,
+    "prices": {
+      "Al-Iqwan": 12.5,
+      "Malabar supermarker": 12.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136460",
@@ -36,12 +44,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 49,
     "sellingPrice": 39,
     "source": "pothysmart",
-    "originalId": 3136460
+    "originalId": 3136460,
+    "prices": {
+      "Al-Iqwan": 39,
+      "Malabar supermarker": 39
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136523",
@@ -58,12 +74,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
     "mrp": 56,
     "sellingPrice": 45,
     "source": "pothysmart",
-    "originalId": 3136523
+    "originalId": 3136523,
+    "prices": {
+      "Al-Iqwan": 45,
+      "Malabar supermarker": 45
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136462",
@@ -80,12 +104,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 37.5,
     "sellingPrice": 28,
     "source": "pothysmart",
-    "originalId": 3136462
+    "originalId": 3136462,
+    "prices": {
+      "Al-Iqwan": 28,
+      "Malabar supermarker": 28
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3197150",
@@ -102,12 +134,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "21% OFF",
     "nutritionalNote": "Rich in bone-building calcium, magnesium, iron and dietary fiber",
     "mrp": 42,
     "sellingPrice": 33.33,
     "source": "pothysmart",
-    "originalId": 3197150
+    "originalId": 3197150,
+    "prices": {
+      "Al-Iqwan": 33.33,
+      "Malabar supermarker": 33.33
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136464",
@@ -124,12 +164,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 56,
     "sellingPrice": 46.5,
     "source": "pothysmart",
-    "originalId": 3136464
+    "originalId": 3136464,
+    "prices": {
+      "Al-Iqwan": 46.5,
+      "Malabar supermarker": 46.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136463",
@@ -146,12 +194,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 60,
     "sellingPrice": 48,
     "source": "pothysmart",
-    "originalId": 3136463
+    "originalId": 3136463,
+    "prices": {
+      "Al-Iqwan": 48,
+      "Malabar supermarker": 48
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3140459",
@@ -168,12 +224,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "85% OFF",
     "nutritionalNote": "Rich in resveratrol, polyphenols and natural hydration",
     "mrp": 650,
     "sellingPrice": 100,
     "source": "pothysmart",
-    "originalId": 3140459
+    "originalId": 3140459,
+    "prices": {
+      "Al-Iqwan": 100,
+      "Malabar supermarker": 100
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136465",
@@ -190,12 +254,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 66,
     "sellingPrice": 53,
     "source": "pothysmart",
-    "originalId": 3136465
+    "originalId": 3136465,
+    "prices": {
+      "Al-Iqwan": 53,
+      "Malabar supermarker": 53
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-2918117",
@@ -212,12 +284,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "44% OFF",
     "nutritionalNote": "Contains papain enzymes that promote optimal digestion and skin glow",
     "mrp": 100,
     "sellingPrice": 56,
     "source": "pothysmart",
-    "originalId": 2918117
+    "originalId": 2918117,
+    "prices": {
+      "Al-Iqwan": 56,
+      "Malabar supermarker": 56
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136501",
@@ -234,12 +314,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "93% OFF",
     "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
     "mrp": 800,
     "sellingPrice": 57,
     "source": "pothysmart",
-    "originalId": 3136501
+    "originalId": 3136501,
+    "prices": {
+      "Al-Iqwan": 57,
+      "Malabar supermarker": 57
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136458",
@@ -256,12 +344,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 78,
     "sellingPrice": 62.5,
     "source": "pothysmart",
-    "originalId": 3136458
+    "originalId": 3136458,
+    "prices": {
+      "Al-Iqwan": 62.5,
+      "Malabar supermarker": 62.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136459",
@@ -278,12 +374,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 44,
     "sellingPrice": 35,
     "source": "pothysmart",
-    "originalId": 3136459
+    "originalId": 3136459,
+    "prices": {
+      "Al-Iqwan": 35,
+      "Malabar supermarker": 35
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3137785",
@@ -300,12 +404,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
     "mrp": 90,
     "sellingPrice": 72,
     "source": "pothysmart",
-    "originalId": 3137785
+    "originalId": 3137785,
+    "prices": {
+      "Al-Iqwan": 72,
+      "Malabar supermarker": 72
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649827",
@@ -322,12 +434,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 100,
     "sellingPrice": 80,
     "source": "pothysmart",
-    "originalId": 4649827
+    "originalId": 4649827,
+    "prices": {
+      "Al-Iqwan": 80,
+      "Malabar supermarker": 80
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3137389",
@@ -344,12 +464,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Exotic superfruit rich in prebiotics, dietary fiber and iron",
     "mrp": 100,
     "sellingPrice": 80,
     "source": "pothysmart",
-    "originalId": 3137389
+    "originalId": 3137389,
+    "prices": {
+      "Al-Iqwan": 80,
+      "Malabar supermarker": 80
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136927",
@@ -366,12 +494,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "44% OFF",
     "nutritionalNote": "Deeply hydrating, rich in beta-carotene, lycopene and electrolytes",
     "mrp": 150,
     "sellingPrice": 84,
     "source": "pothysmart",
-    "originalId": 3136927
+    "originalId": 3136927,
+    "prices": {
+      "Al-Iqwan": 84,
+      "Malabar supermarker": 84
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3196636",
@@ -388,12 +524,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "39% OFF",
     "nutritionalNote": "High in Vitamin A, K and antioxidant polyphenols",
     "mrp": 600,
     "sellingPrice": 368,
     "source": "pothysmart",
-    "originalId": 3196636
+    "originalId": 3196636,
+    "prices": {
+      "Al-Iqwan": 368,
+      "Malabar supermarker": 368
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649822",
@@ -415,7 +559,15 @@
     "mrp": 100,
     "sellingPrice": 100,
     "source": "pothysmart",
-    "originalId": 4649822
+    "originalId": 4649822,
+    "prices": {
+      "Al-Iqwan": 100,
+      "Malabar supermarker": 100
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3140766",
@@ -432,12 +584,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "75% OFF",
     "nutritionalNote": "Rich in resveratrol, polyphenols and natural hydration",
     "mrp": 400,
     "sellingPrice": 100,
     "source": "pothysmart",
-    "originalId": 3140766
+    "originalId": 3140766,
+    "prices": {
+      "Al-Iqwan": 100,
+      "Malabar supermarker": 100
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136456",
@@ -454,12 +614,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "57% OFF",
     "nutritionalNote": "Heart-healthy monounsaturated fats, potassium and Vitamin E",
     "mrp": 500,
     "sellingPrice": 213.65,
     "source": "pothysmart",
-    "originalId": 3136456
+    "originalId": 3136456,
+    "prices": {
+      "Al-Iqwan": 213.65,
+      "Malabar supermarker": 213.65
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3196880",
@@ -476,12 +644,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "46% OFF",
     "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
     "mrp": 500,
     "sellingPrice": 272,
     "source": "pothysmart",
-    "originalId": 3196880
+    "originalId": 3196880,
+    "prices": {
+      "Al-Iqwan": 272,
+      "Malabar supermarker": 272
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3140461",
@@ -498,12 +674,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "92% OFF",
     "nutritionalNote": "High enzyme fruit rich in Vitamin C, K and gut-friendly dietary fiber",
     "mrp": 1800,
     "sellingPrice": 138,
     "source": "pothysmart",
-    "originalId": 3140461
+    "originalId": 3140461,
+    "prices": {
+      "Al-Iqwan": 138,
+      "Malabar supermarker": 138
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3201836",
@@ -520,12 +704,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "43% OFF",
     "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
     "mrp": 500,
     "sellingPrice": 285,
     "source": "pothysmart",
-    "originalId": 3201836
+    "originalId": 3201836,
+    "prices": {
+      "Al-Iqwan": 285,
+      "Malabar supermarker": 285
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649821",
@@ -542,12 +734,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "28% OFF",
     "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
     "mrp": 200,
     "sellingPrice": 143,
     "source": "pothysmart",
-    "originalId": 4649821
+    "originalId": 4649821,
+    "prices": {
+      "Al-Iqwan": 143,
+      "Malabar supermarker": 143
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3194564",
@@ -564,12 +764,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "62% OFF",
     "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
     "mrp": 400,
     "sellingPrice": 154,
     "source": "pothysmart",
-    "originalId": 3194564
+    "originalId": 3194564,
+    "prices": {
+      "Al-Iqwan": 154,
+      "Malabar supermarker": 154
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649782",
@@ -586,12 +794,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "66% OFF",
     "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
     "mrp": 500,
     "sellingPrice": 169,
     "source": "pothysmart",
-    "originalId": 4649782
+    "originalId": 4649782,
+    "prices": {
+      "Al-Iqwan": 169,
+      "Malabar supermarker": 169
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3137567",
@@ -608,12 +824,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
     "mrp": 1250,
     "sellingPrice": 180,
     "source": "pothysmart",
-    "originalId": 3137567
+    "originalId": 3137567,
+    "prices": {
+      "Al-Iqwan": 180,
+      "Malabar supermarker": 180
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3136670",
@@ -630,12 +854,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Packed with Vitamin C, manganese and natural fruit antioxidants",
     "mrp": 250,
     "sellingPrice": 200,
     "source": "pothysmart",
-    "originalId": 3136670
+    "originalId": 3136670,
+    "prices": {
+      "Al-Iqwan": 200,
+      "Malabar supermarker": 200
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649866",
@@ -652,12 +884,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "62% OFF",
     "nutritionalNote": "Superfood loaded with anthocyanins, brain-boosting antioxidants and Vitamin K",
     "mrp": 580,
     "sellingPrice": 220,
     "source": "pothysmart",
-    "originalId": 4649866
+    "originalId": 4649866,
+    "prices": {
+      "Al-Iqwan": 220,
+      "Malabar supermarker": 220
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3141410",
@@ -674,12 +914,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "56% OFF",
     "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
     "mrp": 500,
     "sellingPrice": 221.5,
     "source": "pothysmart",
-    "originalId": 3141410
+    "originalId": 3141410,
+    "prices": {
+      "Al-Iqwan": 221.5,
+      "Malabar supermarker": 221.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3196525",
@@ -696,12 +944,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "53% OFF",
     "nutritionalNote": "Superfood loaded with anthocyanins, brain-boosting antioxidants and Vitamin K",
     "mrp": 500,
     "sellingPrice": 233,
     "source": "pothysmart",
-    "originalId": 3196525
+    "originalId": 3196525,
+    "prices": {
+      "Al-Iqwan": 233,
+      "Malabar supermarker": 233
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3194445",
@@ -718,12 +974,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "22% OFF",
     "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
     "mrp": 300,
     "sellingPrice": 233.5,
     "source": "pothysmart",
-    "originalId": 3194445
+    "originalId": 3194445,
+    "prices": {
+      "Al-Iqwan": 233.5,
+      "Malabar supermarker": 233.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3140656",
@@ -740,12 +1004,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "63% OFF",
     "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
     "mrp": 375,
     "sellingPrice": 139,
     "source": "pothysmart",
-    "originalId": 3140656
+    "originalId": 3140656,
+    "prices": {
+      "Al-Iqwan": 139,
+      "Malabar supermarker": 139
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649780",
@@ -762,12 +1034,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "59% OFF",
     "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
     "mrp": 750,
     "sellingPrice": 307,
     "source": "pothysmart",
-    "originalId": 4649780
+    "originalId": 4649780,
+    "prices": {
+      "Al-Iqwan": 307,
+      "Malabar supermarker": 307
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3194698",
@@ -784,12 +1064,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
     "mrp": 391,
     "sellingPrice": 312.9,
     "source": "pothysmart",
-    "originalId": 3194698
+    "originalId": 3194698,
+    "prices": {
+      "Al-Iqwan": 312.9,
+      "Malabar supermarker": 312.9
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3140460",
@@ -806,12 +1094,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "53% OFF",
     "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
     "mrp": 350,
     "sellingPrice": 165,
     "source": "pothysmart",
-    "originalId": 3140460
+    "originalId": 3140460,
+    "prices": {
+      "Al-Iqwan": 165,
+      "Malabar supermarker": 165
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-4649765",
@@ -828,12 +1124,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "56% OFF",
     "nutritionalNote": "Rich in bone-building calcium, magnesium, iron and dietary fiber",
     "mrp": 900,
     "sellingPrice": 400,
     "source": "pothysmart",
-    "originalId": 4649765
+    "originalId": 4649765,
+    "prices": {
+      "Al-Iqwan": 400,
+      "Malabar supermarker": 400
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3197135",
@@ -850,12 +1154,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "33% OFF",
     "nutritionalNote": "Fresh, nutrient-dense farm-harvested fruit",
     "mrp": 1500,
     "sellingPrice": 1000,
     "source": "pothysmart",
-    "originalId": 3197135
+    "originalId": 3197135,
+    "prices": {
+      "Al-Iqwan": 1000,
+      "Malabar supermarker": 1000
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3194464",
@@ -872,12 +1184,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Anti-inflammatory fruit rich in natural melatonin and anthocyanins",
     "mrp": 866,
     "sellingPrice": 693,
     "source": "pothysmart",
-    "originalId": 3194464
+    "originalId": 3194464,
+    "prices": {
+      "Al-Iqwan": 693,
+      "Malabar supermarker": 693
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-fruit-3197001",
@@ -894,11 +1214,19 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "King of Fruits, high energy and rich in B-complex vitamins",
     "mrp": 1078,
     "sellingPrice": 862.5,
     "source": "pothysmart",
-    "originalId": 3197001
+    "originalId": 3197001,
+    "prices": {
+      "Al-Iqwan": 862.5,
+      "Malabar supermarker": 862.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   }
 ]

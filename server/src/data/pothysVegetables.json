@@ -14,12 +14,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "94% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 50,
     "sellingPrice": 3,
     "source": "pothysmart",
-    "originalId": 4650235
+    "originalId": 4650235,
+    "prices": {
+      "Al-Iqwan": 3,
+      "Malabar supermarker": 3
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649834",
@@ -36,12 +44,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "67% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 15,
     "sellingPrice": 5,
     "source": "pothysmart",
-    "originalId": 4649834
+    "originalId": 4649834,
+    "prices": {
+      "Al-Iqwan": 5,
+      "Malabar supermarker": 5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136483",
@@ -58,12 +74,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "95% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 100,
     "sellingPrice": 5,
     "source": "pothysmart",
-    "originalId": 3136483
+    "originalId": 3136483,
+    "prices": {
+      "Al-Iqwan": 5,
+      "Malabar supermarker": 5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137728",
@@ -80,12 +104,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "93% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 80,
     "sellingPrice": 6,
     "source": "pothysmart",
-    "originalId": 3137728
+    "originalId": 3137728,
+    "prices": {
+      "Al-Iqwan": 6,
+      "Malabar supermarker": 6
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136926",
@@ -102,12 +134,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "67% OFF",
     "nutritionalNote": "Spicy culinary essential loaded with metabolism-boosting capsaicin and Vitamin C",
     "mrp": 20,
     "sellingPrice": 6.7,
     "source": "pothysmart",
-    "originalId": 3136926
+    "originalId": 3136926,
+    "prices": {
+      "Al-Iqwan": 6.7,
+      "Malabar supermarker": 6.7
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136925",
@@ -124,12 +164,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "64% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 20,
     "sellingPrice": 7.24,
     "source": "pothysmart",
-    "originalId": 3136925
+    "originalId": 3136925,
+    "prices": {
+      "Al-Iqwan": 7.24,
+      "Malabar supermarker": 7.24
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137147",
@@ -146,12 +194,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "70% OFF",
     "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
     "mrp": 25,
     "sellingPrice": 7.5,
     "source": "pothysmart",
-    "originalId": 3137147
+    "originalId": 3137147,
+    "prices": {
+      "Al-Iqwan": 7.5,
+      "Malabar supermarker": 7.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649927",
@@ -168,12 +224,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 50,
     "sellingPrice": 8,
     "source": "pothysmart",
-    "originalId": 4649927
+    "originalId": 4649927,
+    "prices": {
+      "Al-Iqwan": 8,
+      "Malabar supermarker": 8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137727",
@@ -190,12 +254,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 8,
     "source": "pothysmart",
-    "originalId": 3137727
+    "originalId": 3137727,
+    "prices": {
+      "Al-Iqwan": 8,
+      "Malabar supermarker": 8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136522",
@@ -212,12 +284,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 10,
     "sellingPrice": 8,
     "source": "pothysmart",
-    "originalId": 3136522
+    "originalId": 3136522,
+    "prices": {
+      "Al-Iqwan": 8,
+      "Malabar supermarker": 8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137264",
@@ -234,12 +314,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 8,
     "source": "pothysmart",
-    "originalId": 3137264
+    "originalId": 3137264,
+    "prices": {
+      "Al-Iqwan": 8,
+      "Malabar supermarker": 8
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136478",
@@ -256,12 +344,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "78% OFF",
     "nutritionalNote": "Cruciferous staple rich in Vitamin K, sulfur compounds and gut-friendly fiber",
     "mrp": 90,
     "sellingPrice": 20,
     "source": "pothysmart",
-    "originalId": 3136478
+    "originalId": 3136478,
+    "prices": {
+      "Al-Iqwan": 20,
+      "Malabar supermarker": 20
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136479",
@@ -278,12 +374,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
     "mrp": 250,
     "sellingPrice": 40,
     "source": "pothysmart",
-    "originalId": 3136479
+    "originalId": 3136479,
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137578",
@@ -300,12 +404,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "79% OFF",
     "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
     "mrp": 50,
     "sellingPrice": 10.75,
     "source": "pothysmart",
-    "originalId": 3137578
+    "originalId": 3137578,
+    "prices": {
+      "Al-Iqwan": 10.75,
+      "Malabar supermarker": 10.75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194701",
@@ -322,12 +434,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "78% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 11,
     "source": "pothysmart",
-    "originalId": 3194701
+    "originalId": 3194701,
+    "prices": {
+      "Al-Iqwan": 11,
+      "Malabar supermarker": 11
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650372",
@@ -344,12 +464,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "89% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 11.2,
     "source": "pothysmart",
-    "originalId": 4650372
+    "originalId": 4650372,
+    "prices": {
+      "Al-Iqwan": 11.2,
+      "Malabar supermarker": 11.2
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194462",
@@ -366,12 +494,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "89% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 11.2,
     "source": "pothysmart",
-    "originalId": 3194462
+    "originalId": 3194462,
+    "prices": {
+      "Al-Iqwan": 11.2,
+      "Malabar supermarker": 11.2
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3197033",
@@ -388,12 +524,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "43% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 20,
     "sellingPrice": 11.5,
     "source": "pothysmart",
-    "originalId": 3197033
+    "originalId": 3197033,
+    "prices": {
+      "Al-Iqwan": 11.5,
+      "Malabar supermarker": 11.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136544",
@@ -410,12 +554,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "95% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 250,
     "sellingPrice": 11.5,
     "source": "pothysmart",
-    "originalId": 3136544
+    "originalId": 3136544,
+    "prices": {
+      "Al-Iqwan": 11.5,
+      "Malabar supermarker": 11.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137737",
@@ -432,12 +584,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "53% OFF",
     "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
     "mrp": 25,
     "sellingPrice": 11.75,
     "source": "pothysmart",
-    "originalId": 3137737
+    "originalId": 3137737,
+    "prices": {
+      "Al-Iqwan": 11.75,
+      "Malabar supermarker": 11.75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3138916",
@@ -454,12 +614,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "76% OFF",
     "nutritionalNote": "Velvety sweet vegetable rich in beta-carotene, potassium and dietary fiber",
     "mrp": 50,
     "sellingPrice": 12,
     "source": "pothysmart",
-    "originalId": 3138916
+    "originalId": 3138916,
+    "prices": {
+      "Al-Iqwan": 12,
+      "Malabar supermarker": 12
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194520",
@@ -476,12 +644,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "38% OFF",
     "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
     "mrp": 20,
     "sellingPrice": 12.4,
     "source": "pothysmart",
-    "originalId": 3194520
+    "originalId": 3194520,
+    "prices": {
+      "Al-Iqwan": 12.4,
+      "Malabar supermarker": 12.4
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137570",
@@ -498,12 +674,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "19% OFF",
     "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
     "mrp": 31,
     "sellingPrice": 25,
     "source": "pothysmart",
-    "originalId": 3137570
+    "originalId": 3137570,
+    "prices": {
+      "Al-Iqwan": 25,
+      "Malabar supermarker": 25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194546",
@@ -520,12 +704,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "74% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 13,
     "source": "pothysmart",
-    "originalId": 3194546
+    "originalId": 3194546,
+    "prices": {
+      "Al-Iqwan": 13,
+      "Malabar supermarker": 13
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3196682",
@@ -542,12 +734,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "63% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 35,
     "sellingPrice": 13,
     "source": "pothysmart",
-    "originalId": 3196682
+    "originalId": 3196682,
+    "prices": {
+      "Al-Iqwan": 13,
+      "Malabar supermarker": 13
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194493",
@@ -564,12 +764,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "74% OFF",
     "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
     "mrp": 50,
     "sellingPrice": 13,
     "source": "pothysmart",
-    "originalId": 3194493
+    "originalId": 3194493,
+    "prices": {
+      "Al-Iqwan": 13,
+      "Malabar supermarker": 13
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3196820",
@@ -586,12 +794,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "73% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 13.33,
     "source": "pothysmart",
-    "originalId": 3196820
+    "originalId": 3196820,
+    "prices": {
+      "Al-Iqwan": 13.33,
+      "Malabar supermarker": 13.33
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-2918119",
@@ -608,12 +824,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "61% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 70,
     "sellingPrice": 27,
     "source": "pothysmart",
-    "originalId": 2918119
+    "originalId": 2918119,
+    "prices": {
+      "Al-Iqwan": 27,
+      "Malabar supermarker": 27
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136537",
@@ -630,12 +854,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "73% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 100,
     "sellingPrice": 27,
     "source": "pothysmart",
-    "originalId": 3136537
+    "originalId": 3136537,
+    "prices": {
+      "Al-Iqwan": 27,
+      "Malabar supermarker": 27
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650196",
@@ -652,12 +884,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 4650196
+    "originalId": 4650196,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650296",
@@ -674,12 +914,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "65% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 40,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 4650296
+    "originalId": 4650296,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650334",
@@ -696,12 +944,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 4650334
+    "originalId": 4650334,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650339",
@@ -718,12 +974,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 4650339
+    "originalId": 4650339,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194532",
@@ -740,12 +1004,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 3194532
+    "originalId": 3194532,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194446",
@@ -762,12 +1034,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "65% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 40,
     "sellingPrice": 14,
     "source": "pothysmart",
-    "originalId": 3194446
+    "originalId": 3194446,
+    "prices": {
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650426",
@@ -784,12 +1064,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "86% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 14.5,
     "source": "pothysmart",
-    "originalId": 4650426
+    "originalId": 4650426,
+    "prices": {
+      "Al-Iqwan": 14.5,
+      "Malabar supermarker": 14.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137735",
@@ -806,12 +1094,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "40% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 100,
     "sellingPrice": 60,
     "source": "pothysmart",
-    "originalId": 3137735
+    "originalId": 3137735,
+    "prices": {
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137736",
@@ -828,12 +1124,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "70% OFF",
     "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
     "mrp": 50,
     "sellingPrice": 15,
     "source": "pothysmart",
-    "originalId": 3137736
+    "originalId": 3137736,
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136515",
@@ -850,12 +1154,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "70% OFF",
     "nutritionalNote": "High mucilage vegetable that aids digestion and regulates blood sugar",
     "mrp": 50,
     "sellingPrice": 15,
     "source": "pothysmart",
-    "originalId": 3136515
+    "originalId": 3136515,
+    "prices": {
+      "Al-Iqwan": 15,
+      "Malabar supermarker": 15
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3139162",
@@ -872,12 +1184,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "64% OFF",
     "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
     "mrp": 45,
     "sellingPrice": 16,
     "source": "pothysmart",
-    "originalId": 3139162
+    "originalId": 3139162,
+    "prices": {
+      "Al-Iqwan": 16,
+      "Malabar supermarker": 16
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136547",
@@ -894,12 +1214,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 16.5,
     "source": "pothysmart",
-    "originalId": 3136547
+    "originalId": 3136547,
+    "prices": {
+      "Al-Iqwan": 16.5,
+      "Malabar supermarker": 16.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136514",
@@ -916,12 +1244,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "78% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 75,
     "sellingPrice": 16.5,
     "source": "pothysmart",
-    "originalId": 3136514
+    "originalId": 3136514,
+    "prices": {
+      "Al-Iqwan": 16.5,
+      "Malabar supermarker": 16.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137760",
@@ -938,12 +1274,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "65% OFF",
     "nutritionalNote": "Hearty traditional tuber offering sustained energy, potassium and dietary fiber",
     "mrp": 50,
     "sellingPrice": 17.5,
     "source": "pothysmart",
-    "originalId": 3137760
+    "originalId": 3137760,
+    "prices": {
+      "Al-Iqwan": 17.5,
+      "Malabar supermarker": 17.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136548",
@@ -960,12 +1304,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "21% OFF",
     "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
     "mrp": 23.5,
     "sellingPrice": 18.66,
     "source": "pothysmart",
-    "originalId": 3136548
+    "originalId": 3136548,
+    "prices": {
+      "Al-Iqwan": 18.66,
+      "Malabar supermarker": 18.66
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136467",
@@ -982,12 +1334,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "81% OFF",
     "nutritionalNote": "Nitrate-rich super-root that promotes healthy blood circulation and stamina",
     "mrp": 100,
     "sellingPrice": 19,
     "source": "pothysmart",
-    "originalId": 3136467
+    "originalId": 3136467,
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3138596",
@@ -1004,12 +1364,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "75% OFF",
     "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
     "mrp": 75,
     "sellingPrice": 19,
     "source": "pothysmart",
-    "originalId": 3138596
+    "originalId": 3138596,
+    "prices": {
+      "Al-Iqwan": 19,
+      "Malabar supermarker": 19
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3138804",
@@ -1026,12 +1394,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "47% OFF",
     "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
     "mrp": 18.25,
     "sellingPrice": 9.75,
     "source": "pothysmart",
-    "originalId": 3138804
+    "originalId": 3138804,
+    "prices": {
+      "Al-Iqwan": 9.75,
+      "Malabar supermarker": 9.75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137738",
@@ -1048,12 +1424,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "60% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 50,
     "sellingPrice": 20,
     "source": "pothysmart",
-    "originalId": 3137738
+    "originalId": 3137738,
+    "prices": {
+      "Al-Iqwan": 20,
+      "Malabar supermarker": 20
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3196628",
@@ -1070,12 +1454,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "31% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 134,
     "sellingPrice": 92,
     "source": "pothysmart",
-    "originalId": 3196628
+    "originalId": 3196628,
+    "prices": {
+      "Al-Iqwan": 92,
+      "Malabar supermarker": 92
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136481",
@@ -1092,12 +1484,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "95% OFF",
     "nutritionalNote": "Mild, versatile cruciferous vegetable rich in choline and glucosinolates",
     "mrp": 500,
     "sellingPrice": 24,
     "source": "pothysmart",
-    "originalId": 3136481
+    "originalId": 3136481,
+    "prices": {
+      "Al-Iqwan": 24,
+      "Malabar supermarker": 24
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194463",
@@ -1114,12 +1514,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "60% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 60,
     "sellingPrice": 24,
     "source": "pothysmart",
-    "originalId": 3194463
+    "originalId": 3194463,
+    "prices": {
+      "Al-Iqwan": 24,
+      "Malabar supermarker": 24
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194530",
@@ -1136,12 +1544,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "75% OFF",
     "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
     "mrp": 100,
     "sellingPrice": 25,
     "source": "pothysmart",
-    "originalId": 3194530
+    "originalId": 3194530,
+    "prices": {
+      "Al-Iqwan": 25,
+      "Malabar supermarker": 25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136929",
@@ -1158,12 +1574,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "90% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 250,
     "sellingPrice": 25,
     "source": "pothysmart",
-    "originalId": 3136929
+    "originalId": 3136929,
+    "prices": {
+      "Al-Iqwan": 25,
+      "Malabar supermarker": 25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137153",
@@ -1180,12 +1604,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "66% OFF",
     "nutritionalNote": "Hearty traditional tuber offering sustained energy, potassium and dietary fiber",
     "mrp": 75,
     "sellingPrice": 25.5,
     "source": "pothysmart",
-    "originalId": 3137153
+    "originalId": 3137153,
+    "prices": {
+      "Al-Iqwan": 25.5,
+      "Malabar supermarker": 25.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137246",
@@ -1202,12 +1634,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "91% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 290,
     "sellingPrice": 27,
     "source": "pothysmart",
-    "originalId": 3137246
+    "originalId": 3137246,
+    "prices": {
+      "Al-Iqwan": 27,
+      "Malabar supermarker": 27
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136480",
@@ -1224,12 +1664,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Crunchy farm root packed with beta-carotene, lutein and eye health nutrients",
     "mrp": 34,
     "sellingPrice": 27.11,
     "source": "pothysmart",
-    "originalId": 3136480
+    "originalId": 3136480,
+    "prices": {
+      "Al-Iqwan": 27.11,
+      "Malabar supermarker": 27.11
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3222142",
@@ -1246,12 +1694,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "72% OFF",
     "nutritionalNote": "Traditional ayurvedic superfood dense in calcium, phosphorus and Vitamin C",
     "mrp": 100,
     "sellingPrice": 28,
     "source": "pothysmart",
-    "originalId": 3222142
+    "originalId": 3222142,
+    "prices": {
+      "Al-Iqwan": 28,
+      "Malabar supermarker": 28
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137805",
@@ -1268,12 +1724,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "19% OFF",
     "nutritionalNote": "Rich in lycopene, Vitamin C and potassium for heart and skin vitality",
     "mrp": 18,
     "sellingPrice": 14.5,
     "source": "pothysmart",
-    "originalId": 3137805
+    "originalId": 3137805,
+    "prices": {
+      "Al-Iqwan": 14.5,
+      "Malabar supermarker": 14.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137810",
@@ -1290,12 +1754,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "38% OFF",
     "nutritionalNote": "Nutrient-rich root with high beta-carotene, Vitamin A and dietary fiber",
     "mrp": 100,
     "sellingPrice": 62,
     "source": "pothysmart",
-    "originalId": 3137810
+    "originalId": 3137810,
+    "prices": {
+      "Al-Iqwan": 62,
+      "Malabar supermarker": 62
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194459",
@@ -1312,12 +1784,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "47% OFF",
     "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
     "mrp": 60,
     "sellingPrice": 32,
     "source": "pothysmart",
-    "originalId": 3194459
+    "originalId": 3194459,
+    "prices": {
+      "Al-Iqwan": 32,
+      "Malabar supermarker": 32
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4213162",
@@ -1334,12 +1814,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "16% OFF",
     "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
     "mrp": 40,
     "sellingPrice": 33.5,
     "source": "pothysmart",
-    "originalId": 4213162
+    "originalId": 4213162,
+    "prices": {
+      "Al-Iqwan": 33.5,
+      "Malabar supermarker": 33.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3138901",
@@ -1356,12 +1844,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "33% OFF",
     "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
     "mrp": 50,
     "sellingPrice": 33.5,
     "source": "pothysmart",
-    "originalId": 3138901
+    "originalId": 3138901,
+    "prices": {
+      "Al-Iqwan": 33.5,
+      "Malabar supermarker": 33.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137702",
@@ -1378,12 +1874,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "66% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 34,
     "source": "pothysmart",
-    "originalId": 3137702
+    "originalId": 3137702,
+    "prices": {
+      "Al-Iqwan": 34,
+      "Malabar supermarker": 34
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137640",
@@ -1400,12 +1904,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "83% OFF",
     "nutritionalNote": "Rich in lycopene, Vitamin C and potassium for heart and skin vitality",
     "mrp": 200,
     "sellingPrice": 34,
     "source": "pothysmart",
-    "originalId": 3137640
+    "originalId": 3137640,
+    "prices": {
+      "Al-Iqwan": 34,
+      "Malabar supermarker": 34
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649811",
@@ -1422,12 +1934,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "76% OFF",
     "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
     "mrp": 150,
     "sellingPrice": 36,
     "source": "pothysmart",
-    "originalId": 4649811
+    "originalId": 4649811,
+    "prices": {
+      "Al-Iqwan": 36,
+      "Malabar supermarker": 36
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-2918121",
@@ -1444,12 +1964,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "54% OFF",
     "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
     "mrp": 79,
     "sellingPrice": 36,
     "source": "pothysmart",
-    "originalId": 2918121
+    "originalId": 2918121,
+    "prices": {
+      "Al-Iqwan": 36,
+      "Malabar supermarker": 36
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650429",
@@ -1466,12 +1994,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "64% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 36.22,
     "source": "pothysmart",
-    "originalId": 4650429
+    "originalId": 4650429,
+    "prices": {
+      "Al-Iqwan": 36.22,
+      "Malabar supermarker": 36.22
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3139146",
@@ -1488,12 +2024,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "26% OFF",
     "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
     "mrp": 50,
     "sellingPrice": 37,
     "source": "pothysmart",
-    "originalId": 3139146
+    "originalId": 3139146,
+    "prices": {
+      "Al-Iqwan": 37,
+      "Malabar supermarker": 37
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137816",
@@ -1510,12 +2054,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "74% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 140,
     "sellingPrice": 37.1,
     "source": "pothysmart",
-    "originalId": 3137816
+    "originalId": 3137816,
+    "prices": {
+      "Al-Iqwan": 37.1,
+      "Malabar supermarker": 37.1
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-2918120",
@@ -1532,12 +2084,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "60% OFF",
     "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
     "mrp": 100,
     "sellingPrice": 40,
     "source": "pothysmart",
-    "originalId": 2918120
+    "originalId": 2918120,
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3141500",
@@ -1554,12 +2114,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "84% OFF",
     "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
     "mrp": 250,
     "sellingPrice": 40,
     "source": "pothysmart",
-    "originalId": 3141500
+    "originalId": 3141500,
+    "prices": {
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137652",
@@ -1576,12 +2144,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "83% OFF",
     "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
     "mrp": 125,
     "sellingPrice": 20.75,
     "source": "pothysmart",
-    "originalId": 3137652
+    "originalId": 3137652,
+    "prices": {
+      "Al-Iqwan": 20.75,
+      "Malabar supermarker": 20.75
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136497",
@@ -1598,12 +2174,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "81% OFF",
     "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
     "mrp": 450,
     "sellingPrice": 86.5,
     "source": "pothysmart",
-    "originalId": 3136497
+    "originalId": 3136497,
+    "prices": {
+      "Al-Iqwan": 86.5,
+      "Malabar supermarker": 86.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137806",
@@ -1620,12 +2204,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "54% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 46.5,
     "source": "pothysmart",
-    "originalId": 3137806
+    "originalId": 3137806,
+    "prices": {
+      "Al-Iqwan": 46.5,
+      "Malabar supermarker": 46.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136488",
@@ -1642,12 +2234,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Traditional ayurvedic superfood dense in calcium, phosphorus and Vitamin C",
     "mrp": 58,
     "sellingPrice": 46.68,
     "source": "pothysmart",
-    "originalId": 3136488
+    "originalId": 3136488,
+    "prices": {
+      "Al-Iqwan": 46.68,
+      "Malabar supermarker": 46.68
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3197112",
@@ -1664,12 +2264,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "43% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 87.5,
     "sellingPrice": 50,
     "source": "pothysmart",
-    "originalId": 3197112
+    "originalId": 3197112,
+    "prices": {
+      "Al-Iqwan": 50,
+      "Malabar supermarker": 50
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194456",
@@ -1686,12 +2294,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "60% OFF",
     "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
     "mrp": 500,
     "sellingPrice": 200,
     "source": "pothysmart",
-    "originalId": 3194456
+    "originalId": 3194456,
+    "prices": {
+      "Al-Iqwan": 200,
+      "Malabar supermarker": 200
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649879",
@@ -1708,12 +2324,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "74% OFF",
     "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
     "mrp": 200,
     "sellingPrice": 53,
     "source": "pothysmart",
-    "originalId": 4649879
+    "originalId": 4649879,
+    "prices": {
+      "Al-Iqwan": 53,
+      "Malabar supermarker": 53
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137808",
@@ -1730,12 +2354,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "69% OFF",
     "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
     "mrp": 350,
     "sellingPrice": 108,
     "source": "pothysmart",
-    "originalId": 3137808
+    "originalId": 3137808,
+    "prices": {
+      "Al-Iqwan": 108,
+      "Malabar supermarker": 108
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136477",
@@ -1752,12 +2384,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "89% OFF",
     "nutritionalNote": "Nutrient-dense powerhouse full of sulforaphane, iron and Vitamin C",
     "mrp": 500,
     "sellingPrice": 54.5,
     "source": "pothysmart",
-    "originalId": 3136477
+    "originalId": 3136477,
+    "prices": {
+      "Al-Iqwan": 54.5,
+      "Malabar supermarker": 54.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137155",
@@ -1774,12 +2414,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "25% OFF",
     "nutritionalNote": "Savory edible fungi loaded with Vitamin D, selenium and immune-modulating beta-glucans",
     "mrp": 80,
     "sellingPrice": 60,
     "source": "pothysmart",
-    "originalId": 3137155
+    "originalId": 3137155,
+    "prices": {
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649937",
@@ -1796,12 +2444,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "67% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 200,
     "sellingPrice": 67,
     "source": "pothysmart",
-    "originalId": 4649937
+    "originalId": 4649937,
+    "prices": {
+      "Al-Iqwan": 67,
+      "Malabar supermarker": 67
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650043",
@@ -1818,12 +2474,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "67% OFF",
     "nutritionalNote": "Spicy culinary essential loaded with metabolism-boosting capsaicin and Vitamin C",
     "mrp": 200,
     "sellingPrice": 67,
     "source": "pothysmart",
-    "originalId": 4650043
+    "originalId": 4650043,
+    "prices": {
+      "Al-Iqwan": 67,
+      "Malabar supermarker": 67
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650237",
@@ -1840,12 +2504,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "27% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 73,
     "source": "pothysmart",
-    "originalId": 4650237
+    "originalId": 4650237,
+    "prices": {
+      "Al-Iqwan": 73,
+      "Malabar supermarker": 73
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194666",
@@ -1862,12 +2534,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "14% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 100,
     "sellingPrice": 86.25,
     "source": "pothysmart",
-    "originalId": 3194666
+    "originalId": 3194666,
+    "prices": {
+      "Al-Iqwan": 86.25,
+      "Malabar supermarker": 86.25
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194447",
@@ -1884,12 +2564,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "42% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 150,
     "sellingPrice": 87.5,
     "source": "pothysmart",
-    "originalId": 3194447
+    "originalId": 3194447,
+    "prices": {
+      "Al-Iqwan": 87.5,
+      "Malabar supermarker": 87.5
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649816",
@@ -1906,12 +2594,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
     "mrp": 116,
     "sellingPrice": 93,
     "source": "pothysmart",
-    "originalId": 4649816
+    "originalId": 4649816,
+    "prices": {
+      "Al-Iqwan": 93,
+      "Malabar supermarker": 93
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136516",
@@ -1928,12 +2624,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 125,
     "sellingPrice": 100,
     "source": "pothysmart",
-    "originalId": 3136516
+    "originalId": 3136516,
+    "prices": {
+      "Al-Iqwan": 100,
+      "Malabar supermarker": 100
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136496",
@@ -1950,12 +2654,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "18% OFF",
     "nutritionalNote": "Potent culinary spice and vegetable rich in allicin for natural immunity",
     "mrp": 125,
     "sellingPrice": 102,
     "source": "pothysmart",
-    "originalId": 3136496
+    "originalId": 3136496,
+    "prices": {
+      "Al-Iqwan": 102,
+      "Malabar supermarker": 102
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650392",
@@ -1972,12 +2684,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "79% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 500,
     "sellingPrice": 107,
     "source": "pothysmart",
-    "originalId": 4650392
+    "originalId": 4650392,
+    "prices": {
+      "Al-Iqwan": 107,
+      "Malabar supermarker": 107
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194508",
@@ -1994,12 +2714,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "31% OFF",
     "nutritionalNote": "Cruciferous staple rich in Vitamin K, sulfur compounds and gut-friendly fiber",
     "mrp": 160,
     "sellingPrice": 110,
     "source": "pothysmart",
-    "originalId": 3194508
+    "originalId": 3194508,
+    "prices": {
+      "Al-Iqwan": 110,
+      "Malabar supermarker": 110
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3136928",
@@ -2016,12 +2744,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "87% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 900,
     "sellingPrice": 113,
     "source": "pothysmart",
-    "originalId": 3136928
+    "originalId": 3136928,
+    "prices": {
+      "Al-Iqwan": 113,
+      "Malabar supermarker": 113
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194574",
@@ -2038,12 +2774,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "24% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 150,
     "sellingPrice": 113.85,
     "source": "pothysmart",
-    "originalId": 3194574
+    "originalId": 3194574,
+    "prices": {
+      "Al-Iqwan": 113.85,
+      "Malabar supermarker": 113.85
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650203",
@@ -2060,12 +2804,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "38% OFF",
     "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
     "mrp": 200,
     "sellingPrice": 124,
     "source": "pothysmart",
-    "originalId": 4650203
+    "originalId": 4650203,
+    "prices": {
+      "Al-Iqwan": 124,
+      "Malabar supermarker": 124
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650240",
@@ -2082,12 +2834,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "22% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 160,
     "sellingPrice": 125,
     "source": "pothysmart",
-    "originalId": 4650240
+    "originalId": 4650240,
+    "prices": {
+      "Al-Iqwan": 125,
+      "Malabar supermarker": 125
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194576",
@@ -2104,12 +2864,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "17% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 150,
     "sellingPrice": 125,
     "source": "pothysmart",
-    "originalId": 3194576
+    "originalId": 3194576,
+    "prices": {
+      "Al-Iqwan": 125,
+      "Malabar supermarker": 125
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194521",
@@ -2126,12 +2894,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 178,
     "sellingPrice": 142,
     "source": "pothysmart",
-    "originalId": 3194521
+    "originalId": 3194521,
+    "prices": {
+      "Al-Iqwan": 142,
+      "Malabar supermarker": 142
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650378",
@@ -2148,12 +2924,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "70% OFF",
     "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
     "mrp": 500,
     "sellingPrice": 150,
     "source": "pothysmart",
-    "originalId": 4650378
+    "originalId": 4650378,
+    "prices": {
+      "Al-Iqwan": 150,
+      "Malabar supermarker": 150
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3196638",
@@ -2170,12 +2954,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "42% OFF",
     "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
     "mrp": 300,
     "sellingPrice": 175,
     "source": "pothysmart",
-    "originalId": 3196638
+    "originalId": 3196638,
+    "prices": {
+      "Al-Iqwan": 175,
+      "Malabar supermarker": 175
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3137202",
@@ -2192,12 +2984,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "20% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 46.8,
     "sellingPrice": 37.4,
     "source": "pothysmart",
-    "originalId": 3137202
+    "originalId": 3137202,
+    "prices": {
+      "Al-Iqwan": 37.4,
+      "Malabar supermarker": 37.4
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4649885",
@@ -2214,12 +3014,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "60% OFF",
     "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
     "mrp": 500,
     "sellingPrice": 200,
     "source": "pothysmart",
-    "originalId": 4649885
+    "originalId": 4649885,
+    "prices": {
+      "Al-Iqwan": 200,
+      "Malabar supermarker": 200
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3194457",
@@ -2236,12 +3044,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "38% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 400,
     "sellingPrice": 250,
     "source": "pothysmart",
-    "originalId": 3194457
+    "originalId": 3194457,
+    "prices": {
+      "Al-Iqwan": 250,
+      "Malabar supermarker": 250
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-3196524",
@@ -2258,12 +3074,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "35% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 400,
     "sellingPrice": 260,
     "source": "pothysmart",
-    "originalId": 3196524
+    "originalId": 3196524,
+    "prices": {
+      "Al-Iqwan": 260,
+      "Malabar supermarker": 260
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650244",
@@ -2280,12 +3104,20 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "47% OFF",
     "nutritionalNote": "Savory edible fungi loaded with Vitamin D, selenium and immune-modulating beta-glucans",
     "mrp": 1000,
     "sellingPrice": 530,
     "source": "pothysmart",
-    "originalId": 4650244
+    "originalId": 4650244,
+    "prices": {
+      "Al-Iqwan": 530,
+      "Malabar supermarker": 530
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   },
   {
     "id": "pothys-veg-4650306",
@@ -2302,11 +3134,19 @@
     },
     "isOrganic": false,
     "isSeasonal": false,
-    "badge": "Special Offer",
+    "badge": "33% OFF",
     "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
     "mrp": 1000,
     "sellingPrice": 670,
     "source": "pothysmart",
-    "originalId": 4650306
+    "originalId": 4650306,
+    "prices": {
+      "Al-Iqwan": 670,
+      "Malabar supermarker": 670
+    },
+    "stockStatus": {
+      "Al-Iqwan": "in_stock",
+      "Malabar supermarker": "in_stock"
+    }
   }
 ]
