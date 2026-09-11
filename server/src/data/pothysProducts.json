@@ -1,0 +1,904 @@
+[
+  {
+    "id": "pothys-fruit-3137759",
+    "name": "Banana Green",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137759.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 50,
+    "sellingPrice": 12.5,
+    "source": "pothysmart",
+    "originalId": 3137759
+  },
+  {
+    "id": "pothys-fruit-3136460",
+    "name": "Banana Morris",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136460.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 49,
+    "sellingPrice": 39,
+    "source": "pothysmart",
+    "originalId": 3136460
+  },
+  {
+    "id": "pothys-fruit-3136523",
+    "name": "Mosambi",
+    "categoryId": "fruits",
+    "emoji": "🍊",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136523.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
+    "mrp": 56,
+    "sellingPrice": 45,
+    "source": "pothysmart",
+    "originalId": 3136523
+  },
+  {
+    "id": "pothys-fruit-3136462",
+    "name": "Banana Poovan",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136462.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 37.5,
+    "sellingPrice": 28,
+    "source": "pothysmart",
+    "originalId": 3136462
+  },
+  {
+    "id": "pothys-fruit-3197150",
+    "name": "Anjeer Fruit",
+    "categoryId": "fruits",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197150.jpg",
+    "defaultUnit": "1 Box",
+    "availableUnits": [
+      "1 Box"
+    ],
+    "unitMultiplier": {
+      "1 Box": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in bone-building calcium, magnesium, iron and dietary fiber",
+    "mrp": 42,
+    "sellingPrice": 33.33,
+    "source": "pothysmart",
+    "originalId": 3197150
+  },
+  {
+    "id": "pothys-fruit-3136464",
+    "name": "Banana Red",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136464.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 56,
+    "sellingPrice": 46.5,
+    "source": "pothysmart",
+    "originalId": 3136464
+  },
+  {
+    "id": "pothys-fruit-3136463",
+    "name": "Banana Rasthali",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136463.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 60,
+    "sellingPrice": 48,
+    "source": "pothysmart",
+    "originalId": 3136463
+  },
+  {
+    "id": "pothys-fruit-3140459",
+    "name": "Black Grapes Paneer",
+    "categoryId": "fruits",
+    "emoji": "🍇",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140459.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in resveratrol, polyphenols and natural hydration",
+    "mrp": 650,
+    "sellingPrice": 100,
+    "source": "pothysmart",
+    "originalId": 3140459
+  },
+  {
+    "id": "pothys-fruit-3136465",
+    "name": "Banana Yelakki",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136465.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 66,
+    "sellingPrice": 53,
+    "source": "pothysmart",
+    "originalId": 3136465
+  },
+  {
+    "id": "pothys-fruit-2918117",
+    "name": "Papaya",
+    "categoryId": "fruits",
+    "emoji": "🥭",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-2918117.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Contains papain enzymes that promote optimal digestion and skin glow",
+    "mrp": 100,
+    "sellingPrice": 56,
+    "source": "pothysmart",
+    "originalId": 2918117
+  },
+  {
+    "id": "pothys-fruit-3136501",
+    "name": "Guava",
+    "categoryId": "fruits",
+    "emoji": "🍈",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136501.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
+    "mrp": 800,
+    "sellingPrice": 57,
+    "source": "pothysmart",
+    "originalId": 3136501
+  },
+  {
+    "id": "pothys-fruit-3136458",
+    "name": "Banana Hill",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136458.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 78,
+    "sellingPrice": 62.5,
+    "source": "pothysmart",
+    "originalId": 3136458
+  },
+  {
+    "id": "pothys-fruit-3136459",
+    "name": "Banana Karpooravalli",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136459.jpg",
+    "defaultUnit": "500gm",
+    "availableUnits": [
+      "500gm"
+    ],
+    "unitMultiplier": {
+      "500gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 44,
+    "sellingPrice": 35,
+    "source": "pothysmart",
+    "originalId": 3136459
+  },
+  {
+    "id": "pothys-fruit-3137785",
+    "name": "Orange Imported",
+    "categoryId": "fruits",
+    "emoji": "🍊",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137785.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
+    "mrp": 90,
+    "sellingPrice": 72,
+    "source": "pothysmart",
+    "originalId": 3137785
+  },
+  {
+    "id": "pothys-fruit-4649827",
+    "name": "Banana Nendran / Ethan",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649827.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 100,
+    "sellingPrice": 80,
+    "source": "pothysmart",
+    "originalId": 4649827
+  },
+  {
+    "id": "pothys-fruit-3137389",
+    "name": "Dragon Fruit",
+    "categoryId": "fruits",
+    "emoji": "🐉",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137389.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Exotic superfruit rich in prebiotics, dietary fiber and iron",
+    "mrp": 100,
+    "sellingPrice": 80,
+    "source": "pothysmart",
+    "originalId": 3137389
+  },
+  {
+    "id": "pothys-fruit-3136927",
+    "name": "Musk Melon / Mulampazham",
+    "categoryId": "fruits",
+    "emoji": "🍈",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136927.jpg",
+    "defaultUnit": "1.5 Kg",
+    "availableUnits": [
+      "1.5 Kg"
+    ],
+    "unitMultiplier": {
+      "1.5 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Deeply hydrating, rich in beta-carotene, lycopene and electrolytes",
+    "mrp": 150,
+    "sellingPrice": 84,
+    "source": "pothysmart",
+    "originalId": 3136927
+  },
+  {
+    "id": "pothys-fruit-3196636",
+    "name": "Indian Plums",
+    "categoryId": "fruits",
+    "emoji": "🍑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3196636.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in Vitamin A, K and antioxidant polyphenols",
+    "mrp": 600,
+    "sellingPrice": 368,
+    "source": "pothysmart",
+    "originalId": 3196636
+  },
+  {
+    "id": "pothys-fruit-4649822",
+    "name": "Banana Karpooravalli",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/test-banana-green.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Fresh Harvest",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 100,
+    "sellingPrice": 100,
+    "source": "pothysmart",
+    "originalId": 4649822
+  },
+  {
+    "id": "pothys-fruit-3140766",
+    "name": "Grapes Red Globe Indian",
+    "categoryId": "fruits",
+    "emoji": "🍇",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140766.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in resveratrol, polyphenols and natural hydration",
+    "mrp": 400,
+    "sellingPrice": 100,
+    "source": "pothysmart",
+    "originalId": 3140766
+  },
+  {
+    "id": "pothys-fruit-3136456",
+    "name": "Avocado",
+    "categoryId": "fruits",
+    "emoji": "🥑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136456.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy monounsaturated fats, potassium and Vitamin E",
+    "mrp": 500,
+    "sellingPrice": 213.65,
+    "source": "pothysmart",
+    "originalId": 3136456
+  },
+  {
+    "id": "pothys-fruit-3196880",
+    "name": "Country Green Pears",
+    "categoryId": "fruits",
+    "emoji": "🍐",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3196880.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
+    "mrp": 500,
+    "sellingPrice": 272,
+    "source": "pothysmart",
+    "originalId": 3196880
+  },
+  {
+    "id": "pothys-fruit-3140461",
+    "name": "Kiwi",
+    "categoryId": "fruits",
+    "emoji": "🥝",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140461.jpg",
+    "defaultUnit": "3 Pcs",
+    "availableUnits": [
+      "3 Pcs"
+    ],
+    "unitMultiplier": {
+      "3 Pcs": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High enzyme fruit rich in Vitamin C, K and gut-friendly dietary fiber",
+    "mrp": 1800,
+    "sellingPrice": 138,
+    "source": "pothysmart",
+    "originalId": 3140461
+  },
+  {
+    "id": "pothys-fruit-3201836",
+    "name": "Red Pears",
+    "categoryId": "fruits",
+    "emoji": "🍐",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3201836.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
+    "mrp": 500,
+    "sellingPrice": 285,
+    "source": "pothysmart",
+    "originalId": 3201836
+  },
+  {
+    "id": "pothys-fruit-4649821",
+    "name": "Banana Hill",
+    "categoryId": "fruits",
+    "emoji": "🍌",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649821.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in potassium, dietary fiber and Vitamin B6 for sustained energy",
+    "mrp": 200,
+    "sellingPrice": 143,
+    "source": "pothysmart",
+    "originalId": 4649821
+  },
+  {
+    "id": "pothys-fruit-3194564",
+    "name": "Guava Imported",
+    "categoryId": "fruits",
+    "emoji": "🍈",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194564.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
+    "mrp": 400,
+    "sellingPrice": 154,
+    "source": "pothysmart",
+    "originalId": 3194564
+  },
+  {
+    "id": "pothys-fruit-4649782",
+    "name": "Apple Shimla",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-5f6ab4c1.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
+    "mrp": 500,
+    "sellingPrice": 169,
+    "source": "pothysmart",
+    "originalId": 4649782
+  },
+  {
+    "id": "pothys-fruit-3137567",
+    "name": "Baby Orange",
+    "categoryId": "fruits",
+    "emoji": "🍊",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137567.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Excellent source of Vitamin C and immunity-supporting citrus flavonoids",
+    "mrp": 1250,
+    "sellingPrice": 180,
+    "source": "pothysmart",
+    "originalId": 3137567
+  },
+  {
+    "id": "pothys-fruit-3136670",
+    "name": "Strawberry Box",
+    "categoryId": "fruits",
+    "emoji": "🍓",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136670.jpg",
+    "defaultUnit": "1 Pack",
+    "availableUnits": [
+      "1 Pack"
+    ],
+    "unitMultiplier": {
+      "1 Pack": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Packed with Vitamin C, manganese and natural fruit antioxidants",
+    "mrp": 250,
+    "sellingPrice": 200,
+    "source": "pothysmart",
+    "originalId": 3136670
+  },
+  {
+    "id": "pothys-fruit-4649866",
+    "name": "Blueberry Box",
+    "categoryId": "fruits",
+    "emoji": "🫐",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649866.jpg",
+    "defaultUnit": "1 box",
+    "availableUnits": [
+      "1 box"
+    ],
+    "unitMultiplier": {
+      "1 box": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Superfood loaded with anthocyanins, brain-boosting antioxidants and Vitamin K",
+    "mrp": 580,
+    "sellingPrice": 220,
+    "source": "pothysmart",
+    "originalId": 4649866
+  },
+  {
+    "id": "pothys-fruit-3141410",
+    "name": "Pear Green Howell",
+    "categoryId": "fruits",
+    "emoji": "🍐",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3141410.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Gentle on digestion, loaded with pectin fiber and copper",
+    "mrp": 500,
+    "sellingPrice": 221.5,
+    "source": "pothysmart",
+    "originalId": 3141410
+  },
+  {
+    "id": "pothys-fruit-3196525",
+    "name": "BlueBerry Box",
+    "categoryId": "fruits",
+    "emoji": "🫐",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3196525.jpg",
+    "defaultUnit": "FR BLUE PEARRS  BOX",
+    "availableUnits": [
+      "FR BLUE PEARRS  BOX"
+    ],
+    "unitMultiplier": {
+      "FR BLUE PEARRS  BOX": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Superfood loaded with anthocyanins, brain-boosting antioxidants and Vitamin K",
+    "mrp": 500,
+    "sellingPrice": 233,
+    "source": "pothysmart",
+    "originalId": 3196525
+  },
+  {
+    "id": "pothys-fruit-3194445",
+    "name": "Apple Fuji",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194445.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
+    "mrp": 300,
+    "sellingPrice": 233.5,
+    "source": "pothysmart",
+    "originalId": 3194445
+  },
+  {
+    "id": "pothys-fruit-3140656",
+    "name": "Apple Royal Gala",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140656.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
+    "mrp": 375,
+    "sellingPrice": 139,
+    "source": "pothysmart",
+    "originalId": 3140656
+  },
+  {
+    "id": "pothys-fruit-4649780",
+    "name": "Apple Red Delicious",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649780.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
+    "mrp": 750,
+    "sellingPrice": 307,
+    "source": "pothysmart",
+    "originalId": 4649780
+  },
+  {
+    "id": "pothys-fruit-3194698",
+    "name": "Guava Imported",
+    "categoryId": "fruits",
+    "emoji": "🍈",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194698.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "One of nature’s highest sources of natural Vitamin C and dietary fiber",
+    "mrp": 391,
+    "sellingPrice": 312.9,
+    "source": "pothysmart",
+    "originalId": 3194698
+  },
+  {
+    "id": "pothys-fruit-3140460",
+    "name": "Green Apple",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140460.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High in soluble fiber, Vitamin C and cellular antioxidants",
+    "mrp": 350,
+    "sellingPrice": 165,
+    "source": "pothysmart",
+    "originalId": 3140460
+  },
+  {
+    "id": "pothys-fruit-4649765",
+    "name": "Anjeer Fruit Box Small",
+    "categoryId": "fruits",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649765.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in bone-building calcium, magnesium, iron and dietary fiber",
+    "mrp": 900,
+    "sellingPrice": 400,
+    "source": "pothysmart",
+    "originalId": 4649765
+  },
+  {
+    "id": "pothys-fruit-3197135",
+    "name": "Perambam Palam",
+    "categoryId": "fruits",
+    "emoji": "🍎",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197135.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh, nutrient-dense farm-harvested fruit",
+    "mrp": 1500,
+    "sellingPrice": 1000,
+    "source": "pothysmart",
+    "originalId": 3197135
+  },
+  {
+    "id": "pothys-fruit-3194464",
+    "name": "Cherry",
+    "categoryId": "fruits",
+    "emoji": "🍒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194464.jpg",
+    "defaultUnit": "1 Box",
+    "availableUnits": [
+      "1 Box"
+    ],
+    "unitMultiplier": {
+      "1 Box": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Anti-inflammatory fruit rich in natural melatonin and anthocyanins",
+    "mrp": 866,
+    "sellingPrice": 693,
+    "source": "pothysmart",
+    "originalId": 3194464
+  },
+  {
+    "id": "pothys-fruit-3197001",
+    "name": "Durian Imported",
+    "categoryId": "fruits",
+    "emoji": "🍈",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197001.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "King of Fruits, high energy and rich in B-complex vitamins",
+    "mrp": 1078,
+    "sellingPrice": 862.5,
+    "source": "pothysmart",
+    "originalId": 3197001
+  }
+]

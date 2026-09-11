@@ -5,6 +5,7 @@ import { compareBasket, BasketRequestItem } from '../services/comparisonEngine';
 import { calculateHyperlocalDistance } from '../services/locationService';
 import { subscriptionService } from '../services/subscriptionService';
 import { verifyGoogleIdToken } from '../services/googleAuthService';
+import { getImageKitClient } from '../utils/imagekit';
 
 export const apiRouter = Router();
 
@@ -286,6 +287,24 @@ async function fetchImageBuffer(url: string): Promise<{ buffer: Buffer; contentT
 
   const arrayBuffer = await res.arrayBuffer();
   const buffer = Buffer.from(arrayBuffer);
+
+  if (!contentType || contentType.includes('octet-stream') || !contentType.startsWith('image/')) {
+    const cleanLower = targetUrl.toLowerCase();
+    if (cleanLower.endsWith('.jpg') || cleanLower.endsWith('.jpeg')) {
+      contentType = 'image/jpeg';
+    } else if (cleanLower.endsWith('.png')) {
+      contentType = 'image/png';
+    } else if (cleanLower.endsWith('.webp')) {
+      contentType = 'image/webp';
+    } else if (cleanLower.endsWith('.gif')) {
+      contentType = 'image/gif';
+    } else if (cleanLower.endsWith('.svg')) {
+      contentType = 'image/svg+xml';
+    } else {
+      contentType = 'image/jpeg';
+    }
+  }
+
   return { buffer, contentType: contentType || 'image/jpeg' };
 }
 
@@ -356,9 +375,25 @@ apiRouter.post('/upload-product-image', authenticateToken, requireMerchant, asyn
     }
 
     const filename = `custom-${Date.now()}-${Math.floor(Math.random() * 10000)}.webp`;
-    const targetFile = path.join(uploadDir, filename);
 
-    // Write file directly (it's already compressed to <25KB by the client)
+    // 1. Upload to ImageKit if configured
+    const ik = getImageKitClient();
+    if (ik) {
+      try {
+        const upRes = await ik.upload({
+          file: buffer,
+          fileName: filename,
+          folder: '/priceteller-custom/',
+          useUniqueFileName: true,
+        });
+        return res.json({ success: true, imageUrl: upRes.url, message: 'Image uploaded to ImageKit CDN successfully' });
+      } catch (ikErr: any) {
+        console.warn('[ImageKit] Cloud upload failed, falling back to local file storage:', ikErr?.message || ikErr);
+      }
+    }
+
+    // 2. Fallback to local file storage
+    const targetFile = path.join(uploadDir, filename);
     fs.writeFileSync(targetFile, buffer);
 
     const imageUrl = `/products/custom/${filename}`;

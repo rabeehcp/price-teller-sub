@@ -1,0 +1,2312 @@
+[
+  {
+    "id": "pothys-veg-4650235",
+    "name": "Mint Leaf",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 50,
+    "sellingPrice": 3,
+    "source": "pothysmart",
+    "originalId": 4650235
+  },
+  {
+    "id": "pothys-veg-4649834",
+    "name": "Banana Stem",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649834.jpg",
+    "defaultUnit": "Banana Stem",
+    "availableUnits": [
+      "Banana Stem"
+    ],
+    "unitMultiplier": {
+      "Banana Stem": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 15,
+    "sellingPrice": 5,
+    "source": "pothysmart",
+    "originalId": 4649834
+  },
+  {
+    "id": "pothys-veg-3136483",
+    "name": "Veg Coriander Leaves",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 100,
+    "sellingPrice": 5,
+    "source": "pothysmart",
+    "originalId": 3136483
+  },
+  {
+    "id": "pothys-veg-3137728",
+    "name": "Veg Banana Stem",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137728.jpg",
+    "defaultUnit": "1 Piece",
+    "availableUnits": [
+      "1 Piece"
+    ],
+    "unitMultiplier": {
+      "1 Piece": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 80,
+    "sellingPrice": 6,
+    "source": "pothysmart",
+    "originalId": 3137728
+  },
+  {
+    "id": "pothys-veg-3136926",
+    "name": "Veg Green Chilli",
+    "categoryId": "vegetables",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136926.jpg",
+    "defaultUnit": "100 gm",
+    "availableUnits": [
+      "100 gm"
+    ],
+    "unitMultiplier": {
+      "100 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Spicy culinary essential loaded with metabolism-boosting capsaicin and Vitamin C",
+    "mrp": 20,
+    "sellingPrice": 6.7,
+    "source": "pothysmart",
+    "originalId": 3136926
+  },
+  {
+    "id": "pothys-veg-3136925",
+    "name": "Veg Curry Leaves",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136925.jpg",
+    "defaultUnit": "100 gm",
+    "availableUnits": [
+      "100 gm"
+    ],
+    "unitMultiplier": {
+      "100 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 20,
+    "sellingPrice": 7.24,
+    "source": "pothysmart",
+    "originalId": 3136925
+  },
+  {
+    "id": "pothys-veg-3137147",
+    "name": "Veg Brinjal Vari",
+    "categoryId": "vegetables",
+    "emoji": "🍆",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137147.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
+    "mrp": 25,
+    "sellingPrice": 7.5,
+    "source": "pothysmart",
+    "originalId": 3137147
+  },
+  {
+    "id": "pothys-veg-4649927",
+    "name": "Coriander Leaf",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 50,
+    "sellingPrice": 8,
+    "source": "pothysmart",
+    "originalId": 4649927
+  },
+  {
+    "id": "pothys-veg-3137727",
+    "name": "Veg Banana Flower",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137727.jpg",
+    "defaultUnit": "1 Piece",
+    "availableUnits": [
+      "1 Piece"
+    ],
+    "unitMultiplier": {
+      "1 Piece": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 8,
+    "source": "pothysmart",
+    "originalId": 3137727
+  },
+  {
+    "id": "pothys-veg-3136522",
+    "name": "Veg Mint Leaves",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136522.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 10,
+    "sellingPrice": 8,
+    "source": "pothysmart",
+    "originalId": 3136522
+  },
+  {
+    "id": "pothys-veg-3137264",
+    "name": "Veg Raw Banana",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137264.jpg",
+    "defaultUnit": "1 Pc",
+    "availableUnits": [
+      "1 Pc"
+    ],
+    "unitMultiplier": {
+      "1 Pc": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 8,
+    "source": "pothysmart",
+    "originalId": 3137264
+  },
+  {
+    "id": "pothys-veg-3136478",
+    "name": "Veg Cabbage",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136478.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Cruciferous staple rich in Vitamin K, sulfur compounds and gut-friendly fiber",
+    "mrp": 90,
+    "sellingPrice": 20,
+    "source": "pothysmart",
+    "originalId": 3136478
+  },
+  {
+    "id": "pothys-veg-3136479",
+    "name": "Veg Capsicum Green",
+    "categoryId": "vegetables",
+    "emoji": "🫑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136479.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
+    "mrp": 250,
+    "sellingPrice": 40,
+    "source": "pothysmart",
+    "originalId": 3136479
+  },
+  {
+    "id": "pothys-veg-3137578",
+    "name": "Veg Brinjal Ujala",
+    "categoryId": "vegetables",
+    "emoji": "🍆",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137578.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
+    "mrp": 50,
+    "sellingPrice": 10.75,
+    "source": "pothysmart",
+    "originalId": 3137578
+  },
+  {
+    "id": "pothys-veg-3194701",
+    "name": "Veg Banana Leaf",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194701.jpg",
+    "defaultUnit": "1 Pcs",
+    "availableUnits": [
+      "1 Pcs"
+    ],
+    "unitMultiplier": {
+      "1 Pcs": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 11,
+    "source": "pothysmart",
+    "originalId": 3194701
+  },
+  {
+    "id": "pothys-veg-4650372",
+    "name": "Siru Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 11.2,
+    "source": "pothysmart",
+    "originalId": 4650372
+  },
+  {
+    "id": "pothys-veg-3194462",
+    "name": "Veg Greens Siru Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194462.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 11.2,
+    "source": "pothysmart",
+    "originalId": 3194462
+  },
+  {
+    "id": "pothys-veg-3197033",
+    "name": "Turmeric Plant Fresh",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3197033.jpg",
+    "defaultUnit": "1 No",
+    "availableUnits": [
+      "1 No"
+    ],
+    "unitMultiplier": {
+      "1 No": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 20,
+    "sellingPrice": 11.5,
+    "source": "pothysmart",
+    "originalId": 3197033
+  },
+  {
+    "id": "pothys-veg-3136544",
+    "name": "Veg White Radish",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136544.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 250,
+    "sellingPrice": 11.5,
+    "source": "pothysmart",
+    "originalId": 3136544
+  },
+  {
+    "id": "pothys-veg-3137737",
+    "name": "Veg Cluster Beans",
+    "categoryId": "vegetables",
+    "emoji": "🫛",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137737.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
+    "mrp": 25,
+    "sellingPrice": 11.75,
+    "source": "pothysmart",
+    "originalId": 3137737
+  },
+  {
+    "id": "pothys-veg-3138916",
+    "name": "Veg Country Pumpkin",
+    "categoryId": "vegetables",
+    "emoji": "🎃",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138916.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Velvety sweet vegetable rich in beta-carotene, potassium and dietary fiber",
+    "mrp": 50,
+    "sellingPrice": 12,
+    "source": "pothysmart",
+    "originalId": 3138916
+  },
+  {
+    "id": "pothys-veg-3194520",
+    "name": "Veg Ginger Mango",
+    "categoryId": "vegetables",
+    "emoji": "🫚",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194520.jpg",
+    "defaultUnit": "100 gm",
+    "availableUnits": [
+      "100 gm"
+    ],
+    "unitMultiplier": {
+      "100 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
+    "mrp": 20,
+    "sellingPrice": 12.4,
+    "source": "pothysmart",
+    "originalId": 3194520
+  },
+  {
+    "id": "pothys-veg-3137570",
+    "name": "Veg Cucumber Malabar",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137570.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
+    "mrp": 31,
+    "sellingPrice": 25,
+    "source": "pothysmart",
+    "originalId": 3137570
+  },
+  {
+    "id": "pothys-veg-3194546",
+    "name": "Veg Greens Arai Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194546.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 13,
+    "source": "pothysmart",
+    "originalId": 3194546
+  },
+  {
+    "id": "pothys-veg-3196682",
+    "name": "Veg Greens Ponnagkanni Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196682.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 35,
+    "sellingPrice": 13,
+    "source": "pothysmart",
+    "originalId": 3196682
+  },
+  {
+    "id": "pothys-veg-3194493",
+    "name": "Veg Spring Onion",
+    "categoryId": "vegetables",
+    "emoji": "🧅",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194493.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
+    "mrp": 50,
+    "sellingPrice": 13,
+    "source": "pothysmart",
+    "originalId": 3194493
+  },
+  {
+    "id": "pothys-veg-3196820",
+    "name": "Veg Greens Akathi Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196820.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 13.33,
+    "source": "pothysmart",
+    "originalId": 3196820
+  },
+  {
+    "id": "pothys-veg-2918119",
+    "name": "Veg Ash Gourd",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918119.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 70,
+    "sellingPrice": 27,
+    "source": "pothysmart",
+    "originalId": 2918119
+  },
+  {
+    "id": "pothys-veg-3136537",
+    "name": "Veg Snake Gourd",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136537.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 100,
+    "sellingPrice": 27,
+    "source": "pothysmart",
+    "originalId": 3136537
+  },
+  {
+    "id": "pothys-veg-4650196",
+    "name": "Manathakkali Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 4650196
+  },
+  {
+    "id": "pothys-veg-4650296",
+    "name": "Palak Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 40,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 4650296
+  },
+  {
+    "id": "pothys-veg-4650334",
+    "name": "Ponnakanni Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650334.jpg",
+    "defaultUnit": "1 bunch",
+    "availableUnits": [
+      "1 bunch"
+    ],
+    "unitMultiplier": {
+      "1 bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 4650334
+  },
+  {
+    "id": "pothys-veg-4650339",
+    "name": "Pulicha Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 4650339
+  },
+  {
+    "id": "pothys-veg-3194532",
+    "name": "Veg Greens Manathakali Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194532.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 3194532
+  },
+  {
+    "id": "pothys-veg-3194446",
+    "name": "Veg Greens Palak",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194446.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 40,
+    "sellingPrice": 14,
+    "source": "pothysmart",
+    "originalId": 3194446
+  },
+  {
+    "id": "pothys-veg-4650426",
+    "name": "Vallarai Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 bunch",
+    "availableUnits": [
+      "1 bunch"
+    ],
+    "unitMultiplier": {
+      "1 bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 14.5,
+    "source": "pothysmart",
+    "originalId": 4650426
+  },
+  {
+    "id": "pothys-veg-3137735",
+    "name": "Veg Bitter Gourd Small",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137735.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 100,
+    "sellingPrice": 60,
+    "source": "pothysmart",
+    "originalId": 3137735
+  },
+  {
+    "id": "pothys-veg-3137736",
+    "name": "Veg Broad Beans",
+    "categoryId": "vegetables",
+    "emoji": "🫛",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137736.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
+    "mrp": 50,
+    "sellingPrice": 15,
+    "source": "pothysmart",
+    "originalId": 3137736
+  },
+  {
+    "id": "pothys-veg-3136515",
+    "name": "Veg Ladies Finger",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136515.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High mucilage vegetable that aids digestion and regulates blood sugar",
+    "mrp": 50,
+    "sellingPrice": 15,
+    "source": "pothysmart",
+    "originalId": 3136515
+  },
+  {
+    "id": "pothys-veg-3139162",
+    "name": "Veg American Sweet Corn",
+    "categoryId": "vegetables",
+    "emoji": "🌽",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139162.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
+    "mrp": 45,
+    "sellingPrice": 16,
+    "source": "pothysmart",
+    "originalId": 3139162
+  },
+  {
+    "id": "pothys-veg-3136547",
+    "name": "Veg Chow Chow",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136547.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 16.5,
+    "source": "pothysmart",
+    "originalId": 3136547
+  },
+  {
+    "id": "pothys-veg-3136514",
+    "name": "Veg Knol khol",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136514.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 75,
+    "sellingPrice": 16.5,
+    "source": "pothysmart",
+    "originalId": 3136514
+  },
+  {
+    "id": "pothys-veg-3137760",
+    "name": "Veg Tapioca Roots",
+    "categoryId": "vegetables",
+    "emoji": "🥔",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137760.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Hearty traditional tuber offering sustained energy, potassium and dietary fiber",
+    "mrp": 50,
+    "sellingPrice": 17.5,
+    "source": "pothysmart",
+    "originalId": 3137760
+  },
+  {
+    "id": "pothys-veg-3136548",
+    "name": "Veg Potato",
+    "categoryId": "vegetables",
+    "emoji": "🥔",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136548.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
+    "mrp": 23.5,
+    "sellingPrice": 18.66,
+    "source": "pothysmart",
+    "originalId": 3136548
+  },
+  {
+    "id": "pothys-veg-3136467",
+    "name": "Veg Beetroot",
+    "categoryId": "vegetables",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136467.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Nitrate-rich super-root that promotes healthy blood circulation and stamina",
+    "mrp": 100,
+    "sellingPrice": 19,
+    "source": "pothysmart",
+    "originalId": 3136467
+  },
+  {
+    "id": "pothys-veg-3138596",
+    "name": "Veg Cucumber Country",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138596.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
+    "mrp": 75,
+    "sellingPrice": 19,
+    "source": "pothysmart",
+    "originalId": 3138596
+  },
+  {
+    "id": "pothys-veg-3138804",
+    "name": "Veg Bajji Capsicum",
+    "categoryId": "vegetables",
+    "emoji": "🫑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138804.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
+    "mrp": 18.25,
+    "sellingPrice": 9.75,
+    "source": "pothysmart",
+    "originalId": 3138804
+  },
+  {
+    "id": "pothys-veg-3137738",
+    "name": "Veg Coccinia",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137738.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 50,
+    "sellingPrice": 20,
+    "source": "pothysmart",
+    "originalId": 3137738
+  },
+  {
+    "id": "pothys-veg-3196628",
+    "name": "Parwal",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196628.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 134,
+    "sellingPrice": 92,
+    "source": "pothysmart",
+    "originalId": 3196628
+  },
+  {
+    "id": "pothys-veg-3136481",
+    "name": "Veg Cauliflower",
+    "categoryId": "vegetables",
+    "emoji": "🥦",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136481.jpg",
+    "defaultUnit": "1 Pc",
+    "availableUnits": [
+      "1 Pc"
+    ],
+    "unitMultiplier": {
+      "1 Pc": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Mild, versatile cruciferous vegetable rich in choline and glucosinolates",
+    "mrp": 500,
+    "sellingPrice": 24,
+    "source": "pothysmart",
+    "originalId": 3136481
+  },
+  {
+    "id": "pothys-veg-3194463",
+    "name": "Veg Greens Thandu Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194463.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 60,
+    "sellingPrice": 24,
+    "source": "pothysmart",
+    "originalId": 3194463
+  },
+  {
+    "id": "pothys-veg-3194530",
+    "name": "Veg Greens Fenugreek Leaves",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194530.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
+    "mrp": 100,
+    "sellingPrice": 25,
+    "source": "pothysmart",
+    "originalId": 3194530
+  },
+  {
+    "id": "pothys-veg-3136929",
+    "name": "Veg Ridge Gourd",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136929.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 250,
+    "sellingPrice": 25,
+    "source": "pothysmart",
+    "originalId": 3136929
+  },
+  {
+    "id": "pothys-veg-3137153",
+    "name": "Veg Yam / Karunaikizhangu",
+    "categoryId": "vegetables",
+    "emoji": "🥔",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137153.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Hearty traditional tuber offering sustained energy, potassium and dietary fiber",
+    "mrp": 75,
+    "sellingPrice": 25.5,
+    "source": "pothysmart",
+    "originalId": 3137153
+  },
+  {
+    "id": "pothys-veg-3137246",
+    "name": "Veg Bottle Gourd",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137246.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 290,
+    "sellingPrice": 27,
+    "source": "pothysmart",
+    "originalId": 3137246
+  },
+  {
+    "id": "pothys-veg-3136480",
+    "name": "Veg Carrot",
+    "categoryId": "vegetables",
+    "emoji": "🥕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136480.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crunchy farm root packed with beta-carotene, lutein and eye health nutrients",
+    "mrp": 34,
+    "sellingPrice": 27.11,
+    "source": "pothysmart",
+    "originalId": 3136480
+  },
+  {
+    "id": "pothys-veg-3222142",
+    "name": "Veg Drumstick",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3222142.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional ayurvedic superfood dense in calcium, phosphorus and Vitamin C",
+    "mrp": 100,
+    "sellingPrice": 28,
+    "source": "pothysmart",
+    "originalId": 3222142
+  },
+  {
+    "id": "pothys-veg-3137805",
+    "name": "Veg Tomato Country",
+    "categoryId": "vegetables",
+    "emoji": "🍅",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137805.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in lycopene, Vitamin C and potassium for heart and skin vitality",
+    "mrp": 18,
+    "sellingPrice": 14.5,
+    "source": "pothysmart",
+    "originalId": 3137805
+  },
+  {
+    "id": "pothys-veg-3137810",
+    "name": "Veg Sweet Potato",
+    "categoryId": "vegetables",
+    "emoji": "🍠",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137810.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Nutrient-rich root with high beta-carotene, Vitamin A and dietary fiber",
+    "mrp": 100,
+    "sellingPrice": 62,
+    "source": "pothysmart",
+    "originalId": 3137810
+  },
+  {
+    "id": "pothys-veg-3194459",
+    "name": "Veg Corn",
+    "categoryId": "vegetables",
+    "emoji": "🌽",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194459.jpg",
+    "defaultUnit": "1 Piece",
+    "availableUnits": [
+      "1 Piece"
+    ],
+    "unitMultiplier": {
+      "1 Piece": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
+    "mrp": 60,
+    "sellingPrice": 32,
+    "source": "pothysmart",
+    "originalId": 3194459
+  },
+  {
+    "id": "pothys-veg-4213162",
+    "name": "VEG ONION KG",
+    "categoryId": "vegetables",
+    "emoji": "🧅",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4213162.jpg",
+    "defaultUnit": "500g",
+    "availableUnits": [
+      "500g"
+    ],
+    "unitMultiplier": {
+      "500g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
+    "mrp": 40,
+    "sellingPrice": 33.5,
+    "source": "pothysmart",
+    "originalId": 4213162
+  },
+  {
+    "id": "pothys-veg-3138901",
+    "name": "Veg Bitter Gourd Hybrid",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138901.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
+    "mrp": 50,
+    "sellingPrice": 33.5,
+    "source": "pothysmart",
+    "originalId": 3138901
+  },
+  {
+    "id": "pothys-veg-3137702",
+    "name": "Veg Coconut Small",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137702.jpg",
+    "defaultUnit": "1 Piece",
+    "availableUnits": [
+      "1 Piece"
+    ],
+    "unitMultiplier": {
+      "1 Piece": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 34,
+    "source": "pothysmart",
+    "originalId": 3137702
+  },
+  {
+    "id": "pothys-veg-3137640",
+    "name": "Veg Tomato Bangalore",
+    "categoryId": "vegetables",
+    "emoji": "🍅",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137640.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Rich in lycopene, Vitamin C and potassium for heart and skin vitality",
+    "mrp": 200,
+    "sellingPrice": 34,
+    "source": "pothysmart",
+    "originalId": 3137640
+  },
+  {
+    "id": "pothys-veg-4649811",
+    "name": "Baby Corn Peeled",
+    "categoryId": "vegetables",
+    "emoji": "🌽",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649811.jpg",
+    "defaultUnit": "1 Box",
+    "availableUnits": [
+      "1 Box"
+    ],
+    "unitMultiplier": {
+      "1 Box": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
+    "mrp": 150,
+    "sellingPrice": 36,
+    "source": "pothysmart",
+    "originalId": 4649811
+  },
+  {
+    "id": "pothys-veg-2918121",
+    "name": "Veg Baby Potato",
+    "categoryId": "vegetables",
+    "emoji": "🥔",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918121.jpg",
+    "defaultUnit": "1 Pack",
+    "availableUnits": [
+      "1 Pack"
+    ],
+    "unitMultiplier": {
+      "1 Pack": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
+    "mrp": 79,
+    "sellingPrice": 36,
+    "source": "pothysmart",
+    "originalId": 2918121
+  },
+  {
+    "id": "pothys-veg-4650429",
+    "name": "Venthaya Keerai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 bunch",
+    "availableUnits": [
+      "1 bunch"
+    ],
+    "unitMultiplier": {
+      "1 bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 36.22,
+    "source": "pothysmart",
+    "originalId": 4650429
+  },
+  {
+    "id": "pothys-veg-3139146",
+    "name": "Veg Baby Corn  200gm",
+    "categoryId": "vegetables",
+    "emoji": "🌽",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139146.jpg",
+    "defaultUnit": "1 Pack",
+    "availableUnits": [
+      "1 Pack"
+    ],
+    "unitMultiplier": {
+      "1 Pack": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
+    "mrp": 50,
+    "sellingPrice": 37,
+    "source": "pothysmart",
+    "originalId": 3139146
+  },
+  {
+    "id": "pothys-veg-3137816",
+    "name": "Veg Colocasia",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137816.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 140,
+    "sellingPrice": 37.1,
+    "source": "pothysmart",
+    "originalId": 3137816
+  },
+  {
+    "id": "pothys-veg-2918120",
+    "name": "Veg Baby Corn",
+    "categoryId": "vegetables",
+    "emoji": "🌽",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918120.jpg",
+    "defaultUnit": "1 Pack",
+    "availableUnits": [
+      "1 Pack"
+    ],
+    "unitMultiplier": {
+      "1 Pack": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
+    "mrp": 100,
+    "sellingPrice": 40,
+    "source": "pothysmart",
+    "originalId": 2918120
+  },
+  {
+    "id": "pothys-veg-3141500",
+    "name": "Veg French Cucumber",
+    "categoryId": "vegetables",
+    "emoji": "🥒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3141500.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
+    "mrp": 250,
+    "sellingPrice": 40,
+    "source": "pothysmart",
+    "originalId": 3141500
+  },
+  {
+    "id": "pothys-veg-3137652",
+    "name": "Veg French Beans",
+    "categoryId": "vegetables",
+    "emoji": "🫛",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137652.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
+    "mrp": 125,
+    "sellingPrice": 20.75,
+    "source": "pothysmart",
+    "originalId": 3137652
+  },
+  {
+    "id": "pothys-veg-3136497",
+    "name": "Veg Ginger",
+    "categoryId": "vegetables",
+    "emoji": "🫚",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136497.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
+    "mrp": 450,
+    "sellingPrice": 86.5,
+    "source": "pothysmart",
+    "originalId": 3136497
+  },
+  {
+    "id": "pothys-veg-3137806",
+    "name": "Veg Fresh Groundnut",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137806.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 46.5,
+    "source": "pothysmart",
+    "originalId": 3137806
+  },
+  {
+    "id": "pothys-veg-3136488",
+    "name": "Veg Greens Moringa",
+    "categoryId": "vegetables",
+    "emoji": "🌿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136488.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional ayurvedic superfood dense in calcium, phosphorus and Vitamin C",
+    "mrp": 58,
+    "sellingPrice": 46.68,
+    "source": "pothysmart",
+    "originalId": 3136488
+  },
+  {
+    "id": "pothys-veg-3197112",
+    "name": "Mudavattu Kilangu",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3197112.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 87.5,
+    "sellingPrice": 50,
+    "source": "pothysmart",
+    "originalId": 3197112
+  },
+  {
+    "id": "pothys-veg-3194456",
+    "name": "Veg Butter Beans",
+    "categoryId": "vegetables",
+    "emoji": "🫛",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194456.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
+    "mrp": 500,
+    "sellingPrice": 200,
+    "source": "pothysmart",
+    "originalId": 3194456
+  },
+  {
+    "id": "pothys-veg-4649879",
+    "name": "Brinjal Round Suphol",
+    "categoryId": "vegetables",
+    "emoji": "🍆",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649879.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
+    "mrp": 200,
+    "sellingPrice": 53,
+    "source": "pothysmart",
+    "originalId": 4649879
+  },
+  {
+    "id": "pothys-veg-3137808",
+    "name": "Veg Sambar Onion",
+    "categoryId": "vegetables",
+    "emoji": "🧅",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137808.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavor-packed allium vegetable with anti-inflammatory quercetin and prebiotics",
+    "mrp": 350,
+    "sellingPrice": 108,
+    "source": "pothysmart",
+    "originalId": 3137808
+  },
+  {
+    "id": "pothys-veg-3136477",
+    "name": "Veg Broccoli",
+    "categoryId": "vegetables",
+    "emoji": "🥦",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136477.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Nutrient-dense powerhouse full of sulforaphane, iron and Vitamin C",
+    "mrp": 500,
+    "sellingPrice": 54.5,
+    "source": "pothysmart",
+    "originalId": 3136477
+  },
+  {
+    "id": "pothys-veg-3137155",
+    "name": "Veg Mushroom Box",
+    "categoryId": "vegetables",
+    "emoji": "🍄",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137155.jpg",
+    "defaultUnit": "200 gm",
+    "availableUnits": [
+      "200 gm"
+    ],
+    "unitMultiplier": {
+      "200 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Savory edible fungi loaded with Vitamin D, selenium and immune-modulating beta-glucans",
+    "mrp": 80,
+    "sellingPrice": 60,
+    "source": "pothysmart",
+    "originalId": 3137155
+  },
+  {
+    "id": "pothys-veg-4649937",
+    "name": "Cow Pea Karamani / Nadan Payar",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649937.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 200,
+    "sellingPrice": 67,
+    "source": "pothysmart",
+    "originalId": 4649937
+  },
+  {
+    "id": "pothys-veg-4650043",
+    "name": "Gundu Chilli Green",
+    "categoryId": "vegetables",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650043.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Spicy culinary essential loaded with metabolism-boosting capsaicin and Vitamin C",
+    "mrp": 200,
+    "sellingPrice": 67,
+    "source": "pothysmart",
+    "originalId": 4650043
+  },
+  {
+    "id": "pothys-veg-4650237",
+    "name": "Mochai Green",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 73,
+    "source": "pothysmart",
+    "originalId": 4650237
+  },
+  {
+    "id": "pothys-veg-3194666",
+    "name": "Pirandai / Veldt Grape",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194666.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 100,
+    "sellingPrice": 86.25,
+    "source": "pothysmart",
+    "originalId": 3194666
+  },
+  {
+    "id": "pothys-veg-3194447",
+    "name": "Mahali Kizhangu",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194447.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 150,
+    "sellingPrice": 87.5,
+    "source": "pothysmart",
+    "originalId": 3194447
+  },
+  {
+    "id": "pothys-veg-4649816",
+    "name": "Bajji Capsicum",
+    "categoryId": "vegetables",
+    "emoji": "🫑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649816.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
+    "mrp": 116,
+    "sellingPrice": 93,
+    "source": "pothysmart",
+    "originalId": 4649816
+  },
+  {
+    "id": "pothys-veg-3136516",
+    "name": "Veg Lemon",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136516.jpg",
+    "defaultUnit": "250 gm",
+    "availableUnits": [
+      "250 gm"
+    ],
+    "unitMultiplier": {
+      "250 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 125,
+    "sellingPrice": 100,
+    "source": "pothysmart",
+    "originalId": 3136516
+  },
+  {
+    "id": "pothys-veg-3136496",
+    "name": "Veg Garlic",
+    "categoryId": "vegetables",
+    "emoji": "🧄",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136496.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Potent culinary spice and vegetable rich in allicin for natural immunity",
+    "mrp": 125,
+    "sellingPrice": 102,
+    "source": "pothysmart",
+    "originalId": 3136496
+  },
+  {
+    "id": "pothys-veg-4650392",
+    "name": "Sundakkai",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 500,
+    "sellingPrice": 107,
+    "source": "pothysmart",
+    "originalId": 4650392
+  },
+  {
+    "id": "pothys-veg-3194508",
+    "name": "Veg Chinese Cabbage",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194508.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Cruciferous staple rich in Vitamin K, sulfur compounds and gut-friendly fiber",
+    "mrp": 160,
+    "sellingPrice": 110,
+    "source": "pothysmart",
+    "originalId": 3194508
+  },
+  {
+    "id": "pothys-veg-3136928",
+    "name": "Veg Raw Mango",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136928.jpg",
+    "defaultUnit": "500 gm",
+    "availableUnits": [
+      "500 gm"
+    ],
+    "unitMultiplier": {
+      "500 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 900,
+    "sellingPrice": 113,
+    "source": "pothysmart",
+    "originalId": 3136928
+  },
+  {
+    "id": "pothys-veg-3194574",
+    "name": "Veg Parsley",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194574.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 150,
+    "sellingPrice": 113.85,
+    "source": "pothysmart",
+    "originalId": 3194574
+  },
+  {
+    "id": "pothys-veg-4650203",
+    "name": "Mango Ginger",
+    "categoryId": "vegetables",
+    "emoji": "🫚",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650203.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
+    "mrp": 200,
+    "sellingPrice": 124,
+    "source": "pothysmart",
+    "originalId": 4650203
+  },
+  {
+    "id": "pothys-veg-4650240",
+    "name": "Mudavattukal Kilangu",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650240.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 160,
+    "sellingPrice": 125,
+    "source": "pothysmart",
+    "originalId": 4650240
+  },
+  {
+    "id": "pothys-veg-3194576",
+    "name": "Zucchini Yellow",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194576.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 150,
+    "sellingPrice": 125,
+    "source": "pothysmart",
+    "originalId": 3194576
+  },
+  {
+    "id": "pothys-veg-3194521",
+    "name": "Veg Lettuce Iceberg",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194521.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 178,
+    "sellingPrice": 142,
+    "source": "pothysmart",
+    "originalId": 3194521
+  },
+  {
+    "id": "pothys-veg-4650378",
+    "name": "Soya Beans",
+    "categoryId": "vegetables",
+    "emoji": "🫛",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650378.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
+    "mrp": 500,
+    "sellingPrice": 150,
+    "source": "pothysmart",
+    "originalId": 4650378
+  },
+  {
+    "id": "pothys-veg-3196638",
+    "name": "Mahali Potato",
+    "categoryId": "vegetables",
+    "emoji": "🥔",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196638.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
+    "mrp": 300,
+    "sellingPrice": 175,
+    "source": "pothysmart",
+    "originalId": 3196638
+  },
+  {
+    "id": "pothys-veg-3137202",
+    "name": "Veg Gooseberry Amla",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137202.jpg",
+    "defaultUnit": "200 gm",
+    "availableUnits": [
+      "200 gm"
+    ],
+    "unitMultiplier": {
+      "200 gm": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 46.8,
+    "sellingPrice": 37.4,
+    "source": "pothysmart",
+    "originalId": 3137202
+  },
+  {
+    "id": "pothys-veg-4649885",
+    "name": "Capsicum Red",
+    "categoryId": "vegetables",
+    "emoji": "🫑",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649885.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
+    "mrp": 500,
+    "sellingPrice": 200,
+    "source": "pothysmart",
+    "originalId": 4649885
+  },
+  {
+    "id": "pothys-veg-3194457",
+    "name": "Veg Celery",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194457.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 400,
+    "sellingPrice": 250,
+    "source": "pothysmart",
+    "originalId": 3194457
+  },
+  {
+    "id": "pothys-veg-3196524",
+    "name": "Veg Leeks",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196524.jpg",
+    "defaultUnit": "1 Bunch",
+    "availableUnits": [
+      "1 Bunch"
+    ],
+    "unitMultiplier": {
+      "1 Bunch": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 400,
+    "sellingPrice": 260,
+    "source": "pothysmart",
+    "originalId": 3196524
+  },
+  {
+    "id": "pothys-veg-4650244",
+    "name": "Mushrooms",
+    "categoryId": "vegetables",
+    "emoji": "🍄",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650244.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Savory edible fungi loaded with Vitamin D, selenium and immune-modulating beta-glucans",
+    "mrp": 1000,
+    "sellingPrice": 530,
+    "source": "pothysmart",
+    "originalId": 4650244
+  },
+  {
+    "id": "pothys-veg-4650306",
+    "name": "Paraval",
+    "categoryId": "vegetables",
+    "emoji": "🥬",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650306.jpg",
+    "defaultUnit": "1 Kg",
+    "availableUnits": [
+      "1 Kg"
+    ],
+    "unitMultiplier": {
+      "1 Kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
+    "mrp": 1000,
+    "sellingPrice": 670,
+    "source": "pothysmart",
+    "originalId": 4650306
+  }
+]

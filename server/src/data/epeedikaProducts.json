@@ -1,0 +1,4060 @@
+[
+  {
+    "id": "epeedika-grocery-778",
+    "name": "1st Thuvaraparippu / Toor Dal 500gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-778.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 70,
+    "sellingPrice": 62.5,
+    "source": "epeedikaonline",
+    "originalId": "778"
+  },
+  {
+    "id": "epeedika-grocery-1127",
+    "name": "Aashirbad Kuruva / Cherumani Rice 1Kg / Loose",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1127.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg",
+      "30 kg",
+      "50 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1,
+      "30 kg": 1,
+      "50 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 55,
+    "sellingPrice": 45,
+    "source": "epeedikaonline",
+    "originalId": "1127"
+  },
+  {
+    "id": "epeedika-grocery-2463",
+    "name": "AB Tamarind  250g Seedless (Puli)",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2463.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 58,
+    "sellingPrice": 55,
+    "source": "epeedikaonline",
+    "originalId": "2463"
+  },
+  {
+    "id": "epeedika-grocery-2604",
+    "name": "AB Tamarind / Valanpuli 500 g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2604.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 80,
+    "sellingPrice": 70,
+    "source": "epeedikaonline",
+    "originalId": "2604"
+  },
+  {
+    "id": "epeedika-grocery-1537",
+    "name": "AB Tamarind / Valanpuli Seedless 500 g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1537.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 110,
+    "sellingPrice": 100,
+    "source": "epeedikaonline",
+    "originalId": "1537"
+  },
+  {
+    "id": "epeedika-grocery-1982",
+    "name": "ACT II Instant Popcorn - Chilly Surprise, 40 g Pouch",
+    "categoryId": "biscuits-snacks",
+    "emoji": "🍿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1982.jpg",
+    "defaultUnit": "40 g",
+    "availableUnits": [
+      "40 g"
+    ],
+    "unitMultiplier": {
+      "40 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1982"
+  },
+  {
+    "id": "epeedika-grocery-1981",
+    "name": "ACT II Instant Popcorn - Classic Salted, 40 g Pouch",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1981.jpg",
+    "defaultUnit": "40 g",
+    "availableUnits": [
+      "40 g"
+    ],
+    "unitMultiplier": {
+      "40 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1981"
+  },
+  {
+    "id": "epeedika-grocery-1983",
+    "name": "Act II Instant Popcorn - Golden Sizzle 40 g Pouch",
+    "categoryId": "biscuits-snacks",
+    "emoji": "🍿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1983.jpg",
+    "defaultUnit": "40 g",
+    "availableUnits": [
+      "40 g"
+    ],
+    "unitMultiplier": {
+      "40 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
+    "mrp": 12,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1983"
+  },
+  {
+    "id": "epeedika-grocery-2087",
+    "name": "Act II Instant Popcorn Magic Butter 40g Pouch",
+    "categoryId": "biscuits-snacks",
+    "emoji": "🍿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2087.jpg",
+    "defaultUnit": "40 g",
+    "availableUnits": [
+      "40 g"
+    ],
+    "unitMultiplier": {
+      "40 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
+    "mrp": 12,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "2087"
+  },
+  {
+    "id": "epeedika-grocery-533",
+    "name": "Ajmi Fresh Made Double Roasted Upma Rava 1 Kg",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-533.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg",
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1,
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 96,
+    "sellingPrice": 80,
+    "source": "epeedikaonline",
+    "originalId": "533"
+  },
+  {
+    "id": "epeedika-grocery-761",
+    "name": "Alibaba Basmati Rice 1 Kg (biryani rice)",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-761.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 145,
+    "sellingPrice": 132,
+    "source": "epeedikaonline",
+    "originalId": "761"
+  },
+  {
+    "id": "epeedika-grocery-1377",
+    "name": "Ambadi Coconut Water Vinegar 350 ml",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1377.jpg",
+    "defaultUnit": "350 ml",
+    "availableUnits": [
+      "350 ml",
+      "700 ml"
+    ],
+    "unitMultiplier": {
+      "350 ml": 1,
+      "700 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 32,
+    "sellingPrice": 28,
+    "source": "epeedikaonline",
+    "originalId": "1377"
+  },
+  {
+    "id": "epeedika-grocery-2289",
+    "name": "Anu's soya Sauce 200 g",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2289.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 44,
+    "sellingPrice": 40,
+    "source": "epeedikaonline",
+    "originalId": "2289"
+  },
+  {
+    "id": "epeedika-grocery-1370",
+    "name": "Anu's Tomato Sauce 1 kg",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1370.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 93,
+    "sellingPrice": 83,
+    "source": "epeedikaonline",
+    "originalId": "1370"
+  },
+  {
+    "id": "epeedika-grocery-1260",
+    "name": "AVT Premium Tea 1 kg",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1260.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg",
+      "100 g",
+      "250 g",
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1,
+      "100 g": 1,
+      "250 g": 1,
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 325,
+    "sellingPrice": 310,
+    "source": "epeedikaonline",
+    "originalId": "1260"
+  },
+  {
+    "id": "epeedika-grocery-238",
+    "name": "Ayamodakam / Ajwain Seeds 50g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-238.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 40,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "238"
+  },
+  {
+    "id": "epeedika-grocery-2301",
+    "name": "Bakers Baking Soda 100g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2301.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 30,
+    "sellingPrice": 29,
+    "source": "epeedikaonline",
+    "originalId": "2301"
+  },
+  {
+    "id": "epeedika-grocery-2568",
+    "name": "Bakers Oregano 35g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2568.jpg",
+    "defaultUnit": "35 g",
+    "availableUnits": [
+      "35 g"
+    ],
+    "unitMultiplier": {
+      "35 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 99,
+    "sellingPrice": 89,
+    "source": "epeedikaonline",
+    "originalId": "2568"
+  },
+  {
+    "id": "epeedika-grocery-1081",
+    "name": "Bambino Pasta Macaroni 200 g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1081.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 27,
+    "sellingPrice": 26,
+    "source": "epeedikaonline",
+    "originalId": "1081"
+  },
+  {
+    "id": "epeedika-grocery-1058",
+    "name": "Bambino Roasted Vermicelli 200 g (semiya)",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1058.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 30,
+    "sellingPrice": 29,
+    "source": "epeedikaonline",
+    "originalId": "1058"
+  },
+  {
+    "id": "epeedika-grocery-190",
+    "name": "Bambino Vermicelli 150gm (semiya)",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-190.jpg",
+    "defaultUnit": "150 g",
+    "availableUnits": [
+      "150 g"
+    ],
+    "unitMultiplier": {
+      "150 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 16,
+    "sellingPrice": 15.5,
+    "source": "epeedikaonline",
+    "originalId": "190"
+  },
+  {
+    "id": "epeedika-grocery-1589",
+    "name": "Barkath silver premium biriyani rice 1 kg (Small rice)",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1589.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 80,
+    "sellingPrice": 68,
+    "source": "epeedikaonline",
+    "originalId": "1589"
+  },
+  {
+    "id": "epeedika-grocery-239",
+    "name": "Bay Leaves 10g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-239.jpg",
+    "defaultUnit": "10 g",
+    "availableUnits": [
+      "10 g"
+    ],
+    "unitMultiplier": {
+      "10 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 15,
+    "source": "epeedikaonline",
+    "originalId": "239"
+  },
+  {
+    "id": "epeedika-grocery-203",
+    "name": "Bellam (Sharkara) 500g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-203.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 45,
+    "sellingPrice": 40,
+    "source": "epeedikaonline",
+    "originalId": "203"
+  },
+  {
+    "id": "epeedika-grocery-1985",
+    "name": "Biriyani Mix- Kit 1 Kg",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1985.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 174,
+    "sellingPrice": 156,
+    "source": "epeedikaonline",
+    "originalId": "1985"
+  },
+  {
+    "id": "epeedika-grocery-240",
+    "name": "Black Cumin Seed -Karimjeerakam",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-240.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "240"
+  },
+  {
+    "id": "epeedika-grocery-235",
+    "name": "Black Pepper 100g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-235.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 95,
+    "sellingPrice": 85,
+    "source": "epeedikaonline",
+    "originalId": "235"
+  },
+  {
+    "id": "epeedika-grocery-326",
+    "name": "Brooke Bond 3 Roses 100g Tea",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-326.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 90,
+    "sellingPrice": 89,
+    "source": "epeedikaonline",
+    "originalId": "326"
+  },
+  {
+    "id": "epeedika-grocery-1756",
+    "name": "Brooke Bond 3 Roses 250g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1756.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 225,
+    "sellingPrice": 223,
+    "source": "epeedikaonline",
+    "originalId": "1756"
+  },
+  {
+    "id": "epeedika-grocery-334",
+    "name": "Brooke Bond Red Label Natural Care Tea 100 g",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-334.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 60,
+    "sellingPrice": 59.4,
+    "source": "epeedikaonline",
+    "originalId": "334"
+  },
+  {
+    "id": "epeedika-grocery-333",
+    "name": "Brooke Bond Red Label Tea 250gm",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-333.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 155,
+    "sellingPrice": 154,
+    "source": "epeedikaonline",
+    "originalId": "333"
+  },
+  {
+    "id": "epeedika-grocery-327",
+    "name": "Brooke Bond Taj Mahal Tea 250g",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-327.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 235,
+    "sellingPrice": 233,
+    "source": "epeedikaonline",
+    "originalId": "327"
+  },
+  {
+    "id": "epeedika-grocery-2419",
+    "name": "Bush Biriyani Essence 20ml",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2419.jpg",
+    "defaultUnit": "20 ml",
+    "availableUnits": [
+      "20 ml"
+    ],
+    "unitMultiplier": {
+      "20 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 99,
+    "sellingPrice": 66,
+    "source": "epeedikaonline",
+    "originalId": "2419"
+  },
+  {
+    "id": "epeedika-grocery-1874",
+    "name": "Bush Pineapple Essence 28ml",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1874.jpg",
+    "defaultUnit": "28 ml",
+    "availableUnits": [
+      "28 ml"
+    ],
+    "unitMultiplier": {
+      "28 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 29,
+    "sellingPrice": 28,
+    "source": "epeedikaonline",
+    "originalId": "1874"
+  },
+  {
+    "id": "epeedika-grocery-1873",
+    "name": "Bush Vanilla Essence 28ml",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1873.jpg",
+    "defaultUnit": "28 ml",
+    "availableUnits": [
+      "28 ml"
+    ],
+    "unitMultiplier": {
+      "28 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 29,
+    "sellingPrice": 28,
+    "source": "epeedikaonline",
+    "originalId": "1873"
+  },
+  {
+    "id": "epeedika-grocery-1416",
+    "name": "Cardamom / Elakkaya / 20 Rs/- pack",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1416.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 20,
+    "sellingPrice": 19,
+    "source": "epeedikaonline",
+    "originalId": "1416"
+  },
+  {
+    "id": "epeedika-grocery-228",
+    "name": "Cardamom / Elakkaya 50g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-228.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 200,
+    "sellingPrice": 165,
+    "source": "epeedikaonline",
+    "originalId": "228"
+  },
+  {
+    "id": "epeedika-grocery-1763",
+    "name": "Cherumani / Kuruva Rice 5 kg ( SS Kranthi )",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1763.jpg",
+    "defaultUnit": "5 kg",
+    "availableUnits": [
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 275,
+    "sellingPrice": 227.5,
+    "source": "epeedikaonline",
+    "originalId": "1763"
+  },
+  {
+    "id": "epeedika-grocery-296",
+    "name": "Cherupayar 500g / Green Gram",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-296.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 65,
+    "sellingPrice": 55,
+    "source": "epeedikaonline",
+    "originalId": "296"
+  },
+  {
+    "id": "epeedika-grocery-302",
+    "name": "Cherupayar Parippu 250gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-302.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 40,
+    "sellingPrice": 32.5,
+    "source": "epeedikaonline",
+    "originalId": "302"
+  },
+  {
+    "id": "epeedika-grocery-1392",
+    "name": "Choice Double Roasted Rava 1 Kg",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1392.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 88,
+    "sellingPrice": 83,
+    "source": "epeedikaonline",
+    "originalId": "1392"
+  },
+  {
+    "id": "epeedika-grocery-1391",
+    "name": "Choice Fried Rava 500 Gm",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1391.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 45,
+    "sellingPrice": 41.5,
+    "source": "epeedikaonline",
+    "originalId": "1391"
+  },
+  {
+    "id": "epeedika-grocery-17",
+    "name": "Choice Matta Aval 400 Gm",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-17.jpg",
+    "defaultUnit": "400 g",
+    "availableUnits": [
+      "400 g"
+    ],
+    "unitMultiplier": {
+      "400 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 49,
+    "sellingPrice": 45,
+    "source": "epeedikaonline",
+    "originalId": "17"
+  },
+  {
+    "id": "epeedika-grocery-35",
+    "name": "Choice White Aval 400 Gm",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-35.jpg",
+    "defaultUnit": "400 g",
+    "availableUnits": [
+      "400 g"
+    ],
+    "unitMultiplier": {
+      "400 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 49,
+    "sellingPrice": 46,
+    "source": "epeedikaonline",
+    "originalId": "35"
+  },
+  {
+    "id": "epeedika-grocery-2092",
+    "name": "Chozen Choco Flakes 125G",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2092.jpg",
+    "defaultUnit": "125 g",
+    "availableUnits": [
+      "125 g"
+    ],
+    "unitMultiplier": {
+      "125 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 60,
+    "sellingPrice": 59,
+    "source": "epeedikaonline",
+    "originalId": "2092"
+  },
+  {
+    "id": "epeedika-grocery-2172",
+    "name": "Chozen Cocoa Powder 50g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2172.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 110,
+    "sellingPrice": 117,
+    "source": "epeedikaonline",
+    "originalId": "2172"
+  },
+  {
+    "id": "epeedika-grocery-232",
+    "name": "Cinnamon Stick  / Karuvapatta 50g",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-232.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 25,
+    "sellingPrice": 20,
+    "source": "epeedikaonline",
+    "originalId": "232"
+  },
+  {
+    "id": "epeedika-grocery-230",
+    "name": "Cinnamon Stick  / Karuvapatta Rs 10 pack",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-230.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "230"
+  },
+  {
+    "id": "epeedika-grocery-231",
+    "name": "Clove / Grampu 10rs/- pack",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-231.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "231"
+  },
+  {
+    "id": "epeedika-grocery-2607",
+    "name": "Clove / Grampu 50g",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2607.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 65,
+    "sellingPrice": 55,
+    "source": "epeedikaonline",
+    "originalId": "2607"
+  },
+  {
+    "id": "epeedika-grocery-2359",
+    "name": "Corn / Cholam ( Popcorn Seeds ) 200g",
+    "categoryId": "biscuits-snacks",
+    "emoji": "🍿",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2359.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Crisp wholesome snack perfect for instant tea-time crunch and snacking",
+    "mrp": 55,
+    "sellingPrice": 50,
+    "source": "epeedikaonline",
+    "originalId": "2359"
+  },
+  {
+    "id": "epeedika-grocery-2228",
+    "name": "Cumin Seeds 100g ( Jeerakam ) Eastern",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2228.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 62,
+    "sellingPrice": 59,
+    "source": "epeedikaonline",
+    "originalId": "2228"
+  },
+  {
+    "id": "epeedika-grocery-220",
+    "name": "Cumin Seeds 50g / Jeerakam / Essan",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-220.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 30,
+    "sellingPrice": 24,
+    "source": "epeedikaonline",
+    "originalId": "220"
+  },
+  {
+    "id": "epeedika-grocery-2201",
+    "name": "Custard Powder 100g \\ Floury Walls",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2201.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 40,
+    "sellingPrice": 38,
+    "source": "epeedikaonline",
+    "originalId": "2201"
+  },
+  {
+    "id": "epeedika-grocery-2525",
+    "name": "Custard Powder Vanilla Flavour 100g / City's Master Chef",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2525.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 40,
+    "sellingPrice": 38,
+    "source": "epeedikaonline",
+    "originalId": "2525"
+  },
+  {
+    "id": "epeedika-grocery-74",
+    "name": "Dalda Vanaspati 100ml",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-74.jpg",
+    "defaultUnit": "100 ml",
+    "availableUnits": [
+      "100 ml"
+    ],
+    "unitMultiplier": {
+      "100 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 19,
+    "sellingPrice": 18.5,
+    "source": "epeedikaonline",
+    "originalId": "74"
+  },
+  {
+    "id": "epeedika-grocery-1372",
+    "name": "Deepam Green Chilli Sauce 200g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1372.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 37,
+    "sellingPrice": 35,
+    "source": "epeedikaonline",
+    "originalId": "1372"
+  },
+  {
+    "id": "epeedika-grocery-1470",
+    "name": "Deepam Tomato Sauce 200 g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1470.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 41,
+    "sellingPrice": 38,
+    "source": "epeedikaonline",
+    "originalId": "1470"
+  },
+  {
+    "id": "epeedika-grocery-2288",
+    "name": "Dels Tomato Sauce 200 g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2288.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 38,
+    "sellingPrice": 36,
+    "source": "epeedikaonline",
+    "originalId": "2288"
+  },
+  {
+    "id": "epeedika-grocery-14",
+    "name": "Double Rose Jeeragasala Rice 1 Kg / Biryani & Ghee Rice",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-14.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 195,
+    "sellingPrice": 170,
+    "source": "epeedikaonline",
+    "originalId": "14"
+  },
+  {
+    "id": "epeedika-grocery-1411",
+    "name": "Dry Chilly With Stem / Unakka mulagu 100gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1411.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 36,
+    "sellingPrice": 32,
+    "source": "epeedikaonline",
+    "originalId": "1411"
+  },
+  {
+    "id": "epeedika-grocery-233",
+    "name": "Dry Ginger / Chukku 20 Rupees Packet",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-233.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 19,
+    "source": "epeedikaonline",
+    "originalId": "233"
+  },
+  {
+    "id": "epeedika-grocery-295",
+    "name": "Dry Green Peas 500g",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-295.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 40,
+    "sellingPrice": 32,
+    "source": "epeedikaonline",
+    "originalId": "295"
+  },
+  {
+    "id": "epeedika-grocery-1680",
+    "name": "Dry Yeast",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1680.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 10,
+    "sellingPrice": 9.5,
+    "source": "epeedikaonline",
+    "originalId": "1680"
+  },
+  {
+    "id": "epeedika-grocery-779",
+    "name": "Eastern Chukku Kappi 100gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-779.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 72,
+    "sellingPrice": 62,
+    "source": "epeedikaonline",
+    "originalId": "779"
+  },
+  {
+    "id": "epeedika-grocery-1148",
+    "name": "Eastern Fennel Seeds 100g / Perumjeerakam",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1148.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 31,
+    "sellingPrice": 29,
+    "source": "epeedikaonline",
+    "originalId": "1148"
+  },
+  {
+    "id": "epeedika-grocery-1149",
+    "name": "Eastern Fenugreek ( Whole ) 100g / Uluva",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1149.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 18.5,
+    "sellingPrice": 17.5,
+    "source": "epeedikaonline",
+    "originalId": "1149"
+  },
+  {
+    "id": "epeedika-grocery-279",
+    "name": "Eastern Ginger Garlic Paste 30g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-279.jpg",
+    "defaultUnit": "30 g",
+    "availableUnits": [
+      "30 g"
+    ],
+    "unitMultiplier": {
+      "30 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "279"
+  },
+  {
+    "id": "epeedika-grocery-2096",
+    "name": "Elite Broken Wheat 500g",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2096.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 46,
+    "sellingPrice": 45,
+    "source": "epeedikaonline",
+    "originalId": "2096"
+  },
+  {
+    "id": "epeedika-grocery-120",
+    "name": "Elite Half Cooked Chapati 10 Pieces / 450g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-120.jpg",
+    "defaultUnit": "450 g",
+    "availableUnits": [
+      "450 g"
+    ],
+    "unitMultiplier": {
+      "450 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 53,
+    "sellingPrice": 50,
+    "source": "epeedikaonline",
+    "originalId": "120"
+  },
+  {
+    "id": "epeedika-grocery-2592",
+    "name": "Elite Half Cooked Malabar Parotta, 9 + 2 ( 2 Parottas Free )",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2592.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 75,
+    "sellingPrice": 75,
+    "source": "epeedikaonline",
+    "originalId": "2592"
+  },
+  {
+    "id": "epeedika-grocery-2097",
+    "name": "Elite Samba Broken Wheat 500g",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2097.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 100,
+    "sellingPrice": 95,
+    "source": "epeedikaonline",
+    "originalId": "2097"
+  },
+  {
+    "id": "epeedika-grocery-1679",
+    "name": "Ellu / Black Sesame Seeds Loose 100g ( ellu)",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1679.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 40,
+    "sellingPrice": 32,
+    "source": "epeedikaonline",
+    "originalId": "1679"
+  },
+  {
+    "id": "epeedika-grocery-1256",
+    "name": "Ellu / Black Sesame Seeds Loose 250g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1256.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 90,
+    "sellingPrice": 75,
+    "source": "epeedikaonline",
+    "originalId": "1256"
+  },
+  {
+    "id": "epeedika-grocery-244",
+    "name": "Ellu Black 20g / packet",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-244.jpg",
+    "defaultUnit": "20 g",
+    "availableUnits": [
+      "20 g"
+    ],
+    "unitMultiplier": {
+      "20 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 19,
+    "source": "epeedikaonline",
+    "originalId": "244"
+  },
+  {
+    "id": "epeedika-grocery-242",
+    "name": "Essen Cumin Seeds / Jeerakam 100g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-242.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 60,
+    "sellingPrice": 45,
+    "source": "epeedikaonline",
+    "originalId": "242"
+  },
+  {
+    "id": "epeedika-grocery-227",
+    "name": "Essen Fenugreek / Uluva 100 g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-227.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 20,
+    "sellingPrice": 15,
+    "source": "epeedikaonline",
+    "originalId": "227"
+  },
+  {
+    "id": "epeedika-grocery-245",
+    "name": "Essen Kaduku / Mustard 250g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-245.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 40,
+    "sellingPrice": 33,
+    "source": "epeedikaonline",
+    "originalId": "245"
+  },
+  {
+    "id": "epeedika-grocery-1254",
+    "name": "Fennel Seeds 100g / Perum Jeerakam / Essen",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1254.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 35,
+    "sellingPrice": 26,
+    "source": "epeedikaonline",
+    "originalId": "1254"
+  },
+  {
+    "id": "epeedika-grocery-2102",
+    "name": "Fenugreek 250g ( Uluva ) Kitchen Treasures",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2102.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 45,
+    "sellingPrice": 43,
+    "source": "epeedikaonline",
+    "originalId": "2102"
+  },
+  {
+    "id": "epeedika-grocery-2434",
+    "name": "Figaro Olive Oil 100 ml",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2434.jpg",
+    "defaultUnit": "100 ml",
+    "availableUnits": [
+      "100 ml",
+      "250 ml"
+    ],
+    "unitMultiplier": {
+      "100 ml": 1,
+      "250 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 165,
+    "sellingPrice": 164,
+    "source": "epeedikaonline",
+    "originalId": "2434"
+  },
+  {
+    "id": "epeedika-grocery-2166",
+    "name": "Fortune Kachi Ghani Pure Mustard Oil 500 ml (kadukenna)",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2166.jpg",
+    "defaultUnit": "500 ml",
+    "availableUnits": [
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 124,
+    "sellingPrice": 119,
+    "source": "epeedikaonline",
+    "originalId": "2166"
+  },
+  {
+    "id": "epeedika-grocery-2302",
+    "name": "Fruitoman's Baking Powder 50 gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2302.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 26,
+    "sellingPrice": 25,
+    "source": "epeedikaonline",
+    "originalId": "2302"
+  },
+  {
+    "id": "epeedika-grocery-2543",
+    "name": "Fruitoman's Veg Noodles 500g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2543.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 86,
+    "sellingPrice": 83,
+    "source": "epeedikaonline",
+    "originalId": "2543"
+  },
+  {
+    "id": "epeedika-grocery-2006",
+    "name": "Ginger Garlic Paste 100g Kitchen Treasures",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2006.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 38,
+    "sellingPrice": 37,
+    "source": "epeedikaonline",
+    "originalId": "2006"
+  },
+  {
+    "id": "epeedika-grocery-34",
+    "name": "Golden Jaya Rice 5 kg ( Loose )",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-34.jpg",
+    "defaultUnit": "5 kg",
+    "availableUnits": [
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 310,
+    "sellingPrice": 260,
+    "source": "epeedikaonline",
+    "originalId": "34"
+  },
+  {
+    "id": "epeedika-grocery-2580",
+    "name": "Idli & Dosa Batter 1 Kg - Thiruvonam",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2580.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 60,
+    "sellingPrice": 57,
+    "source": "epeedikaonline",
+    "originalId": "2580"
+  },
+  {
+    "id": "epeedika-grocery-26",
+    "name": "Idly Ponni rice 1 kg",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-26.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 55,
+    "sellingPrice": 48,
+    "source": "epeedikaonline",
+    "originalId": "26"
+  },
+  {
+    "id": "epeedika-grocery-1408",
+    "name": "India Gate Basmati Rice Golden Sella Supreme 1 Kg / Mandi & Biryani Rice",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1408.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 160,
+    "sellingPrice": 140,
+    "source": "epeedikaonline",
+    "originalId": "1408"
+  },
+  {
+    "id": "epeedika-grocery-36",
+    "name": "Indiagate Basmati Rice White Sella Tiber / Biriyani Rice 1kg loose",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-36.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 125,
+    "sellingPrice": 110,
+    "source": "epeedikaonline",
+    "originalId": "36"
+  },
+  {
+    "id": "epeedika-grocery-1401",
+    "name": "Janatha Pappadam 250g Loose",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1401.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 60,
+    "sellingPrice": 50,
+    "source": "epeedikaonline",
+    "originalId": "1401"
+  },
+  {
+    "id": "epeedika-grocery-1754",
+    "name": "Jyothi Karippetti (palm jaggery) 400gm",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1754.jpg",
+    "defaultUnit": "400 g",
+    "availableUnits": [
+      "400 g"
+    ],
+    "unitMultiplier": {
+      "400 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 90,
+    "sellingPrice": 72,
+    "source": "epeedikaonline",
+    "originalId": "1754"
+  },
+  {
+    "id": "epeedika-grocery-759",
+    "name": "Kadala  500 gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-759.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 50,
+    "sellingPrice": 42,
+    "source": "epeedikaonline",
+    "originalId": "759"
+  },
+  {
+    "id": "epeedika-grocery-289",
+    "name": "Kadala Big 500gm ( Bengal )",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-289.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 70,
+    "sellingPrice": 62,
+    "source": "epeedikaonline",
+    "originalId": "289"
+  },
+  {
+    "id": "epeedika-grocery-297",
+    "name": "Kadalaparippu 250g -Channa Dal)",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-297.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 30,
+    "sellingPrice": 25,
+    "source": "epeedikaonline",
+    "originalId": "297"
+  },
+  {
+    "id": "epeedika-grocery-205",
+    "name": "Kalkandam Ball 10 Rs packet",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-205.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "205"
+  },
+  {
+    "id": "epeedika-grocery-206",
+    "name": "Kalkandam Crystal 10 rs packet",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-206.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "206"
+  },
+  {
+    "id": "epeedika-grocery-1262",
+    "name": "Kalpasree Coconut Oil 1 Ltr velichenna",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1262.jpg",
+    "defaultUnit": "1 L",
+    "availableUnits": [
+      "1 L",
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "1 L": 1,
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 350,
+    "sellingPrice": 316,
+    "source": "epeedikaonline",
+    "originalId": "1262"
+  },
+  {
+    "id": "epeedika-grocery-1818",
+    "name": "Karingali Dahashamani 40g / Kalan Drugs & Remedies",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1818.jpg",
+    "defaultUnit": "40 g",
+    "availableUnits": [
+      "40 g"
+    ],
+    "unitMultiplier": {
+      "40 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 19,
+    "source": "epeedikaonline",
+    "originalId": "1818"
+  },
+  {
+    "id": "epeedika-grocery-247",
+    "name": "Kashmiri Dry Chilly 250gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-247.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 95,
+    "sellingPrice": 87.5,
+    "source": "epeedikaonline",
+    "originalId": "247"
+  },
+  {
+    "id": "epeedika-grocery-1960",
+    "name": "KasKas / Poppy seeds / Black",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1960.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "1960"
+  },
+  {
+    "id": "epeedika-grocery-28",
+    "name": "Kaveri Unda Matta 10 kg Bag",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-28.jpg",
+    "defaultUnit": "10 kg",
+    "availableUnits": [
+      "10 kg",
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "10 kg": 1,
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 600,
+    "sellingPrice": 515,
+    "source": "epeedikaonline",
+    "originalId": "28"
+  },
+  {
+    "id": "epeedika-grocery-1400",
+    "name": "Kaveri Vadi Matta Rice 5 Kg ( Loose )",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1400.jpg",
+    "defaultUnit": "5 kg",
+    "availableUnits": [
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 395,
+    "sellingPrice": 315,
+    "source": "epeedikaonline",
+    "originalId": "1400"
+  },
+  {
+    "id": "epeedika-grocery-6",
+    "name": "Keerthi Vadi Matta rice 5 kg loose",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-6.jpg",
+    "defaultUnit": "5 kg",
+    "availableUnits": [
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 365,
+    "sellingPrice": 315,
+    "source": "epeedikaonline",
+    "originalId": "6"
+  },
+  {
+    "id": "epeedika-grocery-2194",
+    "name": "Kerala Honey 100 g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2194.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 80,
+    "sellingPrice": 76.8,
+    "source": "epeedikaonline",
+    "originalId": "2194"
+  },
+  {
+    "id": "epeedika-grocery-2176",
+    "name": "KLF Coconad Coconut Milk Powder 100g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2176.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "25 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "25 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 149,
+    "sellingPrice": 144,
+    "source": "epeedikaonline",
+    "originalId": "2176"
+  },
+  {
+    "id": "epeedika-grocery-136",
+    "name": "KLF Coconad Coconut Oil 900ml. Bottle",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-136.jpg",
+    "defaultUnit": "900 ml",
+    "availableUnits": [
+      "900 ml"
+    ],
+    "unitMultiplier": {
+      "900 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 302,
+    "sellingPrice": 296,
+    "source": "epeedikaonline",
+    "originalId": "136"
+  },
+  {
+    "id": "epeedika-grocery-1253",
+    "name": "Kudampuli / Cambodge 60g Packet",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1253.jpg",
+    "defaultUnit": "60 g",
+    "availableUnits": [
+      "60 g"
+    ],
+    "unitMultiplier": {
+      "60 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 20,
+    "sellingPrice": 18,
+    "source": "epeedikaonline",
+    "originalId": "1253"
+  },
+  {
+    "id": "epeedika-grocery-221",
+    "name": "Kudampuli 100gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-221.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 38,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "221"
+  },
+  {
+    "id": "epeedika-grocery-1209",
+    "name": "L G Asafoetida Powder 100 g (Kayam podi)",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1209.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 200,
+    "sellingPrice": 181,
+    "source": "epeedikaonline",
+    "originalId": "1209"
+  },
+  {
+    "id": "epeedika-grocery-1134",
+    "name": "L.G Stone Kayam / Asafoetida 100 Gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1134.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 195,
+    "sellingPrice": 178,
+    "source": "epeedikaonline",
+    "originalId": "1134"
+  },
+  {
+    "id": "epeedika-grocery-138",
+    "name": "Leveza Chicken Nuggets 1 Kg / Frozen",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-138.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 549,
+    "sellingPrice": 400,
+    "source": "epeedikaonline",
+    "originalId": "138"
+  },
+  {
+    "id": "epeedika-grocery-1738",
+    "name": "LG Kayam Podi 15g \\ Asafoetida Powder",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1738.jpg",
+    "defaultUnit": "15 g",
+    "availableUnits": [
+      "15 g"
+    ],
+    "unitMultiplier": {
+      "15 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 25,
+    "sellingPrice": 24,
+    "source": "epeedikaonline",
+    "originalId": "1738"
+  },
+  {
+    "id": "epeedika-grocery-2394",
+    "name": "Maggi (280g) 2-Minute Instant Noodles Masala, Pouch",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2394.jpg",
+    "defaultUnit": "280 g",
+    "availableUnits": [
+      "280 g",
+      "420 g"
+    ],
+    "unitMultiplier": {
+      "280 g": 1,
+      "420 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 56,
+    "sellingPrice": 56,
+    "source": "epeedikaonline",
+    "originalId": "2394"
+  },
+  {
+    "id": "epeedika-grocery-2395",
+    "name": "Maggi 2-Minute Masala Instant Noodles 70 g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2395.jpg",
+    "defaultUnit": "70 g",
+    "availableUnits": [
+      "70 g"
+    ],
+    "unitMultiplier": {
+      "70 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 15,
+    "sellingPrice": 15,
+    "source": "epeedikaonline",
+    "originalId": "2395"
+  },
+  {
+    "id": "epeedika-grocery-248",
+    "name": "Malli- Coriander 250gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-248.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 60,
+    "sellingPrice": 51.5,
+    "source": "epeedikaonline",
+    "originalId": "248"
+  },
+  {
+    "id": "epeedika-grocery-237",
+    "name": "Manjal / DryTurmeric 250gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-237.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 65,
+    "sellingPrice": 57.5,
+    "source": "epeedikaonline",
+    "originalId": "237"
+  },
+  {
+    "id": "epeedika-grocery-301",
+    "name": "Masoor Dal 500gm \\ Red parippu",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-301.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 55,
+    "sellingPrice": 47,
+    "source": "epeedikaonline",
+    "originalId": "301"
+  },
+  {
+    "id": "epeedika-grocery-1734",
+    "name": "Matta AVAL 500g- Pavizham",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1734.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 50,
+    "sellingPrice": 49,
+    "source": "epeedikaonline",
+    "originalId": "1734"
+  },
+  {
+    "id": "epeedika-grocery-2227",
+    "name": "Matta Broken Rice 500g ( Podiyari ) Unifolks",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2227.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 44,
+    "sellingPrice": 40,
+    "source": "epeedikaonline",
+    "originalId": "2227"
+  },
+  {
+    "id": "epeedika-grocery-1244",
+    "name": "Milma Ghee 100 ml",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1244.jpg",
+    "defaultUnit": "100 ml",
+    "availableUnits": [
+      "100 ml",
+      "1000 ml",
+      "200 ml",
+      "50 ml",
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "100 ml": 1,
+      "1000 ml": 1,
+      "200 ml": 1,
+      "50 ml": 1,
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 81,
+    "sellingPrice": 80,
+    "source": "epeedikaonline",
+    "originalId": "1244"
+  },
+  {
+    "id": "epeedika-grocery-1251",
+    "name": "Mulaku kondattam 10.rs packet",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1251.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "1251"
+  },
+  {
+    "id": "epeedika-grocery-2099",
+    "name": "Mustard 100g (Kaduk ) Kitchen Treasures",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2099.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 16.5,
+    "sellingPrice": 15.5,
+    "source": "epeedikaonline",
+    "originalId": "2099"
+  },
+  {
+    "id": "epeedika-grocery-243",
+    "name": "Mustard 100gm  (kaduk) Eastern",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-243.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 16.5,
+    "sellingPrice": 15,
+    "source": "epeedikaonline",
+    "originalId": "243"
+  },
+  {
+    "id": "epeedika-grocery-288",
+    "name": "Muthira -Horsegram) 500 gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-288.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 45,
+    "sellingPrice": 37,
+    "source": "epeedikaonline",
+    "originalId": "288"
+  },
+  {
+    "id": "epeedika-grocery-1590",
+    "name": "Natural Groundnut / Peanut / Pacha Kappalandi  250g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1590.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 50,
+    "sellingPrice": 40,
+    "source": "epeedikaonline",
+    "originalId": "1590"
+  },
+  {
+    "id": "epeedika-grocery-315",
+    "name": "Nescafe Classic Coffee Powder Jar 24gm",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-315.jpg",
+    "defaultUnit": "24 g",
+    "availableUnits": [
+      "24 g"
+    ],
+    "unitMultiplier": {
+      "24 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 124,
+    "sellingPrice": 124,
+    "source": "epeedikaonline",
+    "originalId": "315"
+  },
+  {
+    "id": "epeedika-grocery-1822",
+    "name": "Panam Kalkandam -10 rs/- pack",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1822.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1822"
+  },
+  {
+    "id": "epeedika-grocery-1410",
+    "name": "Pappadam 100 Gm Loose",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1410.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 25,
+    "sellingPrice": 20,
+    "source": "epeedikaonline",
+    "originalId": "1410"
+  },
+  {
+    "id": "epeedika-grocery-2017",
+    "name": "Parachute 100% Pure Coconut Oil 100 ml",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2017.jpg",
+    "defaultUnit": "100 ml",
+    "availableUnits": [
+      "100 ml",
+      "175 ml",
+      "250 ml",
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "100 ml": 1,
+      "175 ml": 1,
+      "250 ml": 1,
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 65,
+    "sellingPrice": 64,
+    "source": "epeedikaonline",
+    "originalId": "2017"
+  },
+  {
+    "id": "epeedika-grocery-1376",
+    "name": "Pavithram Sesame Oil (Nallenna) 1 L",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1376.jpg",
+    "defaultUnit": "1 L",
+    "availableUnits": [
+      "1 L",
+      "100 ml",
+      "200 ml",
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "1 L": 1,
+      "100 ml": 1,
+      "200 ml": 1,
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 285,
+    "sellingPrice": 237,
+    "source": "epeedikaonline",
+    "originalId": "1376"
+  },
+  {
+    "id": "epeedika-grocery-39",
+    "name": "Pavizham Matta Broken Rice, 500g",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-39.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 44,
+    "sellingPrice": 41.8,
+    "source": "epeedikaonline",
+    "originalId": "39"
+  },
+  {
+    "id": "epeedika-grocery-1172",
+    "name": "Pavizham Synthetic Vinegar 1 Ltr.",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1172.jpg",
+    "defaultUnit": "1 L",
+    "availableUnits": [
+      "1 L",
+      "500 ml"
+    ],
+    "unitMultiplier": {
+      "1 L": 1,
+      "500 ml": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 40,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "1172"
+  },
+  {
+    "id": "epeedika-grocery-1257",
+    "name": "Payasakoottu pouch rs.20",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1257.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 18,
+    "source": "epeedikaonline",
+    "originalId": "1257"
+  },
+  {
+    "id": "epeedika-grocery-2393",
+    "name": "Payasakoottu pouch rs.30",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2393.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 30,
+    "sellingPrice": 27,
+    "source": "epeedikaonline",
+    "originalId": "2393"
+  },
+  {
+    "id": "epeedika-grocery-1227",
+    "name": "Perum Kayam 7g / Compounded Asafoetida Cake",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1227.jpg",
+    "defaultUnit": "7 g",
+    "availableUnits": [
+      "7 g"
+    ],
+    "unitMultiplier": {
+      "7 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 13,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1227"
+  },
+  {
+    "id": "epeedika-grocery-2567",
+    "name": "Plain China Grass 10g / City's Master Chef",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2567.jpg",
+    "defaultUnit": "10 g",
+    "availableUnits": [
+      "10 g"
+    ],
+    "unitMultiplier": {
+      "10 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 48,
+    "sellingPrice": 46,
+    "source": "epeedikaonline",
+    "originalId": "2567"
+  },
+  {
+    "id": "epeedika-grocery-2067",
+    "name": "Ponkathir Bency Rava 500g / Special Uppumavu Rava",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2067.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 56,
+    "sellingPrice": 53,
+    "source": "epeedikaonline",
+    "originalId": "2067"
+  },
+  {
+    "id": "epeedika-grocery-32",
+    "name": "Ponni Rice 1kg / Baby",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-32.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 55,
+    "sellingPrice": 47,
+    "source": "epeedikaonline",
+    "originalId": "32"
+  },
+  {
+    "id": "epeedika-grocery-1721",
+    "name": "Pori / Puffed Rice 50gm Pack",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1721.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 12,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "1721"
+  },
+  {
+    "id": "epeedika-grocery-2490",
+    "name": "Prameha Samhari Dahasamani",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2490.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 50,
+    "sellingPrice": 49,
+    "source": "epeedikaonline",
+    "originalId": "2490"
+  },
+  {
+    "id": "epeedika-grocery-2163",
+    "name": "Ragi / Pullu 1 Kg",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2163.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 70,
+    "sellingPrice": 60,
+    "source": "epeedikaonline",
+    "originalId": "2163"
+  },
+  {
+    "id": "epeedika-grocery-2489",
+    "name": "Rasakoot",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2489.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 10,
+    "sellingPrice": 9.5,
+    "source": "epeedikaonline",
+    "originalId": "2489"
+  },
+  {
+    "id": "epeedika-grocery-23",
+    "name": "Rava Loose 500gm",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-23.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 32.5,
+    "sellingPrice": 27.5,
+    "source": "epeedikaonline",
+    "originalId": "23"
+  },
+  {
+    "id": "epeedika-grocery-78",
+    "name": "Rice Drops Rice Bran Oil - 1L (pouch) Thavidenna",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-78.jpg",
+    "defaultUnit": "1 L",
+    "availableUnits": [
+      "1 L"
+    ],
+    "unitMultiplier": {
+      "1 L": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 240,
+    "sellingPrice": 185,
+    "source": "epeedikaonline",
+    "originalId": "78"
+  },
+  {
+    "id": "epeedika-grocery-290",
+    "name": "Roasted Gram Dal -Pottu Kadala) 250gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-290.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 35,
+    "sellingPrice": 29,
+    "source": "epeedikaonline",
+    "originalId": "290"
+  },
+  {
+    "id": "epeedika-grocery-1761",
+    "name": "Roasted Peanuts/ Groundnut / Manal Kappalandi 250g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1761.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 75,
+    "sellingPrice": 67,
+    "source": "epeedikaonline",
+    "originalId": "1761"
+  },
+  {
+    "id": "epeedika-grocery-38",
+    "name": "Rose Kaima, Biriyani & Ghee Rice 1 kg",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-38.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 270,
+    "sellingPrice": 205,
+    "source": "epeedikaonline",
+    "originalId": "38"
+  },
+  {
+    "id": "epeedika-grocery-1542",
+    "name": "Ruchi Gold Refined Palmolein Oil 425g",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1542.jpg",
+    "defaultUnit": "425 g",
+    "availableUnits": [
+      "425 g",
+      "850 g"
+    ],
+    "unitMultiplier": {
+      "425 g": 1,
+      "850 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 95,
+    "sellingPrice": 78,
+    "source": "epeedikaonline",
+    "originalId": "1542"
+  },
+  {
+    "id": "epeedika-grocery-2320",
+    "name": "Saffola Plain Oats 1kg with Free Saffola Oats 300 gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2320.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 240,
+    "sellingPrice": 237,
+    "source": "epeedikaonline",
+    "originalId": "2320"
+  },
+  {
+    "id": "epeedika-grocery-1927",
+    "name": "Savorit Pasta Macaroni 250g",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1927.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 28,
+    "sellingPrice": 27,
+    "source": "epeedikaonline",
+    "originalId": "1927"
+  },
+  {
+    "id": "epeedika-grocery-1866",
+    "name": "Shaalimar Broken Wheat 500g / Gothambu Nurukku",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1866.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 44,
+    "sellingPrice": 41,
+    "source": "epeedikaonline",
+    "originalId": "1866"
+  },
+  {
+    "id": "epeedika-grocery-2497",
+    "name": "Silver Cafe Chukku Kaapi 30g",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2497.jpg",
+    "defaultUnit": "30 g",
+    "availableUnits": [
+      "30 g"
+    ],
+    "unitMultiplier": {
+      "30 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 10,
+    "sellingPrice": 10,
+    "source": "epeedikaonline",
+    "originalId": "2497"
+  },
+  {
+    "id": "epeedika-grocery-2411",
+    "name": "Silver Cafe Coffee Powder - 100g",
+    "categoryId": "beverages",
+    "emoji": "☕",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2411.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g",
+      "27 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1,
+      "27 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Aromatic traditional brew rich in natural polyphenols and antioxidants",
+    "mrp": 70,
+    "sellingPrice": 69,
+    "source": "epeedikaonline",
+    "originalId": "2411"
+  },
+  {
+    "id": "epeedika-grocery-1232",
+    "name": "Soda Podi Packet",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1232.jpg",
+    "defaultUnit": "1 Unit",
+    "availableUnits": [
+      "1 Unit"
+    ],
+    "unitMultiplier": {
+      "1 Unit": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 10,
+    "sellingPrice": 9.5,
+    "source": "epeedikaonline",
+    "originalId": "1232"
+  },
+  {
+    "id": "epeedika-grocery-222",
+    "name": "Soya Chunks Big 250gm / Loose",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-222.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 40,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "222"
+  },
+  {
+    "id": "epeedika-grocery-223",
+    "name": "Soya Chunks Small 250gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-223.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 40,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "223"
+  },
+  {
+    "id": "epeedika-grocery-773",
+    "name": "SS Kranthi Rice 5 Kg Loose",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-773.jpg",
+    "defaultUnit": "5 kg",
+    "availableUnits": [
+      "5 kg"
+    ],
+    "unitMultiplier": {
+      "5 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 290,
+    "sellingPrice": 220,
+    "source": "epeedikaonline",
+    "originalId": "773"
+  },
+  {
+    "id": "epeedika-grocery-769",
+    "name": "Sunrich Refined Sunflower Oil 455g",
+    "categoryId": "oils-sugar",
+    "emoji": "🫒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-769.jpg",
+    "defaultUnit": "455 g",
+    "availableUnits": [
+      "455 g",
+      "910 g"
+    ],
+    "unitMultiplier": {
+      "455 g": 1,
+      "910 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Pristine daily culinary essential for wholesome authentic cooking",
+    "mrp": 103,
+    "sellingPrice": 92,
+    "source": "epeedikaonline",
+    "originalId": "769"
+  },
+  {
+    "id": "epeedika-grocery-2315",
+    "name": "Supriyam Roasted Vermicelli Noodles 170g ( upma semiya)",
+    "categoryId": "sauces-condiments",
+    "emoji": "🍯",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2315.jpg",
+    "defaultUnit": "170 g",
+    "availableUnits": [
+      "170 g"
+    ],
+    "unitMultiplier": {
+      "170 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Traditional culinary delicacy crafted for delicious meal enhancements",
+    "mrp": 24,
+    "sellingPrice": 22.5,
+    "source": "epeedikaonline",
+    "originalId": "2315"
+  },
+  {
+    "id": "epeedika-grocery-2400",
+    "name": "Suraj Matta Palada 200g",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2400.jpg",
+    "defaultUnit": "200 g",
+    "availableUnits": [
+      "200 g"
+    ],
+    "unitMultiplier": {
+      "200 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 40,
+    "sellingPrice": 39,
+    "source": "epeedikaonline",
+    "originalId": "2400"
+  },
+  {
+    "id": "epeedika-grocery-1210",
+    "name": "Swamis Mustard seeds 100 Gm (Kaduk)",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1210.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 20,
+    "sellingPrice": 14,
+    "source": "epeedikaonline",
+    "originalId": "1210"
+  },
+  {
+    "id": "epeedika-grocery-2464",
+    "name": "Tamarind  250g  (Puli) AB Products",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2464.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 38,
+    "sellingPrice": 35,
+    "source": "epeedikaonline",
+    "originalId": "2464"
+  },
+  {
+    "id": "epeedika-grocery-2528",
+    "name": "Tandoori Masala 50g / City's Master Chef",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2528.jpg",
+    "defaultUnit": "50 g",
+    "availableUnits": [
+      "50 g"
+    ],
+    "unitMultiplier": {
+      "50 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 52,
+    "sellingPrice": 47,
+    "source": "epeedikaonline",
+    "originalId": "2528"
+  },
+  {
+    "id": "epeedika-grocery-1959",
+    "name": "Thakolam 8g -Star Anise Whole",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1959.jpg",
+    "defaultUnit": "8 g",
+    "availableUnits": [
+      "8 g"
+    ],
+    "unitMultiplier": {
+      "8 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 20,
+    "sellingPrice": 18,
+    "source": "epeedikaonline",
+    "originalId": "1959"
+  },
+  {
+    "id": "epeedika-grocery-1896",
+    "name": "Tholur chukku Kappi Jar Buy 1 Get 1 Free (150g x 2)",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1896.jpg",
+    "defaultUnit": "150 g",
+    "availableUnits": [
+      "150 g"
+    ],
+    "unitMultiplier": {
+      "150 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 96,
+    "sellingPrice": 94,
+    "source": "epeedikaonline",
+    "originalId": "1896"
+  },
+  {
+    "id": "epeedika-grocery-2457",
+    "name": "Tholur Kudampuli 100g Cambodge",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-2457.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 36,
+    "sellingPrice": 32,
+    "source": "epeedikaonline",
+    "originalId": "2457"
+  },
+  {
+    "id": "epeedika-grocery-1897",
+    "name": "Tholur Tamarind 250g ( Puli )",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1897.jpg",
+    "defaultUnit": "250 g",
+    "availableUnits": [
+      "250 g"
+    ],
+    "unitMultiplier": {
+      "250 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 52.5,
+    "sellingPrice": 51,
+    "source": "epeedikaonline",
+    "originalId": "1897"
+  },
+  {
+    "id": "epeedika-grocery-292",
+    "name": "Thuvaraparippu - Toor Dal 500gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-292.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 70,
+    "sellingPrice": 60,
+    "source": "epeedikaonline",
+    "originalId": "292"
+  },
+  {
+    "id": "epeedika-grocery-18",
+    "name": "unakkalari 1 kg (Raw Rice)",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-18.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 60,
+    "sellingPrice": 55,
+    "source": "epeedikaonline",
+    "originalId": "18"
+  },
+  {
+    "id": "epeedika-grocery-19",
+    "name": "Unda Pachari 1 kg ( Raw Rice)",
+    "categoryId": "rice-grains",
+    "emoji": "🌾",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-19.jpg",
+    "defaultUnit": "1 kg",
+    "availableUnits": [
+      "1 kg"
+    ],
+    "unitMultiplier": {
+      "1 kg": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Essential kitchen staple grain providing sustained complex carbohydrate energy",
+    "mrp": 55,
+    "sellingPrice": 46,
+    "source": "epeedikaonline",
+    "originalId": "19"
+  },
+  {
+    "id": "epeedika-grocery-300",
+    "name": "Uzhunnu ball 500gm",
+    "categoryId": "staples",
+    "emoji": "🛒",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-300.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Carefully sourced premium pantry grocery essential",
+    "mrp": 70,
+    "sellingPrice": 62,
+    "source": "epeedikaonline",
+    "originalId": "300"
+  },
+  {
+    "id": "epeedika-grocery-298",
+    "name": "Vada Parippu / Piece Parippu 500gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-298.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 37.5,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "298"
+  },
+  {
+    "id": "epeedika-grocery-291",
+    "name": "Vanpayar -Flat 500 Gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-291.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 65,
+    "sellingPrice": 57,
+    "source": "epeedikaonline",
+    "originalId": "291"
+  },
+  {
+    "id": "epeedika-grocery-293",
+    "name": "White Kadala- Kabhoolikadala 500gm",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-293.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 70,
+    "sellingPrice": 63,
+    "source": "epeedikaonline",
+    "originalId": "293"
+  },
+  {
+    "id": "epeedika-grocery-304",
+    "name": "White Peas / Matar 500g",
+    "categoryId": "pulses-legumes",
+    "emoji": "🫘",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-304.jpg",
+    "defaultUnit": "500 g",
+    "availableUnits": [
+      "500 g"
+    ],
+    "unitMultiplier": {
+      "500 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
+    "mrp": 35,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "304"
+  },
+  {
+    "id": "epeedika-grocery-1056",
+    "name": "Whole Coriander / Malli 100 Gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1056.jpg",
+    "defaultUnit": "100 g",
+    "availableUnits": [
+      "100 g"
+    ],
+    "unitMultiplier": {
+      "100 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 25,
+    "sellingPrice": 21,
+    "source": "epeedikaonline",
+    "originalId": "1056"
+  },
+  {
+    "id": "epeedika-grocery-1258",
+    "name": "Whole Garam Masala Rs;10 Packet",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1258.jpg",
+    "defaultUnit": "10 packet",
+    "availableUnits": [
+      "10 packet",
+      "30 packet",
+      "50 packet"
+    ],
+    "unitMultiplier": {
+      "10 packet": 1,
+      "30 packet": 1,
+      "50 packet": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 10,
+    "sellingPrice": 9,
+    "source": "epeedikaonline",
+    "originalId": "1258"
+  },
+  {
+    "id": "epeedika-grocery-1347",
+    "name": "Yippee Magic Masala Noodles 4 in 1 - 280g",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1347.jpg",
+    "defaultUnit": "280 g",
+    "availableUnits": [
+      "280 g"
+    ],
+    "unitMultiplier": {
+      "280 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 60,
+    "sellingPrice": 60,
+    "source": "epeedikaonline",
+    "originalId": "1347"
+  },
+  {
+    "id": "epeedika-grocery-180",
+    "name": "Yippee Magic Masala Noodles 420gm",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-180.jpg",
+    "defaultUnit": "420 g",
+    "availableUnits": [
+      "420 g",
+      "67.5 g"
+    ],
+    "unitMultiplier": {
+      "420 g": 1,
+      "67.5 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Special Offer",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 90,
+    "sellingPrice": 89,
+    "source": "epeedikaonline",
+    "originalId": "180"
+  },
+  {
+    "id": "epeedika-grocery-1345",
+    "name": "Yippee Magic Masala Noodles, 140 g, 2 in 1 pack",
+    "categoryId": "spices",
+    "emoji": "🌶️",
+    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-1345.jpg",
+    "defaultUnit": "140 g",
+    "availableUnits": [
+      "140 g"
+    ],
+    "unitMultiplier": {
+      "140 g": 1
+    },
+    "isOrganic": false,
+    "isSeasonal": false,
+    "badge": "Pantry Essential",
+    "nutritionalNote": "Flavorful aromatic spice loaded with natural bioactive compounds and antioxidants",
+    "mrp": 30,
+    "sellingPrice": 30,
+    "source": "epeedikaonline",
+    "originalId": "1345"
+  }
+]

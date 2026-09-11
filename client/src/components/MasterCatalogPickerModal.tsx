@@ -25,6 +25,13 @@ interface MasterCatalogPickerModalProps {
   onOpenCreateCustom?: () => void;
 }
 
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  staples: ['staples', 'rice-grains', 'pulses-legumes'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+  household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'beverages'],
+};
+
 export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> = ({
   masterProducts,
   shopName,
@@ -44,12 +51,10 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
     const isCarried = p.prices && p.prices[shopName] !== undefined && p.prices[shopName] > 0;
     if (filterMode === 'not_in_store' && isCarried) return false;
 
-    if (selectedCat !== 'all' && p.categoryId !== selectedCat) {
-      if (selectedCat === 'organic' && p.isOrganic) {
-        // match
-      } else {
-        return false;
-      }
+    if (selectedCat !== 'all') {
+      const targetCats = CATEGORY_ALIASES[selectedCat] || [selectedCat];
+      const matchCat = targetCats.includes(p.categoryId) || (selectedCat === 'organic' && p.isOrganic);
+      if (!matchCat) return false;
     }
 
     if (searchQuery.trim()) {

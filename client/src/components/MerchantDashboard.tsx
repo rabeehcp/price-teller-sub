@@ -815,9 +815,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
   // 3. Filter current view mode by search & selected category tab
   const displayedInventoryList = (inventoryViewMode === 'carried' ? carriedProducts : notCarriedProducts).filter((p) => {
+    const targetCats = CATEGORY_ALIASES[inventoryCategoryFilter] || [inventoryCategoryFilter];
     const matchesCategory =
       inventoryCategoryFilter === 'all' ||
-      p.categoryId === inventoryCategoryFilter ||
+      targetCats.includes(p.categoryId) ||
       (inventoryCategoryFilter === 'organic' && p.isOrganic);
     const matchesSearch =
       p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -2962,7 +2963,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
             id: c.id,
             name: c.label,
             icon: c.icon,
-            itemCount: allMasterProducts.filter((p) => p.categoryId === c.id).length,
+            itemCount: allMasterProducts.filter((p) => ((CATEGORY_ALIASES[c.id] || [c.id]).includes(p.categoryId)) || (c.id === 'organic' && p.isOrganic)).length,
           }))}
           onClose={() => setIsMasterPickerOpen(false)}
           onProductAddedToShop={handleProductAddedToShop}
