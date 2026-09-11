@@ -1,0 +1,17 @@
+{
+  "name": "priceteller-root",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "dev": "concurrently -k -p \"[{name}]\" -n \"SERVER,CLIENT\" -c \"cyan.bold,green.bold\" \"npm run dev:server\" \"npm run dev:client\"",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server run start",
+    "users": "node server/scripts/show-users.js",
+    "shops": "node server/scripts/show-shops.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.4"
+  }
+}
