@@ -484,9 +484,13 @@ export interface SubscriptionPayment {
 
 export interface SubscriptionStatusResponse {
   hasActiveSubscription: boolean;
+  isActive?: boolean;
   isExempt: boolean;
   subscription: MerchantSubscription | null;
   daysRemaining: number;
+  plan?: Partial<SubscriptionPlan> | null;
+  merchantName?: string;
+  shopName?: string;
 }
 
 export interface SubscriptionCheckoutOrder {

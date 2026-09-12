@@ -1,6 +1,7 @@
 import '../utils/dns-fallback';
 import { Router, Request, Response } from 'express';
 import { db, Location } from '../db';
+import { query } from '../db/pool';
 import { compareBasket, BasketRequestItem } from '../services/comparisonEngine';
 import { calculateHyperlocalDistance } from '../services/locationService';
 import { subscriptionService } from '../services/subscriptionService';
@@ -130,10 +131,34 @@ apiRouter.get('/merchant/shop', authenticateToken, requireMerchant, async (req: 
   try {
     const user = req.user;
     const shops = await db.getAllShopsAdmin();
-    const shop = shops.find((s) =>
-      (user.shopId && s.id === user.shopId) ||
+    let shop = shops.find((s) =>
+      (user.shopId && s.id.toLowerCase() === String(user.shopId).toLowerCase()) ||
       (user.shopName && s.name.toLowerCase() === String(user.shopName).toLowerCase())
     );
+    if (!shop && (user.shopName || user.shopId)) {
+      const shopName = String(user.shopName || user.shopId).trim();
+      shop = await db.addShop({
+        name: shopName,
+        locationId: 'tirur',
+        address: 'Store Address',
+        distanceKm: 1.0,
+        rating: 4.8,
+        reviewCount: 1,
+        shopType: 'supermarket',
+        openingHours: '8:00 AM - 10:00 PM',
+        phone: user.phone || '',
+        isVerified: true,
+        deliveryFee: 30,
+        freeDeliveryThreshold: 500,
+        color: '#0B8F68',
+        categories: [
+          'vegetables', 'fruits', 'staples', 'dairy', 'bakery-breakfast',
+          'household', 'oils-spices', 'fish', 'electronics', 'meats',
+          'organic', 'utensils'
+        ],
+      });
+      await query(`UPDATE users SET shop_id = $1, shop_name = $2 WHERE id = $3`, [shop.id, shop.name, user.id]);
+    }
     if (!shop) return res.status(404).json({ success: false, error: 'Merchant shop not found' });
     res.json({ success: true, data: shop });
   } catch (err: any) {
@@ -740,11 +765,11 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
   try {
     const user = req.user;
     const shops = await db.getAllShopsAdmin();
-    const shop = shops.find((candidate) =>
-      (user.shopId && candidate.id === user.shopId) ||
-      (user.shopName && candidate.name.toLowerCase() === String(user.shopName).toLowerCase())
+    let shop = shops.find((candidate) =>
+      (user.shopId && candidate.id.toLowerCase() === String(user.shopId).toLowerCase()) ||
+      (user.shopName && candidate.name.toLowerCase() === String(user.shopName).toLowerCase()) ||
+      (req.body.name && candidate.name.toLowerCase() === String(req.body.name).trim().toLowerCase())
     );
-    if (!shop) return res.status(404).json({ success: false, error: 'Merchant shop not found' });
 
     const allowedFields = [
       'name', 'address', 'phone', 'shopType', 'openingHours', 'deliveryFee',
@@ -759,10 +784,42 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
       return res.status(400).json({ success: false, error: 'Shop name cannot be empty' });
     }
 
+    if (!shop) {
+      // Upsert: auto-create shop record for this merchant if not found
+      const shopName = String(updates.name || user.shopName || 'My Store').trim();
+      shop = await db.addShop({
+        name: shopName,
+        locationId: req.body.locationId || user.locationId || 'tirur',
+        address: updates.address || 'Store Address',
+        distanceKm: 1.0,
+        rating: 4.8,
+        reviewCount: 1,
+        shopType: (updates.shopType as any) || 'supermarket',
+        openingHours: updates.openingHours || '8:00 AM - 10:00 PM',
+        phone: updates.phone || user.phone || '',
+        isVerified: true,
+        deliveryFee: Number(updates.deliveryFee) || 30,
+        freeDeliveryThreshold: Number(updates.freeDeliveryThreshold) || 500,
+        color: '#0B8F68',
+        categories: Array.isArray(updates.categories) ? updates.categories : ['vegetables', 'fruits', 'staples', 'dairy'],
+        lat: updates.lat !== undefined ? updates.lat : null,
+        lng: updates.lng !== undefined ? updates.lng : null,
+      });
+
+      await query(`UPDATE users SET shop_id = $1, shop_name = $2 WHERE id = $3`, [shop.id, shop.name, user.id]);
+      return res.json({ success: true, data: shop, message: 'Shop profile created and saved successfully!' });
+    }
+
     const updated = await db.updateShop(shop.id, updates);
     if (!updated) return res.status(404).json({ success: false, error: 'Shop not found' });
+
+    if (updates.name && updates.name !== user.shopName) {
+      await query(`UPDATE users SET shop_name = $1 WHERE id = $2`, [updates.name, user.id]);
+    }
+
     res.json({ success: true, data: updated, message: 'Shop profile updated successfully!' });
   } catch (err: any) {
+    console.error('Error updating merchant shop profile:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 });

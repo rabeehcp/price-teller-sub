@@ -104,15 +104,15 @@ export const SmartBasket: React.FC<SmartBasketProps> = ({
               >
                 {/* Product Image & Name */}
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  <div className="w-10 h-10 shrink-0 p-1 bg-surface-subtle border border-surface-border rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 shrink-0 p-1.5 bg-white border border-surface-border rounded-xl flex items-center justify-center overflow-hidden shadow-2xs">
                     <ProductImage
                       productId={item.product.id}
                       image={item.product.image}
                       emoji={item.product.emoji}
                       alt={item.product.name}
                       className="w-full h-full"
-                      imgClassName="w-full h-full object-contain"
-                      fallbackEmojiClassName="text-xl"
+                      imgClassName="w-full h-full max-w-full max-h-full object-contain"
+                      fallbackEmojiClassName="text-2xl"
                     />
                   </div>
                   <div className="min-w-0 flex-1">
@@ -223,6 +223,35 @@ export const SmartBasket: React.FC<SmartBasketProps> = ({
           </div>
         )}
       </div>
+
+      {/* Spacious Bottom Checkout & Pre-Book Summary Bar */}
+      {basketItems.length > 0 && (
+        <div className="mt-4 pt-3.5 border-t border-surface-border flex flex-col sm:flex-row items-center justify-between gap-3 bg-[#F5F8F6] p-4 rounded-2xl border border-[#E3ECE7]">
+          <div className="flex items-center gap-2.5 text-xs font-malayalam">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            <div>
+              <span className="font-extrabold text-slate-dark text-sm block">
+                ആകെ: {totalItemCount} ഇനങ്ങൾ
+              </span>
+              <span className="text-slate-muted text-[11px]">
+                {basketItems.length} വ്യത്യസ്ത ഉൽപ്പന്നങ്ങൾ തിരഞ്ഞെടുത്തിട്ടുണ്ട്
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
+            {onPreBookBasket && (
+              <button
+                onClick={onPreBookBasket}
+                className="w-full sm:w-auto px-5 py-2.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-black shadow-sm flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-98 font-malayalam"
+              >
+                <CalendarCheck className="w-4 h-4" />
+                <span>വില ലോക്ക് ചെയ്ത് ചെക്ക്ഔട്ട് (Pre-Book)</span>
+              </button>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 };

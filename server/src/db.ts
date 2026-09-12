@@ -1068,18 +1068,30 @@ const newDeal: FlashDeal = {
     shopName: string,
     updates: { productId: string; price: number; stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock' }[]
   ): Promise<boolean> {
-    for (const u of updates) {
-      const prod = await this.getProductById(u.productId, true);
-      if (prod) {
-        prod.prices[shopName] = u.price;
-        prod.stockStatus[shopName] = u.stockStatus;
-        
-          await query(
-            `UPDATE products SET prices = $1, stock_status = $2, last_updated = $3 WHERE id = $4`,
-            [JSON.stringify(prod.prices), JSON.stringify(prod.stockStatus), new Date().toISOString(), prod.id]
-          );
-        
-      }
+    if (!updates || updates.length === 0) return true;
+
+    const now = new Date().toISOString();
+    // Process in batches of 25 concurrent queries to guarantee blazing fast writes without exhausting connections
+    const batchSize = 25;
+    for (let i = 0; i < updates.length; i += batchSize) {
+      const chunk = updates.slice(i, i + batchSize);
+      await Promise.all(
+        chunk.map((u) =>
+          query(
+            `UPDATE products 
+             SET prices = COALESCE(prices, '{}'::jsonb) || CAST($1 AS jsonb),
+                 stock_status = COALESCE(stock_status, '{}'::jsonb) || CAST($2 AS jsonb),
+                 last_updated = $3 
+             WHERE id = $4`,
+            [
+              JSON.stringify({ [shopName]: u.price }),
+              JSON.stringify({ [shopName]: u.stockStatus }),
+              now,
+              u.productId,
+            ]
+          )
+        )
+      );
     }
     
     return true;
@@ -2658,82 +2670,84 @@ const newPlan: SubscriptionPlan = {
   }
 
   public async getMerchantActiveSubscription(merchantId: string): Promise<MerchantSubscription | null> {
-const now = new Date().toISOString();
+    const now = new Date().toISOString();
 
+    const res = await query(
+      `SELECT ms.id, ms.merchant_id as "merchantId", ms.shop_id as "shopId", ms.plan_id as "planId",
+              ms.status, ms.starts_at as "startsAt", ms.expires_at as "expiresAt",
+              ms.auto_renew as "autoRenew", ms.cancelled_at as "cancelledAt", ms.cancel_reason as "cancelReason",
+              ms.created_at as "createdAt", ms.updated_at as "updatedAt",
+              sp.name as "planName", sp.duration_days as "planDurationDays", sp.price_paise as "planPricePaise",
+              sp.currency as "planCurrency", sp.features as "planFeatures", sp.badge as "planBadge"
+       FROM merchant_subscriptions ms
+       LEFT JOIN subscription_plans sp ON sp.id = ms.plan_id
+       WHERE ms.merchant_id = $1 AND ms.status = 'ACTIVE' AND ms.expires_at > $2
+       ORDER BY 
+         CASE WHEN ms.starts_at <= $2 THEN 0 ELSE 1 END ASC,
+         ms.starts_at ASC,
+         ms.created_at DESC
+       LIMIT 1`,
+      [merchantId, now]
+    );
 
-      const res = await query(
-        `SELECT ms.id, ms.merchant_id as "merchantId", ms.shop_id as "shopId", ms.plan_id as "planId",
-                ms.status, ms.starts_at as "startsAt", ms.expires_at as "expiresAt",
-                ms.auto_renew as "autoRenew", ms.cancelled_at as "cancelledAt", ms.cancel_reason as "cancelReason",
-                ms.created_at as "createdAt", ms.updated_at as "updatedAt",
-                sp.name as "planName", sp.duration_days as "planDurationDays", sp.price_paise as "planPricePaise",
-                sp.currency as "planCurrency", sp.features as "planFeatures", sp.badge as "planBadge"
-         FROM merchant_subscriptions ms
-         LEFT JOIN subscription_plans sp ON sp.id = ms.plan_id
-         WHERE ms.merchant_id = $1 AND ms.status = 'ACTIVE' AND ms.expires_at > $2
-         ORDER BY ms.expires_at DESC
-         LIMIT 1`,
+    if (res.rows.length === 0) {
+      // Auto-mark expired any active subscriptions whose expires_at is past
+      await query(
+        `UPDATE merchant_subscriptions SET status = 'EXPIRED', updated_at = NOW()
+         WHERE merchant_id = $1 AND status = 'ACTIVE' AND expires_at <= $2`,
         [merchantId, now]
       );
+      return null;
+    }
 
-      if (res.rows.length === 0) {
-        // Auto-mark expired any active subscriptions whose expires_at is past
-        await query(
-          `UPDATE merchant_subscriptions SET status = 'EXPIRED', updated_at = NOW()
-           WHERE merchant_id = $1 AND status = 'ACTIVE' AND expires_at <= $2`,
-          [merchantId, now]
-        );
-        return null;
-      }
+    const r = res.rows[0];
+    const expires = new Date(r.expiresAt).getTime();
+    const diffDays = Math.max(0, Math.ceil((expires - Date.now()) / (1000 * 60 * 60 * 24)));
 
-      const r = res.rows[0];
-      const expires = new Date(r.expiresAt).getTime();
-      const diffDays = Math.max(0, Math.ceil((expires - Date.now()) / (1000 * 60 * 60 * 24)));
-
-      return {
-        ...r,
-        daysRemaining: diffDays,
-        plan: {
-          id: r.planId,
-          name: r.planName,
-          durationDays: Number(r.planDurationDays),
-          pricePaise: Number(r.planPricePaise),
-          currency: r.planCurrency,
-          description: '',
-          features: Array.isArray(r.planFeatures) ? r.planFeatures : typeof r.planFeatures === 'string' ? JSON.parse(r.planFeatures) : [],
-          badge: r.planBadge,
-          isActive: true,
-        },
-      };
+    return {
+      ...r,
+      daysRemaining: diffDays,
+      plan: {
+        id: r.planId,
+        name: r.planName,
+        durationDays: Number(r.planDurationDays),
+        pricePaise: Number(r.planPricePaise),
+        currency: r.planCurrency,
+        description: '',
+        features: Array.isArray(r.planFeatures) ? r.planFeatures : typeof r.planFeatures === 'string' ? JSON.parse(r.planFeatures) : [],
+        badge: r.planBadge,
+        isActive: true,
+      },
+    };
   }
 
   public async getMerchantSubscriptionHistory(merchantId: string): Promise<MerchantSubscription[]> {
+    const res = await query(
+      `SELECT ms.id, ms.merchant_id as "merchantId", ms.shop_id as "shopId", ms.plan_id as "planId",
+              ms.status, ms.starts_at as "startsAt", ms.expires_at as "expiresAt",
+              ms.auto_renew as "autoRenew", ms.cancelled_at as "cancelledAt", ms.cancel_reason as "cancelReason",
+              ms.created_at as "createdAt", ms.updated_at as "updatedAt",
+              sp.name as "planName", sp.price_paise as "planPricePaise", sp.duration_days as "planDurationDays"
+       FROM merchant_subscriptions ms
+       LEFT JOIN subscription_plans sp ON sp.id = ms.plan_id
+       WHERE ms.merchant_id = $1
+       ORDER BY ms.created_at DESC`,
+      [merchantId]
+    );
 
-      const res = await query(
-        `SELECT ms.id, ms.merchant_id as "merchantId", ms.shop_id as "shopId", ms.plan_id as "planId",
-                ms.status, ms.starts_at as "startsAt", ms.expires_at as "expiresAt",
-                ms.auto_renew as "autoRenew", ms.cancelled_at as "cancelledAt", ms.cancel_reason as "cancelReason",
-                ms.created_at as "createdAt", ms.updated_at as "updatedAt",
-                sp.name as "planName", sp.price_paise as "planPricePaise", sp.duration_days as "planDurationDays"
-         FROM merchant_subscriptions ms
-         LEFT JOIN subscription_plans sp ON sp.id = ms.plan_id
-         WHERE ms.merchant_id = $1
-         ORDER BY ms.created_at DESC`,
-        [merchantId]
-      );
-      return res.rows.map((r: any) => ({
-        ...r,
-        plan: {
-          id: r.planId,
-          name: r.planName,
-          pricePaise: Number(r.planPricePaise),
-          durationDays: Number(r.planDurationDays),
-          currency: 'INR',
-          description: '',
-          features: [],
-          isActive: true,
-        },
-      }));
+    return res.rows.map((r: any) => ({
+      ...r,
+      plan: {
+        id: r.planId,
+        name: r.planName,
+        durationDays: Number(r.planDurationDays),
+        pricePaise: Number(r.planPricePaise),
+        currency: 'INR',
+        description: '',
+        features: [],
+        isActive: true,
+      },
+    }));
   }
 
   public async getAllMerchantSubscriptions(): Promise<MerchantSubscription[]> {
@@ -2777,14 +2791,35 @@ const now = new Date().toISOString();
     planId: string;
     durationDays: number;
   }): Promise<MerchantSubscription> {
-const activeSub = await this.getMerchantActiveSubscription(data.merchantId);
-let startsAt = new Date();
-if (activeSub && new Date(activeSub.expiresAt) > startsAt) {
-      startsAt = new Date(activeSub.expiresAt);
+    const activeSub = await this.getMerchantActiveSubscription(data.merchantId);
+    const now = new Date();
+
+    if (activeSub && new Date(activeSub.expiresAt) > now) {
+      // If there is already an active subscription that hasn't expired, extend its expiration date
+      // rather than creating disjoint future-dated subscriptions.
+      const currentExpiry = new Date(activeSub.expiresAt);
+      const newExpiresAt = new Date(currentExpiry.getTime() + data.durationDays * 24 * 60 * 60 * 1000);
+      const updatedAt = new Date().toISOString();
+
+      await query(
+        `UPDATE merchant_subscriptions
+         SET expires_at = $1, plan_id = $2, updated_at = $3
+         WHERE id = $4`,
+        [newExpiresAt.toISOString(), data.planId, updatedAt, activeSub.id]
+      );
+
+      return {
+        ...activeSub,
+        planId: data.planId,
+        expiresAt: newExpiresAt.toISOString(),
+        updatedAt,
+      };
     }
-const expiresAt = new Date(startsAt.getTime() + data.durationDays * 24 * 60 * 60 * 1000);
-const id = `SUB-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
-const newSub: MerchantSubscription = {
+
+    const startsAt = now;
+    const expiresAt = new Date(startsAt.getTime() + data.durationDays * 24 * 60 * 60 * 1000);
+    const id = `SUB-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+    const newSub: MerchantSubscription = {
       id,
       merchantId: data.merchantId,
       shopId: data.shopId,
@@ -2793,28 +2828,27 @@ const newSub: MerchantSubscription = {
       startsAt: startsAt.toISOString(),
       expiresAt: expiresAt.toISOString(),
       autoRenew: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      createdAt: now.toISOString(),
+      updatedAt: now.toISOString(),
     };
 
-
-      await query(
-        `INSERT INTO merchant_subscriptions (id, merchant_id, shop_id, plan_id, status, starts_at, expires_at, auto_renew, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
-        [
-          newSub.id,
-          newSub.merchantId,
-          newSub.shopId || null,
-          newSub.planId,
-          newSub.status,
-          newSub.startsAt,
-          newSub.expiresAt,
-          newSub.autoRenew,
-          newSub.createdAt,
-          newSub.updatedAt,
-        ]
-      );
-      return newSub;
+    await query(
+      `INSERT INTO merchant_subscriptions (id, merchant_id, shop_id, plan_id, status, starts_at, expires_at, auto_renew, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+      [
+        newSub.id,
+        newSub.merchantId,
+        newSub.shopId || null,
+        newSub.planId,
+        newSub.status,
+        newSub.startsAt,
+        newSub.expiresAt,
+        newSub.autoRenew,
+        newSub.createdAt,
+        newSub.updatedAt,
+      ]
+    );
+    return newSub;
   }
 
   public async updateMerchantSubscriptionStatus(

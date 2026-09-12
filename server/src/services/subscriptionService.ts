@@ -8,6 +8,8 @@ import { db } from '../db';
 
 export interface SubscriptionStatusResult {
   isActive: boolean;
+  hasActiveSubscription: boolean;
+  isExempt: boolean;
   subscription: any | null;
   daysRemaining: number;
   plan: any | null;
@@ -44,9 +46,9 @@ export interface CancelSubscriptionParams {
   reason?: string;
 }
 
-class SubscriptionService {
+export class SubscriptionService {
   /**
-   * Returns active subscription status for a merchant.
+   * Retrieves active subscription for a merchant along with remaining quota info.
    */
   async getMerchantSubscriptionStatus(
     merchantId: string,
@@ -58,6 +60,8 @@ class SubscriptionService {
     if (!active) {
       return {
         isActive: false,
+        hasActiveSubscription: false,
+        isExempt: false,
         subscription: null,
         daysRemaining: 0,
         plan: null,
@@ -71,12 +75,15 @@ class SubscriptionService {
       0,
       Math.ceil((expires - Date.now()) / (1000 * 60 * 60 * 24))
     );
+    const hasActive = active.status === 'ACTIVE' && daysRemaining > 0;
 
     return {
-      isActive: active.status === 'ACTIVE' && daysRemaining > 0,
-      subscription: active,
-      daysRemaining,
-      plan: active.plan || null,
+      isActive: hasActive,
+      hasActiveSubscription: hasActive,
+      isExempt: false,
+      subscription: hasActive ? active : null,
+      daysRemaining: hasActive ? daysRemaining : 0,
+      plan: hasActive ? (active.plan || null) : null,
       merchantName,
       shopName,
     };

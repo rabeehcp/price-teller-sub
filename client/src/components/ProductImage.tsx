@@ -140,14 +140,14 @@ export const ProductImage: React.FC<ProductImageProps> = ({
 
   if (!currentSrc || hasError) {
     return (
-      <div className={`inline-flex items-center justify-center select-none ${className}`}>
+      <div className={`inline-flex items-center justify-center select-none max-w-full max-h-full ${className}`}>
         <span className={fallbackEmojiClassName}>{emoji}</span>
       </div>
     );
   }
 
   return (
-    <div className={`relative inline-flex items-center justify-center overflow-hidden select-none ${className}`}>
+    <div className={`relative inline-flex items-center justify-center overflow-hidden select-none max-w-full max-h-full ${className}`}>
       <img
         src={currentSrc}
         alt={alt}
@@ -156,7 +156,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onError={handleImageError}
-        className={`transition-all duration-200 ${imgClassName}`}
+        className={`max-w-full max-h-full transition-all duration-200 ${imgClassName}`}
       />
     </div>
   );

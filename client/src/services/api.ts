@@ -958,13 +958,35 @@ export async function updateSubscriptionPlanApi(planId: string, planData: Partia
 }
 
 export async function fetchMerchantSubscriptionStatusApi(token?: string): Promise<SubscriptionStatusResponse> {
-  const res = await fetch(`${API_BASE}/subscription/merchant/status`, {
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
-  });
-  const json = await res.json();
-  if (json.success) return json.data;
+  try {
+    const res = await fetch(`${API_BASE}/subscription/merchant/status`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    });
+    const json = await res.json();
+    if (json.success && json.data) {
+      const data = json.data;
+      const hasActive = Boolean(
+        data.hasActiveSubscription ??
+        data.isActive ??
+        (data.subscription && (data.subscription.status === 'ACTIVE' || data.daysRemaining > 0))
+      );
+      return {
+        hasActiveSubscription: hasActive,
+        isActive: hasActive,
+        isExempt: Boolean(data.isExempt),
+        subscription: data.subscription || null,
+        daysRemaining: Number(data.daysRemaining || 0),
+        plan: data.plan || data.subscription?.plan || null,
+        merchantName: data.merchantName,
+        shopName: data.shopName,
+      };
+    }
+  } catch (err) {
+    console.error('Failed to fetch merchant subscription status:', err);
+  }
   return {
     hasActiveSubscription: false,
+    isActive: false,
     isExempt: false,
     subscription: null,
     daysRemaining: 0,

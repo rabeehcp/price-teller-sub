@@ -182,10 +182,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     if (authUser?.shopName) {
       handleStoreChange(authUser.shopName);
     }
-  }, [authUser]);
+  }, [authUser, shops]);
 
-
-  const currentShop = shops.find((s) => s.name === selectedShopName) || shops[0];
+  const currentShop =
+    shops.find(
+      (s) =>
+        s.name.toLowerCase() === selectedShopName.toLowerCase() ||
+        (authUser?.shopId && s.id.toLowerCase() === authUser.shopId.toLowerCase())
+    ) ||
+    shops.find((s) => s.name === selectedShopName) ||
+    shops[0];
 
   const [editablePrices, setEditablePrices] = useState<Record<string, number>>(() => {
     const initial: Record<string, number> = {};
@@ -229,7 +235,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const [shopCategories, setShopCategories] = useState<string[]>(
     currentShop?.categories && currentShop.categories.length > 0
       ? currentShop.categories
-      : ['vegetables', 'fruits', 'staples', 'dairy']
+      : AVAILABLE_PROVIDER_CATEGORIES.map((c) => c.id)
   );
 
   // Flash Deal Form State
@@ -248,13 +254,20 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const [bulkSuccessMsg, setBulkSuccessMsg] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [isSavingProfile, setIsSavingProfile] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
   const [analyzingProduct, setAnalyzingProduct] = useState<Product | null>(null);
 
   // When store changes, sync initial state
   const handleStoreChange = (targetShopName: string) => {
     setSelectedShopName(targetShopName);
-    const targetShop = shops.find((s) => s.name === targetShopName);
+    const targetShop = shops.find(
+      (s) =>
+        s.name.toLowerCase() === targetShopName.toLowerCase() ||
+        s.id.toLowerCase() === targetShopName.toLowerCase()
+    );
     if (targetShop) {
       setShopName(targetShop.name);
       setAddress(targetShop.address);
@@ -268,6 +281,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       setShopGpsStatus(null);
       if (targetShop.categories && targetShop.categories.length > 0) {
         setShopCategories(targetShop.categories);
+      } else {
+        setShopCategories(AVAILABLE_PROVIDER_CATEGORIES.map((c) => c.id));
       }
     }
 
@@ -370,20 +385,40 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     handlePriceChange(productId, adjusted);
   };
 
-  const handleSaveAll = async () => {
+  const handleSaveProduct = async (targetProductId?: string) => {
+    // If targetProductId is provided (e.g. from modal), only save that single product.
+    // Otherwise, save all products that have local modifications (dirtyPriceIds).
+    const targetIds = targetProductId
+      ? [targetProductId]
+      : dirtyPriceIds.size > 0
+      ? Array.from(dirtyPriceIds)
+      : analyzingProduct
+      ? [analyzingProduct.id]
+      : [];
+
+    if (targetIds.length === 0) {
+      setSaveSuccess(true);
+      setTimeout(() => setSaveSuccess(false), 2000);
+      return;
+    }
+
     setIsSaving(true);
-    // ONLY send updates for products currently carried in this shop
-    const currentlyCarried = products.filter((p) => p.prices && p.prices[selectedShopName] !== undefined);
-    const updates = currentlyCarried.map((p) => ({
-      productId: p.id,
-      price: editablePrices[p.id] ?? p.prices[selectedShopName] ?? 50,
-      stockStatus: editableStock[p.id] ?? (p.stockStatus?.[selectedShopName] || 'in_stock'),
-    }));
+    setSaveError(null);
+
+    const updates = targetIds.map((id) => {
+      const p = products.find((x) => x.id === id);
+      return {
+        productId: id,
+        price: editablePrices[id] ?? p?.prices?.[selectedShopName] ?? 50,
+        stockStatus: editableStock[id] ?? (p?.stockStatus?.[selectedShopName] || 'in_stock'),
+      };
+    });
 
     try {
       await updateMerchantPricesApi(selectedShopName, updates);
+      const updateMap = new Map(updates.map((u) => [u.productId, u]));
       const updatedProducts = products.map((p) => {
-        const u = updates.find((x) => x.productId === p.id);
+        const u = updateMap.get(p.id);
         if (!u) return p;
         return {
           ...p,
@@ -399,12 +434,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       });
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 2500);
-    } catch (e) {
+    } catch (e: any) {
       console.error('Error updating merchant prices', e);
+      setSaveError('വില സേവ് ചെയ്യുന്നതിൽ തടസ്സം ഉണ്ടായി. വീണ്ടും ശ്രമിക്കുക.');
+      setTimeout(() => setSaveError(null), 4500);
     } finally {
       setIsSaving(false);
     }
   };
+
+  const handleSaveAll = () => handleSaveProduct();
 
   const handleQuickFlatAdjustment = (productId: string, delta: number) => {
     const current = editablePrices[productId] || 0;
@@ -527,10 +566,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentShop) return;
+    setIsSavingProfile(true);
+    setProfileError(null);
     try {
       const updated = await updateMerchantShopApi({
-        name: shopName.trim() || currentShop.name,
+        name: shopName.trim() || currentShop?.name || selectedShopName,
         address,
         phone,
         shopType: shopType as any,
@@ -542,15 +582,25 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
         lng: shopLng,
       });
       if (updated) {
-        onShopsUpdated(shops.map((s) => (s.id === currentShop.id ? { ...s, ...updated } : s)));
+        const existingIdx = shops.findIndex(
+          (s) => s.id === updated.id || s.name.toLowerCase() === updated.name.toLowerCase()
+        );
+        const nextShops = existingIdx >= 0
+          ? shops.map((s, idx) => (idx === existingIdx ? { ...s, ...updated } : s))
+          : [...shops, updated];
+        onShopsUpdated(nextShops);
         if (shopName.trim() && shopName.trim() !== selectedShopName) {
           setSelectedShopName(shopName.trim());
         }
         setProfileSuccess(true);
-        setTimeout(() => setProfileSuccess(false), 2500);
+        setTimeout(() => setProfileSuccess(false), 3000);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to update shop profile', err);
+      setProfileError(err.message || 'Failed to update store profile. Please try again.');
+      setTimeout(() => setProfileError(null), 5000);
+    } finally {
+      setIsSavingProfile(false);
     }
   };
 
@@ -994,10 +1044,27 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const activeSub = localSubStatus?.subscription;
   const isExempt = localSubStatus?.isExempt;
   const daysLeft = localSubStatus?.daysRemaining ?? (activeSub ? Math.max(0, Math.ceil((new Date(activeSub.expiresAt).getTime() - Date.now()) / (1000 * 60 * 60 * 24))) : 0);
-  const totalDays = activeSub?.plan?.durationDays || (daysLeft > 180 ? 365 : daysLeft > 30 ? 180 : 30);
-  const progressPercent = isExempt ? 100 : Math.min(100, Math.max(0, Math.round((daysLeft / totalDays) * 100)));
-  const formattedExpiry = activeSub?.expiresAt ? new Date(activeSub.expiresAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
-  const formattedStart = activeSub?.startsAt ? new Date(activeSub.startsAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A';
+
+  // Calculate total duration: consider plan duration, actual timespan from startsAt to expiresAt, and at minimum daysLeft
+  const rawSpanDays = (activeSub?.startsAt && activeSub?.expiresAt)
+    ? Math.max(1, Math.round((new Date(activeSub.expiresAt).getTime() - new Date(activeSub.startsAt).getTime()) / (1000 * 60 * 60 * 24)))
+    : (activeSub?.plan?.durationDays || 30);
+  const totalDays = Math.max(activeSub?.plan?.durationDays || 30, rawSpanDays, daysLeft);
+
+  const progressPercent = isExempt ? 100 : Math.min(100, Math.max(0, Math.round((daysLeft / Math.max(1, totalDays)) * 100)));
+
+  const formattedExpiry = activeSub?.expiresAt
+    ? new Date(activeSub.expiresAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    : 'N/A';
+
+  let startDate = activeSub?.startsAt ? new Date(activeSub.startsAt) : null;
+  // Guard against any future start dates (e.g. from legacy test rows)
+  if (startDate && startDate.getTime() > Date.now()) {
+    startDate = activeSub?.createdAt ? new Date(activeSub.createdAt) : new Date();
+  }
+  const formattedStart = startDate
+    ? startDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
+    : 'N/A';
 
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
@@ -1556,6 +1623,21 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   <button
                     onClick={() => setDelistFeedbackMsg('')}
                     className="text-emerald-700 hover:text-emerald-900 p-1 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+
+              {saveError && (
+                <div className="bg-rose-50 border border-rose-200 text-rose-900 text-xs font-bold p-3.5 rounded-2xl flex items-center justify-between shadow-xs animate-in fade-in">
+                  <div className="flex items-center gap-2.5">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <span>{saveError}</span>
+                  </div>
+                  <button
+                    onClick={() => setSaveError(null)}
+                    className="text-rose-700 hover:text-rose-900 p-1 cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -2548,14 +2630,22 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     <button
                       onClick={handleSaveAll}
                       disabled={isSaving}
-                      className="flex-1 sm:flex-initial px-4 py-2 bg-[#10A978] hover:bg-[#0B8F68] text-[#063B2A] font-black rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                      className="flex-1 sm:flex-initial px-4 py-2 bg-[#10A978] hover:bg-[#0B8F68] text-[#063B2A] font-black rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1.5 disabled:opacity-75"
                     >
                       {isSaving ? (
                         <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      ) : saveSuccess ? (
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#063B2A]" />
                       ) : (
                         <Save className="w-3.5 h-3.5" />
                       )}
-                      <span>സേവ് ചെയ്യുക (Ctrl+S)</span>
+                      <span>
+                        {isSaving
+                          ? 'സേവ് ചെയ്യുന്നു...'
+                          : saveSuccess
+                          ? 'സേവ് ചെയ്തു!'
+                          : 'സേവ് ചെയ്യുക (Ctrl+S)'}
+                      </span>
                     </button>
                   </div>
                 </div>
@@ -2639,6 +2729,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               </div>
             )}
           </div>
+
+          {profileError && (
+            <div className="bg-rose-50 border border-rose-200 text-rose-800 text-xs font-bold p-3 rounded-xl mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+              <span>{profileError}</span>
+            </div>
+          )}
 
           {profileSuccess && (
             <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold p-3 rounded-xl mb-4 flex items-center gap-2">
@@ -2836,9 +2933,22 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
             <button
               type="submit"
-              className="w-full py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-xs transition-colors cursor-pointer mt-2"
+              disabled={isSavingProfile}
+              className="w-full py-3 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer mt-2 flex items-center justify-center gap-2 disabled:opacity-75"
             >
-              Save Store Profile & Specializations
+              {isSavingProfile ? (
+                <>
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                  <span>Saving Store Profile...</span>
+                </>
+              ) : profileSuccess ? (
+                <>
+                  <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                  <span>Saved Successfully! ✓</span>
+                </>
+              ) : (
+                <span>Save Store Profile & Specializations</span>
+              )}
             </button>
           </form>
         </div>
@@ -3839,8 +3949,21 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
             setDelistConfirmProduct(prod);
           }}
           onClose={() => setAnalyzingProduct(null)}
-          onSave={handleSaveAll}
+          onSave={() => handleSaveProduct(analyzingProduct.id)}
+          isSaving={isSaving}
           isDirty={dirtyPriceIds.has(analyzingProduct.id)}
+          currentIndex={filteredInventoryList.findIndex((p) => p.id === analyzingProduct.id) + 1}
+          totalProducts={filteredInventoryList.length}
+          onNavigateProduct={(dir) => {
+            if (!analyzingProduct || filteredInventoryList.length === 0) return;
+            const curIdx = filteredInventoryList.findIndex((p) => p.id === analyzingProduct.id);
+            if (curIdx === -1) return;
+            const nextIdx =
+              dir === 'next'
+                ? (curIdx + 1) % filteredInventoryList.length
+                : (curIdx - 1 + filteredInventoryList.length) % filteredInventoryList.length;
+            setAnalyzingProduct(filteredInventoryList[nextIdx]);
+          }}
         />
       )}
 

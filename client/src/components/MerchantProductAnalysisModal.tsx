@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Product, Shop } from '../types';
 import { ProductImage } from './ProductImage';
 import {
@@ -11,10 +11,13 @@ import {
   CheckCircle2,
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Store,
   Tag,
   AlertTriangle,
   RotateCcw,
+  RefreshCw,
 } from 'lucide-react';
 
 interface MerchantProductAnalysisModalProps {
@@ -28,8 +31,12 @@ interface MerchantProductAnalysisModalProps {
   onStockChange: (newStock: 'in_stock' | 'low_stock' | 'out_of_stock') => void;
   onDelist: () => void;
   onClose: () => void;
-  onSave?: () => void;
+  onSave?: () => Promise<void> | void;
+  isSaving?: boolean;
   isDirty?: boolean;
+  currentIndex?: number;
+  totalProducts?: number;
+  onNavigateProduct?: (direction: 'prev' | 'next') => void;
 }
 
 export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModalProps> = ({
@@ -44,9 +51,30 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
   onDelist,
   onClose,
   onSave,
+  isSaving = false,
   isDirty = false,
+  currentIndex,
+  totalProducts,
+  onNavigateProduct,
 }) => {
   const [showAllCompetitors, setShowAllCompetitors] = useState(false);
+  const [justSaved, setJustSaved] = useState(false);
+
+  // Reset saved status when product changes
+  useEffect(() => {
+    setJustSaved(false);
+  }, [product.id]);
+
+  const handleSaveClick = async () => {
+    if (!onSave || isSaving) return;
+    try {
+      await onSave();
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 2500);
+    } catch (err) {
+      console.error('Save failed in modal', err);
+    }
+  };
 
   // Competitor Analysis & Benchmarking
   const competitorEntries = Object.entries(product.prices || {})
@@ -97,6 +125,25 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
     onPriceChange(Math.round(avgMarketPrice));
   };
 
+  // Keyboard arrow shortcuts to step through products
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (e.key === 'ArrowLeft' && onNavigateProduct) {
+        e.preventDefault();
+        onNavigateProduct('prev');
+      } else if (e.key === 'ArrowRight' && onNavigateProduct) {
+        e.preventDefault();
+        onNavigateProduct('next');
+      } else if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onNavigateProduct, onClose]);
+
   return (
     <div className="fixed inset-0 z-50 flex items-end md:items-center justify-center p-0 md:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
       {/* Backdrop click to close */}
@@ -104,65 +151,145 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
 
       {/* Modal / Bottom Sheet Box */}
       <div
-        className="relative z-10 bg-white w-full md:max-w-xl max-h-[90vh] md:max-h-[85vh] rounded-t-3xl md:rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden font-malayalam animate-in slide-in-from-bottom-6 md:zoom-in-95 duration-200"
+        className="relative z-10 bg-white w-full md:max-w-2xl max-h-[92vh] md:max-h-[88vh] rounded-t-3xl md:rounded-3xl shadow-2xl border border-gray-100 flex flex-col overflow-hidden font-malayalam animate-in slide-in-from-bottom-6 md:zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Mobile Drag Pill */}
         <div className="md:hidden w-12 h-1.5 bg-gray-300 rounded-full mx-auto mt-3 mb-1 shrink-0" />
 
-        {/* 1. Header: Product Info & Close */}
-        <div className="p-4 sm:p-5 border-b border-[#E3ECE7] flex items-center justify-between gap-3 bg-[#F8FAF9] shrink-0">
-          <div className="flex items-center gap-3 min-w-0 flex-1">
-            <div className="w-13 h-13 rounded-2xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shadow-xs shrink-0">
+        {/* 1. Sleek Header Bar: Drag Pill, Title, Counter & Close */}
+        <div className="px-4 py-2.5 sm:px-5 sm:py-3 border-b border-[#E3ECE7] bg-[#F8FAF9] flex items-center justify-between gap-3 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
+            <span className="text-xs font-black text-slate-800 font-malayalam flex items-center gap-1.5">
+              <span>ഉൽപ്പന്ന വിശകലനം</span>
+              <span className="text-slate-300 font-normal">|</span>
+              <span className="text-slate-500 font-mono text-[11px] font-bold truncate max-w-[120px] sm:max-w-none">
+                {selectedShopName}
+              </span>
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {onNavigateProduct && typeof currentIndex === 'number' && typeof totalProducts === 'number' && totalProducts > 1 && (
+              <div className="flex items-center bg-white border border-[#E3ECE7] rounded-xl p-0.5 shadow-2xs">
+                <button
+                  type="button"
+                  onClick={() => onNavigateProduct('prev')}
+                  className="p-1 hover:bg-gray-100 rounded-lg text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                  title="മുൻപത്തെ ഉൽപ്പന്നം (Left Arrow)"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <span className="text-[11px] font-mono font-bold px-1.5 text-slate-700 select-none">
+                  {currentIndex} / {totalProducts}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onNavigateProduct('next')}
+                  className="p-1 hover:bg-gray-100 rounded-lg text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                  title="അടുത്ത ഉൽപ്പന്നം (Right Arrow)"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="p-1.5 text-gray-400 hover:text-slate-800 hover:bg-gray-200/60 rounded-full transition-colors cursor-pointer shrink-0"
+              title="അടയ്ക്കുക (Esc)"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* 2. Scrollable Body */}
+        <div className="overflow-y-auto flex-1 p-4 sm:p-5 space-y-4 text-xs">
+          {/* HERO SHOWCASE: Big, Spacious Product Presentation */}
+          <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-5 bg-gradient-to-b from-[#f8faf9] to-[#EDFAF3]/30 border border-[#E3ECE7] rounded-3xl p-3.5 sm:p-5 shadow-xs relative overflow-hidden">
+            {/* Big Product Image Showcase Card */}
+            <div className="relative w-full sm:w-56 h-48 sm:h-56 bg-white rounded-2xl border border-[#E3ECE7] p-3 flex items-center justify-center shrink-0 shadow-2xs overflow-hidden group">
               <ProductImage
                 productId={product.id}
                 image={product.image}
                 emoji={product.emoji}
                 alt={product.name}
                 className="w-full h-full"
-                imgClassName="w-full h-full object-contain"
-                fallbackEmojiClassName="text-2xl"
+                imgClassName="max-h-full max-w-full object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-105"
+                fallbackEmojiClassName="text-6xl sm:text-7xl select-none"
               />
+
+              {/* Floating Prev Button on Image */}
+              {onNavigateProduct && typeof totalProducts === 'number' && totalProducts > 1 && (
+                <button
+                  type="button"
+                  onClick={() => onNavigateProduct('prev')}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 hover:bg-white text-slate-700 hover:text-slate-950 shadow-md border border-gray-200/80 flex items-center justify-center transition-all active:scale-90 cursor-pointer z-10"
+                  title="മുൻപത്തെ ഉൽപ്പന്നം (Left Arrow)"
+                >
+                  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              )}
+
+              {/* Floating Next Button on Image */}
+              {onNavigateProduct && typeof totalProducts === 'number' && totalProducts > 1 && (
+                <button
+                  type="button"
+                  onClick={() => onNavigateProduct('next')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/95 hover:bg-white text-slate-700 hover:text-slate-950 shadow-md border border-gray-200/80 flex items-center justify-center transition-all active:scale-90 cursor-pointer z-10"
+                  title="അടുത്ത ഉൽപ്പന്നം (Right Arrow)"
+                >
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                </button>
+              )}
+
+              {/* Floating Product Counter Pill on Mobile */}
+              {typeof currentIndex === 'number' && typeof totalProducts === 'number' && totalProducts > 1 && (
+                <div className="sm:hidden absolute bottom-2 z-10">
+                  <span className="bg-black/60 backdrop-blur-xs text-white text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full shadow-xs">
+                    {currentIndex} / {totalProducts}
+                  </span>
+                </div>
+              )}
             </div>
-            <div className="min-w-0 flex-1">
+
+            {/* Product Meta & Title Block */}
+            <div className="flex-1 min-w-0 w-full text-left space-y-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <h3 className="text-base sm:text-lg font-black text-slate-900 leading-snug truncate">
-                  {product.name}
-                </h3>
+                <span className="px-2.5 py-0.5 bg-slate-200/80 text-slate-800 rounded-md font-mono font-bold text-xs shadow-2xs">
+                  {product.defaultUnit}
+                </span>
+                <span className="capitalize text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-md font-bold text-xs border border-emerald-200/60 shadow-2xs">
+                  {product.categoryId}
+                </span>
                 {isDirty && (
-                  <span className="px-2 py-0.5 bg-amber-100 text-amber-900 text-[10px] font-black rounded-md animate-pulse">
+                  <span className="px-2 py-0.5 bg-amber-400 text-amber-950 text-[10px] font-black rounded-md shadow-xs animate-pulse">
                     ✏️ മാറ്റം വരുത്തി
                   </span>
                 )}
               </div>
-              <div className="flex items-center gap-2 mt-0.5 text-xs text-slate-500 font-medium flex-wrap">
-                <span className="px-2 py-0.5 bg-slate-200/80 text-slate-800 rounded-md font-mono font-bold text-[11px]">
-                  {product.defaultUnit}
-                </span>
-                <span className="capitalize text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md font-bold text-[11px]">
-                  {product.categoryId}
-                </span>
+
+              <h2 className="text-base sm:text-xl font-black text-slate-900 leading-snug font-malayalam break-words">
+                {product.name}
+              </h2>
+
+              <div className="flex items-center gap-3 pt-0.5 text-xs text-slate-600 flex-wrap">
+                <div className="bg-white border border-[#E3ECE7] px-2.5 py-1 rounded-xl shadow-2xs">
+                  <span className="text-[10px] text-gray-400 font-semibold mr-1">വിൽപന വില:</span>
+                  <span className="font-sans font-black text-slate-900 text-sm">₹{currentPrice}</span>
+                  <span className="text-[10px] text-gray-400 font-mono ml-0.5">/{product.defaultUnit}</span>
+                </div>
+
                 {product.nutritionalNote && (
-                  <span className="text-[11px] text-gray-400 font-sans truncate max-w-[160px]">
+                  <span className="text-[11px] text-gray-400 font-sans truncate max-w-[220px]">
                     {product.nutritionalNote}
                   </span>
                 )}
               </div>
             </div>
           </div>
-
-          <button
-            type="button"
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-slate-800 hover:bg-gray-200/60 rounded-full transition-colors cursor-pointer shrink-0"
-            title="അടയ്ക്കുക"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* 2. Scrollable Body */}
-        <div className="overflow-y-auto flex-1 p-4 sm:p-5 space-y-4 text-xs">
           {/* SECTION A: Market Price Benchmark & Strategy Insight */}
           <div className="bg-[#EDFAF3]/60 border border-[#C3EEDC] rounded-2xl p-3.5 space-y-3">
             <div className="flex items-center justify-between">
@@ -465,39 +592,81 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
           </div>
         </div>
 
-        {/* 3. Footer: Delist & Done/Save */}
-        <div className="p-4 border-t border-[#E3ECE7] bg-[#F8FAF9] flex items-center justify-between gap-3 shrink-0">
+        {/* 3. Footer: Delist, Prev/Next & Done/Save */}
+        <div className="p-4 sm:p-5 border-t border-[#E3ECE7] bg-[#F8FAF9] flex items-center justify-between gap-3 shrink-0 flex-wrap">
           <button
             type="button"
             onClick={() => {
               onClose();
               onDelist();
             }}
-            className="px-3 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-2xl text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3.5 py-2.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-2xl text-xs font-black flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
             <span>ഒഴിവാക്കുക (Delist)</span>
           </button>
 
-          <div className="flex items-center gap-2">
-            {isDirty && onSave && (
+          {/* Stepper buttons in footer */}
+          {onNavigateProduct && typeof totalProducts === 'number' && totalProducts > 1 && (
+            <div className="flex items-center gap-1.5 text-xs">
               <button
                 type="button"
-                onClick={() => {
-                  onSave();
-                  onClose();
-                }}
-                className="px-4 py-2.5 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-2xl text-xs font-black shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+                onClick={() => onNavigateProduct('prev')}
+                className="px-3 py-2 bg-white hover:bg-gray-100 text-slate-700 border border-gray-200 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                title="മുൻപത്തെ ഉൽപ്പന്നം"
               >
-                <CheckCircle2 className="w-4 h-4" />
-                <span>സേവ് ചെയ്യുക</span>
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">മുൻപത്തെത്</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigateProduct('next')}
+                className="px-3 py-2 bg-white hover:bg-gray-100 text-slate-700 border border-gray-200 rounded-xl font-bold transition-all cursor-pointer flex items-center gap-1 shadow-2xs"
+                title="അടുത്ത ഉൽപ്പന്നം"
+              >
+                <span className="hidden sm:inline">അടുത്തത്</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          <div className="flex items-center gap-2">
+            {(isDirty || justSaved) && onSave && (
+              <button
+                type="button"
+                onClick={handleSaveClick}
+                disabled={isSaving || (!isDirty && justSaved)}
+                className={`px-4 py-2.5 rounded-2xl text-xs font-black shadow-xs flex items-center gap-1.5 transition-all ${
+                  isSaving
+                    ? 'bg-amber-600 text-white cursor-wait opacity-90'
+                    : justSaved && !isDirty
+                    ? 'bg-emerald-600 text-white cursor-default'
+                    : 'bg-[#0B8F68] hover:bg-[#063B2A] text-white cursor-pointer active:scale-95'
+                }`}
+              >
+                {isSaving ? (
+                  <>
+                    <RefreshCw className="w-4 h-4 animate-spin" />
+                    <span>സേവ് ചെയ്യുന്നു...</span>
+                  </>
+                ) : justSaved && !isDirty ? (
+                  <>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                    <span>സേവ് ചെയ്തു! ✓</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>സേവ് ചെയ്യുക</span>
+                  </>
+                )}
               </button>
             )}
 
             <button
               type="button"
               onClick={onClose}
-              className={`px-5 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer ${
+              className={`px-6 py-2.5 rounded-2xl text-xs font-black transition-all cursor-pointer ${
                 isDirty && onSave
                   ? 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                   : 'bg-[#063B2A] hover:bg-[#084D37] text-white shadow-xs'

@@ -457,7 +457,19 @@ export const App: React.FC = () => {
     setIsCheckingMerchantSubscription(true);
     try {
       const cached = localStorage.getItem(cacheKey);
-      if (cached) setMerchantSubStatus(JSON.parse(cached));
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        const hasActive = Boolean(
+          parsed.hasActiveSubscription ??
+          parsed.isActive ??
+          (parsed.subscription && (parsed.subscription.status === 'ACTIVE' || parsed.daysRemaining > 0))
+        );
+        setMerchantSubStatus({
+          ...parsed,
+          hasActiveSubscription: hasActive,
+          isActive: hasActive,
+        });
+      }
     } catch {}
 
     fetchMerchantSubscriptionStatusApi(authUser.token)
@@ -1180,7 +1192,13 @@ export const App: React.FC = () => {
       );
     }
 
-    if (!merchantSubStatus.hasActiveSubscription && !merchantSubStatus.isExempt) {
+    const hasActiveSub = Boolean(
+      merchantSubStatus.hasActiveSubscription ||
+      merchantSubStatus.isActive ||
+      (merchantSubStatus.subscription && (merchantSubStatus.subscription.status === 'ACTIVE' || (merchantSubStatus.daysRemaining && merchantSubStatus.daysRemaining > 0)))
+    );
+
+    if (!hasActiveSub && !merchantSubStatus.isExempt) {
       return (
         <MerchantSubscriptionPaywall
           merchantName={authUser.name}
@@ -1188,11 +1206,15 @@ export const App: React.FC = () => {
           token={authUser.token}
           statusInfo={merchantSubStatus}
           onSubscriptionSuccess={(sub) => {
-            const nextStatus = {
+            const nextStatus: SubscriptionStatusResponse = {
               hasActiveSubscription: true,
+              isActive: true,
               isExempt: false,
               subscription: sub,
-              daysRemaining: sub.daysRemaining || 30,
+              daysRemaining: sub.daysRemaining || sub.plan?.durationDays || 30,
+              plan: sub.plan || null,
+              merchantName: authUser.name,
+              shopName: authUser.shopName,
             };
             setMerchantSubStatus(nextStatus);
             try {
@@ -1253,12 +1275,20 @@ export const App: React.FC = () => {
                 isModal={true}
                 onClose={() => setIsMerchantUpgradeModalOpen(false)}
                 onSubscriptionSuccess={(sub) => {
-                  setMerchantSubStatus({
+                  const nextStatus: SubscriptionStatusResponse = {
                     hasActiveSubscription: true,
+                    isActive: true,
                     isExempt: false,
                     subscription: sub,
-                    daysRemaining: sub.daysRemaining || (sub.plan?.durationDays ?? 365),
-                  });
+                    daysRemaining: sub.daysRemaining || (sub.plan?.durationDays ?? 30),
+                    plan: sub.plan || null,
+                    merchantName: authUser.name,
+                    shopName: authUser.shopName,
+                  };
+                  setMerchantSubStatus(nextStatus);
+                  try {
+                    localStorage.setItem(`priceteller_subscription_status_${authUser.id}`, JSON.stringify(nextStatus));
+                  } catch {}
                   setIsMerchantUpgradeModalOpen(false);
                 }}
                 onLogout={() => {

@@ -26,21 +26,13 @@ app.use(
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
 
-// Database initialization promise
+// Database initialization state
 let dbReady = false;
-const dbInitPromise = initDb()
-  .then(() => {
-    dbReady = true;
-  })
-  .catch((dbErr: any) => {
-    console.warn('Database initialization warning:', dbErr.message);
-    dbReady = true;
-  });
 
-// Gate API requests until initial DB handshake & seeds are ready
-app.use(async (req, res, next) => {
+// Gate API requests until database is ready
+app.use((req, res, next) => {
   if (!dbReady) {
-    await dbInitPromise;
+    return res.status(503).json({ success: false, error: 'Database is not ready' });
   }
   next();
 });
@@ -97,16 +89,35 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
   res.status(500).json({ success: false, error: err?.message || 'Internal Server Error' });
 });
 
-// Listen immediately so Vite proxy never gets ECONNREFUSED
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`🚀 PriceTeller API Server is live at http://localhost:${PORT}`);
-  console.log(`🛒 Testing API at http://localhost:${PORT}/api/products`);
-});
+// Start server only after database initialization succeeds
+async function startServer() {
+  try {
+    const initialized = await initDb();
+    if (initialized === false) {
+      throw new Error('Database initialization failed');
+    }
+    dbReady = true;
 
-server.on('error', (err: any) => {
-  if (err.code === 'EADDRINUSE') {
-    console.warn(`⚠️ Port ${PORT} is already in use by an existing background process.`);
-  } else {
-    console.error('Server socket error:', err);
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`🚀 PriceTeller API Server is live at http://localhost:${PORT}`);
+      console.log(`🛒 Testing API at http://localhost:${PORT}/api/products`);
+    });
+
+    server.on('error', (err: any) => {
+      if (err.code === 'EADDRINUSE') {
+        console.warn(`⚠️ Port ${PORT} is already in use by an existing background process.`);
+      } else {
+        console.error('Server socket error:', err);
+      }
+    });
+
+    return server;
+  } catch (err: any) {
+    console.error('Database initialization failed:', err);
+    process.exit(1);
   }
-});
+}
+
+startServer();
+
+export { app, dbReady, startServer };
