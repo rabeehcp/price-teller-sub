@@ -1,5 +1,5 @@
 import React from 'react';
-import { Location } from '../types';
+import { Location, User } from '../types';
 import {
   Store,
   ArrowRight,
@@ -19,6 +19,8 @@ interface MalayalamOpeningPageProps {
   onOpenConsumerLogin?: () => void;
   onOpenMerchantPortal: () => void;
   onOpenShopCatalogue?: (shopName?: string) => void;
+  authUser?: User | null;
+  onLogout?: () => void;
 }
 
 export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
@@ -29,6 +31,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
   onOpenConsumerLogin,
   onOpenMerchantPortal,
   onOpenShopCatalogue,
+  authUser,
+  onLogout,
 }) => {
   return (
     <div className="min-h-screen bg-surface-bg text-slate-dark flex flex-col justify-between selection:bg-brand-500 selection:text-white font-sans">
@@ -71,14 +75,35 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <span>വ്യാപാരികൾക്കായി</span>
             </button>
 
-            {onOpenConsumerLogin && (
-              <button
-                onClick={onOpenConsumerLogin}
-                className="flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-[11px] sm:text-sm font-bold rounded-xl shadow-xs transition-all cursor-pointer font-malayalam"
-              >
-                <span>പ്രവേശിക്കുക</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
+            {authUser ? (
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  onClick={onEnterAsConsumer}
+                  className="flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-[11px] sm:text-sm font-bold rounded-xl shadow-xs transition-all cursor-pointer font-malayalam"
+                >
+                  <span>കടകളിലേക്ക്</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+                {onLogout && (
+                  <button
+                    onClick={onLogout}
+                    className="flex items-center gap-1 text-[11px] sm:text-xs font-bold text-slate-500 hover:text-rose-600 bg-white hover:bg-rose-50 border border-surface-border px-2.5 py-1.5 sm:py-2 rounded-xl transition-all cursor-pointer font-malayalam"
+                    title="ലോഗൗട്ട്"
+                  >
+                    <span>ലോഗൗട്ട്</span>
+                  </button>
+                )}
+              </div>
+            ) : (
+              onOpenConsumerLogin && (
+                <button
+                  onClick={onOpenConsumerLogin}
+                  className="flex items-center gap-1 px-3 sm:px-4 py-1.5 sm:py-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white text-[11px] sm:text-sm font-bold rounded-xl shadow-xs transition-all cursor-pointer font-malayalam"
+                >
+                  <span>പ്രവേശിക്കുക</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              )
             )}
           </div>
         </div>

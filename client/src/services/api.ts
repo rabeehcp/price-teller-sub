@@ -32,12 +32,21 @@ const API_BASE = '/api';
 
 export function getAuthToken(): string | null {
   try {
-    const explicit = localStorage.getItem('priceteller_token');
+    // 1. Check isolated session storage for the current browser tab
+    const explicit = sessionStorage.getItem('priceteller_token');
     if (explicit) return explicit;
-    const userStr = localStorage.getItem('priceteller_auth_user');
+    const userStr = sessionStorage.getItem('priceteller_auth_user');
     if (userStr) {
       const u = JSON.parse(userStr);
-      return u?.token || null;
+      if (u?.token) return u.token;
+    }
+
+    // 2. Clean up legacy localStorage tokens to prevent persistent cross-tab/session leaks
+    if (typeof window !== 'undefined' && window.localStorage) {
+      if (localStorage.getItem('priceteller_token') || localStorage.getItem('priceteller_auth_user')) {
+        localStorage.removeItem('priceteller_token');
+        localStorage.removeItem('priceteller_auth_user');
+      }
     }
   } catch {}
   return null;

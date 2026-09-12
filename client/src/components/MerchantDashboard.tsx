@@ -59,11 +59,25 @@ import {
   Flame,
   Layers,
   Menu,
+  ChevronLeft,
+  ChevronRight,
+  ChevronsLeft,
+  ChevronsRight,
+  SlidersHorizontal,
+  ArrowUpDown,
+  CheckSquare,
+  Square,
+  Filter,
+  RotateCcw,
+  TrendingUp,
+  TrendingDown,
+  Scale,
 } from 'lucide-react';
 import { MerchantBillingWorkspace } from './MerchantBillingWorkspace';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileMerchantView } from './MobileMerchantView';
 import { MobileDrawer } from './MobileDrawer';
+import { MerchantProductAnalysisModal } from './MerchantProductAnalysisModal';
 
 
 interface MerchantDashboardProps {
@@ -225,9 +239,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const [dealSuccessMsg, setDealSuccessMsg] = useState('');
 
   const [search, setSearch] = useState('');
+  const [inventoryStockFilter, setInventoryStockFilter] = useState<'all' | 'in_stock' | 'low_stock' | 'out_of_stock' | 'modified'>('all');
+  const [inventoryCurrentPage, setInventoryCurrentPage] = useState<number>(1);
+  const [inventoryItemsPerPage, setInventoryItemsPerPage] = useState<number>(50);
+  const [selectedProductIds, setSelectedProductIds] = useState<Set<string>>(() => new Set());
+  const [isBulkLoading, setIsBulkLoading] = useState(false);
+  const [bulkSuccessMsg, setBulkSuccessMsg] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [profileSuccess, setProfileSuccess] = useState(false);
+  const [analyzingProduct, setAnalyzingProduct] = useState<Product | null>(null);
 
   // When store changes, sync initial state
   const handleStoreChange = (targetShopName: string) => {
@@ -383,6 +404,101 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       setIsSaving(false);
     }
   };
+
+  const handleQuickFlatAdjustment = (productId: string, delta: number) => {
+    const current = editablePrices[productId] || 0;
+    const adjusted = Math.max(1, Math.round(current + delta));
+    handlePriceChange(productId, adjusted);
+  };
+
+  const handleDiscardChanges = () => {
+    const nextPrices = { ...editablePrices };
+    const nextStock = { ...editableStock };
+    dirtyPriceIds.forEach((id) => {
+      const orig = products.find((p) => p.id === id);
+      if (orig?.prices?.[selectedShopName] !== undefined) {
+        nextPrices[id] = orig.prices[selectedShopName];
+        nextStock[id] = orig.stockStatus?.[selectedShopName] || 'in_stock';
+      }
+    });
+    setEditablePrices(nextPrices);
+    setEditableStock(nextStock);
+    setDirtyPriceIds(new Set());
+  };
+
+  const handleBulkStockUpdate = async (status: 'in_stock' | 'low_stock' | 'out_of_stock') => {
+    if (selectedProductIds.size === 0) return;
+    setIsBulkLoading(true);
+    const targetIds = Array.from(selectedProductIds);
+
+    // 1. Update local state
+    setEditableStock((prev) => {
+      const next = { ...prev };
+      targetIds.forEach((id) => {
+        next[id] = status;
+      });
+      return next;
+    });
+
+    // 2. Update parent products
+    const updatedProducts = products.map((p) => {
+      if (selectedProductIds.has(p.id)) {
+        return {
+          ...p,
+          stockStatus: {
+            ...p.stockStatus,
+            [selectedShopName]: status,
+          },
+        };
+      }
+      return p;
+    });
+    onProductsUpdated(updatedProducts);
+
+    // 3. Persist to server
+    try {
+      const updates = targetIds.map((id) => {
+        const p = products.find((x) => x.id === id);
+        return {
+          productId: id,
+          price: editablePrices[id] ?? p?.prices[selectedShopName] ?? 50,
+          stockStatus: status,
+        };
+      });
+      await updateMerchantPricesApi(selectedShopName, updates);
+      const statusLabel = status === 'in_stock' ? 'ഇൻ സ്റ്റോക്ക്' : status === 'low_stock' ? 'കുറഞ്ഞ സ്റ്റോക്ക്' : 'ഔട്ട് ഓഫ് സ്റ്റോക്ക്';
+      setBulkSuccessMsg(`${targetIds.length} ഉൽപ്പന്നങ്ങൾ "${statusLabel}" ആക്കി മാറ്റി!`);
+      setTimeout(() => setBulkSuccessMsg(null), 3000);
+      setSelectedProductIds(new Set());
+    } catch (err) {
+      console.error('Bulk stock update error', err);
+    } finally {
+      setIsBulkLoading(false);
+    }
+  };
+
+  const handleBulkPriceAdjust = (percentage: number) => {
+    if (selectedProductIds.size === 0) return;
+    selectedProductIds.forEach((id) => {
+      applyQuickAdjustment(id, percentage);
+    });
+    setBulkSuccessMsg(`${selectedProductIds.size} ഉൽപ്പന്നങ്ങളുടെ വില ${percentage > 0 ? `+${percentage}%` : `${percentage}%`} മാറ്റി (Save ചെയ്യുക)`);
+    setTimeout(() => setBulkSuccessMsg(null), 3500);
+  };
+
+  // Keyboard shortcut: Ctrl+S / Cmd+S to save changes
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+        if (merchantTab === 'inventory' && dirtyPriceIds.size > 0 && !isSaving) {
+          e.preventDefault();
+          handleSaveAll();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [merchantTab, dirtyPriceIds, isSaving]);
 
   const handleDetectShopGps = () => {
     setShopGpsStatus(null);
@@ -813,19 +929,66 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const carriedProducts = eligibleProducts.filter((p) => p.prices && p.prices[selectedShopName] !== undefined && p.prices[selectedShopName] > 0);
   const notCarriedProducts = eligibleProducts.filter((p) => !p.prices || p.prices[selectedShopName] === undefined || p.prices[selectedShopName] <= 0);
 
-  // 3. Filter current view mode by search & selected category tab
-  const displayedInventoryList = (inventoryViewMode === 'carried' ? carriedProducts : notCarriedProducts).filter((p) => {
+  const inStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'in_stock').length;
+  const lowStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'low_stock').length;
+  const outOfStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'out_of_stock').length;
+
+  // 3. Filter current view mode by search, category tab, and stock status filter
+  const filteredInventoryList = (inventoryViewMode === 'carried' ? carriedProducts : notCarriedProducts).filter((p) => {
     const targetCats = CATEGORY_ALIASES[inventoryCategoryFilter] || [inventoryCategoryFilter];
     const matchesCategory =
       inventoryCategoryFilter === 'all' ||
       targetCats.includes(p.categoryId) ||
       (inventoryCategoryFilter === 'organic' && p.isOrganic);
     const matchesSearch =
+      !search.trim() ||
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       p.categoryId.toLowerCase().includes(search.toLowerCase()) ||
       (p.nutritionalNote && p.nutritionalNote.toLowerCase().includes(search.toLowerCase()));
+
+    if (inventoryViewMode === 'carried') {
+      const stock = editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock';
+      if (inventoryStockFilter === 'in_stock' && stock !== 'in_stock') return false;
+      if (inventoryStockFilter === 'low_stock' && stock !== 'low_stock') return false;
+      if (inventoryStockFilter === 'out_of_stock' && stock !== 'out_of_stock') return false;
+      if (inventoryStockFilter === 'modified' && !dirtyPriceIds.has(p.id)) return false;
+    }
+
     return matchesCategory && matchesSearch;
   });
+
+  // 4. Pagination
+  const totalPages = Math.max(1, Math.ceil(filteredInventoryList.length / inventoryItemsPerPage));
+  const safeCurrentPage = Math.min(Math.max(1, inventoryCurrentPage), totalPages);
+  const startIndex = (safeCurrentPage - 1) * inventoryItemsPerPage;
+  const paginatedInventoryList = filteredInventoryList.slice(startIndex, startIndex + inventoryItemsPerPage);
+
+  const isAllCurrentPageSelected = paginatedInventoryList.length > 0 && paginatedInventoryList.every((p) => selectedProductIds.has(p.id));
+  const isSomeCurrentPageSelected = paginatedInventoryList.some((p) => selectedProductIds.has(p.id)) && !isAllCurrentPageSelected;
+
+  const toggleSelectAllCurrentPage = () => {
+    setSelectedProductIds((prev) => {
+      const next = new Set(prev);
+      if (isAllCurrentPageSelected) {
+        paginatedInventoryList.forEach((p) => next.delete(p.id));
+      } else {
+        paginatedInventoryList.forEach((p) => next.add(p.id));
+      }
+      return next;
+    });
+  };
+
+  const toggleSelectProduct = (productId: string) => {
+    setSelectedProductIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(productId)) next.delete(productId);
+      else next.add(productId);
+      return next;
+    });
+  };
+
+  // Backwards compatibility alias for components expecting displayedInventoryList
+  const displayedInventoryList = filteredInventoryList;
 
   const activeSub = localSubStatus?.subscription;
   const isExempt = localSubStatus?.isExempt;
@@ -1006,19 +1169,62 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               <ArrowLeft className="w-4 h-4" />
             </button>
             <div>
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🏪</span>
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-xl">🏪</span>
                 <h1 className="text-base sm:text-lg font-black text-[#17221D] font-malayalam leading-tight">
                   {authUser?.shopName || selectedShopName}
                 </h1>
                 {authUser && (
-                  <span className="bg-[#DDF5EA] text-[#063B2A] text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 font-malayalam">
+                  <span className="bg-[#DDF5EA] text-[#063B2A] text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 font-malayalam border border-[#C3EEDC]">
                     <UserCheck className="w-3 h-3 text-[#0B8F68]" />
                     <span>വെരിഫൈഡ്</span>
                   </span>
                 )}
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EDFAF3] text-[#0B8F68] border border-[#C3EEDC]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10A978] animate-pulse" />
+                  <span>സ്റ്റോർ ലൈവ്</span>
+                </span>
               </div>
             </div>
+          </div>
+
+          {/* Center Quick Stats (Visible on desktop) */}
+          <div className="hidden lg:flex items-center gap-2 text-xs">
+            <div className="flex items-center gap-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
+              <Package className="w-3.5 h-3.5 text-slate-500" />
+              <span>{carriedProducts.length}</span>
+              <span className="text-[10px] font-medium text-slate-400">ലിസ്റ്റ് ചെയ്തവ</span>
+            </div>
+            <div className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-xl font-bold text-emerald-800">
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+              <span>{inStockCount}</span>
+              <span className="text-[10px] font-medium text-emerald-600">സ്റ്റോക്കിൽ</span>
+            </div>
+            {outOfStockCount > 0 && (
+              <button
+                onClick={() => {
+                  setMerchantTab('inventory');
+                  setInventoryStockFilter('out_of_stock');
+                }}
+                className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl font-bold text-rose-800 cursor-pointer transition-colors"
+                title="തീർന്നുപോയവ കാണുക"
+              >
+                <span className="w-2 h-2 rounded-full bg-rose-500" />
+                <span>{outOfStockCount}</span>
+                <span className="text-[10px] font-medium text-rose-600">തീർന്നുപോയവ</span>
+              </button>
+            )}
+            {dirtyPriceIds.size > 0 && (
+              <button
+                onClick={handleSaveAll}
+                disabled={isSaving}
+                className="flex items-center gap-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-xs shadow-xs cursor-pointer animate-pulse transition-all"
+                title="മാറ്റങ്ങൾ സേവ് ചെയ്യുക"
+              >
+                <Save className="w-3.5 h-3.5" />
+                <span>{isSaving ? 'സേവിംഗ്...' : `${dirtyPriceIds.size} സേവ് ചെയ്യുക`}</span>
+              </button>
+            )}
           </div>
 
           {/* Right Header Actions */}
@@ -1039,18 +1245,20 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
             <button
               onClick={() => setIsMasterPickerOpen(true)}
-              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer font-malayalam"
+              className="px-3 sm:px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer font-malayalam shrink-0"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span>+ ഉൽപ്പന്നം ചേർക്കുക</span>
+              <span className="hidden sm:inline">+ ഉൽപ്പന്നം ചേർക്കുക</span>
+              <span className="sm:hidden font-bold">+ ചേർക്കുക</span>
             </button>
 
             <button
               onClick={() => setIsSubModalOpen(true)}
-              className="px-3 py-1.5 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer"
+              className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
+              title="സബ്സ്ക്രിപ്ഷൻ വിവരങ്ങൾ"
             >
               <Crown className="w-3.5 h-3.5 text-amber-600" />
-              <span className="font-sans text-[11px]">{isExempt ? 'Lifetime' : `${daysLeft}d`}</span>
+              <span className="font-sans text-[11px] font-black">{isExempt ? 'ലൈഫ്‌ടൈം' : `${daysLeft}d ബാക്കി`}</span>
             </button>
           </div>
         </header>
@@ -1336,365 +1544,1065 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
           {/* TAB 1: INVENTORY & PRICES */}
           {merchantTab === 'inventory' && (
-            <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs animate-in fade-in duration-150">
-          {delistFeedbackMsg && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold p-3 rounded-xl mb-4 flex items-center justify-between animate-in fade-in">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                <span>{delistFeedbackMsg}</span>
-              </div>
-              <button
-                onClick={() => setDelistFeedbackMsg('')}
-                className="text-emerald-600 hover:text-emerald-800 p-1"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          )}
-
-          {/* Active Store Categories Ribbon */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-2 mb-3 scrollbar-none border-b border-gray-100">
-            <button
-              onClick={() => setInventoryCategoryFilter('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
-                inventoryCategoryFilter === 'all'
-                  ? 'bg-brand-600 text-white shadow-2xs'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              ✨ All My Categories ({eligibleProducts.length})
-            </button>
-            {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
-              const count = eligibleProducts.filter((p) => p.categoryId === cat.id).length;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setInventoryCategoryFilter(cat.id)}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
-                    inventoryCategoryFilter === cat.id
-                      ? 'bg-brand-600 text-white shadow-2xs'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                >
-                  <span>{cat.icon}</span>
-                  <span>{cat.label}</span>
-                  <span className="text-[10px] opacity-75">({count})</span>
-                </button>
-              );
-            })}
-            <button
-              onClick={() => setMerchantTab('profile')}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 text-brand-600 bg-brand-50 hover:bg-brand-100 border border-brand-200 ml-auto cursor-pointer flex items-center gap-1"
-            >
-              <Tag className="w-3.5 h-3.5" />
-              <span>+ Add / Change Categories</span>
-            </button>
-          </div>
-
-          {/* Carried vs Not Carried Sub-Tabs */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-            <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-xl border border-gray-200 w-fit text-xs font-bold">
-              <button
-                onClick={() => setInventoryViewMode('carried')}
-                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-                  inventoryViewMode === 'carried'
-                    ? 'bg-white text-emerald-800 shadow-2xs border border-gray-200 font-black'
-                    : 'text-gray-500 hover:text-gray-800'
-                }`}
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                <span>Listed in Store ({carriedProducts.length})</span>
-              </button>
-              <button
-                onClick={() => setInventoryViewMode('not_carried')}
-                className={`px-3 py-1.5 rounded-lg transition-all cursor-pointer flex items-center gap-1.5 ${
-                  inventoryViewMode === 'not_carried'
-                    ? 'bg-white text-slate-900 shadow-2xs border border-gray-200 font-black'
-                    : 'text-gray-500 hover:text-gray-800'
-                }`}
-              >
-                <PlusCircle className="w-3.5 h-3.5 text-brand-600" />
-                <span>📦 Master Catalog ({notCarriedProducts.length})</span>
-              </button>
-            </div>
-
-            <div className="flex items-center gap-2 w-full sm:w-auto">
-              <div className="relative flex-1 sm:w-64">
-                <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  placeholder="Search products..."
-                  className="w-full pl-9 pr-4 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-brand-500 focus:bg-white"
-                />
-              </div>
-
-              {inventoryViewMode === 'carried' && (
-                <button
-                  onClick={handleSaveAll}
-                  disabled={isSaving}
-                  className="flex items-center gap-1.5 px-4 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold shadow-xs transition-all cursor-pointer disabled:bg-gray-300 shrink-0"
-                >
-                  {isSaving ? (
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  ) : saveSuccess ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-white" />
-                  ) : (
-                    <Save className="w-3.5 h-3.5" />
-                  )}
-                  <span>{isSaving ? 'Saving...' : saveSuccess ? 'Saved!' : 'Save Prices'}</span>
-                </button>
+            <div className="space-y-4 animate-in fade-in duration-150 font-malayalam">
+              {/* Feedback Alerts */}
+              {delistFeedbackMsg && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold p-3.5 rounded-2xl flex items-center justify-between shadow-xs animate-in fade-in">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>{delistFeedbackMsg}</span>
+                  </div>
+                  <button
+                    onClick={() => setDelistFeedbackMsg('')}
+                    className="text-emerald-700 hover:text-emerald-900 p-1 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               )}
-            </div>
-          </div>
 
-          {/* VIEW MODE 1: ACTIVE / CARRIED ITEMS */}
-          {isLoadingProducts ? (
-            <div className="py-16 text-center text-gray-500 font-semibold">
-              <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-3 text-emerald-600" />
-              Loading your inventory and master catalog...
-            </div>
-          ) : inventoryViewMode === 'carried' ? (
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-gray-100 text-gray-400 font-bold uppercase tracking-wider">
-                    <th className="pb-3 px-3">Product</th>
-                    <th className="pb-3 px-3">Unit</th>
-                    <th className="pb-3 px-3">Live Price (₹)</th>
-                    <th className="pb-3 px-3">Quick Adjust</th>
-                    <th className="pb-3 px-3">Stock Status</th>
-                    <th className="pb-3 px-3 text-right">Delist / Remove</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {displayedInventoryList.map((p) => {
-                    const currentPrice = editablePrices[p.id] ?? 0;
-                    const currentStock = editableStock[p.id] ?? 'in_stock';
-                    return (
-                      <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
-                        <td className="py-3 px-3 flex items-center gap-2.5">
-                          <div className="w-8 h-8 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center">
-                            <ProductImage
-                              productId={p.id}
-                              image={p.image}
-                              emoji={p.emoji}
-                              alt={p.name}
-                              className="w-full h-full"
-                              imgClassName="w-full h-full object-contain"
-                              fallbackEmojiClassName="text-xl"
-                            />
-                          </div>
-                          <div>
-                            <b className="font-bold text-slate-dark block">{p.name}</b>
-                            <span className="text-[10px] text-gray-400 font-medium capitalize">{p.categoryId}</span>
-                          </div>
-                        </td>
+              {stockSyncNotice && (
+                <div className="bg-blue-50 border border-blue-200 text-blue-900 text-xs font-bold p-3.5 rounded-2xl flex items-center justify-between shadow-xs animate-in fade-in">
+                  <div className="flex items-center gap-2.5">
+                    <Sparkles className="w-4 h-4 text-blue-600 shrink-0" />
+                    <span>{stockSyncNotice}</span>
+                  </div>
+                  <button
+                    onClick={() => setStockSyncNotice(null)}
+                    className="text-blue-700 hover:text-blue-900 p-1 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
-                        <td className="py-3 px-3 text-gray-500 font-medium">{p.defaultUnit}</td>
+              {bulkSuccessMsg && (
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-bold p-3.5 rounded-2xl flex items-center justify-between shadow-xs animate-in fade-in">
+                  <div className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>{bulkSuccessMsg}</span>
+                  </div>
+                  <button
+                    onClick={() => setBulkSuccessMsg(null)}
+                    className="text-emerald-700 hover:text-emerald-900 p-1 cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
 
-                        <td className="py-3 px-3">
-                          <div className="flex items-center gap-1 w-24">
-                            <span className="text-gray-400 font-bold">₹</span>
-                            <input
-                              type="number"
-                              min="1"
-                              value={currentPrice}
-                              onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
-                              className="w-full px-2 py-1 bg-white border border-gray-300 focus:border-brand-500 rounded-lg text-xs font-black text-slate-dark text-right outline-none"
-                            />
-                          </div>
-                        </td>
+              {/* Main Card Wrapper */}
+              <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-6 shadow-xs">
+                
+                {/* 1. Category Ribbon */}
+                <div className="mb-4 pb-3 border-b border-gray-100">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Tag className="w-4 h-4 text-[#0B8F68]" />
+                      <span className="text-xs font-black text-slate-800">വിഭാഗങ്ങൾ (Categories)</span>
+                      <span className="text-[11px] text-slate-400 font-sans">({eligibleProducts.length} ആകെ ഉൽപ്പന്നങ്ങൾ)</span>
+                    </div>
+                    <button
+                      onClick={() => setMerchantTab('profile')}
+                      className="px-3 py-1 rounded-xl text-xs font-bold text-[#0B8F68] bg-[#EDFAF3] hover:bg-[#DDF5EA] border border-[#C3EEDC] cursor-pointer flex items-center gap-1 transition-colors"
+                    >
+                      <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
+                    </button>
+                  </div>
 
-                        <td className="py-3 px-3">
-                          <div className="flex items-center gap-1">
-                            <button
-                              onClick={() => applyQuickAdjustment(p.id, -5)}
-                              className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded text-[10px] font-bold text-gray-600 transition-colors"
-                              title="Decrease price by 5%"
-                            >
-                              -5%
-                            </button>
-                            <button
-                              onClick={() => applyQuickAdjustment(p.id, 5)}
-                              className="px-2 py-1 bg-gray-100 hover:bg-rose-50 hover:text-rose-700 rounded text-[10px] font-bold text-gray-600 transition-colors"
-                              title="Increase price by 5%"
-                            >
-                              +5%
-                            </button>
-                          </div>
-                        </td>
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+                    <button
+                      onClick={() => {
+                        setInventoryCategoryFilter('all');
+                        setInventoryCurrentPage(1);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                        inventoryCategoryFilter === 'all'
+                          ? 'bg-[#063B2A] text-white shadow-xs ring-2 ring-[#10A978]'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      <span>✨ എല്ലാ വിഭാഗങ്ങളും</span>
+                      <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length})</span>
+                    </button>
+                    {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
+                      const count = eligibleProducts.filter((p) => p.categoryId === cat.id).length;
+                      return (
+                        <button
+                          key={cat.id}
+                          onClick={() => {
+                            setInventoryCategoryFilter(cat.id);
+                            setInventoryCurrentPage(1);
+                          }}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                            inventoryCategoryFilter === cat.id
+                              ? 'bg-[#063B2A] text-white shadow-xs ring-2 ring-[#10A978]'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          <span>{cat.icon}</span>
+                          <span>{cat.label}</span>
+                          <span className="text-[10px] font-sans opacity-80 font-black">({count})</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-                        <td className="py-3 px-3">
-                          <select
-                            value={currentStock}
-                            onChange={(e) =>
-                              handleStockChange(
-                                p.id,
-                                e.target.value as any
-                              )
-                            }
-                            className={`px-2 py-1 rounded-lg text-[11px] font-bold border outline-none cursor-pointer ${
-                              currentStock === 'in_stock'
-                                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
-                                : currentStock === 'low_stock'
-                                ? 'bg-amber-50 text-amber-800 border-amber-200'
-                                : 'bg-rose-50 text-rose-800 border-rose-200'
+                {/* 2. Sub-Tabs & Stock Status Filter Bar */}
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-2xl border border-gray-200 w-fit text-xs font-bold">
+                    <button
+                      onClick={() => {
+                        setInventoryViewMode('carried');
+                        setInventoryCurrentPage(1);
+                        setSelectedProductIds(new Set());
+                      }}
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                        inventoryViewMode === 'carried'
+                          ? 'bg-white text-[#063B2A] shadow-xs border border-gray-200 font-black'
+                          : 'text-gray-500 hover:text-gray-800'
+                      }`}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-[#10A978]" />
+                      <span>ലിസ്റ്റ് ചെയ്തവ ({carriedProducts.length})</span>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setInventoryViewMode('not_carried');
+                        setInventoryCurrentPage(1);
+                        setSelectedProductIds(new Set());
+                      }}
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                        inventoryViewMode === 'not_carried'
+                          ? 'bg-white text-slate-900 shadow-xs border border-gray-200 font-black'
+                          : 'text-gray-500 hover:text-gray-800'
+                      }`}
+                    >
+                      <PlusCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
+                      <span>മാസ്റ്റർ കാറ്റലോഗ് ({notCarriedProducts.length})</span>
+                    </button>
+                  </div>
+
+                  {/* Stock Status Filter Pills (Active in Carried mode) */}
+                  {inventoryViewMode === 'carried' && (
+                    <div className="flex items-center gap-1 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
+                      <button
+                        onClick={() => {
+                          setInventoryStockFilter('all');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer shrink-0 ${
+                          inventoryStockFilter === 'all'
+                            ? 'bg-[#0B8F68] text-white shadow-2xs font-black'
+                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                        }`}
+                      >
+                        എല്ലാം ({carriedProducts.length})
+                      </button>
+                      <button
+                        onClick={() => {
+                          setInventoryStockFilter('in_stock');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                          inventoryStockFilter === 'in_stock'
+                            ? 'bg-emerald-700 text-white shadow-2xs font-black'
+                            : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                        }`}
+                      >
+                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                        <span>ഇൻ സ്റ്റോക്ക് ({inStockCount})</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setInventoryStockFilter('low_stock');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                          inventoryStockFilter === 'low_stock'
+                            ? 'bg-amber-600 text-white shadow-2xs font-black'
+                            : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+                        }`}
+                      >
+                        <span className="w-2 h-2 rounded-full bg-amber-500" />
+                        <span>കുറഞ്ഞത് ({lowStockCount})</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setInventoryStockFilter('out_of_stock');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                          inventoryStockFilter === 'out_of_stock'
+                            ? 'bg-rose-700 text-white shadow-2xs font-black'
+                            : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
+                        }`}
+                      >
+                        <span className="w-2 h-2 rounded-full bg-rose-500" />
+                        <span>തീർന്നുപോയവ ({outOfStockCount})</span>
+                      </button>
+                      {dirtyPriceIds.size > 0 && (
+                        <button
+                          onClick={() => {
+                            setInventoryStockFilter('modified');
+                            setInventoryCurrentPage(1);
+                          }}
+                          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                            inventoryStockFilter === 'modified'
+                              ? 'bg-amber-600 text-white shadow-2xs font-black'
+                              : 'bg-amber-100 text-amber-900 border border-amber-300'
+                          }`}
+                        >
+                          <span>✏️ മാറ്റങ്ങൾ ({dirtyPriceIds.size})</span>
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {/* 3. Search & Operational Actions Bar */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
+                  <div className="flex items-center gap-2 flex-1 max-w-lg">
+                    <div className="relative flex-1">
+                      <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <input
+                        type="text"
+                        value={search}
+                        onChange={(e) => {
+                          setSearch(e.target.value);
+                          setInventoryCurrentPage(1);
+                        }}
+                        placeholder="ഉൽപ്പന്നത്തിന്റെ പേര് അല്ലെങ്കിൽ കാറ്റഗറി തിരയുക..."
+                        className="w-full pl-9 pr-8 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-[#0B8F68] focus:bg-white transition-all"
+                      />
+                      {search && (
+                        <button
+                          onClick={() => {
+                            setSearch('');
+                            setInventoryCurrentPage(1);
+                          }}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 p-0.5 cursor-pointer"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1 shrink-0">
+                      <span className="text-[11px] text-gray-400 hidden md:inline">പേജ് അനുപാതം:</span>
+                      <select
+                        value={inventoryItemsPerPage}
+                        onChange={(e) => {
+                          setInventoryItemsPerPage(Number(e.target.value));
+                          setInventoryCurrentPage(1);
+                        }}
+                        className="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 outline-none cursor-pointer"
+                      >
+                        <option value={25}>25 / പേജ്</option>
+                        <option value={50}>50 / പേജ്</option>
+                        <option value={100}>100 / പേജ്</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 shrink-0">
+                    {inventoryViewMode === 'carried' && dirtyPriceIds.size > 0 && (
+                      <button
+                        onClick={handleDiscardChanges}
+                        className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                      >
+                        <RotateCcw className="w-3.5 h-3.5" />
+                        <span>റദ്ദാക്കുക</span>
+                      </button>
+                    )}
+
+                    {inventoryViewMode === 'carried' && (
+                      <button
+                        onClick={handleSaveAll}
+                        disabled={isSaving}
+                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all cursor-pointer ${
+                          dirtyPriceIds.size > 0
+                            ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white animate-pulse'
+                            : 'bg-[#0B8F68] hover:bg-[#063B2A] text-white disabled:bg-gray-300'
+                        }`}
+                      >
+                        {isSaving ? (
+                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                        ) : saveSuccess ? (
+                          <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                        ) : (
+                          <Save className="w-3.5 h-3.5" />
+                        )}
+                        <span>
+                          {isSaving
+                            ? 'സേവിംഗ്...'
+                            : saveSuccess
+                            ? 'സേവ് ചെയ്തു!'
+                            : dirtyPriceIds.size > 0
+                            ? `വിലകൾ സേവ് ചെയ്യുക (${dirtyPriceIds.size})`
+                            : 'വിലകൾ സേവ് ചെയ്യുക'}
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4. Bulk Action Banner (when items are selected) */}
+                {selectedProductIds.size > 0 && inventoryViewMode === 'carried' && (
+                  <div className="p-3 bg-[#063B2A] text-white rounded-2xl mb-4 flex flex-wrap items-center justify-between gap-3 shadow-md animate-in slide-in-from-top-2 duration-150">
+                    <div className="flex items-center gap-2">
+                      <span className="w-6 h-6 rounded-lg bg-[#10A978] text-[#063B2A] flex items-center justify-center font-black text-xs">
+                        {selectedProductIds.size}
+                      </span>
+                      <span className="text-xs font-black">ഇനങ്ങൾ തെരഞ്ഞെടുത്തു</span>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 flex-wrap text-xs">
+                      <button
+                        onClick={() => handleBulkStockUpdate('in_stock')}
+                        disabled={isBulkLoading}
+                        className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-2xs transition-colors cursor-pointer flex items-center gap-1"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-white" />
+                        <span>ഇൻ സ്റ്റോക്ക് ആക്കുക</span>
+                      </button>
+                      <button
+                        onClick={() => handleBulkStockUpdate('out_of_stock')}
+                        disabled={isBulkLoading}
+                        className="px-3 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow-2xs transition-colors cursor-pointer flex items-center gap-1"
+                      >
+                        <span className="w-2 h-2 rounded-full bg-white" />
+                        <span>ഔട്ട് ഓഫ് സ്റ്റോക്ക്</span>
+                      </button>
+                      <button
+                        onClick={() => handleBulkPriceAdjust(5)}
+                        className="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-colors cursor-pointer"
+                      >
+                        +5% വില
+                      </button>
+                      <button
+                        onClick={() => handleBulkPriceAdjust(-5)}
+                        className="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl transition-colors cursor-pointer"
+                      >
+                        -5% വില
+                      </button>
+                      <button
+                        onClick={() => setSelectedProductIds(new Set())}
+                        className="px-2.5 py-1.5 text-emerald-200 hover:text-white text-xs font-bold underline cursor-pointer"
+                      >
+                        ✕ ഒഴിവാക്കുക
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* 5. TABLE SECTION */}
+                {isLoadingProducts ? (
+                  <div className="py-16 text-center text-gray-500 font-semibold">
+                    <RefreshCw className="w-6 h-6 animate-spin mx-auto mb-3 text-[#0B8F68]" />
+                    നിങ്ങളുടെ സ്റ്റോർ ഉൽപ്പന്നങ്ങൾ ലോഡ് ചെയ്യുന്നു...
+                  </div>
+                ) : inventoryViewMode === 'carried' ? (
+                  <>
+                    {/* 5A. DESKTOP VIEW: High-Density Table */}
+                    <div className="hidden md:block overflow-x-auto border border-[#E3ECE7] rounded-2xl">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-600 font-black uppercase tracking-wider select-none">
+                            <th className="py-3 px-3 w-10 text-center">
+                              <input
+                                type="checkbox"
+                                checked={isAllCurrentPageSelected}
+                                ref={(el) => {
+                                  if (el) el.indeterminate = isSomeCurrentPageSelected;
+                                }}
+                                onChange={toggleSelectAllCurrentPage}
+                                className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4"
+                              />
+                            </th>
+                            <th className="py-3 px-3">ഉൽപ്പന്നം (Product)</th>
+                            <th className="py-3 px-3">യൂണിറ്റ് (Unit)</th>
+                            <th className="py-3 px-3">ലൈവ് വില (Price ₹)</th>
+                            <th className="py-3 px-3">ദ്രുത മാറ്റം (Adjust)</th>
+                            <th className="py-3 px-3">സ്റ്റോക്ക് നില (Stock Status)</th>
+                            <th className="py-3 px-3 text-right">മാറ്റുക (Action)</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {paginatedInventoryList.map((p) => {
+                            const currentPrice = editablePrices[p.id] ?? 0;
+                            const originalPrice = p.prices?.[selectedShopName] ?? currentPrice;
+                            const currentStock = editableStock[p.id] ?? 'in_stock';
+                            const isDirty = dirtyPriceIds.has(p.id);
+                            const isSelected = selectedProductIds.has(p.id);
+                            const priceDelta = currentPrice - originalPrice;
+
+                            return (
+                              <tr
+                                key={p.id}
+                                className={`transition-colors ${
+                                  isSelected
+                                    ? 'bg-[#EDFAF3]/70'
+                                    : isDirty
+                                    ? 'bg-amber-50/50'
+                                    : currentStock === 'out_of_stock'
+                                    ? 'bg-rose-50/20 hover:bg-rose-50/40'
+                                    : 'hover:bg-gray-50/80'
+                                }`}
+                              >
+                                <td className="py-3 px-3 text-center">
+                                  <input
+                                    type="checkbox"
+                                    checked={isSelected}
+                                    onChange={() => toggleSelectProduct(p.id)}
+                                    className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4"
+                                  />
+                                </td>
+
+                                <td
+                                  className="py-3 px-3 cursor-pointer group"
+                                  onClick={() => setAnalyzingProduct(p)}
+                                  title="വിപണി വിശകലനവും വിശദാംശങ്ങളും കാണാൻ ക്ലിക്ക് ചെയ്യുക"
+                                >
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-10 h-10 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs group-hover:border-[#0B8F68] transition-colors">
+                                      <ProductImage
+                                        productId={p.id}
+                                        image={p.image}
+                                        emoji={p.emoji}
+                                        alt={p.name}
+                                        className="w-full h-full"
+                                        imgClassName="w-full h-full object-contain"
+                                        fallbackEmojiClassName="text-xl"
+                                      />
+                                    </div>
+                                    <div>
+                                      <div className="flex items-center gap-1.5 flex-wrap">
+                                        <b className="font-black text-slate-900 group-hover:text-[#0B8F68] transition-colors block text-xs leading-snug">{p.name}</b>
+                                        {isDirty && (
+                                          <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-black text-[9px]">
+                                            മാറ്റം വരുത്തി
+                                          </span>
+                                        )}
+                                      </div>
+                                      <div className="flex items-center gap-2 mt-0.5">
+                                        <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-md text-[10px] font-bold capitalize">
+                                          {p.categoryId}
+                                        </span>
+                                        <span className="text-[10px] text-[#0B8F68] font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                                          <Scale className="w-3 h-3" /> വിശകലനം
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3">
+                                  <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono font-bold">
+                                    {p.defaultUnit}
+                                  </span>
+                                </td>
+
+                                <td className="py-3 px-3">
+                                  <div className="space-y-1">
+                                    <div className="flex items-center bg-white border border-gray-300 focus-within:border-[#0B8F68] focus-within:ring-2 focus-within:ring-[#DDF5EA] rounded-xl overflow-hidden w-28 transition-all">
+                                      <span className="px-2 text-gray-500 font-black text-xs bg-gray-50 border-r border-gray-200">
+                                        ₹
+                                      </span>
+                                      <input
+                                        type="number"
+                                        min="1"
+                                        value={currentPrice}
+                                        onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
+                                        className="w-full px-2 py-1.5 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                      />
+                                    </div>
+                                    {priceDelta !== 0 && (
+                                      <div className="text-[10px] font-sans font-bold flex items-center justify-end gap-0.5">
+                                        {priceDelta > 0 ? (
+                                          <span className="text-emerald-700">
+                                            +₹{priceDelta.toFixed(1)}
+                                          </span>
+                                        ) : (
+                                          <span className="text-rose-700">
+                                            -₹{Math.abs(priceDelta).toFixed(1)}
+                                          </span>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3">
+                                  <div className="flex items-center gap-1 font-sans">
+                                    <button
+                                      onClick={() => applyQuickAdjustment(p.id, -5)}
+                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
+                                      title="5% കുറയ്ക്കുക"
+                                    >
+                                      -5%
+                                    </button>
+                                    <button
+                                      onClick={() => applyQuickAdjustment(p.id, 5)}
+                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
+                                      title="5% കൂട്ടുക"
+                                    >
+                                      +5%
+                                    </button>
+                                    <button
+                                      onClick={() => handleQuickFlatAdjustment(p.id, -10)}
+                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
+                                      title="₹10 കുറയ്ക്കുക"
+                                    >
+                                      -₹10
+                                    </button>
+                                    <button
+                                      onClick={() => handleQuickFlatAdjustment(p.id, 10)}
+                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
+                                      title="₹10 കൂട്ടുക"
+                                    >
+                                      +₹10
+                                    </button>
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3">
+                                  <div className="inline-flex p-0.5 bg-gray-100 rounded-xl border border-gray-200 text-[10px] font-bold">
+                                    <button
+                                      onClick={() => handleStockChange(p.id, 'in_stock')}
+                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                                        currentStock === 'in_stock'
+                                          ? 'bg-emerald-600 text-white font-black shadow-2xs'
+                                          : 'text-gray-600 hover:text-emerald-800'
+                                      }`}
+                                      title="ഇൻ സ്റ്റോക്ക് ആക്കുക"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
+                                      <span>സ്റ്റോക്ക്</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleStockChange(p.id, 'low_stock')}
+                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                                        currentStock === 'low_stock'
+                                          ? 'bg-amber-500 text-white font-black shadow-2xs'
+                                          : 'text-gray-600 hover:text-amber-800'
+                                      }`}
+                                      title="കുറഞ്ഞ സ്റ്റോക്ക് ആക്കുക"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
+                                      <span>കുറവ്</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleStockChange(p.id, 'out_of_stock')}
+                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                                        currentStock === 'out_of_stock'
+                                          ? 'bg-rose-600 text-white font-black shadow-2xs'
+                                          : 'text-gray-600 hover:text-rose-800'
+                                      }`}
+                                      title="തീർന്നു എന്ന് അടയാളപ്പെടുത്തുക"
+                                    >
+                                      <span className="w-1.5 h-1.5 rounded-full bg-rose-300" />
+                                      <span>തീർന്നു</span>
+                                    </button>
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3 text-right">
+                                  <div className="flex items-center justify-end gap-1.5">
+                                    <button
+                                      type="button"
+                                      onClick={() => setAnalyzingProduct(p)}
+                                      className="px-2.5 py-1.5 bg-[#EDFAF3] hover:bg-[#DDF5EA] text-[#0B8F68] border border-[#C3EEDC] rounded-xl text-[11px] font-black transition-all flex items-center gap-1 cursor-pointer"
+                                      title="വിപണി വിശകലനം കാണുക"
+                                    >
+                                      <Scale className="w-3.5 h-3.5" />
+                                      <span>വിശകലനം</span>
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setDelistConfirmProduct(p)}
+                                      className="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer"
+                                      title="ഈ ഉൽപ്പന്നം സ്റ്റോറിൽ നിന്ന് ഒഴിവാക്കുക"
+                                    >
+                                      <Trash2 className="w-3.5 h-3.5" />
+                                      <span>ഒഴിവാക്കുക</span>
+                                    </button>
+                                  </div>
+                                </td>
+                              </tr>
+                            );
+                          })}
+
+                          {paginatedInventoryList.length === 0 && (
+                            <tr>
+                              <td colSpan={7} className="py-12 text-center">
+                                <div className="max-w-md mx-auto flex flex-col items-center">
+                                  <span className="text-4xl block mb-2">🔍</span>
+                                  <h4 className="font-extrabold text-slate-800 text-sm mb-1">
+                                    ഉൽപ്പന്നങ്ങൾ കണ്ടെത്താനായില്ല
+                                  </h4>
+                                  <p className="text-xs text-gray-500 mb-4">
+                                    തിരഞ്ഞെടുത്ത ഫിൽട്ടർ അല്ലെങ്കിൽ സെർച്ചിന് അനുയോജ്യമായ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ സ്റ്റോറിൽ ഇല്ല.
+                                  </p>
+                                  <div className="flex items-center gap-2">
+                                    <button
+                                      type="button"
+                                      onClick={() => {
+                                        setSearch('');
+                                        setInventoryStockFilter('all');
+                                        setInventoryCategoryFilter('all');
+                                      }}
+                                      className="px-3.5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                                    >
+                                      ഫിൽട്ടറുകൾ റീസെറ്റ് ചെയ്യുക
+                                    </button>
+                                    <button
+                                      type="button"
+                                      onClick={() => setIsMasterPickerOpen(true)}
+                                      className="px-4 py-2 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
+                                    >
+                                      <PlusCircle className="w-3.5 h-3.5" />
+                                      <span>മാസ്റ്റർ കാറ്റലോഗ്</span>
+                                    </button>
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* 5B. MOBILE VIEW: Fast-Scrolling, Compact Product Rows (Tap to Open & Analyze) */}
+                    <div className="md:hidden space-y-2">
+                      {/* Helpful Hint Pill */}
+                      <div className="flex items-center justify-between px-1 py-1 text-[11px] font-bold text-gray-500">
+                        <span className="flex items-center gap-1.5 text-slate-700">
+                          <Scale className="w-3.5 h-3.5 text-[#0B8F68]" />
+                          <span>ഉൽപ്പന്നത്തിൽ തൊട്ടാൽ (Tap) വിപണി വില വിശകലനം ചെയ്യാം</span>
+                        </span>
+                        <span className="text-[10px] font-sans text-gray-400">
+                          ({paginatedInventoryList.length} എണ്ണം)
+                        </span>
+                      </div>
+
+                      {paginatedInventoryList.map((p) => {
+                        const currentPrice = editablePrices[p.id] ?? 0;
+                        const originalPrice = p.prices?.[selectedShopName] ?? currentPrice;
+                        const currentStock = editableStock[p.id] ?? 'in_stock';
+                        const isDirty = dirtyPriceIds.has(p.id);
+                        const isSelected = selectedProductIds.has(p.id);
+                        const priceDelta = currentPrice - originalPrice;
+
+                        return (
+                          <div
+                            key={p.id}
+                            onClick={() => setAnalyzingProduct(p)}
+                            className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0B8F68]/60 ${
+                              isSelected
+                                ? 'border-[#0B8F68] bg-[#EDFAF3]/70 ring-1 ring-[#0B8F68]'
+                                : isDirty
+                                ? 'border-amber-400 bg-amber-50/25 ring-1 ring-amber-300'
+                                : currentStock === 'out_of_stock'
+                                ? 'border-rose-200 bg-rose-50/15'
+                                : 'border-[#E3ECE7]'
                             }`}
                           >
-                            <option value="in_stock">🟢 In Stock</option>
-                            <option value="low_stock">🟡 Low Stock</option>
-                            <option value="out_of_stock">🔴 Out of Stock</option>
-                          </select>
-                        </td>
+                            {/* Checkbox (e.stopPropagation()) + Thumbnail + Name + Unit */}
+                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={() => toggleSelectProduct(p.id)}
+                                className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4 shrink-0"
+                              />
+                              <div className="w-11 h-11 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs">
+                                <ProductImage
+                                  productId={p.id}
+                                  image={p.image}
+                                  emoji={p.emoji}
+                                  alt={p.name}
+                                  className="w-full h-full"
+                                  imgClassName="w-full h-full object-contain"
+                                  fallbackEmojiClassName="text-xl"
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <div className="flex items-center gap-1.5 flex-wrap">
+                                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate">
+                                    {p.name}
+                                  </h4>
+                                  {isDirty && (
+                                    <span className="px-1.5 py-0.2 bg-amber-100 text-amber-900 text-[8px] font-black rounded shrink-0">
+                                      മാറ്റം
+                                    </span>
+                                  )}
+                                </div>
+                                <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium truncate">
+                                  <span className="font-bold text-slate-700 font-mono">{p.defaultUnit}</span>
+                                  <span>•</span>
+                                  <span className="capitalize text-emerald-800 bg-emerald-50/80 px-1.5 py-0.2 rounded font-bold">
+                                    {p.categoryId}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
 
-                        <td className="py-3 px-3 text-right">
-                          <button
-                            onClick={() => setDelistConfirmProduct(p)}
-                            className="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-lg text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer ml-auto"
-                            title="Remove / Delist this item from my store"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                            <span>Remove</span>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {displayedInventoryList.length === 0 && (
-                    <tr>
-                      <td colSpan={6} className="py-12 text-center">
-                        <div className="max-w-md mx-auto flex flex-col items-center">
-                          <span className="text-4xl block mb-2">🍎</span>
-                          <h4 className="font-extrabold text-slate-800 text-sm mb-1">
-                            No active products listed in your store yet
-                          </h4>
-                          <p className="text-xs text-gray-500 mb-4">
-                            You can easily pick from 48+ Master Catalog fruits and platform products with 1 click, or create custom items!
-                          </p>
-                          <div className="flex items-center gap-2">
-                            <button
-                              type="button"
-                              onClick={() => setIsMasterPickerOpen(true)}
-                              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
-                            >
-                              <PlusCircle className="w-3.5 h-3.5" />
-                              <span>📦 Pick from Master Catalog</span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={() => onOpenAddProductModal?.()}
-                              className="px-3.5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
-                            >
-                              + Add Custom
-                            </button>
+                            {/* Right: Price & Stock Status Pill & Chevron */}
+                            <div className="flex items-center gap-2 shrink-0">
+                              <div className="text-right">
+                                <div className="text-sm font-black text-slate-900 font-sans flex items-center justify-end gap-0.5">
+                                  <span className="text-xs text-gray-400 font-bold">₹</span>
+                                  <span>{currentPrice}</span>
+                                </div>
+                                <div className="flex items-center justify-end gap-1 mt-0.5">
+                                  {priceDelta !== 0 && (
+                                    <span
+                                      className={`text-[9px] font-black font-sans ${
+                                        priceDelta > 0 ? 'text-emerald-700' : 'text-rose-700'
+                                      }`}
+                                    >
+                                      {priceDelta > 0 ? `+₹${priceDelta.toFixed(0)}` : `-₹${Math.abs(priceDelta).toFixed(0)}`}
+                                    </span>
+                                  )}
+                                  <span
+                                    className={`px-1.5 py-0.5 rounded-md text-[9px] font-black flex items-center gap-1 ${
+                                      currentStock === 'in_stock'
+                                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                                        : currentStock === 'low_stock'
+                                        ? 'bg-amber-50 text-amber-800 border border-amber-200'
+                                        : 'bg-rose-50 text-rose-800 border border-rose-200'
+                                    }`}
+                                  >
+                                    <span
+                                      className={`w-1.5 h-1.5 rounded-full ${
+                                        currentStock === 'in_stock'
+                                          ? 'bg-emerald-500'
+                                          : currentStock === 'low_stock'
+                                          ? 'bg-amber-500'
+                                          : 'bg-rose-500'
+                                      }`}
+                                    />
+                                    <span>
+                                      {currentStock === 'in_stock'
+                                        ? 'സ്റ്റോക്ക്'
+                                        : currentStock === 'low_stock'
+                                        ? 'കുറവ്'
+                                        : 'തീർന്നു'}
+                                    </span>
+                                  </span>
+                                </div>
+                              </div>
+
+                              <div className="p-1 rounded-lg bg-gray-50 text-gray-400">
+                                <ChevronRight className="w-4 h-4" />
+                              </div>
+                            </div>
                           </div>
+                        );
+                      })}
+
+                      {paginatedInventoryList.length === 0 && (
+                        <div className="py-12 text-center bg-white border border-[#E3ECE7] rounded-2xl p-6">
+                          <span className="text-3xl block mb-2">🔍</span>
+                          <h4 className="font-extrabold text-slate-800 text-sm mb-1">ഉൽപ്പന്നങ്ങൾ കണ്ടെത്താനായില്ല</h4>
+                          <p className="text-xs text-gray-500 mb-3">തിരഞ്ഞെടുത്ത ഫിൽട്ടറിന് അനുയോജ്യമായ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ സ്റ്റോറിൽ ഇല്ല.</p>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSearch('');
+                              setInventoryStockFilter('all');
+                              setInventoryCategoryFilter('all');
+                            }}
+                            className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold"
+                          >
+                            ഫിൽട്ടറുകൾ റീസെറ്റ് ചെയ്യുക
+                          </button>
                         </div>
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            /* VIEW MODE 2: DELISTED / NOT CARRIED ITEMS */
-            <div className="overflow-x-auto">
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl mb-4 text-xs text-amber-900 font-medium flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
-                <span>
-                  These items belong to your supported categories but are currently <b>delisted / not carried</b> in <b>{selectedShopName}</b>. You can set a price and add them to your store catalog anytime.
-                </span>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  /* VIEW MODE 2: DELISTED / NOT CARRIED ITEMS */
+                  <div className="overflow-x-auto">
+                    <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl mb-4 text-xs text-amber-900 font-medium flex items-center gap-2.5">
+                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>
+                        ഈ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ വിഭാഗത്തിലുള്ളതാണ്, എന്നാൽ ഇപ്പോൾ <b>{selectedShopName}</b> സ്റ്റോറിൽ ലിസ്റ്റ് ചെയ്തിട്ടില്ല. വിൽക്കാൻ ആഗ്രഹിക്കുന്ന വില നൽകി 1-ക്ലിക്കിൽ സ്റ്റോറിലേക്ക് ചേർക്കാം.
+                      </span>
+                    </div>
+
+                    {/* Desktop Master Catalog Table */}
+                    <div className="hidden md:block border border-[#E3ECE7] rounded-2xl overflow-hidden">
+                      <table className="w-full text-left text-xs border-collapse">
+                        <thead>
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-600 font-black uppercase tracking-wider">
+                            <th className="py-3 px-3">ഉൽപ്പന്നം (Product)</th>
+                            <th className="py-3 px-3">യൂണിറ്റ് (Unit)</th>
+                            <th className="py-3 px-3">ശരാശരി മാർക്കറ്റ് വില</th>
+                            <th className="py-3 px-3">നിങ്ങളുടെ വിൽപന വില (₹)</th>
+                            <th className="py-3 px-3 text-right">സ്റ്റോക്കിലേക്ക് ചേർക്കുക</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                          {paginatedInventoryList.map((p) => {
+                            const avg =
+                              Object.values(p.prices).length > 0
+                                ? Math.round(
+                                    Object.values(p.prices).reduce((a, b) => a + b, 0) /
+                                      Object.values(p.prices).length
+                                  )
+                                : 50;
+                            const customP = relistCustomPrices[p.id] ?? avg;
+                            return (
+                              <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
+                                <td className="py-3 px-3 flex items-center gap-2.5">
+                                  <div className="w-9 h-9 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center opacity-70">
+                                    <ProductImage
+                                      productId={p.id}
+                                      image={p.image}
+                                      emoji={p.emoji}
+                                      alt={p.name}
+                                      className="w-full h-full"
+                                      imgClassName="w-full h-full object-contain"
+                                      fallbackEmojiClassName="text-xl"
+                                    />
+                                  </div>
+                                  <div>
+                                    <b className="font-bold text-slate-800 block">{p.name}</b>
+                                    <span className="text-[10px] text-gray-400 font-medium capitalize">
+                                      {p.categoryId}
+                                    </span>
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3">
+                                  <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono font-bold">
+                                    {p.defaultUnit}
+                                  </span>
+                                </td>
+
+                                <td className="py-3 px-3 text-gray-600 font-bold font-sans">₹{avg}</td>
+
+                                <td className="py-3 px-3">
+                                  <div className="flex items-center bg-white border border-gray-300 focus-within:border-[#0B8F68] rounded-xl overflow-hidden w-28">
+                                    <span className="px-2 text-gray-400 font-bold bg-gray-50 border-r border-gray-200">
+                                      ₹
+                                    </span>
+                                    <input
+                                      type="number"
+                                      min="1"
+                                      value={customP}
+                                      onChange={(e) =>
+                                        setRelistCustomPrices((prev) => ({
+                                          ...prev,
+                                          [p.id]: Number(e.target.value),
+                                        }))
+                                      }
+                                      className="w-full px-2 py-1 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                    />
+                                  </div>
+                                </td>
+
+                                <td className="py-3 px-3 text-right">
+                                  <button
+                                    onClick={() => handleRelistProduct(p)}
+                                    disabled={delistLoading === p.id}
+                                    className="px-3.5 py-1.5 bg-[#0B8F68] hover:bg-[#063B2A] disabled:opacity-50 text-white rounded-xl text-xs font-black shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer ml-auto"
+                                  >
+                                    {delistLoading === p.id ? (
+                                      <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                    ) : (
+                                      <PlusCircle className="w-3.5 h-3.5" />
+                                    )}
+                                    <span>+ സ്റ്റോക്കിൽ ചേർക്കുക</span>
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          {paginatedInventoryList.length === 0 && (
+                            <tr>
+                              <td colSpan={5} className="py-8 text-center text-gray-400 font-medium">
+                                ഈ വിഭാഗത്തിലുള്ള എല്ലാ ഉൽപ്പന്നങ്ങളും നിലവിൽ നിങ്ങളുടെ സ്റ്റോറിൽ ലഭ്യമാണ്!
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Master Catalog Cards: Compact Rows */}
+                    <div className="md:hidden space-y-2">
+                      {paginatedInventoryList.map((p) => {
+                        const existingPrices = Object.values(p.prices);
+                        const avg =
+                          existingPrices.length > 0
+                            ? Math.round(
+                                existingPrices.reduce((a, b) => a + b, 0) /
+                                  existingPrices.length
+                              )
+                            : 50;
+                        return (
+                          <div
+                            key={p.id}
+                            onClick={() => setAnalyzingProduct(p)}
+                            className="bg-white border border-[#E3ECE7] rounded-2xl p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0B8F68]"
+                          >
+                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                              <div className="w-11 h-11 rounded-xl bg-gray-50 border border-gray-100 p-1 flex items-center justify-center shrink-0">
+                                <ProductImage
+                                  productId={p.id}
+                                  image={p.image}
+                                  emoji={p.emoji}
+                                  alt={p.name}
+                                  className="w-full h-full"
+                                  imgClassName="w-full h-full object-contain"
+                                  fallbackEmojiClassName="text-xl"
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <h4 className="text-xs sm:text-sm font-black text-slate-800 leading-snug truncate">
+                                  {p.name}
+                                </h4>
+                                <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium">
+                                  <span className="font-bold text-slate-700 font-mono">{p.defaultUnit}</span>
+                                  <span>•</span>
+                                  <span className="capitalize text-slate-500">{p.categoryId}</span>
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-2 shrink-0">
+                              <div className="text-right">
+                                <span className="text-[10px] text-gray-400 block font-medium">വിപണി ശരാശരി</span>
+                                <span className="text-xs font-black text-slate-800 font-sans">₹{avg}</span>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleRelistProduct(p);
+                                }}
+                                disabled={delistLoading === p.id}
+                                className="px-3 py-1.5 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-black shadow-2xs flex items-center gap-1 cursor-pointer transition-colors"
+                              >
+                                {delistLoading === p.id ? (
+                                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                ) : (
+                                  <PlusCircle className="w-3.5 h-3.5" />
+                                )}
+                                <span>ചേർക്കുക</span>
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+
+                      {paginatedInventoryList.length === 0 && (
+                        <div className="py-8 text-center text-gray-400 font-medium">
+                          ഈ വിഭാഗത്തിലുള്ള എല്ലാ ഉൽപ്പന്നങ്ങളും നിലവിൽ നിങ്ങളുടെ സ്റ്റോറിൽ ലഭ്യമാണ്!
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* 6. PAGINATION CONTROLS */}
+                {filteredInventoryList.length > 0 && (
+                  <div className="mt-4 pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none text-xs">
+                    <div className="text-gray-500 font-medium text-center sm:text-left">
+                      കാണിക്കുന്നത്{' '}
+                      <b className="text-slate-900 font-sans">{startIndex + 1}</b> -{' '}
+                      <b className="text-slate-900 font-sans">
+                        {Math.min(startIndex + inventoryItemsPerPage, filteredInventoryList.length)}
+                      </b>{' '}
+                      (ആകെ <b className="text-slate-900 font-sans">{filteredInventoryList.length}</b> ഉൽപ്പന്നങ്ങൾ)
+                    </div>
+
+                    <div className="flex items-center justify-center gap-1.5">
+                      <button
+                        onClick={() => setInventoryCurrentPage(1)}
+                        disabled={safeCurrentPage === 1}
+                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        title="ആദ്യ പേജ്"
+                      >
+                        <ChevronsLeft className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setInventoryCurrentPage((prev) => Math.max(1, prev - 1))}
+                        disabled={safeCurrentPage === 1}
+                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        title="മുമ്പത്തെ പേജ്"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+
+                      <div className="flex items-center gap-1 px-2 font-sans font-bold">
+                        <span className="text-slate-900">{safeCurrentPage}</span>
+                        <span className="text-gray-400">/</span>
+                        <span className="text-gray-500">{totalPages}</span>
+                      </div>
+
+                      <button
+                        onClick={() => setInventoryCurrentPage((prev) => Math.min(totalPages, prev + 1))}
+                        disabled={safeCurrentPage === totalPages}
+                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        title="അടുത്ത പേജ്"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => setInventoryCurrentPage(totalPages)}
+                        disabled={safeCurrentPage === totalPages}
+                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        title="അവസാന പേജ്"
+                      >
+                        <ChevronsRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+
               </div>
 
-              <table className="w-full text-left text-xs border-collapse">
-                <thead>
-                  <tr className="border-b border-gray-100 text-gray-400 font-bold uppercase tracking-wider">
-                    <th className="pb-3 px-3">Product</th>
-                    <th className="pb-3 px-3">Unit</th>
-                    <th className="pb-3 px-3">Market Avg (₹)</th>
-                    <th className="pb-3 px-3">My Selling Price (₹)</th>
-                    <th className="pb-3 px-3 text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {displayedInventoryList.map((p) => {
-                    const avg = Object.values(p.prices).length > 0
-                      ? Math.round(Object.values(p.prices).reduce((a, b) => a + b, 0) / Object.values(p.prices).length)
-                      : 50;
-                    const customP = relistCustomPrices[p.id] ?? avg;
-                    return (
-                      <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
-                        <td className="py-3 px-3 flex items-center gap-2.5">
-                          <div className="w-8 h-8 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center opacity-60">
-                            <ProductImage
-                              productId={p.id}
-                              image={p.image}
-                              emoji={p.emoji}
-                              alt={p.name}
-                              className="w-full h-full"
-                              imgClassName="w-full h-full object-contain"
-                              fallbackEmojiClassName="text-xl"
-                            />
-                          </div>
-                          <div>
-                            <b className="font-bold text-slate-700 block">{p.name}</b>
-                            <span className="text-[10px] text-gray-400 font-medium capitalize">{p.categoryId}</span>
-                          </div>
-                        </td>
+              {/* 7. FLOATING UNSAVED CHANGES BOTTOM BAR */}
+              {dirtyPriceIds.size > 0 && inventoryViewMode === 'carried' && (
+                <div className="fixed bottom-4 inset-x-3 sm:inset-x-auto sm:left-1/2 sm:-translate-x-1/2 z-40 bg-[#063B2A] text-white px-4 py-3 rounded-2xl shadow-2xl border border-[#10A978]/40 flex flex-col sm:flex-row items-center justify-between sm:justify-start gap-3 animate-in slide-in-from-bottom-5 duration-200 backdrop-blur-md">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping" />
+                    <span className="text-xs font-black">
+                      {dirtyPriceIds.size} ഉൽപ്പന്നങ്ങളിൽ മാറ്റം വരുത്തിയിട്ടുണ്ട്
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs w-full sm:w-auto justify-end">
+                    <button
+                      onClick={handleDiscardChanges}
+                      className="px-3.5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl font-bold transition-colors cursor-pointer"
+                    >
+                      റദ്ദാക്കുക
+                    </button>
+                    <button
+                      onClick={handleSaveAll}
+                      disabled={isSaving}
+                      className="flex-1 sm:flex-initial px-4 py-2 bg-[#10A978] hover:bg-[#0B8F68] text-[#063B2A] font-black rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                    >
+                      {isSaving ? (
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Save className="w-3.5 h-3.5" />
+                      )}
+                      <span>സേവ് ചെയ്യുക (Ctrl+S)</span>
+                    </button>
+                  </div>
+                </div>
+              )}
 
-                        <td className="py-3 px-3 text-gray-500 font-medium">{p.defaultUnit}</td>
-
-                        <td className="py-3 px-3 text-gray-600 font-bold">₹{avg}</td>
-
-                        <td className="py-3 px-3">
-                          <div className="flex items-center gap-1 w-28">
-                            <span className="text-gray-400 font-bold">₹</span>
-                            <input
-                              type="number"
-                              min="1"
-                              value={customP}
-                              onChange={(e) =>
-                                setRelistCustomPrices((prev) => ({
-                                  ...prev,
-                                  [p.id]: Number(e.target.value),
-                                }))
-                              }
-                              className="w-full px-2 py-1 bg-white border border-gray-300 focus:border-brand-500 rounded-lg text-xs font-black text-slate-dark text-right outline-none"
-                            />
-                          </div>
-                        </td>
-
-                        <td className="py-3 px-3 text-right">
-                          <button
-                            onClick={() => handleRelistProduct(p)}
-                            disabled={delistLoading === p.id}
-                            className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer ml-auto"
-                          >
-                            {delistLoading === p.id ? (
-                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                            ) : (
-                              <PlusCircle className="w-3.5 h-3.5" />
-                            )}
-                            <span>+ Stock & List Item</span>
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                  {displayedInventoryList.length === 0 && (
-                    <tr>
-                      <td colSpan={5} className="py-8 text-center text-gray-400 font-medium">
-                        All items in this category are currently active in your store inventory!
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
             </div>
           )}
-        </div>
-      )}
 
       {/* TAB 2: STORE PROFILE */}
       {merchantTab === 'profile' && (
@@ -1714,31 +2622,31 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           </div>
 
           {/* Subscription Limits & Active Plan Card inside Profile */}
-          <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-5 shadow-sm">
+          <div className="bg-gradient-to-br from-[#063B2A] to-[#084D37] text-white rounded-3xl p-5 shadow-sm border border-[#084D37]">
             <div className="flex items-start justify-between gap-2 mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="p-2 bg-brand-500/20 text-brand-400 rounded-xl border border-brand-500/30">
+                <div className="p-2 bg-[#10A978]/20 text-emerald-300 rounded-xl border border-[#10A978]/30">
                   <Crown className="w-5 h-5" />
                 </div>
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-400">Active Merchant Tier</span>
-                  <h4 className="text-base font-black m-0">
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-300">Active Merchant Tier</span>
+                  <h4 className="text-base font-black m-0 font-malayalam">
                     {activeSub?.plan?.name || (isExempt ? 'Verified Partner Exempt Access' : 'Partner Access')}
                   </h4>
                 </div>
               </div>
               <button
                 onClick={() => setIsSubModalOpen(true)}
-                className="px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-black transition-colors cursor-pointer"
+                className="px-3 py-1.5 bg-[#0B8F68] hover:bg-[#10A978] text-white rounded-xl text-xs font-black transition-colors cursor-pointer"
               >
                 View Full Limits
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 bg-slate-800/90 rounded-2xl p-3.5 border border-slate-700 mb-3">
+            <div className="grid grid-cols-2 gap-3 bg-[#063B2A]/70 rounded-2xl p-3.5 border border-[#084D37] mb-3">
               <div>
-                <span className="text-[10px] uppercase font-bold text-gray-400">Limit Remaining</span>
-                <div className="text-2xl font-black text-emerald-400 mt-0.5">
+                <span className="text-[10px] uppercase font-bold text-emerald-300/80">Limit Remaining</span>
+                <div className="text-2xl font-black text-emerald-300 mt-0.5 font-sans">
                   {isExempt ? 'Unlimited' : `${daysLeft} Days`}
                 </div>
                 <span className="text-[10px] text-gray-400 block mt-0.5">
@@ -2954,6 +3862,28 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
         </div>
       )}
 
+      {/* Merchant Product Analysis & Fast-Edit Modal */}
+      {analyzingProduct && (
+        <MerchantProductAnalysisModal
+          product={analyzingProduct}
+          selectedShopName={selectedShopName}
+          shops={shops}
+          currentPrice={editablePrices[analyzingProduct.id] ?? (analyzingProduct.prices?.[selectedShopName] || 0)}
+          originalPrice={analyzingProduct.prices?.[selectedShopName] ?? (editablePrices[analyzingProduct.id] ?? 0)}
+          currentStock={editableStock[analyzingProduct.id] ?? 'in_stock'}
+          onPriceChange={(newPrice) => handlePriceChange(analyzingProduct.id, newPrice)}
+          onStockChange={(newStock) => handleStockChange(analyzingProduct.id, newStock)}
+          onDelist={() => {
+            const prod = analyzingProduct;
+            setAnalyzingProduct(null);
+            setDelistConfirmProduct(prod);
+          }}
+          onClose={() => setAnalyzingProduct(null)}
+          onSave={handleSaveAll}
+          isDirty={dirtyPriceIds.has(analyzingProduct.id)}
+        />
+      )}
+
       {/* Master Catalog Quick-Picker Modal */}
       {isMasterPickerOpen && (
         <MasterCatalogPickerModal
@@ -2974,61 +3904,61 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       {/* Subscription Plan & Limits Details Modal */}
       {isSubModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 relative max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-surface-border relative max-h-[90vh] overflow-y-auto font-sans">
             {/* Modal Header */}
-            <div className="flex items-start justify-between pb-4 border-b border-gray-100 mb-4">
+            <div className="flex items-start justify-between pb-4 border-b border-[#E3ECE7] mb-4">
               <div className="flex items-center gap-2.5">
-                <div className="p-2.5 bg-brand-50 text-brand-700 rounded-2xl border border-brand-200">
-                  <Crown className="w-6 h-6" />
+                <div className="w-10 h-10 rounded-2xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center border border-[#C3EEDC] shadow-2xs shrink-0">
+                  <Crown className="w-5 h-5 text-[#F4B740]" />
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-slate-dark m-0">Subscription & Limit Details</h3>
-                  <p className="text-xs text-gray-400 font-semibold m-0">
-                    Active plan limits, validity countdown & store privileges
+                  <p className="text-xs text-slate-muted font-medium m-0 font-malayalam">
+                    സബ്‌സ്‌ക്രിപ്‌ഷൻ കാലാവധി, ആക്ടീവ് പ്ലാൻ ഫീച്ചറുകൾ & ആനുകൂല്യങ്ങൾ
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setIsSubModalOpen(false)}
-                className="p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-500 rounded-xl transition-colors cursor-pointer"
+                className="p-2 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             {/* Main Countdown & Plan Card */}
-            <div className="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-3xl p-5 mb-4 shadow-md relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#04281C] text-white rounded-3xl p-5 mb-4 shadow-md relative overflow-hidden border border-[#10A978]/20">
               <div className="flex items-start justify-between gap-2 mb-3">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-brand-400 bg-brand-950/80 px-2.5 py-0.5 rounded-full border border-brand-500/30 inline-block mb-1.5">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-[#063B2A] bg-[#DDF5EA] px-2.5 py-0.5 rounded-full border border-[#C3EEDC] inline-block mb-1.5 font-sans">
                     {activeSub?.status === 'ACTIVE' ? '✓ ACTIVE SUBSCRIPTION' : isExempt ? '✓ VERIFIED EXEMPTION' : 'SUBSCRIPTION STATUS'}
                   </span>
-                  <h4 className="text-xl font-black m-0">{activeSub?.plan?.name || (isExempt ? 'Verified Partner Exempt Access' : 'Merchant Partner Plan')}</h4>
+                  <h4 className="text-xl font-black m-0 text-white">{activeSub?.plan?.name || (isExempt ? 'Verified Partner Exempt Access' : 'Merchant Partner Plan')}</h4>
                 </div>
                 {activeSub?.plan?.badge && (
-                  <span className="text-xs font-black px-2.5 py-1 bg-amber-400 text-amber-950 rounded-xl shrink-0 shadow-xs">
+                  <span className="text-xs font-black px-2.5 py-1 bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 rounded-xl shrink-0 shadow-xs">
                     {activeSub.plan.badge}
                   </span>
                 )}
               </div>
 
               {/* Big Days Remaining Display */}
-              <div className="grid grid-cols-2 gap-3 bg-slate-800/80 rounded-2xl p-4 border border-slate-700 mb-3">
+              <div className="grid grid-cols-2 gap-3 bg-white/10 backdrop-blur-xs rounded-2xl p-4 border border-white/15 mb-3">
                 <div>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Remaining Limit</span>
-                  <div className="text-2xl sm:text-3xl font-black text-emerald-400 mt-0.5">
+                  <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-wider block">Remaining Limit</span>
+                  <div className="text-2xl sm:text-3xl font-black text-white mt-0.5">
                     {isExempt ? 'Unlimited' : `${daysLeft} Days`}
                   </div>
-                  <span className="text-[10px] text-gray-400 block mt-0.5">
+                  <span className="text-[10px] text-emerald-200/80 block mt-0.5">
                     {isExempt ? 'Permanent Access' : `of ${totalDays} days plan limit`}
                   </span>
                 </div>
                 <div>
-                  <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">Valid Until</span>
+                  <span className="text-[10px] font-bold text-emerald-200 uppercase tracking-wider block">Valid Until</span>
                   <div className="text-base sm:text-lg font-black text-white mt-1">
                     {isExempt ? 'No Expiry' : formattedExpiry}
                   </div>
-                  <span className="text-[10px] text-gray-400 block mt-0.5">
+                  <span className="text-[10px] text-emerald-200/80 block mt-0.5">
                     Started: {formattedStart}
                   </span>
                 </div>
@@ -3037,14 +3967,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               {/* Limit Timeline Progress Bar */}
               {!isExempt && (
                 <div>
-                  <div className="flex justify-between text-[11px] font-bold text-gray-300 mb-1">
+                  <div className="flex justify-between text-[11px] font-bold text-emerald-100 mb-1">
                     <span>Subscription Limit Progress</span>
                     <span>{daysLeft} days remaining ({progressPercent}%)</span>
                   </div>
-                  <div className="w-full h-2.5 bg-slate-700 rounded-full overflow-hidden">
+                  <div className="w-full h-2.5 bg-black/20 rounded-full overflow-hidden border border-white/10">
                     <div
                       className={`h-full rounded-full transition-all duration-500 ${
-                        daysLeft > 30 ? 'bg-emerald-400' : daysLeft > 7 ? 'bg-blue-400' : 'bg-amber-400'
+                        daysLeft > 30 ? 'bg-[#10A978]' : daysLeft > 7 ? 'bg-amber-400' : 'bg-rose-400'
                       }`}
                       style={{ width: `${progressPercent}%` }}
                     />
@@ -3054,7 +3984,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
             </div>
 
             {/* Included Platform Privileges & Features */}
-            <div className="mb-5">
+            <div className="mb-5 font-malayalam">
               <h5 className="text-xs font-black text-slate-dark uppercase tracking-wider mb-2.5">
                 Active Plan Features & Included Quotas
               </h5>
@@ -3067,17 +3997,17 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   'Customer Pre-Bookings Management',
                   'Flash Deals Promotion Engine',
                 ]).map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-2 p-2 rounded-xl bg-gray-50 border border-gray-100">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span className="font-semibold text-slate-dark text-[11px] leading-tight">{feat}</span>
+                  <div key={idx} className="flex items-start gap-2 p-2.5 rounded-xl bg-[#EDFAF3]/60 border border-[#C3EEDC]">
+                    <CheckCircle2 className="w-4 h-4 text-[#0B8F68] shrink-0 mt-0.5" />
+                    <span className="font-bold text-slate-dark text-[11px] leading-tight">{feat}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Footer Actions */}
-            <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-              <span className="text-[11px] text-gray-400 font-medium">
+            <div className="flex items-center justify-between pt-3 border-t border-[#E3ECE7]">
+              <span className="text-[11px] text-slate-muted font-medium">
                 Store: <b className="text-slate-dark">{selectedShopName}</b>
               </span>
               <div className="flex items-center gap-2">
@@ -3087,14 +4017,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       setIsSubModalOpen(false);
                       onOpenSubscriptionPaywall();
                     }}
-                    className="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors cursor-pointer"
+                    className="px-4 py-2 bg-[#0B8F68] hover:bg-[#087353] text-white rounded-xl text-xs font-black shadow-xs transition-colors cursor-pointer"
                   >
                     Extend / Change Plan
                   </button>
                 )}
                 <button
                   onClick={() => setIsSubModalOpen(false)}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
                 >
                   Close
                 </button>

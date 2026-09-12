@@ -75,7 +75,7 @@ import {
 import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight } from 'lucide-react';
 
 
-// Helper utilities to accurately identify admin or merchant route intents regardless of URL formats
+// Helper utilities to accurately identify admin, merchant, or consumer route intents
 const isExplicitAdminRoute = (): boolean => {
   try {
     const pathname = (window.location.pathname || '').toLowerCase();
@@ -84,14 +84,14 @@ const isExplicitAdminRoute = (): boolean => {
     const params = new URLSearchParams(window.location.search);
 
     return (
-      pathname.startsWith('/admin') ||
-      pathname.includes('admin') ||
-      params.get('admin') === 'true' ||
+      pathname === '/admin' ||
+      pathname.startsWith('/admin/') ||
       params.get('portal') === 'admin' ||
-      params.has('admin') ||
+      params.get('admin') === 'true' ||
+      search.includes('portal=admin') ||
       search.includes('admin=true') ||
-      search.includes('admin') ||
-      hash.includes('admin')
+      hash === '#admin' ||
+      hash.startsWith('#/admin')
     );
   } catch {
     return false;
@@ -106,13 +106,38 @@ const isExplicitMerchantRoute = (): boolean => {
     const params = new URLSearchParams(window.location.search);
 
     return (
-      pathname.startsWith('/merchant') ||
-      pathname.startsWith('/portal') ||
+      pathname === '/merchant' ||
+      pathname.startsWith('/merchant/') ||
+      pathname === '/portal' ||
+      pathname.startsWith('/portal/') ||
       params.get('portal') === 'merchant' ||
       params.get('merchant') === 'true' ||
-      params.has('merchant') ||
+      search.includes('portal=merchant') ||
       search.includes('merchant=true') ||
-      hash.includes('merchant')
+      hash === '#merchant' ||
+      hash.startsWith('#/merchant')
+    );
+  } catch {
+    return false;
+  }
+};
+
+const isExplicitConsumerRoute = (): boolean => {
+  try {
+    const pathname = (window.location.pathname || '').toLowerCase();
+    const search = (window.location.search || '').toLowerCase();
+    const hash = (window.location.hash || '').toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+      pathname === '/consumer' ||
+      pathname.startsWith('/consumer/') ||
+      params.get('view') === 'consumer' ||
+      params.get('portal') === 'consumer' ||
+      search.includes('view=consumer') ||
+      search.includes('portal=consumer') ||
+      hash === '#consumer' ||
+      hash.startsWith('#/consumer')
     );
   } catch {
     return false;
@@ -120,7 +145,7 @@ const isExplicitMerchantRoute = (): boolean => {
 };
 
 export const App: React.FC = () => {
-  // Authentication State (Never trust client localStorage blindly; validated with backend)
+  // Authentication State (Isolated to current tab/session via sessionStorage; validated with backend)
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
@@ -135,12 +160,9 @@ export const App: React.FC = () => {
     if (isExplicitMerchantRoute()) {
       return 'portal';
     }
-    try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('view') === 'consumer' || params.get('portal') === 'consumer' || window.location.pathname.startsWith('/consumer')) {
-        return 'consumer';
-      }
-    } catch {}
+    if (isExplicitConsumerRoute()) {
+      return 'consumer';
+    }
     return 'welcome';
   });
 
@@ -150,6 +172,12 @@ export const App: React.FC = () => {
   // Verify Session with Backend on Initial Mount
   useEffect(() => {
     async function verifySessionOnMount() {
+      // Purge legacy cross-tab tokens from earlier versions
+      try {
+        localStorage.removeItem('priceteller_token');
+        localStorage.removeItem('priceteller_auth_user');
+      } catch {}
+
       const token = getAuthToken();
       if (!token) {
         setIsVerifyingSession(false);
@@ -157,7 +185,9 @@ export const App: React.FC = () => {
           setAppView('admin');
         } else if (isExplicitMerchantRoute()) {
           setAppView('portal');
-        } else if (window.location.pathname.startsWith('/consumer') || new URLSearchParams(window.location.search).get('view') === 'consumer') {
+        } else if (isExplicitConsumerRoute()) {
+          setAppView('welcome');
+        } else {
           setAppView('welcome');
         }
         return;
@@ -168,12 +198,13 @@ export const App: React.FC = () => {
         if (user && user.role) {
           setAuthUser(user);
           try {
-            localStorage.setItem('priceteller_token', user.token || token);
-            localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+            sessionStorage.setItem('priceteller_token', user.token || token);
+            sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
           } catch {}
 
           const wantsAdmin = isExplicitAdminRoute();
           const wantsMerchant = isExplicitMerchantRoute();
+          const wantsConsumer = isExplicitConsumerRoute();
 
           if (wantsAdmin) {
             setAppView('admin');
@@ -186,21 +217,16 @@ export const App: React.FC = () => {
               setCurrentRole(user.role === 'admin' ? 'admin' : 'merchant');
             } else {
               window.history.replaceState({}, '', '/');
-              setAppView('consumer');
+              setAppView('welcome');
               setCurrentRole('shopper');
             }
+          } else if (wantsConsumer) {
+            setAppView('consumer');
+            setCurrentRole('shopper');
           } else {
-            // General or root view
-            if (user.role === 'merchant') {
-              setAppView('merchant');
-              setCurrentRole('merchant');
-            } else if (user.role === 'admin') {
-              setAppView('admin');
-              setCurrentRole('admin');
-            } else {
-              setAppView('consumer');
-              setCurrentRole('shopper');
-            }
+            // General or root route (e.g. localhost/): do NOT hijack into old screen! Always start at welcome!
+            setAppView('welcome');
+            setCurrentRole(user.role === 'admin' ? 'admin' : user.role === 'merchant' ? 'merchant' : 'shopper');
           }
         } else {
           throw new Error('Invalid user payload from /auth/me');
@@ -208,6 +234,8 @@ export const App: React.FC = () => {
       } catch (err) {
         console.warn('Backend rejected session token, resetting auth state:', err);
         try {
+          sessionStorage.removeItem('priceteller_token');
+          sessionStorage.removeItem('priceteller_auth_user');
           localStorage.removeItem('priceteller_token');
           localStorage.removeItem('priceteller_auth_user');
         } catch {}
@@ -238,6 +266,7 @@ export const App: React.FC = () => {
     const handlePopState = () => {
       const wantsAdmin = isExplicitAdminRoute();
       const wantsMerchant = isExplicitMerchantRoute();
+      const wantsConsumer = isExplicitConsumerRoute();
 
       if (wantsAdmin) {
         setAppView('admin');
@@ -252,13 +281,14 @@ export const App: React.FC = () => {
           setCurrentRole(authUser.role === 'admin' ? 'admin' : 'merchant');
         } else {
           window.history.replaceState({}, '', '/');
-          setAppView('consumer');
+          setAppView('welcome');
           setCurrentRole('shopper');
         }
-      } else if (window.location.pathname.startsWith('/consumer') || new URLSearchParams(window.location.search).get('view') === 'consumer') {
+      } else if (wantsConsumer) {
         setAppView(authUser ? 'consumer' : 'welcome');
       } else {
-        setAppView(authUser ? (authUser.role === 'admin' ? 'admin' : authUser.role === 'merchant' ? 'merchant' : 'consumer') : 'welcome');
+        // Root route /
+        setAppView('welcome');
       }
     };
     window.addEventListener('popstate', handlePopState);
@@ -775,8 +805,10 @@ export const App: React.FC = () => {
   const handleLoginSuccess = (user: User) => {
     setAuthUser(user);
     try {
-      localStorage.setItem('priceteller_token', user.token || '');
-      localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+      sessionStorage.setItem('priceteller_token', user.token || '');
+      sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+      localStorage.removeItem('priceteller_token');
+      localStorage.removeItem('priceteller_auth_user');
     } catch {}
     setIsAuthModalOpen(false);
     if (user.role === 'admin') {
@@ -788,7 +820,7 @@ export const App: React.FC = () => {
       setAppView('merchant');
       setCurrentRole('merchant');
     } else {
-      window.history.pushState({}, '', '/');
+      window.history.pushState({}, '', '/consumer');
       setAppView('consumer');
       setCurrentRole('shopper');
       // Fetch consumer data immediately
@@ -826,6 +858,8 @@ export const App: React.FC = () => {
     setAuthUser(null);
     setConsumerData(null);
     try {
+      sessionStorage.removeItem('priceteller_token');
+      sessionStorage.removeItem('priceteller_auth_user');
       localStorage.removeItem('priceteller_token');
       localStorage.removeItem('priceteller_auth_user');
     } catch {}
@@ -1006,7 +1040,7 @@ export const App: React.FC = () => {
           onLoginSuccess={handleLoginSuccess}
           onBackToHome={() => {
             window.history.pushState({}, '', '/');
-            setAppView(authUser ? (authUser.role === 'merchant' ? 'merchant' : 'consumer') : 'welcome');
+            setAppView('welcome');
           }}
           currentUser={authUser}
         />
@@ -1022,7 +1056,7 @@ export const App: React.FC = () => {
           categories={categories}
           authUser={authUser}
           onBackToShopper={() => {
-            window.history.pushState({}, '', '/');
+            window.history.pushState({}, '', '/consumer');
             setAppView('consumer');
             setCurrentRole('shopper');
           }}
@@ -1051,38 +1085,45 @@ export const App: React.FC = () => {
     );
   }
 
-  // 2. UNAUTHENTICATED USERS: Mandatory Sign In / Registration Barrier
-  if (!authUser) {
-    if (appView === 'portal' || appView === 'merchant' || isExplicitMerchantRoute()) {
-      return (
-        <>
-          <OpeningPage
-            locations={locations}
-            onOpenConsumerLogin={() => handleOpenAuthModal('consumer-login')}
-            onLoginSuccess={handleLoginSuccess}
-            onBackToWelcome={() => setAppView('welcome')}
-          />
-          <AuthModal
-            isOpen={isAuthModalOpen}
-            onClose={() => setIsAuthModalOpen(false)}
-            initialMode={authModalMode}
-            onLoginSuccess={handleLoginSuccess}
-            locations={locations}
-          />
-        </>
-      );
-    }
-
+  // 2. KERALA WELCOME LANDING PAGE (Default screen on localhost / root visit)
+  if (appView === 'welcome') {
     return (
       <>
         <MalayalamOpeningPage
           locations={locations}
           currentLocation={currentLocation}
+          authUser={authUser}
           onSelectLocation={handleSelectLocation}
-          onEnterAsConsumer={() => handleOpenAuthModal('consumer-login')}
-          onOpenConsumerLogin={() => handleOpenAuthModal('consumer-login')}
-          onOpenMerchantPortal={() => setAppView('portal')}
+          onEnterAsConsumer={() => {
+            if (authUser) {
+              window.history.pushState({}, '', '/consumer');
+              setAppView('consumer');
+              setCurrentRole('shopper');
+            } else {
+              handleOpenAuthModal('consumer-login');
+            }
+          }}
+          onOpenConsumerLogin={() => {
+            if (authUser) {
+              window.history.pushState({}, '', '/consumer');
+              setAppView('consumer');
+              setCurrentRole('shopper');
+            } else {
+              handleOpenAuthModal('consumer-login');
+            }
+          }}
+          onOpenMerchantPortal={() => {
+            if (authUser?.role === 'merchant' || authUser?.role === 'admin') {
+              window.history.pushState({}, '', '/merchant');
+              setAppView('merchant');
+              setCurrentRole(authUser.role === 'admin' ? 'admin' : 'merchant');
+            } else {
+              window.history.pushState({}, '', '/portal');
+              setAppView('portal');
+            }
+          }}
           onOpenShopCatalogue={handleOpenShopCatalogue}
+          onLogout={handleLogout}
         />
         <AuthModal
           isOpen={isAuthModalOpen}
@@ -1095,12 +1136,35 @@ export const App: React.FC = () => {
     );
   }
 
-  // 3. MERCHANT DASHBOARD (Strictly after server-confirmed merchant authentication)
-  if (appView === 'merchant' || authUser.role === 'merchant') {
-    if (authUser.role !== 'merchant') {
-      window.history.replaceState({}, '', '/');
-      setAppView('consumer');
-      setCurrentRole('shopper');
+  // 3. MERCHANT PORTAL ENTRANCE FOR UNAUTHENTICATED OR VISITING MERCHANTS
+  if (appView === 'portal' || (!authUser && isExplicitMerchantRoute())) {
+    return (
+      <>
+        <OpeningPage
+          locations={locations}
+          onOpenConsumerLogin={() => handleOpenAuthModal('consumer-login')}
+          onLoginSuccess={handleLoginSuccess}
+          onBackToWelcome={() => {
+            window.history.pushState({}, '', '/');
+            setAppView('welcome');
+          }}
+        />
+        <AuthModal
+          isOpen={isAuthModalOpen}
+          onClose={() => setIsAuthModalOpen(false)}
+          initialMode={authModalMode}
+          onLoginSuccess={handleLoginSuccess}
+          locations={locations}
+        />
+      </>
+    );
+  }
+
+  // 4. MERCHANT DASHBOARD (Strictly when appView is 'merchant' AND user is verified merchant/admin)
+  if (appView === 'merchant') {
+    if (!authUser || (authUser.role !== 'merchant' && authUser.role !== 'admin')) {
+      window.history.replaceState({}, '', '/portal');
+      setAppView('portal');
       return null;
     }
 
@@ -1136,7 +1200,10 @@ export const App: React.FC = () => {
             } catch {}
           }}
           onLogout={handleLogout}
-          onBackToApp={() => setAppView('consumer')}
+          onBackToApp={() => {
+            window.history.pushState({}, '', '/consumer');
+            setAppView('consumer');
+          }}
         />
       );
     }
@@ -1146,7 +1213,11 @@ export const App: React.FC = () => {
         <MerchantDashboard
           shops={shops}
           products={products}
-          onBackToShopper={handleLogout}
+          onBackToShopper={() => {
+            window.history.pushState({}, '', '/consumer');
+            setAppView('consumer');
+            setCurrentRole('shopper');
+          }}
           onProductsUpdated={(updated) => setProducts(updated)}
           onShopsUpdated={(updated) => setShops(updated)}
           onOpenAddProductModal={(catId) => {
@@ -1172,13 +1243,15 @@ export const App: React.FC = () => {
           />
         )}
         {isMerchantUpgradeModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-            <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-2 relative shadow-2xl">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
+            <div className="bg-[#F5F8F6] rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto relative shadow-2xl border border-surface-border">
               <MerchantSubscriptionPaywall
                 merchantName={authUser.name}
                 shopName={authUser.shopName}
                 token={authUser.token}
                 statusInfo={merchantSubStatus}
+                isModal={true}
+                onClose={() => setIsMerchantUpgradeModalOpen(false)}
                 onSubscriptionSuccess={(sub) => {
                   setMerchantSubStatus({
                     hasActiveSubscription: true,
@@ -1192,7 +1265,11 @@ export const App: React.FC = () => {
                   setIsMerchantUpgradeModalOpen(false);
                   handleLogout();
                 }}
-                onBackToApp={() => setIsMerchantUpgradeModalOpen(false)}
+                onBackToApp={() => {
+                  setIsMerchantUpgradeModalOpen(false);
+                  window.history.pushState({}, '', '/consumer');
+                  setAppView('consumer');
+                }}
               />
             </div>
           </div>
@@ -1201,7 +1278,13 @@ export const App: React.FC = () => {
     );
   }
 
-  // 4. AUTHENTICATED CONSUMER SHOPPING PORTAL (Persistent account verified)
+  // 5. AUTHENTICATED CONSUMER SHOPPING PORTAL (Protected; redirect unauthenticated users to welcome)
+  if (!authUser) {
+    window.history.replaceState({}, '', '/');
+    setAppView('welcome');
+    return null;
+  }
+
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
       
@@ -1211,8 +1294,9 @@ export const App: React.FC = () => {
           {/* Brand Logo */}
           <div
             onClick={() => {
+              window.history.pushState({}, '', '/');
               setShopperTab('home');
-              setAppView('consumer');
+              setAppView('welcome');
             }}
             className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-4"
           >
@@ -1386,10 +1470,18 @@ export const App: React.FC = () => {
             onOpenBasketMobile={() => setIsMobileBasketOpen(true)}
             currentRole={currentRole}
             onSelectRole={(r) => {
-              if (r === 'shopper') setAppView('consumer');
-              else if (r === 'merchant' && authUser?.role === 'merchant') setAppView('merchant');
-              else if (r === 'admin' && authUser?.role === 'admin') setAppView('admin');
-              else handleOpenAuthModal('merchant-login');
+              if (r === 'shopper') {
+                window.history.pushState({}, '', '/consumer');
+                setAppView('consumer');
+              } else if (r === 'merchant' && authUser?.role === 'merchant') {
+                window.history.pushState({}, '', '/merchant');
+                setAppView('merchant');
+              } else if (r === 'admin' && authUser?.role === 'admin') {
+                window.history.pushState({}, '', '/admin');
+                setAppView('admin');
+              } else {
+                handleOpenAuthModal('merchant-login');
+              }
             }}
             onOpenDeals={() => setShowDealsBanner(true)}
             onOpenShopCatalogue={() => setShopperTab('shops')}
@@ -1397,8 +1489,14 @@ export const App: React.FC = () => {
             consumerData={consumerData}
             onOpenAuthModal={handleOpenAuthModal}
             onOpenConsumerDashboard={() => setIsConsumerDashboardOpen(true)}
-            onOpenMerchantDashboard={() => setAppView('merchant')}
-            onOpenAdminDashboard={() => setAppView('admin')}
+            onOpenMerchantDashboard={() => {
+              window.history.pushState({}, '', '/merchant');
+              setAppView('merchant');
+            }}
+            onOpenAdminDashboard={() => {
+              window.history.pushState({}, '', '/admin');
+              setAppView('admin');
+            }}
             onOpenChat={() => handleOpenChat()}
             onOpenPreBookings={() => {
               if (!authUser) {
@@ -1411,6 +1509,7 @@ export const App: React.FC = () => {
             onLogout={handleLogout}
             onResetTrip={handleClearBasket}
             onGoHome={() => {
+              window.history.pushState({}, '', '/');
               setShopperTab('home');
               setAppView('welcome');
             }}
@@ -1935,12 +2034,20 @@ export const App: React.FC = () => {
           else setIsConsumerPreBookingsOpen(true);
         }}
         onOpenMerchantPortal={() => {
-          if (authUser?.role === 'merchant') setAppView('merchant');
-          else handleOpenAuthModal('merchant-login');
+          if (authUser?.role === 'merchant') {
+            window.history.pushState({}, '', '/merchant');
+            setAppView('merchant');
+          } else {
+            handleOpenAuthModal('merchant-login');
+          }
         }}
         onOpenAdminPortal={() => {
-          if (authUser?.role === 'admin') setAppView('admin');
-          else handleOpenAuthModal('merchant-login');
+          if (authUser?.role === 'admin') {
+            window.history.pushState({}, '', '/admin');
+            setAppView('admin');
+          } else {
+            handleOpenAuthModal('merchant-login');
+          }
         }}
         onLogout={handleLogout}
       />
