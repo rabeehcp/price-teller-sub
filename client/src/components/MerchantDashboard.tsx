@@ -61,6 +61,7 @@ import {
   Menu,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   ChevronsLeft,
   ChevronsRight,
   SlidersHorizontal,
@@ -1599,12 +1600,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
                       <Tag className="w-4 h-4 text-[#0B8F68]" />
-                      <span className="text-xs font-black text-slate-800">വിഭാഗങ്ങൾ (Categories)</span>
-                      <span className="text-[11px] text-slate-400 font-sans">({eligibleProducts.length} ആകെ ഉൽപ്പന്നങ്ങൾ)</span>
+                      <span className="text-xs font-bold text-slate-800">വിഭാഗങ്ങൾ</span>
+                      <span className="text-[11px] text-slate-400 font-sans">({eligibleProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)</span>
                     </div>
                     <button
                       onClick={() => setMerchantTab('profile')}
-                      className="px-3 py-1 rounded-xl text-xs font-bold text-[#0B8F68] bg-[#EDFAF3] hover:bg-[#DDF5EA] border border-[#C3EEDC] cursor-pointer flex items-center gap-1 transition-colors"
+                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] transition-colors cursor-pointer flex items-center gap-1"
                     >
                       <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
                     </button>
@@ -1618,11 +1619,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       }}
                       className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
                         inventoryCategoryFilter === 'all'
-                          ? 'bg-[#063B2A] text-white shadow-xs ring-2 ring-[#10A978]'
+                          ? 'bg-[#0B8F68] text-white shadow-xs'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
-                      <span>✨ എല്ലാ വിഭാഗങ്ങളും</span>
+                      <span>✨ എല്ലാം</span>
                       <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length})</span>
                     </button>
                     {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
@@ -1636,7 +1637,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                           }}
                           className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
                             inventoryCategoryFilter === cat.id
-                              ? 'bg-[#063B2A] text-white shadow-xs ring-2 ring-[#10A978]'
+                              ? 'bg-[#0B8F68] text-white shadow-xs'
                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
@@ -1790,19 +1791,19 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       )}
                     </div>
 
-                    <div className="flex items-center gap-1 shrink-0">
-                      <span className="text-[11px] text-gray-400 hidden md:inline">പേജ് അനുപാതം:</span>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span className="text-[11px] text-gray-400 hidden md:inline">ഒരു പേജിൽ:</span>
                       <select
                         value={inventoryItemsPerPage}
                         onChange={(e) => {
                           setInventoryItemsPerPage(Number(e.target.value));
                           setInventoryCurrentPage(1);
                         }}
-                        className="px-2 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 outline-none cursor-pointer"
+                        className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 outline-none cursor-pointer hover:bg-white transition-colors"
                       >
-                        <option value={25}>25 / പേജ്</option>
-                        <option value={50}>50 / പേജ്</option>
-                        <option value={100}>100 / പേജ്</option>
+                        <option value={25}>25 എണ്ണം</option>
+                        <option value={50}>50 എണ്ണം</option>
+                        <option value={100}>100 എണ്ണം</option>
                       </select>
                     </div>
                   </div>
@@ -1910,8 +1911,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     <div className="hidden md:block overflow-x-auto border border-[#E3ECE7] rounded-2xl">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-600 font-black uppercase tracking-wider select-none">
-                            <th className="py-3 px-3 w-10 text-center">
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-xs select-none">
+                            <th className="py-3.5 px-3 w-10 text-center">
                               <input
                                 type="checkbox"
                                 checked={isAllCurrentPageSelected}
@@ -1922,12 +1923,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4"
                               />
                             </th>
-                            <th className="py-3 px-3">ഉൽപ്പന്നം (Product)</th>
-                            <th className="py-3 px-3">യൂണിറ്റ് (Unit)</th>
-                            <th className="py-3 px-3">ലൈവ് വില (Price ₹)</th>
-                            <th className="py-3 px-3">ദ്രുത മാറ്റം (Adjust)</th>
-                            <th className="py-3 px-3">സ്റ്റോക്ക് നില (Stock Status)</th>
-                            <th className="py-3 px-3 text-right">മാറ്റുക (Action)</th>
+                            <th className="py-3.5 px-4 font-bold">ഉൽപ്പന്നം</th>
+                            <th className="py-3.5 px-3 font-bold">യൂണിറ്റ്</th>
+                            <th className="py-3.5 px-4 font-bold">വിൽപന വില (₹)</th>
+                            <th className="py-3.5 px-4 font-bold">സ്റ്റോക്ക്</th>
+                            <th className="py-3.5 px-4 text-right font-bold">നടപടികൾ</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
@@ -1962,7 +1962,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 </td>
 
                                 <td
-                                  className="py-3 px-3 cursor-pointer group"
+                                  className="py-3 px-4 cursor-pointer group"
                                   onClick={() => setAnalyzingProduct(p)}
                                   title="വിപണി വിശകലനവും വിശദാംശങ്ങളും കാണാൻ ക്ലിക്ക് ചെയ്യുക"
                                 >
@@ -1980,9 +1980,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     </div>
                                     <div>
                                       <div className="flex items-center gap-1.5 flex-wrap">
-                                        <b className="font-black text-slate-900 group-hover:text-[#0B8F68] transition-colors block text-xs leading-snug">{p.name}</b>
+                                        <b className="font-bold text-slate-900 group-hover:text-[#0B8F68] transition-colors block text-xs leading-snug">{p.name}</b>
                                         {isDirty && (
-                                          <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-black text-[9px]">
+                                          <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-bold text-[9px]">
                                             മാറ്റം വരുത്തി
                                           </span>
                                         )}
@@ -2005,10 +2005,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   </span>
                                 </td>
 
-                                <td className="py-3 px-3">
+                                <td className="py-3 px-4">
                                   <div className="space-y-1">
-                                    <div className="flex items-center bg-white border border-gray-300 focus-within:border-[#0B8F68] focus-within:ring-2 focus-within:ring-[#DDF5EA] rounded-xl overflow-hidden w-28 transition-all">
-                                      <span className="px-2 text-gray-500 font-black text-xs bg-gray-50 border-r border-gray-200">
+                                    <div className="flex items-center bg-white border border-gray-200 focus-within:border-[#0B8F68] focus-within:ring-2 focus-within:ring-[#DDF5EA] rounded-xl overflow-hidden w-28 transition-all shadow-2xs">
+                                      <span className="px-2.5 text-gray-400 font-bold text-xs bg-gray-50 border-r border-gray-200">
                                         ₹
                                       </span>
                                       <input
@@ -2016,7 +2016,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                         min="1"
                                         value={currentPrice}
                                         onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
-                                        className="w-full px-2 py-1.5 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                        className="w-full px-2 py-1.5 text-xs font-bold text-slate-900 text-right outline-none font-sans"
                                       />
                                     </div>
                                     {priceDelta !== 0 && (
@@ -2035,86 +2035,47 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-3">
-                                  <div className="flex items-center gap-1 font-sans">
-                                    <button
-                                      onClick={() => applyQuickAdjustment(p.id, -5)}
-                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
-                                      title="5% കുറയ്ക്കുക"
-                                    >
-                                      -5%
-                                    </button>
-                                    <button
-                                      onClick={() => applyQuickAdjustment(p.id, 5)}
-                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
-                                      title="5% കൂട്ടുക"
-                                    >
-                                      +5%
-                                    </button>
-                                    <button
-                                      onClick={() => handleQuickFlatAdjustment(p.id, -10)}
-                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
-                                      title="₹10 കുറയ്ക്കുക"
-                                    >
-                                      -₹10
-                                    </button>
-                                    <button
-                                      onClick={() => handleQuickFlatAdjustment(p.id, 10)}
-                                      className="px-2 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 rounded-lg text-[10px] font-black text-gray-700 transition-colors cursor-pointer"
-                                      title="₹10 കൂട്ടുക"
-                                    >
-                                      +₹10
-                                    </button>
-                                  </div>
-                                </td>
-
-                                <td className="py-3 px-3">
-                                  <div className="inline-flex p-0.5 bg-gray-100 rounded-xl border border-gray-200 text-[10px] font-bold">
-                                    <button
-                                      onClick={() => handleStockChange(p.id, 'in_stock')}
-                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
+                                <td className="py-3 px-4">
+                                  <div className="relative inline-flex items-center">
+                                    <span
+                                      className={`w-2 h-2 rounded-full absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
                                         currentStock === 'in_stock'
-                                          ? 'bg-emerald-600 text-white font-black shadow-2xs'
-                                          : 'text-gray-600 hover:text-emerald-800'
+                                          ? 'bg-emerald-500'
+                                          : currentStock === 'low_stock'
+                                          ? 'bg-amber-500'
+                                          : 'bg-rose-500'
                                       }`}
-                                      title="ഇൻ സ്റ്റോക്ക് ആക്കുക"
-                                    >
-                                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-300" />
-                                      <span>സ്റ്റോക്ക്</span>
-                                    </button>
-                                    <button
-                                      onClick={() => handleStockChange(p.id, 'low_stock')}
-                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-                                        currentStock === 'low_stock'
-                                          ? 'bg-amber-500 text-white font-black shadow-2xs'
-                                          : 'text-gray-600 hover:text-amber-800'
+                                    />
+                                    <select
+                                      value={currentStock}
+                                      onChange={(e) =>
+                                        handleStockChange(
+                                          p.id,
+                                          e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock'
+                                        )
+                                      }
+                                      className={`text-xs font-bold pl-6 pr-7 py-1.5 rounded-xl border appearance-none cursor-pointer transition-colors outline-none ${
+                                        currentStock === 'in_stock'
+                                          ? 'bg-emerald-50/80 text-emerald-800 border-emerald-200/80 hover:bg-emerald-100/80'
+                                          : currentStock === 'low_stock'
+                                          ? 'bg-amber-50/80 text-amber-800 border-amber-200/80 hover:bg-amber-100/80'
+                                          : 'bg-rose-50/80 text-rose-800 border-rose-200/80 hover:bg-rose-100/80'
                                       }`}
-                                      title="കുറഞ്ഞ സ്റ്റോക്ക് ആക്കുക"
                                     >
-                                      <span className="w-1.5 h-1.5 rounded-full bg-amber-300" />
-                                      <span>കുറവ്</span>
-                                    </button>
-                                    <button
-                                      onClick={() => handleStockChange(p.id, 'out_of_stock')}
-                                      className={`px-2 py-1 rounded-lg transition-all cursor-pointer flex items-center gap-1 ${
-                                        currentStock === 'out_of_stock'
-                                          ? 'bg-rose-600 text-white font-black shadow-2xs'
-                                          : 'text-gray-600 hover:text-rose-800'
-                                      }`}
-                                      title="തീർന്നു എന്ന് അടയാളപ്പെടുത്തുക"
-                                    >
-                                      <span className="w-1.5 h-1.5 rounded-full bg-rose-300" />
-                                      <span>തീർന്നു</span>
-                                    </button>
+                                      <option value="in_stock">ഇൻ സ്റ്റോക്ക്</option>
+                                      <option value="low_stock">കുറഞ്ഞ സ്റ്റോക്ക്</option>
+                                      <option value="out_of_stock">തീർന്നുപോയി</option>
+                                    </select>
+                                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-3 text-right">
+                                <td className="py-3 px-4 text-right">
                                   <div className="flex items-center justify-end gap-1.5">
                                     <button
                                       type="button"
                                       onClick={() => setAnalyzingProduct(p)}
-                                      className="px-2.5 py-1.5 bg-[#EDFAF3] hover:bg-[#DDF5EA] text-[#0B8F68] border border-[#C3EEDC] rounded-xl text-[11px] font-black transition-all flex items-center gap-1 cursor-pointer"
+                                      className="px-2.5 py-1.5 bg-[#EDFAF3] hover:bg-[#DDF5EA] text-[#0B8F68] border border-[#C3EEDC]/80 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
                                       title="വിപണി വിശകലനം കാണുക"
                                     >
                                       <Scale className="w-3.5 h-3.5" />
@@ -2123,11 +2084,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     <button
                                       type="button"
                                       onClick={() => setDelistConfirmProduct(p)}
-                                      className="px-2.5 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1 cursor-pointer"
-                                      title="ഈ ഉൽപ്പന്നം സ്റ്റോറിൽ നിന്ന് ഒഴിവാക്കുക"
+                                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-transparent hover:border-rose-100 transition-all cursor-pointer"
+                                      title="സ്റ്റോറിൽ നിന്ന് ഒഴിവാക്കുക"
                                     >
                                       <Trash2 className="w-3.5 h-3.5" />
-                                      <span>ഒഴിവാക്കുക</span>
                                     </button>
                                   </div>
                                 </td>
@@ -2137,7 +2097,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                           {paginatedInventoryList.length === 0 && (
                             <tr>
-                              <td colSpan={7} className="py-12 text-center">
+                              <td colSpan={6} className="py-12 text-center">
                                 <div className="max-w-md mx-auto flex flex-col items-center">
                                   <span className="text-4xl block mb-2">🔍</span>
                                   <h4 className="font-extrabold text-slate-800 text-sm mb-1">
@@ -2339,12 +2299,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     <div className="hidden md:block border border-[#E3ECE7] rounded-2xl overflow-hidden">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-600 font-black uppercase tracking-wider">
-                            <th className="py-3 px-3">ഉൽപ്പന്നം (Product)</th>
-                            <th className="py-3 px-3">യൂണിറ്റ് (Unit)</th>
-                            <th className="py-3 px-3">ശരാശരി മാർക്കറ്റ് വില</th>
-                            <th className="py-3 px-3">നിങ്ങളുടെ വിൽപന വില (₹)</th>
-                            <th className="py-3 px-3 text-right">സ്റ്റോക്കിലേക്ക് ചേർക്കുക</th>
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-xs select-none">
+                            <th className="py-3.5 px-4 font-bold">ഉൽപ്പന്നം</th>
+                            <th className="py-3.5 px-3 font-bold">യൂണിറ്റ്</th>
+                            <th className="py-3.5 px-4 font-bold">ശരാശരി മാർക്കറ്റ് വില</th>
+                            <th className="py-3.5 px-4 font-bold">വിൽപന വില (₹)</th>
+                            <th className="py-3.5 px-4 text-right font-bold">ചേർക്കുക</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-100">
