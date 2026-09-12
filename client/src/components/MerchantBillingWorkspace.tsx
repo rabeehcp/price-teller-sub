@@ -45,6 +45,13 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'organic', label: 'Organic Produce', icon: '🌿' },
 ];
 
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  staples: ['staples', 'rice-grains', 'pulses-legumes'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+  household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'beverages'],
+};
+
 interface MerchantBillingWorkspaceProps {
   products: Product[];
   shops: Shop[];
@@ -103,12 +110,19 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
     return ['vegetables', 'fruits', 'staples', 'dairy'];
   }, [shopCategories, currentShop?.categories]);
 
+  // Expand categories with aliases (e.g. household includes personal-care, bakery-breakfast includes beverages, etc.)
+  const eligibleCategoryIds = useMemo(() => {
+    return new Set(
+      activeShopCategories.flatMap((category) => CATEGORY_ALIASES[category] || [category])
+    );
+  }, [activeShopCategories]);
+
   // Shop eligible products (must belong to shop's supported categories AND have pricing for this shop)
   const eligibleProducts = useMemo(() => {
     return products.filter((p) => {
       // 1. Must belong to store's selected/supported categories
       const matchesCat =
-        activeShopCategories.includes(p.categoryId) ||
+        eligibleCategoryIds.has(p.categoryId) ||
         (p.isOrganic && activeShopCategories.includes('organic'));
       if (!matchesCat) return false;
 
@@ -116,22 +130,29 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
       const price = p.prices[selectedShopName];
       return price !== undefined && price > 0;
     });
-  }, [products, selectedShopName, activeShopCategories]);
+  }, [products, selectedShopName, eligibleCategoryIds, activeShopCategories]);
 
   // Categories present in eligible products
   const availableCategories = useMemo(() => {
     return AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => {
       if (!activeShopCategories.includes(cat.id)) return false;
-      return eligibleProducts.some((p) => p.categoryId === cat.id || (cat.id === 'organic' && p.isOrganic));
+      const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+      return eligibleProducts.some(
+        (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+      );
     });
   }, [activeShopCategories, eligibleProducts]);
 
   // Filtered catalogue for POS
   const filteredProducts = useMemo(() => {
     return eligibleProducts.filter((p) => {
+      const targetCats =
+        selectedCategory === 'all'
+          ? null
+          : (CATEGORY_ALIASES[selectedCategory] || [selectedCategory]);
       const matchesCat =
         selectedCategory === 'all' ||
-        p.categoryId === selectedCategory ||
+        targetCats!.includes(p.categoryId) ||
         (selectedCategory === 'organic' && p.isOrganic);
       const matchesSearch =
         !productSearch.trim() ||
@@ -497,8 +518,9 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                 All Items ({eligibleProducts.length})
               </button>
               {availableCategories.map((cat) => {
+                const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
                 const count = eligibleProducts.filter(
-                  (p) => p.categoryId === cat.id || (cat.id === 'organic' && p.isOrganic)
+                  (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
                 ).length;
                 return (
                   <button

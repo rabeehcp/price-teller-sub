@@ -1709,7 +1709,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length})</span>
                     </button>
                     {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
-                      const count = eligibleProducts.filter((p) => p.categoryId === cat.id).length;
+                      const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+                      const count = eligibleProducts.filter(
+                        (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+                      ).length;
                       return (
                         <button
                           key={cat.id}
