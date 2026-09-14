@@ -1,12 +1,13 @@
 import './utils/dns-fallback';
 import dotenv from 'dotenv';
+
 dotenv.config();
-// PriceTeller Backend Server
 
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
+
 import { apiRouter } from './routes/api';
 import { initDb } from './db/init';
 
@@ -15,13 +16,19 @@ const PORT = parseInt(process.env.PORT || '5000', 10);
 
 // Restrict CORS in production via FRONTEND_ORIGIN; open for local dev.
 const frontendOrigin = process.env.FRONTEND_ORIGIN;
+console.log('CORS FRONTEND_ORIGIN:', frontendOrigin);
+
 app.use(
   cors(
     frontendOrigin
-      ? { origin: frontendOrigin.split(',').map((s) => s.trim()), credentials: true }
+      ? {
+          origin: frontendOrigin.split(',').map((s) => s.trim()),
+          credentials: true,
+        }
       : undefined
   )
 );
+
 // Keep payload limit modest; product images should be compressed client-side.
 app.use(express.json({ limit: '5mb' }));
 app.use(express.urlencoded({ limit: '5mb', extended: true }));
