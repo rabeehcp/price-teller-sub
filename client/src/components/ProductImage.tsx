@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getProxiedImageUrl } from '../services/api';
 
 interface ProductImageProps {
   productId?: string;
@@ -103,12 +104,14 @@ function resolveProductImageSrc(image?: string): string | null {
   if (doubleMatch && doubleMatch[1]) {
     trimmed = doubleMatch[1].trim();
   }
+  if (trimmed.startsWith('/api/proxy-image')) {
+    return getProxiedImageUrl(trimmed);
+  }
   if (trimmed.startsWith('/') || trimmed.startsWith('data:')) {
     return trimmed;
   }
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    if (trimmed.includes('/api/proxy-image')) return trimmed;
-    return `/api/proxy-image?url=${encodeURIComponent(trimmed)}`;
+    return getProxiedImageUrl(trimmed);
   }
   return trimmed;
 }

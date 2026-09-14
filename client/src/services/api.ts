@@ -226,7 +226,10 @@ export async function fetchRemoteImageApi(url: string): Promise<{ dataUrl: strin
 }
 
 export function getProxiedImageUrl(url: string): string {
-  if (!url || url.startsWith('/') || url.startsWith('data:')) return url;
+  if (!url || url.startsWith('data:')) return url;
+  if (url.startsWith('/api/proxy-image')) return `${API_BASE}${url.slice('/api'.length)}`;
+  if (url.includes('/api/proxy-image')) return url;
+  if (url.startsWith('/')) return url;
   return `${API_BASE}/proxy-image?url=${encodeURIComponent(url)}`;
 }
 
