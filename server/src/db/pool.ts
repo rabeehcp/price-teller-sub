@@ -21,7 +21,7 @@ function getPoolConfig(): PoolConfig {
 
     return {
       connectionString: cleanUrl,
-      connectionTimeoutMillis: 8000,
+      connectionTimeoutMillis: 30000,
       ssl: isSsl ? { rejectUnauthorized: false } : undefined,
     };
   }
