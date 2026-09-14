@@ -28,7 +28,7 @@ import {
 } from '../types';
 
 
-const API_BASE = '/api';
+const API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
 
 export function getAuthToken(): string | null {
   try {
