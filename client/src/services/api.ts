@@ -28,7 +28,8 @@ import {
 } from '../types';
 
 
-const API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
+const REMOTE_API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
+const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '/api' : REMOTE_API_BASE);
 
 export function getAuthToken(): string | null {
   try {
