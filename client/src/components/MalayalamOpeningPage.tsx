@@ -292,11 +292,11 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </div>
       </header>
 
-      {/* 2. MAIN WORKSPACE (Balanced layout on mobile viewport, full height on desktop) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 py-2 sm:py-3 md:py-6 flex flex-col justify-between gap-2.5 sm:gap-3 md:gap-6 min-h-0">
+      {/* 2. MAIN WORKSPACE (Compact cohesive spacing on mobile, full height on desktop) */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 py-2 sm:py-2.5 md:py-6 flex flex-col justify-start md:justify-between gap-2 sm:gap-2.5 md:gap-6 min-h-0">
 
         {/* HERO SECTION (Mint green card exactly matching reference) */}
-        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-2.5 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden shrink-0 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-3 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden flex-1 md:flex-none flex flex-col justify-between min-h-[165px]">
           
           {/* Subtle background decorative foliage */}
           <div className="absolute top-2 right-1/4 text-emerald-800/10 text-5xl pointer-events-none select-none hidden md:block">
@@ -516,7 +516,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           </div>
 
           {/* MOBILE LAYOUT (< md): Ultra-optimized zero-scroll split layout */}
-          <div className="md:hidden flex flex-col justify-between gap-2 min-h-0">
+          <div className="md:hidden flex-1 h-full flex flex-col justify-between gap-2 min-h-0">
             {/* Top row: Left Headline & Search + Right 3D Illustration */}
             <div className="flex items-center justify-between gap-2">
               <div className="flex-1 min-w-0 space-y-1.5">
@@ -600,7 +600,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
-                className="w-[66px] sm:w-[74px] md:w-auto shrink-0 bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#BBD8C8] rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-95"
+                className="w-[72px] sm:w-[78px] md:w-auto shrink-0 bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#BBD8C8] rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-95"
               >
                 {/* Circular Icon Container */}
                 <div
@@ -609,7 +609,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   <span>{cat.emoji}</span>
                 </div>
 
-                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] truncate w-full">
+                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] truncate w-full text-center px-0.5">
                   {cat.label}
                 </span>
               </button>
