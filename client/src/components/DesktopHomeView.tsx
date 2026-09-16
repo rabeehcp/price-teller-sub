@@ -72,37 +72,31 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       id: 'vegetables',
       label: 'പച്ചക്കറികൾ',
       emoji: '🥬',
-      image: '/products/tomato.webp',
     },
     {
       id: 'fruits',
       label: 'പഴങ്ങൾ',
       emoji: '🍌',
-      image: '/products/banana.webp',
     },
     {
       id: 'rice-grains',
       label: 'ധാന്യങ്ങൾ',
       emoji: '🌾',
-      image: '/products/rice.webp',
     },
     {
       id: 'dairy',
       label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
       emoji: '🥛',
-      image: '/products/milk.webp',
     },
     {
       id: 'spices',
       label: 'മസാലകൾ',
       emoji: '🌶️',
-      image: '/products/turmeric-powder.webp',
     },
     {
       id: 'grocery',
       label: 'കറി സാധനങ്ങൾ',
       emoji: '🥫',
-      image: '/products/coconut-oil.webp',
     },
     {
       id: 'all',
@@ -149,7 +143,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
     return sorted.slice(0, 5);
   }, [products, searchQuery, selectedCategoryId]);
 
-  // Special Offers data matching Image 1
+  // Special Offers data matching Image 1 (All powered by ImageKit CDN)
   const specialOffers = [
     {
       id: 'offer-1',
@@ -164,15 +158,15 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       title: 'നാടൻ വാഴപ്പഴം',
       discount: '20% ഓഫർ',
       discountBg: 'bg-amber-500',
-      image: '/products/banana.webp',
+      image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649827.jpg',
       emoji: '🍌',
     },
     {
       id: 'offer-3',
-      title: 'തക്കാളി പേസ്റ്റ് & സോസ്',
+      title: 'തക്കാളി & പച്ചക്കറികൾ',
       discount: '10% ഓഫർ',
       discountBg: 'bg-sky-600',
-      image: '/products/tomato.webp',
+      image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137805.jpg',
       emoji: '🍅',
     },
     {
@@ -180,7 +174,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       title: 'ധാന്യങ്ങളും അരിയും',
       discount: 'മികച്ച വില',
       discountBg: 'bg-orange-600',
-      image: '/products/rice.webp',
+      image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/158356.jpg',
       emoji: '🌾',
     },
   ];
@@ -315,18 +309,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 }`}
               >
                 <div className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl mb-1.5 overflow-hidden transition-transform group-hover:scale-110">
-                  {cat.image ? (
-                    <ProductImage
-                      image={cat.image}
-                      emoji={cat.emoji}
-                      alt={cat.label}
-                      className="w-full h-full"
-                      imgClassName="max-h-full max-w-full object-contain"
-                      fallbackEmojiClassName="text-2xl"
-                    />
-                  ) : (
-                    <span className="text-xl text-[#063B2A] font-bold">{cat.emoji}</span>
-                  )}
+                  <span className="text-xl text-[#063B2A] font-bold">{cat.emoji}</span>
                 </div>
                 <span className={`text-[11px] font-bold leading-tight line-clamp-1 ${isSelected ? 'text-[#063B2A]' : 'text-[#17221D]'}`}>
                   {cat.label}

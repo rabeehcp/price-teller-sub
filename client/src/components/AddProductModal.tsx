@@ -77,15 +77,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Country Tomato, Big Onion, Fresh Spinach...',
     defaultPrice: '45',
     sampleBadge: 'Daily Fresh',
-    photoPresets: [
-      { name: 'Tomato', image: '/products/tomato.webp', emoji: '🍅' },
-      { name: 'Onion', image: '/products/onion.webp', emoji: '🧅' },
-      { name: 'Potato', image: '/products/potato.webp', emoji: '🥔' },
-      { name: 'Carrot', image: '/products/carrot.webp', emoji: '🥕' },
-      { name: 'Cucumber', image: '/products/cucumber.webp', emoji: '🥒' },
-      { name: 'Ginger & Garlic', image: '/products/ginger-garlic.webp', emoji: '🧄' },
-      { name: 'Chilli Powder', image: '/products/chilli-powder.webp', emoji: '🌶️' },
-    ],
+    photoPresets: [],
   },
   fruits: {
     emojis: ['🍎', '🍌', '🥭', '🍉', '🍇', '🥑', '🥥', '🍊', '🍍', '🍓', '🍑', '🍋'],
@@ -93,18 +85,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Robusta Banana, Kashmiri Apple, Alphonso Mango...',
     defaultPrice: '80',
     sampleBadge: 'Farm Fresh',
-    photoPresets: [
-      { name: 'Apple', image: '/products/apple.webp', emoji: '🍎' },
-      { name: 'Banana', image: '/products/banana.webp', emoji: '🍌' },
-      { name: 'Orange', image: '/products/orange.webp', emoji: '🍊' },
-      { name: 'Mango', image: '/products/mango.webp', emoji: '🥭' },
-      { name: 'Grapes', image: '/products/grapes.webp', emoji: '🍇' },
-      { name: 'Watermelon', image: '/products/watermelon.webp', emoji: '🍉' },
-      { name: 'Papaya', image: '/products/papaya.webp', emoji: '🍈' },
-      { name: 'Pomegranate', image: '/products/pomegranate.webp', emoji: '🫐' },
-      { name: 'Avocado', image: '/products/avocado.webp', emoji: '🥑' },
-      { name: 'Pineapple', image: '/products/pineapple.webp', emoji: '🍍' },
-    ],
+    photoPresets: [],
   },
   meats: {
     emojis: ['🍗', '🥩', '🍖', '🐔', '🥓', '🦃'],
@@ -112,12 +93,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Fresh Broiler Chicken, Tender Beef Cut, Goat Mutton...',
     defaultPrice: '180',
     sampleBadge: 'Fresh Cut',
-    photoPresets: [
-      { name: 'Broiler Chicken', image: '/products/chicken-broiler.webp', emoji: '🍗' },
-      { name: 'Naadan Chicken', image: '/products/naadan-chicken.webp', emoji: '🐔' },
-      { name: 'Fresh Mutton', image: '/products/mutton-fresh.webp', emoji: '🥩' },
-      { name: 'Fresh Beef', image: '/products/beef-fresh.webp', emoji: '🥩' },
-    ],
+    photoPresets: [],
   },
   fish: {
     emojis: ['🐟', '🦐', '🦀', '🦑', '🐠'],
@@ -125,12 +101,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Seer Fish (Neymeen), Fresh Tiger Prawns, Mathi / Sardine...',
     defaultPrice: '260',
     sampleBadge: 'Catch of Day',
-    photoPresets: [
-      { name: 'Seer Fish / Neymeen', image: '/products/fish-seer.webp', emoji: '🐟' },
-      { name: 'Sardine / Mathi', image: '/products/fish-sardine.webp', emoji: '🐟' },
-      { name: 'Mackerel / Ayila', image: '/products/fish-mackerel.webp', emoji: '🐟' },
-      { name: 'Fresh Prawns', image: '/products/fish-prawns.webp', emoji: '🦐' },
-    ],
+    photoPresets: [],
   },
   dairy: {
     emojis: ['🥛', '🧀', '🥚', '🧈', '🍦', '🍶'],
@@ -138,13 +109,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Fresh Cow Milk, Malabar Curd, Country Chicken Eggs...',
     defaultPrice: '56',
     sampleBadge: 'Daily Fresh',
-    photoPresets: [
-      { name: 'Cow Milk', image: '/products/milk.webp', emoji: '🥛' },
-      { name: 'Fresh Curd', image: '/products/curd.webp', emoji: '🍶' },
-      { name: 'Paneer Block', image: '/products/paneer.webp', emoji: '🧀' },
-      { name: 'Fresh Butter', image: '/products/butter.webp', emoji: '🧈' },
-      { name: 'Farm Eggs', image: '/products/eggs.webp', emoji: '🥚' },
-    ],
+    photoPresets: [],
   },
   staples: {
     emojis: ['🍚', '🌾', '🫘', '🌽', '🥣', '🥜', '🌰'],
@@ -152,14 +117,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Matta Rice, Whole Wheat Chakki Atta, Toor Dal...',
     defaultPrice: '62',
     sampleBadge: 'Premium Grade',
-    photoPresets: [
-      { name: 'Rice Grain', image: '/products/rice.webp', emoji: '🍚' },
-      { name: 'Wheat Atta', image: '/products/atta.webp', emoji: '🌾' },
-      { name: 'Toor Dal', image: '/products/toor-dal.webp', emoji: '🫘' },
-      { name: 'Refined Sugar', image: '/products/sugar.webp', emoji: '🧂' },
-      { name: 'Tea Dust', image: '/products/tea-dust.webp', emoji: '☕' },
-      { name: 'Cashews', image: '/products/cashews.webp', emoji: '🥜' },
-    ],
+    photoPresets: [],
   },
   'oils-spices': {
     emojis: ['🫗', '🧂', '🌶️', '🌿', '🌱', '🧄', '🫚'],
@@ -167,12 +125,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Pure Coconut Oil, Wayanad Black Pepper, Turmeric Powder...',
     defaultPrice: '190',
     sampleBadge: '100% Pure',
-    photoPresets: [
-      { name: 'Coconut Oil', image: '/products/coconut-oil.webp', emoji: '🫗' },
-      { name: 'Cooking Oil', image: '/products/oil.webp', emoji: '🫗' },
-      { name: 'Turmeric Powder', image: '/products/turmeric-powder.webp', emoji: '🌿' },
-      { name: 'Chilli Powder', image: '/products/chilli-powder.webp', emoji: '🌶️' },
-    ],
+    photoPresets: [],
   },
   'bakery-breakfast': {
     emojis: ['🍞', '🥐', '🥖', '🥯', '☕', '🍪', '🥞', '🧇'],
@@ -180,13 +133,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Whole Wheat Bread, Butter Rusks, Kerala Tea Dust...',
     defaultPrice: '45',
     sampleBadge: 'Freshly Baked',
-    photoPresets: [
-      { name: 'Fresh Bread', image: '/products/bread.webp', emoji: '🍞' },
-      { name: 'Butter Block', image: '/products/butter.webp', emoji: '🧈' },
-      { name: 'Eggs', image: '/products/eggs.webp', emoji: '🥚' },
-      { name: 'Biscuits & Cookies', image: '/products/biscuits.webp', emoji: '🍪' },
-      { name: 'Coffee Powder', image: '/products/coffee.webp', emoji: '☕' },
-    ],
+    photoPresets: [],
   },
   electronics: {
     emojis: ['🔌', '⚡', '🫖', '⚖️', '💡', '🔋', '📱'],
@@ -194,11 +141,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. 750W Mixer Grinder, Induction Cooktop, Electric Kettle...',
     defaultPrice: '1499',
     sampleBadge: '1 Yr Warranty',
-    photoPresets: [
-      { name: 'Mixer Grinder', image: '/products/mixer-grinder.webp', emoji: '⚡' },
-      { name: 'Induction Cooktop', image: '/products/induction-cooktop.webp', emoji: '🔌' },
-      { name: 'Electric Kettle', image: '/products/electric-kettle.webp', emoji: '🫖' },
-    ],
+    photoPresets: [],
   },
   utensils: {
     emojis: ['🍲', '🍳', '🥘', '🔪', '🥣', '🥢', '🍴', '🥄'],
@@ -206,12 +149,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. 3L Stainless Pressure Cooker, Granite Dosa Tawa, Chef Knife...',
     defaultPrice: '750',
     sampleBadge: 'Food Grade',
-    photoPresets: [
-      { name: 'Pressure Cooker', image: '/products/pressure-cooker.webp', emoji: '🍲' },
-      { name: 'Dosa Tawa', image: '/products/dosa-tawa.webp', emoji: '🍳' },
-      { name: 'Stainless Steel Kadai', image: '/products/steel-kadai.webp', emoji: '🥘' },
-      { name: 'Chef Knife Set', image: '/products/knife-set.webp', emoji: '🔪' },
-    ],
+    photoPresets: [],
   },
   'rice-grains': {
     emojis: ['🌾', '🍚', '🥣', '🌽', '🍞'],
@@ -219,10 +157,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Matta Rice, Basmati Rice, Wheat Flour / Atta...',
     defaultPrice: '60',
     sampleBadge: 'Premium Grain',
-    photoPresets: [
-      { name: 'Matta Rice', image: '/products/rice.webp', emoji: '🌾' },
-      { name: 'Wheat Atta', image: '/products/atta.webp', emoji: '🌾' },
-    ],
+    photoPresets: [],
   },
   'pulses-legumes': {
     emojis: ['🫘', '🫛', '🥜', '🌰', '🥣'],
@@ -230,9 +165,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Toor Dal, Green Gram, Chickpeas, Urad Dal...',
     defaultPrice: '120',
     sampleBadge: 'Protein Rich',
-    photoPresets: [
-      { name: 'Toor Dal', image: '/products/toor-dal.webp', emoji: '🫘' },
-    ],
+    photoPresets: [],
   },
   spices: {
     emojis: ['🌶️', '🌿', '🌱', '🧄', '🫚', '🪵', '🌰'],
@@ -240,10 +173,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Chilli Powder, Wayanad Black Pepper, Cardamom...',
     defaultPrice: '150',
     sampleBadge: '100% Pure',
-    photoPresets: [
-      { name: 'Chilli Powder', image: '/products/chilli-powder.webp', emoji: '🌶️' },
-      { name: 'Turmeric Powder', image: '/products/turmeric-powder.webp', emoji: '🌿' },
-    ],
+    photoPresets: [],
   },
   'oils-sugar': {
     emojis: ['🥥', '🫙', '🌻', '🫗', '🧂', '🪵'],
@@ -251,10 +181,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Pure Coconut Oil, Sunflower Oil, Sugar, Jaggery...',
     defaultPrice: '190',
     sampleBadge: 'Pure & Cold Pressed',
-    photoPresets: [
-      { name: 'Coconut Oil', image: '/products/coconut-oil.webp', emoji: '🥥' },
-      { name: 'Cooking Oil', image: '/products/oil.webp', emoji: '🫗' },
-    ],
+    photoPresets: [],
   },
   'sauces-condiments': {
     emojis: ['🥫', '🫙', '🍶', '🥣', '🍋', '🥭', '🫓'],
@@ -270,10 +197,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Marie Biscuits, Banana Chips, Milk Bread, Rusk...',
     defaultPrice: '45',
     sampleBadge: 'Fresh Crunch',
-    photoPresets: [
-      { name: 'Fresh Bread', image: '/products/bread.webp', emoji: '🍞' },
-      { name: 'Biscuits', image: '/products/biscuits.webp', emoji: '🍪' },
-    ],
+    photoPresets: [],
   },
   beverages: {
     emojis: ['☕', '🍵', '🥛', '⚡', '🧃', '🥤', '💧'],
@@ -281,10 +205,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Strong Dust Tea, Wayanad Filter Coffee, Boost...',
     defaultPrice: '140',
     sampleBadge: 'Strong Aroma',
-    photoPresets: [
-      { name: 'Tea Dust', image: '/products/tea-dust.webp', emoji: '☕' },
-      { name: 'Coffee Powder', image: '/products/coffee.webp', emoji: '☕' },
-    ],
+    photoPresets: [],
   },
   'cleaning-household': {
     emojis: ['🧹', '🧼', '🧴', '🧽', '🪣', '🧻', '🗑️'],
@@ -292,10 +213,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Dishwash Liquid, Detergent, Floor Cleaner, Broom...',
     defaultPrice: '120',
     sampleBadge: 'Germ Protection',
-    photoPresets: [
-      { name: 'Detergent Powder', image: '/products/detergent.webp', emoji: '🧼' },
-      { name: 'Dishwash Gel', image: '/products/dishwash.webp', emoji: '🧴' },
-    ],
+    photoPresets: [],
   },
   'storage-containers': {
     emojis: ['🧴', '📦', '🥫', '🍶', '🏺', '🍱', '🪣'],
@@ -327,11 +245,7 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Certified Organic Honey, Pesticide-Free Greens, Organic Ghee...',
     defaultPrice: '140',
     sampleBadge: '100% Organic',
-    photoPresets: [
-      { name: 'Organic Papaya', image: '/products/papaya.webp', emoji: '🍈' },
-      { name: 'Organic Avocado', image: '/products/avocado.webp', emoji: '🥑' },
-      { name: 'Organic Apple', image: '/products/apple.webp', emoji: '🍎' },
-    ],
+    photoPresets: [],
   },
 };
 
@@ -533,11 +447,11 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
     }
 
     // If no custom image was selected, auto-match from category photo presets based on name
-    if (!finalImageUrl && name.trim()) {
+    if (!finalImageUrl && name.trim() && (currentConf.photoPresets || []).length > 0) {
       const match = (currentConf.photoPresets || []).find((p) =>
         name.toLowerCase().includes(p.name.toLowerCase()) || p.name.toLowerCase().includes(name.toLowerCase())
       );
-      if (match) {
+      if (match && match.image && !match.image.startsWith('/products/')) {
         finalImageUrl = match.image;
       }
     }
@@ -701,18 +615,20 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
                   <Upload className="w-3 h-3 inline mr-1" />
                   Upload / Camera
                 </button>
-                <button
-                  type="button"
-                  onClick={() => setPhotoSourceMode('preset')}
-                  className={`px-2 py-1 rounded-lg font-bold transition-all cursor-pointer ${
-                    photoSourceMode === 'preset'
-                      ? 'bg-brand-600 text-white shadow-2xs'
-                      : 'text-gray-600 hover:bg-gray-50'
-                  }`}
-                >
-                  <Layers className="w-3 h-3 inline mr-1" />
-                  Presets
-                </button>
+                {(currentConf.photoPresets || []).length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => setPhotoSourceMode('preset')}
+                    className={`px-2 py-1 rounded-lg font-bold transition-all cursor-pointer ${
+                      photoSourceMode === 'preset'
+                        ? 'bg-brand-600 text-white shadow-2xs'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    <Layers className="w-3 h-3 inline mr-1" />
+                    Presets
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={() => setPhotoSourceMode('url')}

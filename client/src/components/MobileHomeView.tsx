@@ -57,42 +57,36 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       id: 'vegetables',
       label: 'പച്ചക്കറികൾ',
       emoji: '🥬',
-      image: '/products/tomato.webp',
       fallbackEmoji: '🥬',
     },
     {
       id: 'fruits',
       label: 'പഴങ്ങൾ',
       emoji: '🍌',
-      image: '/products/banana.webp',
       fallbackEmoji: '🍌',
     },
     {
       id: 'rice-grains',
       label: 'ധാന്യങ്ങൾ',
       emoji: '🌾',
-      image: '/products/rice.webp',
       fallbackEmoji: '🌾',
     },
     {
       id: 'dairy',
       label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
       emoji: '🥛',
-      image: '/products/milk.webp',
       fallbackEmoji: '🥛',
     },
     {
       id: 'spices',
       label: 'മസാലകൾ',
       emoji: '🌶️',
-      image: '/products/turmeric-powder.webp',
       fallbackEmoji: '🌶️',
     },
     {
       id: 'grocery',
       label: 'കറി സാധനങ്ങൾ',
       emoji: '🥫',
-      image: '/products/coconut-oil.webp',
       fallbackEmoji: '🥫',
     },
     {
@@ -249,18 +243,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 }`}
               >
                 <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-1 overflow-hidden transition-transform group-hover:scale-105">
-                  {cat.image ? (
-                    <ProductImage
-                      image={cat.image}
-                      emoji={cat.emoji}
-                      alt={cat.label}
-                      className="w-full h-full"
-                      imgClassName="max-h-full max-w-full object-contain"
-                      fallbackEmojiClassName="text-2xl"
-                    />
-                  ) : (
-                    <span className="text-xl text-[#063B2A] font-bold">{cat.fallbackEmoji}</span>
-                  )}
+                  <span className="text-xl text-[#063B2A] font-bold">{cat.fallbackEmoji || cat.emoji}</span>
                 </div>
                 <span className="text-[10px] font-bold text-[#17221D] leading-tight line-clamp-2">
                   {cat.label}

@@ -65,6 +65,7 @@ import { DesktopHeader } from './components/DesktopHeader';
 import { DesktopLeftSidebar } from './components/DesktopLeftSidebar';
 import { DesktopHomeView } from './components/DesktopHomeView';
 import { DesktopRightSidebar } from './components/DesktopRightSidebar';
+import { DesktopProfileView } from './components/DesktopProfileView';
 import { EnteBazaarLogo } from './components/EnteBazaarLogo';
 import { loadActiveBasket, persistActiveBasket, clearActiveBasket, rehydrateBasket } from './services/sessionManager';
 
@@ -1147,6 +1148,26 @@ export const App: React.FC = () => {
           }}
           onOpenShopCatalogue={handleOpenShopCatalogue}
           onLogout={handleLogout}
+          onSearch={(query) => {
+            setSearchQuery(query);
+            if (authUser) {
+              window.history.pushState({}, '', '/consumer');
+              setAppView('consumer');
+              setCurrentRole('shopper');
+            } else {
+              handleOpenAuthModal('consumer-login');
+            }
+          }}
+          onSelectCategory={(categoryId) => {
+            setSelectedCategoryId(categoryId);
+            if (authUser) {
+              window.history.pushState({}, '', '/consumer');
+              setAppView('consumer');
+              setCurrentRole('shopper');
+            } else {
+              handleOpenAuthModal('consumer-login');
+            }
+          }}
         />
         <AuthModal
           isOpen={isAuthModalOpen}
@@ -1362,15 +1383,15 @@ export const App: React.FC = () => {
             onOpenAuthModal={handleOpenAuthModal}
             onOpenFavorites={() => {
               if (!authUser) handleOpenAuthModal('consumer-login');
-              else setIsConsumerDashboardOpen(true);
+              else setShopperTab('profile');
             }}
             onOpenOrders={() => {
               if (!authUser) handleOpenAuthModal('consumer-login');
-              else setIsConsumerPreBookingsOpen(true);
+              else setShopperTab('orders');
             }}
             onOpenProfile={() => {
               if (!authUser) handleOpenAuthModal('consumer-login');
-              else setIsConsumerDashboardOpen(true);
+              else setShopperTab('profile');
             }}
             onSelectRole={(r) => {
               if (r === 'shopper') {
@@ -1701,6 +1722,50 @@ export const App: React.FC = () => {
                 customerCoords={customerCoords}
                 onSelectShop={(shopName) => setSelectedShopDetail(shopName)}
                 onOpenShopCatalogue={handleOpenShopCatalogue}
+              />
+            )}
+
+            {shopperTab === 'profile' && (
+              <DesktopProfileView
+                authUser={authUser}
+                consumerData={consumerData}
+                products={products}
+                currentLocation={currentLocation}
+                initialTab="profile"
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onLogout={handleLogout}
+                onLoadListIntoBasket={handleLoadSavedList}
+                onDeleteList={handleDeleteNamedList}
+                onAddFavoriteToBasket={(p) => handleAddToBasket(p, p.defaultUnit)}
+                onRemoveFavorite={(prodId) => {
+                  const p = products.find((x) => x.id === prodId);
+                  if (p) handleToggleFavorite(p);
+                }}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onGoShopping={() => setShopperTab('home')}
+              />
+            )}
+
+            {shopperTab === 'orders' && (
+              <DesktopProfileView
+                authUser={authUser}
+                consumerData={consumerData}
+                products={products}
+                currentLocation={currentLocation}
+                initialTab="orders"
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onLogout={handleLogout}
+                onLoadListIntoBasket={handleLoadSavedList}
+                onDeleteList={handleDeleteNamedList}
+                onAddFavoriteToBasket={(p) => handleAddToBasket(p, p.defaultUnit)}
+                onRemoveFavorite={(prodId) => {
+                  const p = products.find((x) => x.id === prodId);
+                  if (p) handleToggleFavorite(p);
+                }}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onGoShopping={() => setShopperTab('home')}
               />
             )}
           </div>

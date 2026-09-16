@@ -12,94 +12,13 @@ interface ProductImageProps {
   loading?: 'lazy' | 'eager';
 }
 
-const KNOWN_PRESETS: Record<string, string> = {
-  apple: '/products/apple.webp',
-  apples: '/products/apple.webp',
-  banana: '/products/banana.webp',
-  bananas: '/products/banana.webp',
-  orange: '/products/orange.webp',
-  oranges: '/products/orange.webp',
-  mango: '/products/mango.webp',
-  mangoes: '/products/mango.webp',
-  grapes: '/products/grapes.webp',
-  grape: '/products/grapes.webp',
-  watermelon: '/products/watermelon.webp',
-  papaya: '/products/papaya.webp',
-  pomegranate: '/products/pomegranate.webp',
-  avocado: '/products/avocado.webp',
-  pineapple: '/products/pineapple.webp',
-  tomato: '/products/tomato.webp',
-  tomatoes: '/products/tomato.webp',
-  onion: '/products/onion.webp',
-  onions: '/products/onion.webp',
-  potato: '/products/potato.webp',
-  potatoes: '/products/potato.webp',
-  carrot: '/products/carrot.webp',
-  carrots: '/products/carrot.webp',
-  cucumber: '/products/cucumber.webp',
-  ginger: '/products/ginger-garlic.webp',
-  garlic: '/products/ginger-garlic.webp',
-  chicken: '/products/chicken-broiler.webp',
-  mutton: '/products/mutton-fresh.webp',
-  beef: '/products/beef-fresh.webp',
-  fish: '/products/fish-seer.webp',
-  seer: '/products/fish-seer.webp',
-  neymeen: '/products/fish-seer.webp',
-  prawns: '/products/fish-prawns.webp',
-  prawn: '/products/fish-prawns.webp',
-  sardine: '/products/fish-sardine.webp',
-  mathi: '/products/fish-sardine.webp',
-  mackerel: '/products/fish-mackerel.webp',
-  ayila: '/products/fish-mackerel.webp',
-  milk: '/products/milk.webp',
-  curd: '/products/curd.webp',
-  paneer: '/products/paneer.webp',
-  butter: '/products/butter.webp',
-  eggs: '/products/eggs.webp',
-  egg: '/products/eggs.webp',
-  rice: '/products/rice.webp',
-  atta: '/products/atta.webp',
-  wheat: '/products/atta.webp',
-  dal: '/products/toor-dal.webp',
-  toor: '/products/toor-dal.webp',
-  sugar: '/products/sugar.webp',
-  tea: '/products/tea.webp',
-  cashew: '/products/cashews.webp',
-  cashews: '/products/cashews.webp',
-  oil: '/products/coconut-oil.webp',
-  coconut: '/products/coconut-oil.webp',
-  turmeric: '/products/turmeric-powder.webp',
-  chilli: '/products/chilli-powder.webp',
-  bread: '/products/bread.webp',
-  biscuit: '/products/biscuits.webp',
-  biscuits: '/products/biscuits.webp',
-  coffee: '/products/coffee.webp',
-  kettle: '/products/electric-kettle.webp',
-  mixer: '/products/mixer-grinder.webp',
-  cooktop: '/products/induction-cooktop.webp',
-  cooker: '/products/pressure-cooker.webp',
-  tawa: '/products/dosa-tawa.webp',
-  kadai: '/products/steel-kadai.webp',
-  knife: '/products/knife-set.webp',
-  detergent: '/products/detergent.webp',
-  dishwash: '/products/dishwash.webp',
-};
-
-function matchPreset(keyOrName?: string): string | null {
-  if (!keyOrName) return null;
-  const lower = keyOrName.toLowerCase().trim();
-  if (KNOWN_PRESETS[lower]) return KNOWN_PRESETS[lower];
-
-  // Try token matches
-  for (const [key, path] of Object.entries(KNOWN_PRESETS)) {
-    if (lower.includes(key)) return path;
-  }
-  return null;
-}
-
 function resolveProductImageSrc(image?: string): string | null {
   if (!image || !image.trim()) return null;
   let trimmed = image.trim();
+  // Filter out any legacy local relative /products/ paths that do not exist on the server
+  if (trimmed.startsWith('/products/')) {
+    return null;
+  }
   const doubleMatch = trimmed.match(/(https?:\/\/[^\s]+?)(?:https?:\/\/|$)/i);
   if (doubleMatch && doubleMatch[1]) {
     trimmed = doubleMatch[1].trim();
