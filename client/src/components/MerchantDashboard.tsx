@@ -73,12 +73,18 @@ import {
   TrendingUp,
   TrendingDown,
   Scale,
+  Bell,
+  Star,
+  HelpCircle,
+  DollarSign,
+  Boxes,
 } from 'lucide-react';
 import { MerchantBillingWorkspace } from './MerchantBillingWorkspace';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileMerchantView } from './MobileMerchantView';
 import { MobileDrawer } from './MobileDrawer';
 import { MerchantProductAnalysisModal } from './MerchantProductAnalysisModal';
+import { DesktopMerchantOverview } from './DesktopMerchantOverview';
 
 
 interface MerchantDashboardProps {
@@ -1069,63 +1075,66 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
       
-      {/* 1. DESKTOP LEFT SIDEBAR (Matching Screen 6 of Reference Image) */}
-      <aside className="w-64 bg-[#063B2A] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#084D37] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 font-malayalam select-none overflow-y-auto">
+      {/* 1. DESKTOP LEFT SIDEBAR (Matching Ash Black Theme) */}
+      <aside className="w-64 bg-[#141816] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
         <div>
-          {/* Brand Logo */}
+          {/* Brand Logo matching Image 2 */}
           <div
-            onClick={onBackToShopper}
-            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-4"
+            onClick={() => setMerchantTab('dashboard')}
+            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-3"
           >
-            <div className="w-9 h-9 rounded-xl bg-[#10A978] text-[#063B2A] flex items-center justify-center font-black text-base shadow-sm">
-              <Store className="w-5 h-5 fill-current" />
-            </div>
-            <div>
-              <div className="text-base font-black tracking-tight text-white flex items-center gap-1 font-sans">
-                PriceTeller
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#10A978] text-[#141816] flex items-center justify-center font-black text-base shadow-sm">
+                🌿
               </div>
-              <div className="text-[10px] text-emerald-300/80 font-medium">
-                വ്യാപാരികളുടെ പാനൽ
+              <div>
+                <div className="text-base font-black tracking-tight text-white flex items-center gap-1 font-sans">
+                  EnteBazaar
+                </div>
+                <div className="text-[10px] text-[#8F9F97] font-medium">
+                  Local Shops. Better Prices.
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Navigation Links (Matching Screen 6) */}
-          <nav className="space-y-1.5">
+          {/* Store Badge Pill matching Image 2 */}
+          <div className="mb-4 px-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1D2220] border border-[#2F3733] text-xs font-bold text-emerald-300">
+              <span>🏪</span>
+              <span className="truncate">{authUser?.shopName || selectedShopName}</span>
+            </div>
+          </div>
+
+          {/* Navigation Links matching Image 2 */}
+          <nav className="space-y-1">
             <button
               onClick={() => setMerchantTab('dashboard')}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 merchantTab === 'dashboard'
                   ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <LayoutGrid className="w-4 h-4 text-emerald-300" />
-              <span>ഡാഷ്‌ബോർഡ് (Dashboard)</span>
+              <LayoutGrid className="w-4 h-4 text-emerald-400" />
+              <span>Dashboard</span>
             </button>
 
             <button
               onClick={() => setMerchantTab('inventory')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 merchantTab === 'inventory'
                   ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <Package className="w-4 h-4 text-emerald-300" />
-              <span>ഉൽപ്പന്നങ്ങൾ (Products)</span>
-            </button>
-
-            <button
-              onClick={() => setMerchantTab('billing')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                merchantTab === 'billing'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
-              }`}
-            >
-              <Receipt className="w-4 h-4 text-emerald-300" />
-              <span>ബില്ലിംഗ് & POS</span>
+              <div className="flex items-center gap-3">
+                <Package className="w-4 h-4 text-emerald-400" />
+                <span>Products</span>
+              </div>
+              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
+                {carriedProducts.length}
+              </span>
             </button>
 
             <button
@@ -1133,12 +1142,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 merchantTab === 'prebookings'
                   ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">
-                <CalendarCheck className="w-4 h-4 text-emerald-300" />
-                <span>ഓർഡറുകൾ (Orders)</span>
+                <ShoppingBag className="w-4 h-4 text-emerald-400" />
+                <span>Orders</span>
               </div>
               {preBookings.filter((b) => b.status === 'pending').length > 0 && (
                 <span className="bg-[#10A978] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full font-sans">
@@ -1148,34 +1157,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
             </button>
 
             <button
-              onClick={() => setMerchantTab('chats')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                merchantTab === 'chats'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <MessageCircle className="w-4 h-4 text-emerald-300" />
-                <span>കസ്റ്റമർ ചാറ്റ്</span>
-              </div>
-              {conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0) > 0 && (
-                <span className="bg-[#10A978] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full font-sans">
-                  {conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0)}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setMerchantTab('deals')}
+              onClick={() => setMerchantTab('billing')}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                merchantTab === 'deals'
+                merchantTab === 'billing'
                   ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <Flame className="w-4 h-4 text-[#F4B740]" />
-              <span>ഫ്ലാഷ് ഡീലുകൾ (Deals)</span>
+              <DollarSign className="w-4 h-4 text-emerald-400" />
+              <span>Earnings</span>
             </button>
 
             <button
@@ -1183,35 +1173,53 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 merchantTab === 'profile'
                   ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <Store className="w-4 h-4 text-emerald-300" />
-              <span>സ്റ്റോർ പ്രൊഫൈൽ</span>
+              <Store className="w-4 h-4 text-emerald-400" />
+              <span>Shop Profile</span>
+            </button>
+
+            <button
+              onClick={() => setMerchantTab('chats')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                merchantTab === 'chats'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <MessageCircle className="w-4 h-4 text-emerald-400" />
+                <span>Messages</span>
+              </div>
+              {conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0) > 0 && (
+                <span className="bg-[#10A978] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full font-sans">
+                  {conversations.reduce((acc, c) => acc + (c.unreadCount || 0), 0)}
+                </span>
+              )}
             </button>
           </nav>
         </div>
 
-        {/* Lower Sidebar Actions */}
-        <div className="space-y-2 pt-4 border-t border-[#084D37]">
-          <button
-            onClick={onBackToShopper}
-            className="w-full flex items-center justify-between px-3 py-2 bg-[#084D37]/70 hover:bg-[#084D37] rounded-xl text-[11px] font-bold text-[#DDF5EA] transition-all border border-[#10A978]/30 cursor-pointer"
-          >
-            <span>← ഷോപ്പർ മോഡ് (Shopper)</span>
-            <ArrowLeft className="w-3.5 h-3.5" />
-          </button>
+        {/* Lower Sidebar Actions matching Image 2 */}
+        <div className="space-y-3 pt-3 border-t border-[#242A27]">
+          {/* Ash card */}
+          <div className="p-3 bg-[#1D2220] border border-[#2F3733] rounded-2xl flex items-center gap-2.5">
+            <span className="text-xl">🌱</span>
+            <div className="text-[10px] text-[#A2B1A9] leading-tight font-medium">
+              Grow Your Business With EnteBazaar
+            </div>
+          </div>
 
           {onLogout && (
-            <div className="flex items-center justify-between px-2 py-1.5 text-xs text-[#DDF5EA]/70 font-sans">
-              <span className="truncate max-w-[120px] font-medium">{authUser?.name || selectedShopName}</span>
-              <button
-                onClick={onLogout}
-                className="text-[11px] text-red-300 hover:text-red-200 hover:underline cursor-pointer"
-              >
-                Logout
-              </button>
-            </div>
+            <button
+              onClick={onLogout}
+              title="Logout from Merchant"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-rose-300 hover:text-white hover:bg-rose-600/30 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-rose-500/20"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Logout</span>
+            </button>
           )}
         </div>
       </aside>
@@ -1219,84 +1227,32 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       {/* 2. MAIN MERCHANT WORKSPACE */}
       <div className="flex-1 flex flex-col min-w-0 md:ml-64">
         
-        {/* Top Header Bar */}
-        <header className="bg-white border-b border-[#E3ECE7] px-4 sm:px-6 py-3.5 sticky top-0 z-20 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+        {/* Top Header Bar matching Image 2 */}
+        <header className="bg-white border-b border-[#E3ECE7] px-4 sm:px-6 py-3 sticky top-0 z-20 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3 flex-1 max-w-md">
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
               className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer"
-              title="മെനു തുറക്കുക (Open Menu)"
+              title="Open Menu"
             >
               <Menu className="w-4 h-4" />
             </button>
-            <button
-              onClick={onBackToShopper}
-              className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] rounded-xl text-[#17221D] transition-colors"
-              title="ഷോപ്പർ മോഡ്"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xl">🏪</span>
-                <h1 className="text-base sm:text-lg font-black text-[#17221D] font-malayalam leading-tight">
-                  {authUser?.shopName || selectedShopName}
-                </h1>
-                {authUser && (
-                  <span className="bg-[#DDF5EA] text-[#063B2A] text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 font-malayalam border border-[#C3EEDC]">
-                    <UserCheck className="w-3 h-3 text-[#0B8F68]" />
-                    <span>വെരിഫൈഡ്</span>
-                  </span>
-                )}
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EDFAF3] text-[#0B8F68] border border-[#C3EEDC]">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10A978] animate-pulse" />
-                  <span>സ്റ്റോർ ലൈവ്</span>
-                </span>
-              </div>
-            </div>
-          </div>
 
-          {/* Center Quick Stats (Visible on desktop) */}
-          <div className="hidden lg:flex items-center gap-2 text-xs">
-            <div className="flex items-center gap-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-700">
-              <Package className="w-3.5 h-3.5 text-slate-500" />
-              <span>{carriedProducts.length}</span>
-              <span className="text-[10px] font-medium text-slate-400">ലിസ്റ്റ് ചെയ്തവ</span>
+            {/* Search Input matching Image 2 */}
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search anything..."
+                className="w-full pl-9 pr-4 py-2 bg-[#F5F8F6] border border-[#E3ECE7] rounded-xl text-xs font-semibold text-slate-800 placeholder:text-gray-400 focus:outline-none focus:border-[#0B8F68] focus:bg-white transition-all"
+              />
             </div>
-            <div className="flex items-center gap-1 px-2.5 py-1 bg-emerald-50 border border-emerald-200 rounded-xl font-bold text-emerald-800">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-              <span>{inStockCount}</span>
-              <span className="text-[10px] font-medium text-emerald-600">സ്റ്റോക്കിൽ</span>
-            </div>
-            {outOfStockCount > 0 && (
-              <button
-                onClick={() => {
-                  setMerchantTab('inventory');
-                  setInventoryStockFilter('out_of_stock');
-                }}
-                className="flex items-center gap-1 px-2.5 py-1 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl font-bold text-rose-800 cursor-pointer transition-colors"
-                title="തീർന്നുപോയവ കാണുക"
-              >
-                <span className="w-2 h-2 rounded-full bg-rose-500" />
-                <span>{outOfStockCount}</span>
-                <span className="text-[10px] font-medium text-rose-600">തീർന്നുപോയവ</span>
-              </button>
-            )}
-            {dirtyPriceIds.size > 0 && (
-              <button
-                onClick={handleSaveAll}
-                disabled={isSaving}
-                className="flex items-center gap-1 px-3 py-1 bg-amber-500 hover:bg-amber-600 text-white rounded-xl font-black text-xs shadow-xs cursor-pointer animate-pulse transition-all"
-                title="മാറ്റങ്ങൾ സേവ് ചെയ്യുക"
-              >
-                <Save className="w-3.5 h-3.5" />
-                <span>{isSaving ? 'സേവിംഗ്...' : `${dirtyPriceIds.size} സേവ് ചെയ്യുക`}</span>
-              </button>
-            )}
           </div>
 
           {/* Right Header Actions */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             {(!authUser || authUser.role === 'admin') && (
               <select
                 value={selectedShopName}
@@ -1313,21 +1269,35 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
             <button
               onClick={() => setIsMasterPickerOpen(true)}
-              className="px-3 sm:px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer font-malayalam shrink-0"
+              className="px-3 sm:px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
             >
               <PlusCircle className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">+ ഉൽപ്പന്നം ചേർക്കുക</span>
-              <span className="sm:hidden font-bold">+ ചേർക്കുക</span>
+              <span className="hidden sm:inline">Add Product</span>
+              <span className="sm:hidden font-bold">+ Product</span>
             </button>
 
+            {/* Notification Bell with red badge */}
             <button
-              onClick={() => setIsSubModalOpen(true)}
-              className="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-900 rounded-xl text-xs font-bold flex items-center gap-1 cursor-pointer transition-colors"
-              title="സബ്സ്ക്രിപ്ഷൻ വിവരങ്ങൾ"
+              onClick={() => setMerchantTab('prebookings')}
+              className="relative p-2 rounded-xl text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors cursor-pointer"
+              title="Notifications"
             >
-              <Crown className="w-3.5 h-3.5 text-amber-600" />
-              <span className="font-sans text-[11px] font-black">{isExempt ? 'ലൈഫ്‌ടൈം' : `${daysLeft}d ബാക്കി`}</span>
+              <Bell className="w-5 h-5" />
+              <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border border-white" />
             </button>
+
+            {/* Merchant Profile Pill matching Image 2 */}
+            <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+              <div className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center font-black text-xs">
+                🏪
+              </div>
+              <div className="hidden sm:flex flex-col text-left">
+                <span className="text-xs font-bold text-slate-800 truncate max-w-[130px]">
+                  {authUser?.shopName || selectedShopName}
+                </span>
+                <span className="text-[10px] text-gray-400 font-medium">Merchant</span>
+              </div>
+            </div>
           </div>
         </header>
 
@@ -1353,260 +1323,17 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 />
               </div>
 
-              {/* Desktop View (Preserved 100%) */}
-              <div className="hidden md:block space-y-6 animate-in fade-in duration-150 font-malayalam">
-                {/* Top Greeting Header (Screen 6) */}
-                <div>
-                  <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-                    സ്വാഗതം, {authUser?.shopName || selectedShopName}! 👋
-                  </h2>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">
-                    ഇന്നത്തെ നിങ്ങളുടെ കടയുടെ സമഗ്ര വിവരങ്ങൾ
-                  </p>
-                </div>
-
-              {/* 3 KPI Cards in a Row (Screen 6) */}
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                
-                {/* Metric 1: Total Sales */}
-                <div className="p-4 sm:p-5 bg-white border border-surface-border rounded-2xl shadow-xs flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                      മൊത്തം വിൽപ്പനകൾ (Total Sales)
-                    </span>
-                    <div className="text-2xl sm:text-3xl font-black text-slate-900 my-1 font-sans">
-                      ₹2,482
-                    </div>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full inline-flex items-center gap-1 font-sans">
-                      ▲ 12% കഴിഞ്ഞ ആഴ്ചയെ അപേക്ഷിച്ച്
-                    </span>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-700 flex items-center justify-center text-xl">
-                    📈
-                  </div>
-                </div>
-
-                {/* Metric 2: Total Orders */}
-                <div className="p-4 sm:p-5 bg-white border border-surface-border rounded-2xl shadow-xs flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                      ആകെ ഓർഡറുകൾ (Total Orders)
-                    </span>
-                    <div className="text-2xl sm:text-3xl font-black text-slate-900 my-1 font-sans">
-                      {preBookings.length || 142}
-                    </div>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full inline-flex items-center gap-1 font-sans">
-                      ▲ 8% വർദ്ധനവ്
-                    </span>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center text-xl">
-                    📋
-                  </div>
-                </div>
-
-                {/* Metric 3: Active Shoppers */}
-                <div className="p-4 sm:p-5 bg-white border border-surface-border rounded-2xl shadow-xs flex items-center justify-between">
-                  <div>
-                    <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                      സജീവ ഉപഭോക്താക്കൾ (Active Customers)
-                    </span>
-                    <div className="text-2xl sm:text-3xl font-black text-slate-900 my-1 font-sans">
-                      87
-                    </div>
-                    <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full inline-flex items-center gap-1 font-sans">
-                      ▲ 5% വർദ്ധനവ്
-                    </span>
-                  </div>
-                  <div className="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-700 flex items-center justify-center text-xl">
-                    👥
-                  </div>
-                </div>
-
+              {/* Desktop View Matching Image 2 Top-Right */}
+              <div className="hidden md:block space-y-6 animate-in fade-in duration-150 font-sans">
+                <DesktopMerchantOverview
+                  shopName={authUser?.shopName || selectedShopName}
+                  shops={shops}
+                  products={products}
+                  preBookings={preBookings}
+                  onNavigateTab={(tab) => setMerchantTab(tab as any)}
+                  onOpenAddProduct={() => setIsMasterPickerOpen(true)}
+                />
               </div>
-
-              {/* Middle Row: Sales Overview Chart + Today's Active Orders (Screen 6) */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
-                
-                {/* Sales Overview Chart (8 Cols) */}
-                <div className="lg:col-span-8 bg-white border border-surface-border rounded-3xl p-5 shadow-xs">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h3 className="text-base font-black text-slate-900">വിൽപ്പനയുടെ അവലോകനം (Sales Overview)</h3>
-                      <p className="text-xs text-slate-400">കഴിഞ്ഞ രണ്ടാഴ്ചയിലെ ദിവസേനയുള്ള വരുമാന ഗ്രാഫ്</p>
-                    </div>
-                    <div className="flex items-center gap-1 bg-gray-100 p-1 rounded-xl text-[11px] font-bold">
-                      <button className="px-2.5 py-1 bg-white text-emerald-800 rounded-lg shadow-2xs">7 ദിവസം</button>
-                      <button className="px-2.5 py-1 text-slate-500 hover:text-slate-800">14 ദിവസം</button>
-                      <button className="px-2.5 py-1 text-slate-500 hover:text-slate-800">30 ദിവസം</button>
-                    </div>
-                  </div>
-
-                  {/* SVG Line Chart */}
-                  <div className="h-52 w-full pt-2">
-                    <svg viewBox="0 0 500 160" className="w-full h-full overflow-visible">
-                      <line x1="20" y1="30" x2="480" y2="30" stroke="#f1f5f9" strokeDasharray="4 4" />
-                      <line x1="20" y1="80" x2="480" y2="80" stroke="#f1f5f9" strokeDasharray="4 4" />
-                      <line x1="20" y1="130" x2="480" y2="130" stroke="#f1f5f9" strokeDasharray="4 4" />
-
-                      {/* Area fill under curve */}
-                      <path
-                        d="M 20 120 Q 80 110 140 90 T 260 70 T 380 40 T 480 25 L 480 140 L 20 140 Z"
-                        fill="url(#greenGradient)"
-                        opacity="0.25"
-                      />
-                      <defs>
-                        <linearGradient id="greenGradient" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#16a34a" />
-                          <stop offset="100%" stopColor="#ffffff" />
-                        </linearGradient>
-                      </defs>
-
-                      {/* Line curve */}
-                      <path
-                        d="M 20 120 Q 80 110 140 90 T 260 70 T 380 40 T 480 25"
-                        fill="none"
-                        stroke="#16a34a"
-                        strokeWidth="3.5"
-                        strokeLinecap="round"
-                      />
-
-                      {/* Chart dots */}
-                      {[[20, 120], [140, 90], [260, 70], [380, 40], [480, 25]].map(([cx, cy], i) => (
-                        <g key={i}>
-                          <circle cx={cx} cy={cy} r="4.5" fill="#16a34a" stroke="#fff" strokeWidth="2" />
-                          <text x={cx} y={155} textAnchor="middle" className="text-[9px] fill-slate-400 font-sans">
-                            {['ജൂൺ 14', 'ജൂൺ 16', 'ജൂൺ 18', 'ജൂൺ 19', 'ജൂൺ 20'][i]}
-                          </text>
-                        </g>
-                      ))}
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Active Orders Side Card (4 Cols) */}
-                <div className="lg:col-span-4 bg-white border border-surface-border rounded-3xl p-5 shadow-xs flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center gap-1.5">
-                        <h3 className="text-base font-black text-slate-900">ഇന്ന് ആക്ടീവ് ഓർഡറുകൾ</h3>
-                        <span className="bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
-                          {preBookings.filter((b) => b.status === 'pending').length || 3}
-                        </span>
-                      </div>
-                      <button
-                        onClick={() => setMerchantTab('prebookings')}
-                        className="text-xs text-emerald-700 font-bold hover:underline"
-                      >
-                        എല്ലാം കാണുക
-                      </button>
-                    </div>
-
-                    <div className="space-y-2.5">
-                      {[
-                        { id: '#PT-4587', price: 299, status: 'തയ്യാറാക്കുന്നു' },
-                        { id: '#PT-4586', price: 189, status: 'സ്ഥിരീകരിച്ചു' },
-                        { id: '#PT-4585', price: 420, status: 'പുതിയത്' },
-                      ].map((ord) => (
-                        <div key={ord.id} className="p-3 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-between">
-                          <div>
-                            <span className="font-bold text-xs text-slate-900 font-sans">{ord.id}</span>
-                            <span className="text-[10px] text-slate-400 block font-sans">3 ഇനങ്ങൾ</span>
-                          </div>
-                          <div className="text-right">
-                            <span className="font-black text-xs text-slate-900 font-sans">₹{ord.price}</span>
-                            <span className="text-[10px] text-emerald-700 font-bold block">{ord.status}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => setMerchantTab('prebookings')}
-                    className="w-full mt-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-slate-800 text-xs font-bold rounded-xl transition-colors cursor-pointer"
-                  >
-                    ഓർഡറുകൾ പരിശോധിക്കുക →
-                  </button>
-                </div>
-
-              </div>
-
-              {/* Bottom Row (3 Columns: Top Products, Quick Actions, Flash Deal) */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                
-                {/* 1. Top Performing Products */}
-                <div className="bg-white border border-surface-border rounded-3xl p-5 shadow-xs">
-                  <div className="flex items-center justify-between mb-3">
-                    <h4 className="text-sm font-black text-slate-900">മികച്ച വിലയുള്ള ഉൽപ്പന്നങ്ങൾ</h4>
-                    <span className="text-xs text-slate-400">{carriedProducts.length} ഇനങ്ങൾ</span>
-                  </div>
-                  <div className="space-y-2">
-                    {carriedProducts.slice(0, 3).map((prod) => (
-                      <div key={prod.id} className="flex items-center justify-between p-2 rounded-xl hover:bg-gray-50">
-                        <div className="flex items-center gap-2">
-                          <span className="text-lg">{prod.emoji}</span>
-                          <div>
-                            <div className="font-bold text-xs text-slate-900 truncate max-w-[130px]">{prod.name}</div>
-                            <span className="text-[10px] text-slate-400 font-sans">{prod.defaultUnit}</span>
-                          </div>
-                        </div>
-                        <div className="font-black text-xs text-emerald-800 font-sans">
-                          ₹{editablePrices[prod.id] || prod.prices[selectedShopName] || 50}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 2. Quick Actions */}
-                <div className="bg-white border border-surface-border rounded-3xl p-5 shadow-xs flex flex-col justify-between">
-                  <h4 className="text-sm font-black text-slate-900 mb-3">ദ്രുത പ്രവർത്തികൾ (Quick Actions)</h4>
-                  <div className="space-y-2">
-                    <button
-                      onClick={() => setIsMasterPickerOpen(true)}
-                      className="w-full py-2.5 px-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-900 font-bold text-xs rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <PlusCircle className="w-4 h-4 text-emerald-700" />
-                      <span>+ പുതിയ ഉൽപ്പന്നം ചേർക്കുക</span>
-                    </button>
-                    <button
-                      onClick={() => setMerchantTab('inventory')}
-                      className="w-full py-2.5 px-3 bg-gray-50 hover:bg-gray-100 text-slate-800 font-bold text-xs rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <Layers className="w-4 h-4 text-slate-600" />
-                      <span>വിലകൾ പുതുക്കുക (Update Prices)</span>
-                    </button>
-                    <button
-                      onClick={() => setMerchantTab('billing')}
-                      className="w-full py-2.5 px-3 bg-gray-50 hover:bg-gray-100 text-slate-800 font-bold text-xs rounded-xl flex items-center gap-2 transition-colors cursor-pointer"
-                    >
-                      <Receipt className="w-4 h-4 text-slate-600" />
-                      <span>ലൈവ് POS ബില്ലിംഗ് തുറക്കുക</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* 3. Flash Deal Promo Banner Card */}
-                <div className="bg-gradient-to-br from-amber-50 to-amber-100 border border-amber-300/80 rounded-3xl p-5 shadow-xs flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xl">⚡</span>
-                      <span className="text-[11px] font-black uppercase text-amber-900 tracking-wider">ഫ്ലാഷ് ഡീൽ (Active Promo)</span>
-                    </div>
-                    <h4 className="text-sm font-black text-amber-950">വാഴപ്പഴം - 15% ഓഫർ</h4>
-                    <p className="text-xs text-amber-800/80 mt-1">ഇന്നത്തെ പ്രത്യേക ഓഫർ തത്സമയം ഷോപ്പർമാർക്ക് ലഭ്യമാണ്.</p>
-                  </div>
-                  <button
-                    onClick={() => setMerchantTab('deals')}
-                    className="mt-4 w-full py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-black rounded-xl shadow-2xs transition-colors cursor-pointer"
-                  >
-                    ഡീലുകൾ മാനേജ് ചെയ്യുക →
-                  </button>
-                </div>
-
-              </div>
-
-            </div>
             </>
           )}
 

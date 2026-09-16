@@ -132,9 +132,19 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   // Re-resolve source whenever image prop changes
   useEffect(() => {
     setHasError(false);
-    const initial = resolveProductImageSrc(image);
+    let initial = resolveProductImageSrc(image);
+    
+    // Safeguard: Never show banana fallback image for products that are not bananas
+    if (initial && initial.includes('test-banana-green')) {
+      const text = `${productId || ''} ${alt || ''}`.toLowerCase();
+      const isBanana = text.includes('banana') || text.includes('വാഴ') || text.includes('പഴം') || text.includes('നേന്ത്ര') || text.includes('റോബസ്റ്റ') || text.includes('chips');
+      if (!isBanana) {
+        initial = null;
+      }
+    }
+    
     setCurrentSrc(initial);
-  }, [image]);
+  }, [image, alt, productId]);
 
   const handleImageError = () => {
     // If proxied image still fails (e.g. broken or invalid remote link), fallback cleanly to emoji

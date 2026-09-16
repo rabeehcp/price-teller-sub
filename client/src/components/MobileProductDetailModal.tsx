@@ -1,315 +1,284 @@
 import React, { useState } from 'react';
-import { Product, Shop } from '../types';
+import { Product, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
-import {
-  ArrowLeft,
-  Heart,
-  ShoppingCart,
-  Star,
-  Plus,
-  Minus,
-  Check,
-  ChevronDown,
-  ShieldCheck,
-  Store,
-  MapPin,
-  Flame,
-} from 'lucide-react';
-import { getShopCoordinates, calculateRoadDistanceKm } from '../services/locationService';
+import { ArrowLeft, ShoppingBag, Star, Plus, Minus, Check, Leaf, ShieldCheck, Sprout, X } from 'lucide-react';
 
 interface MobileProductDetailModalProps {
   product: Product | null;
-  shops: Shop[];
-  quantityInBasket: number;
-  currentUnit: string;
-  isFavorite?: boolean;
+  basket: BasketItem[];
   onClose: () => void;
+  onOpenCart?: () => void;
   onAdd: (product: Product, unit: string) => void;
   onQuantityChange: (productId: string, delta: number) => void;
-  onToggleFavorite?: (product: Product) => void;
-  onOpenShopCatalogue?: (shopName: string) => void;
+}
+
+function getFallbackMultiplier(unit: string): number {
+  const u = unit.toLowerCase().trim();
+  if (u === '100 g') return 0.1;
+  if (u === '250 g') return 0.25;
+  if (u === '500 g') return 0.5;
+  if (u === '1 kg' || u === 'kg') return 1;
+  if (u === '2 kg') return 2;
+  if (u === '5 kg') return 5;
+  if (u === '1 bunch' || u === 'bunch') return 1;
+  if (u === '2 bunches') return 2;
+  if (u === '3 bunches') return 3;
+  if (u === '1 unit' || u === '1 pc' || u === 'pc') return 1;
+  if (u === '2 units' || u === '2 pcs') return 2;
+  if (u === '1 dozen' || u === '12 pc') return 12;
+  if (u === '500 ml') return 0.5;
+  if (u === '1 l' || u === '1 litre') return 1;
+  return 1;
+}
+
+function getProductAvailableUnits(product: Product): string[] {
+  if (product.availableUnits && product.availableUnits.length > 0) {
+    return product.availableUnits;
+  }
+  const def = (product.defaultUnit || '').toLowerCase().trim();
+  if (def.includes('bunch')) return ['1 bunch', '2 bunches', '3 bunches'];
+  if (def.includes('kg') || def === '1 kg' || def === 'kg') return ['250 g', '500 g', '1 kg', '2 kg'];
+  if (def === '500 g') return ['250 g', '500 g', '1 kg'];
+  if (def === '100 g') return ['100 g', '250 g', '500 g'];
+  if (def.includes('unit') || def.includes('pc')) return ['1 unit', '2 units'];
+  if (def.includes('l') || def.includes('litre')) return ['500 ml', '1 L'];
+  return [product.defaultUnit || '1 kg'];
 }
 
 export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> = ({
   product,
-  shops,
-  quantityInBasket,
-  currentUnit,
-  isFavorite = false,
+  basket,
   onClose,
+  onOpenCart,
   onAdd,
   onQuantityChange,
-  onToggleFavorite,
-  onOpenShopCatalogue,
 }) => {
   if (!product) return null;
 
-  const [selectedUnit, setSelectedUnit] = useState<string>(currentUnit || product.defaultUnit);
-  const [isJustAdded, setIsJustAdded] = useState(false);
+  const availableUnits = getProductAvailableUnits(product);
+  const [selectedUnit, setSelectedUnit] = useState<string>(product.defaultUnit || availableUnits[0] || '1 kg');
+  const [qty, setQty] = useState(1);
+  const [isAdded, setIsAdded] = useState(false);
+
+  const basketItem = basket.find((b) => b.productId === product.id || (b as any).product?.id === product.id);
+  const currentBasketQty = basketItem ? basketItem.quantity : 0;
+  const basketTotalCount = basket.reduce((sum, item) => sum + item.quantity, 0);
 
   const priceValues = Object.values(product.prices || {});
-  const minBasePrice = priceValues.length ? Math.min(...priceValues) : 0;
-  const multiplier = product.unitMultiplier[selectedUnit] ?? 1;
-  const effectiveMinPrice = Math.round(minBasePrice * multiplier);
+  const basePrice = priceValues.length > 0 ? Math.min(...priceValues) : 30;
+  const multiplier = product.unitMultiplier?.[selectedUnit] ?? getFallbackMultiplier(selectedUnit);
+  const unitPrice = Math.round(basePrice * multiplier);
+  const totalPrice = unitPrice * qty;
 
-  // Sorted stores by price for this product
-  const storePriceEntries = Object.entries(product.prices || {})
-    .map(([shopName, basePrice]) => {
-      const shopInfo = shops.find((s) => s.name.toLowerCase() === shopName.toLowerCase());
-      const effectivePrice = Math.round(basePrice * multiplier);
-      const isLowest = basePrice === minBasePrice;
-      const stockStatus = product.stockStatus?.[shopName] || 'in_stock';
-      
-      // Calculate realistic discount or baseline strike price
-      const strikePrice = isLowest ? Math.round(effectivePrice * 1.15) : undefined;
-      const discountPercent = strikePrice ? Math.round(((strikePrice - effectivePrice) / strikePrice) * 100) : undefined;
+  const rating = 4.5;
+  const reviewCount = 120;
 
-      return {
-        shopName,
-        shopInfo,
-        effectivePrice,
-        isLowest,
-        stockStatus,
-        strikePrice,
-        discountPercent,
-        rating: shopInfo?.rating || (4.2 + (Math.abs(shopName.length % 7) / 10)).toFixed(1),
-        reviewsCount: 80 + (shopName.length * 12),
-        distanceKm: (() => {
-          if (shopInfo?.lat && shopInfo?.lng) {
-            return calculateRoadDistanceKm(10.9155, 75.9238, shopInfo.lat, shopInfo.lng);
-          }
-          return shopInfo?.distanceKm || 1.2;
-        })(),
-      };
-    })
-    .sort((a, b) => a.effectivePrice - b.effectivePrice);
-
-  const handleAdd = () => {
+  const handleAddToCart = () => {
     onAdd(product, selectedUnit);
-    setIsJustAdded(true);
-    setTimeout(() => setIsJustAdded(false), 800);
+    if (qty > 1) {
+      onQuantityChange(product.id, qty - 1);
+    }
+    setIsAdded(true);
+    setTimeout(() => setIsAdded(false), 1200);
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-white animate-in slide-in-from-bottom duration-300 font-sans overflow-hidden">
-      
-      {/* Top Header matching Screen 3 */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 bg-white sticky top-0 z-10">
-        <button
-          onClick={onClose}
-          className="p-2 -ml-2 text-slate-700 hover:bg-slate-100 rounded-full transition-colors cursor-pointer"
-        >
-          <ArrowLeft className="w-5 h-5" />
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200 font-sans">
+      {/* Backdrop overlay (click to close) */}
+      <div className="absolute inset-0" onClick={onClose} />
 
-        <span className="text-xs font-black text-slate-800 uppercase tracking-wider font-malayalam">
-          ഉൽപ്പന്ന വിവരങ്ങൾ
-        </span>
+      {/* Centered Modal Card Container */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative z-10 w-full sm:max-w-md h-full sm:h-auto sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100"
+      >
+        {/* 1. TOP HERO IMAGE WITH FLOATING CONTROLS */}
+        <div className="relative w-full h-52 bg-[#F8FAF7] border-b border-[#E8ECE3] flex items-center justify-center p-4 shrink-0">
+          {/* Close Button */}
+          <button
+            type="button"
+            onClick={onClose}
+            className="absolute top-3.5 left-3.5 z-20 w-9 h-9 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center text-[#17221D] shadow-sm hover:bg-white hover:text-emerald-700 border border-[#E3ECE7] transition-all cursor-pointer active:scale-95"
+          >
+            <X className="w-5 h-5 text-[#17221D]" />
+          </button>
 
-        <button
-          onClick={() => onToggleFavorite && onToggleFavorite(product)}
-          className={`p-2 -mr-2 rounded-full transition-colors cursor-pointer ${
-            isFavorite ? 'text-rose-500 bg-rose-50' : 'text-slate-400 hover:text-rose-500 hover:bg-slate-100'
-          }`}
-        >
-          <Heart className={`w-5 h-5 ${isFavorite ? 'fill-rose-500' : ''}`} />
-        </button>
-      </div>
-
-      {/* Scrollable Content Body */}
-      <div className="flex-1 overflow-y-auto px-4 py-4 pb-28 space-y-5">
-        
-        {/* Big Product Image matching Screen 3 */}
-        <div className="w-full h-56 rounded-3xl bg-[#f8faf6] border border-[#e8ece3] flex items-center justify-center p-4 relative overflow-hidden shadow-inner">
-          <ProductImage
-            productId={product.id}
-            image={product.image}
-            emoji={product.emoji}
-            alt={product.name}
-            className="w-full h-full"
-            imgClassName="max-h-full max-w-full object-contain drop-shadow-md"
-            fallbackEmojiClassName="text-6xl select-none"
-          />
-          {product.badge && (
-            <span className="absolute top-3 left-3 bg-amber-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase shadow-xs">
-              {product.badge}
-            </span>
-          )}
-        </div>
-
-        {/* Product Title & Unit Dropdown matching Screen 3 */}
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black text-slate-950 font-malayalam tracking-tight leading-tight">
-              {product.name}
-            </h1>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-xs text-slate-500 font-semibold">{selectedUnit}</span>
-              {product.isOrganic && (
-                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full font-malayalam">
-                  🌿 100% ഓർഗാനിക്
+          {/* Floating Cart Button */}
+          {onOpenCart && (
+            <button
+              type="button"
+              onClick={onOpenCart}
+              className="absolute top-3.5 right-3.5 z-20 w-9 h-9 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center text-[#2D3E35] shadow-sm hover:bg-white border border-[#E3ECE7] transition-all cursor-pointer active:scale-95"
+            >
+              <ShoppingBag className="w-4 h-4 text-[#2D3E35]" />
+              {basketTotalCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#E11D48] text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-2xs">
+                  {basketTotalCount}
                 </span>
               )}
-            </div>
-          </div>
-
-          {/* Unit Dropdown */}
-          {product.availableUnits.length > 1 && (
-            <div className="relative shrink-0">
-              <select
-                value={selectedUnit}
-                onChange={(e) => setSelectedUnit(e.target.value)}
-                className="appearance-none bg-emerald-50 text-emerald-950 border border-emerald-300 font-bold text-xs rounded-xl pl-3 pr-7 py-2 outline-none cursor-pointer shadow-2xs"
-              >
-                {product.availableUnits.map((u) => (
-                  <option key={u} value={u}>
-                    {u}
-                  </option>
-                ))}
-              </select>
-              <ChevronDown className="w-3.5 h-3.5 text-emerald-700 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
-            </div>
+            </button>
           )}
+
+          {/* Main Product Hero Image */}
+          <div className="w-36 h-36 flex items-center justify-center p-2">
+            <ProductImage
+              productId={product.id}
+              image={product.image}
+              emoji={product.emoji}
+              alt={product.name}
+              className="w-full h-full"
+              imgClassName="max-h-full max-w-full object-contain"
+              fallbackEmojiClassName="text-6xl"
+            />
+          </div>
         </div>
 
-        {/* Section: Multi-store Price Comparison matching Screen 3 */}
-        <div className="space-y-2.5">
-          <div className="flex items-center justify-between">
-            <h3 className="text-sm font-black text-slate-900 font-malayalam tracking-tight">
-              വില താരതമ്യം (Price Comparison)
-            </h3>
-            <span className="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full font-bold font-malayalam">
-              {storePriceEntries.length} കടകളിൽ ലഭ്യമാണ്
+        {/* 2. PRODUCT DETAILS BODY */}
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-3.5">
+          {/* Title & Badge */}
+          <div className="flex items-start justify-between gap-2">
+            <h1 className="text-xl font-black text-[#17221D] font-malayalam tracking-tight m-0 leading-snug">
+              {product.name}
+            </h1>
+            <span className="shrink-0 inline-flex items-center gap-1 bg-[#E8F5EE] text-[#0B8F68] text-[11px] font-bold px-2.5 py-0.5 rounded-full font-malayalam border border-[#C3EEDC]">
+              🌱 നാടൻ
             </span>
           </div>
 
-          {/* Store Price Cards List matching Screen 3 */}
-          <div className="space-y-2">
-            {storePriceEntries.map((entry) => (
-              <div
-                key={entry.shopName}
-                onClick={() => onOpenShopCatalogue && onOpenShopCatalogue(entry.shopName)}
-                className={`p-3.5 rounded-2xl border transition-all cursor-pointer flex items-center justify-between gap-3 ${
-                  entry.isLowest
-                    ? 'border-2 border-emerald-600 bg-emerald-50/40 shadow-xs ring-1 ring-emerald-500/20'
-                    : 'border-slate-200 bg-white hover:border-slate-300'
-                }`}
-              >
-                {/* Store Icon & Info */}
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-sm shrink-0 shadow-2xs"
-                    style={{ backgroundColor: entry.shopInfo?.color || '#047857' }}
-                  >
-                    {entry.shopName.charAt(0)}
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5 flex-wrap">
-                      <b className="text-xs font-bold text-slate-900 truncate font-malayalam">
-                        {entry.shopName}
-                      </b>
-                      {entry.isLowest && (
-                        <span className="text-[9px] font-black bg-emerald-600 text-white px-1.5 py-0.2 rounded font-malayalam">
-                          കുറഞ്ഞ വില
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5 font-medium">
-                      <span className="flex items-center gap-0.5 font-bold text-amber-600">
-                        <Star className="w-3 h-3 fill-amber-500 text-amber-500" /> {entry.rating} ({entry.reviewsCount})
-                      </span>
-                      <span>•</span>
-                      <span>{entry.distanceKm} km</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Store Price details matching Screen 3 */}
-                <div className="text-right shrink-0">
-                  <div className="flex items-baseline justify-end gap-1.5">
-                    <span className="text-base font-black text-slate-950 font-sans">
-                      ₹ {entry.effectivePrice}
-                    </span>
-                    <span className="text-[11px] text-slate-400 font-medium">/{selectedUnit}</span>
-                  </div>
-
-                  <div className="flex items-center justify-end gap-1 mt-0.5">
-                    {entry.strikePrice && (
-                      <span className="text-[10px] text-slate-400 line-through">
-                        ₹{entry.strikePrice}
-                      </span>
-                    )}
-                    {entry.discountPercent && entry.discountPercent > 0 && (
-                      <span className="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1 py-0.2 rounded font-sans">
-                        {entry.discountPercent}% off
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-      </div>
-
-      {/* Sticky Bottom Action Bar matching Screen 3 */}
-      <div className="fixed bottom-0 left-0 right-0 p-3.5 bg-white/95 backdrop-blur-md border-t border-slate-200 z-20 shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
-        {quantityInBasket > 0 ? (
-          <div className="flex items-center justify-between gap-3 max-w-md mx-auto">
-            <div className="flex items-center bg-emerald-50 border border-emerald-300 rounded-2xl p-1 shadow-2xs flex-1">
-              <button
-                type="button"
-                onClick={() => onQuantityChange(product.id, -1)}
-                className="w-10 h-10 bg-white hover:bg-emerald-100 text-emerald-800 rounded-xl border border-emerald-200 flex items-center justify-center font-bold text-sm shadow-2xs active:scale-90 transition-all cursor-pointer"
-              >
-                <Minus className="w-4 h-4" />
-              </button>
-              <div className="text-center px-2 flex-1 min-w-0 font-malayalam">
-                <span className="text-xs font-black text-emerald-950 block leading-tight truncate">
-                  {quantityInBasket} × {selectedUnit}
-                </span>
-                <span className="text-[11px] font-bold text-emerald-700 block leading-tight">
-                  ആകെ = ₹{effectiveMinPrice * quantityInBasket}
-                </span>
-              </div>
-              <button
-                type="button"
-                onClick={() => onQuantityChange(product.id, 1)}
-                className="w-10 h-10 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl flex items-center justify-center font-bold text-sm shadow-2xs active:scale-90 transition-all cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
+          {/* Dynamic Price & Rating */}
+          <div className="flex items-baseline justify-between pt-0.5">
+            <div className="flex items-baseline gap-2">
+              <span className="text-2xl font-black text-[#17221D] font-sans">
+                ₹ {totalPrice}
+              </span>
+              <span className="text-xs text-[#66756E] font-medium font-sans">
+                {qty > 1 ? `(₹${unitPrice} × ${qty})` : `/ ${selectedUnit}`}
+              </span>
             </div>
 
+            {/* Rating */}
+            <div className="flex items-center gap-1 text-[11px] text-[#8A9992] font-sans">
+              <Star className="w-3.5 h-3.5 fill-[#F4B740] text-[#F4B740]" />
+              <span className="font-bold text-[#17221D]">{rating}</span>
+              <span>({reviewCount})</span>
+            </div>
+          </div>
+
+          {/* Unit / Weight Selector (Available market quantities) */}
+          {availableUnits.length > 1 && (
+            <div className="space-y-1.5 pt-1">
+              <label className="text-[11px] font-bold text-[#8A9992] uppercase tracking-wider font-sans block">
+                അളവ് തിരഞ്ഞെടുക്കുക (Weight / Pack)
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {availableUnits.map((u) => {
+                  const isSelected = selectedUnit === u;
+                  const mult = product.unitMultiplier?.[u] ?? getFallbackMultiplier(u);
+                  const uPrice = Math.round(basePrice * mult);
+                  return (
+                    <button
+                      key={u}
+                      type="button"
+                      onClick={() => setSelectedUnit(u)}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all border cursor-pointer flex items-center gap-1.5 ${
+                        isSelected
+                          ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-xs'
+                          : 'bg-[#F8FAF7] text-[#17221D] border-[#E3ECE7] hover:border-[#0B8F68]'
+                      }`}
+                    >
+                      <span>{u}</span>
+                      <span className={`text-[10px] ${isSelected ? 'text-[#34D399]' : 'text-[#8A9992]'}`}>
+                        ₹{uPrice}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Description Section ("വിവരണം") */}
+          <div className="space-y-1 pt-1.5 border-t border-[#F0F4F2]">
+            <h3 className="text-[11px] font-black text-[#17221D] font-malayalam uppercase tracking-wider">
+              വിവരണം
+            </h3>
+            <p className="text-xs text-[#66756E] font-malayalam leading-relaxed m-0">
+              {product.nutritionalNote || `നാടൻ ${product.name}. രുചിയും പുതുമയും നിറഞ്ഞത്. നിങ്ങളുടെ വീട്ടിലേക്ക് നേരിട്ട്.`}
+            </p>
+          </div>
+
+          {/* Quantity Stepper Selector */}
+          <div className="pt-1">
+            <div className="flex items-center justify-between bg-[#F5F8F6] border border-[#E3ECE7] rounded-2xl py-2 px-4 max-w-sm mx-auto">
+              <button
+                type="button"
+                onClick={() => setQty((q) => Math.max(1, q - 1))}
+                className="w-8 h-8 rounded-xl bg-white border border-[#E3ECE7] text-[#17221D] flex items-center justify-center font-bold text-sm shadow-2xs active:scale-90 transition-all cursor-pointer"
+              >
+                <Minus className="w-3.5 h-3.5" />
+              </button>
+              <span className="text-sm font-black text-[#17221D] font-sans">
+                {qty} × {selectedUnit}
+              </span>
+              <button
+                type="button"
+                onClick={() => setQty((q) => q + 1)}
+                className="w-8 h-8 rounded-xl bg-white border border-[#E3ECE7] text-[#17221D] flex items-center justify-center font-bold text-sm shadow-2xs active:scale-90 transition-all cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Primary Green CTA Button with Real-time dynamic total price */}
+          <div className="pt-1">
             <button
-              onClick={onClose}
-              className="py-3 px-4 bg-[#064e3b] text-white rounded-2xl text-xs font-black shadow-sm active:scale-95 transition-all cursor-pointer font-malayalam"
+              type="button"
+              onClick={handleAddToCart}
+              className="w-full py-3.5 px-4 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-98 text-white text-sm font-extrabold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
             >
-              പൂർത്തിയായി
+              {isAdded ? (
+                <>
+                  <Check className="w-4 h-4 text-[#34D399]" />
+                  <span>കാർട്ടിൽ ചേർത്തു!</span>
+                </>
+              ) : (
+                <span>കാർട്ടിൽ ചേർക്കുക • ₹{totalPrice}</span>
+              )}
             </button>
           </div>
-        ) : (
-          <button
-            onClick={handleAdd}
-            className="w-full max-w-md mx-auto py-3.5 px-4 bg-[#064e3b] hover:bg-[#043d2e] active:scale-98 text-white text-sm font-black rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
-          >
-            {isJustAdded ? (
-              <>
-                <Check className="w-4 h-4" />
-                <span>ബാസ്ക്കറ്റിൽ ചേർത്തു!</span>
-              </>
-            ) : (
-              <>
-                <ShoppingCart className="w-4 h-4" />
-                <span>കാർട്ടിൽ ചേർക്കുക (₹{effectiveMinPrice} / {selectedUnit})</span>
-              </>
-            )}
-          </button>
-        )}
-      </div>
 
+          {/* 3 Value Features Row */}
+          <div className="grid grid-cols-3 gap-2 pt-3 border-t border-[#F0F4F2] text-center">
+            <div className="p-2.5 bg-[#F5F8F6] rounded-2xl flex flex-col items-center justify-center space-y-1">
+              <div className="w-7 h-7 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center">
+                <Leaf className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-[10px] font-bold text-[#17221D] font-sans">
+                100% fresh
+              </span>
+            </div>
+
+            <div className="p-2.5 bg-[#F5F8F6] rounded-2xl flex flex-col items-center justify-center space-y-1">
+              <div className="w-7 h-7 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center">
+                <Sprout className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-[10px] font-bold text-[#17221D] font-sans">
+                Local farm
+              </span>
+            </div>
+
+            <div className="p-2.5 bg-[#F5F8F6] rounded-2xl flex flex-col items-center justify-center space-y-1">
+              <div className="w-7 h-7 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center">
+                <ShieldCheck className="w-3.5 h-3.5" />
+              </div>
+              <span className="text-[10px] font-bold text-[#17221D] font-sans">
+                No chemicals
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

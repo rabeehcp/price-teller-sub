@@ -72,14 +72,9 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={onBackToShopper}
-            className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold font-malayalam flex items-center gap-1"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>ഷോപ്പർ മോഡ്</span>
-          </button>
+          <span className="px-2.5 py-1 bg-[#DDF5EA] text-[#063B2A] border border-[#10A978]/30 text-[11px] font-bold rounded-full font-sans">
+            Merchant
+          </span>
         </div>
       </div>
 

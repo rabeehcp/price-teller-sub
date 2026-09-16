@@ -634,7 +634,7 @@ const newShop: Shop = {
       }));
   }
 
-  public async getProducts(params?: { category?: string; search?: string; locationId?: string; includeUnverifiedShops?: boolean }): Promise<Product[]> {
+  public async getProducts(params?: { category?: string; search?: string; locationId?: string; includeUnverifiedShops?: boolean; includeMaster?: boolean }): Promise<Product[]> {
 
       let sql = `SELECT id, name, category_id AS "categoryId", emoji, image, default_unit AS "defaultUnit", 
                         available_units AS "availableUnits", unit_multiplier AS "unitMultiplier", 
@@ -646,10 +646,25 @@ const newShop: Shop = {
       const queryParams: any[] = [];
 
       if (params?.category && params.category !== 'all') {
-        if (params.category === 'organic') {
+        const cat = params.category.toLowerCase().trim();
+        if (cat === 'organic') {
           sql += ` AND (is_organic = true OR category_id = 'organic')`;
+        } else if (cat === 'fruits') {
+          sql += ` AND (category_id = 'fruits' OR category_id = 'fruits-vegetables')`;
+        } else if (cat === 'vegetables') {
+          sql += ` AND (category_id = 'vegetables' OR category_id = 'fruits-vegetables')`;
+        } else if (cat === 'rice-grains') {
+          sql += ` AND category_id IN ('rice-grains', 'staples', 'pulses-legumes')`;
+        } else if (cat === 'dairy') {
+          sql += ` AND category_id IN ('dairy')`;
+        } else if (cat === 'spices') {
+          sql += ` AND category_id IN ('spices', 'oils-spices')`;
+        } else if (cat === 'grocery') {
+          sql += ` AND category_id IN ('grocery', 'oils-sugar', 'sauces-condiments', 'staples', 'spices', 'pulses-legumes')`;
+        } else if (cat === 'biscuits-snacks') {
+          sql += ` AND category_id IN ('biscuits-snacks', 'beverages', 'bakery-breakfast', 'snacks-beverages')`;
         } else {
-          queryParams.push(params.category);
+          queryParams.push(cat);
           sql += ` AND category_id = $${queryParams.length}`;
         }
       }
@@ -663,12 +678,17 @@ const newShop: Shop = {
       const res = await query(sql, queryParams);
       let result: Product[] = res.rows;
 
-      const shops = await this.getShops(params?.locationId, params?.includeUnverifiedShops);
-      const allowedShopNames = new Set(shops.map((s) => s.name));
+      let shops = await this.getShops(params?.locationId, params?.includeUnverifiedShops);
+      let allowedShopNames = new Set(shops.map((s) => s.name));
+      // Fallback: If the selected location has no local shops registered yet, fallback to all verified shops
+      if (allowedShopNames.size === 0) {
+        shops = await this.getShops(undefined, params?.includeUnverifiedShops);
+        allowedShopNames = new Set(shops.map((s) => s.name));
+      }
 
       result = result.map((p) => {
-        const filteredPrices: Record<string, number> = {};
-        const filteredStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
+        let filteredPrices: Record<string, number> = {};
+        let filteredStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
         for (const [shopName, price] of Object.entries(p.prices || {})) {
           if (allowedShopNames.has(shopName)) {
             filteredPrices[shopName] = price;
@@ -679,6 +699,9 @@ const newShop: Shop = {
             filteredStock[shopName] = stock;
           }
         }
+        if (params?.includeMaster && p.prices) {
+          filteredPrices = { ...p.prices, ...filteredPrices };
+        }
         return {
           ...p,
           prices: filteredPrices,
@@ -686,7 +709,7 @@ const newShop: Shop = {
         };
       });
 
-      if (params?.locationId && params.locationId !== 'all') {
+      if (params?.locationId && params.locationId !== 'all' && !params?.includeMaster) {
         result = result.filter((p) => Object.keys(p.prices).length > 0);
       }
 

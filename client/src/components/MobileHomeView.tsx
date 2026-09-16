@@ -4,19 +4,11 @@ import { ProductImage } from './ProductImage';
 import {
   Search,
   X,
-  MapPin,
-  Sparkles,
-  Star,
+  Heart,
   Plus,
   Minus,
-  Check,
-  Heart,
   ChevronRight,
-  Store,
-  Flame,
-  Filter,
 } from 'lucide-react';
-import { getShopCoordinates, calculateRoadDistanceKm } from '../services/locationService';
 
 interface MobileHomeViewProps {
   products: Product[];
@@ -35,6 +27,8 @@ interface MobileHomeViewProps {
   onSelectProductForDetail: (product: Product) => void;
   onOpenLocationModal: () => void;
   onOpenShopCatalogue: (shopName: string) => void;
+  onViewAllCategories?: () => void;
+  onViewAllProducts?: () => void;
 }
 
 export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
@@ -54,132 +48,221 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   onSelectProductForDetail,
   onOpenLocationModal,
   onOpenShopCatalogue,
+  onViewAllCategories,
+  onViewAllProducts,
 }) => {
-  const [filterMode, setFilterMode] = useState<'all' | 'nearby' | 'lowest' | 'organic' | 'under100'>('all');
+  // Categories matching Desktop view exactly
+  const homeCategories = [
+    {
+      id: 'vegetables',
+      label: 'പച്ചക്കറികൾ',
+      emoji: '🥬',
+      image: '/products/tomato.webp',
+      fallbackEmoji: '🥬',
+    },
+    {
+      id: 'fruits',
+      label: 'പഴങ്ങൾ',
+      emoji: '🍌',
+      image: '/products/banana.webp',
+      fallbackEmoji: '🍌',
+    },
+    {
+      id: 'rice-grains',
+      label: 'ധാന്യങ്ങൾ',
+      emoji: '🌾',
+      image: '/products/rice.webp',
+      fallbackEmoji: '🌾',
+    },
+    {
+      id: 'dairy',
+      label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
+      emoji: '🥛',
+      image: '/products/milk.webp',
+      fallbackEmoji: '🥛',
+    },
+    {
+      id: 'spices',
+      label: 'മസാലകൾ',
+      emoji: '🌶️',
+      image: '/products/turmeric-powder.webp',
+      fallbackEmoji: '🌶️',
+    },
+    {
+      id: 'grocery',
+      label: 'കറി സാധനങ്ങൾ',
+      emoji: '🥫',
+      image: '/products/coconut-oil.webp',
+      fallbackEmoji: '🥫',
+    },
+    {
+      id: 'all',
+      label: 'കൂടുതൽ',
+      emoji: '⋯',
+      fallbackEmoji: '⋯',
+      isMore: true,
+    },
+  ];
 
-  // Filtered Products
-  const displayedProducts = useMemo(() => {
-    return products.filter((p) => {
-      // 1. Search filter
+  // Pick top popular products (or filtered by search if typed)
+  const popularProducts = useMemo(() => {
+    if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
+      return products.filter((p) =>
         p.name.toLowerCase().includes(q) ||
-        (p.categoryId && p.categoryId.toLowerCase().includes(q)) ||
-        (p.badge && p.badge.toLowerCase().includes(q));
+        (p.categoryId && p.categoryId.toLowerCase().includes(q))
+      );
+    }
 
-      // 2. Category filter
-      const matchesCat =
-        selectedCategoryId === 'all' ||
-        p.categoryId === selectedCategoryId ||
-        (selectedCategoryId === 'fruits' && (p.categoryId === 'fruits' || p.categoryId === 'vegetables'));
-
-      // 3. Quick Filter mode
-      let matchesMode = true;
-      if (filterMode === 'organic') {
-        matchesMode = !!p.isOrganic;
-      } else if (filterMode === 'under100') {
-        const minPrice = Math.min(...Object.values(p.prices || {}));
-        matchesMode = minPrice > 0 && minPrice <= 100;
-      }
-
-      return matchesSearch && matchesCat && matchesMode;
-    }).sort((a, b) => {
-      if (filterMode === 'lowest') {
-        const minA = Math.min(...Object.values(a.prices || { 0: 9999 }));
-        const minB = Math.min(...Object.values(b.prices || { 0: 9999 }));
-        return minA - minB;
-      }
+    // Default popular products: Tomato, Banana, Onion, Carrot, Brinjal, Beans, etc.
+    const priorityNames = ['tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli'];
+    const sorted = [...products].sort((a, b) => {
+      const aName = a.name.toLowerCase();
+      const bName = b.name.toLowerCase();
+      const aIndex = priorityNames.findIndex((n) => aName.includes(n));
+      const bIndex = priorityNames.findIndex((n) => bName.includes(n));
+      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
       return 0;
     });
-  }, [products, searchQuery, selectedCategoryId, filterMode]);
+
+    return sorted.slice(0, 12);
+  }, [products, searchQuery]);
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-20 animate-in fade-in duration-150">
+    <div className="md:hidden space-y-4 font-sans pb-24 animate-in fade-in duration-150">
       
-      {/* 1. KERALA HERO BANNER MATCHING SCREEN 1 */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#063B2A] text-white p-5 shadow-lg border border-[#0B8F68]/30">
-        
-        {/* Subtle Ambient Radial Glow */}
-        <div className="absolute top-0 right-0 w-48 h-48 bg-[#10A978]/10 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-40 h-40 bg-[#DDF5EA]/10 rounded-full blur-2xl pointer-events-none" />
-
-        <div className="relative z-10 space-y-3">
-          
-          {/* Headline matching Screen 1 */}
-          <h1 className="font-malayalam font-black text-xl sm:text-2xl text-white leading-snug tracking-tight">
-            നിങ്ങളുടെ അടുത്തുള്ള കടകളിൽ സാധനങ്ങളുടെ വില താരതമ്യം ചെയ്യൂ
-          </h1>
-
-          <p className="font-malayalam text-xs text-[#DDF5EA]/90 font-medium leading-relaxed">
-            ഒരേ സാധനം പല കടകളിൽ എത്രയാണ് വില എന്ന് എളുപ്പത്തിൽ കണ്ടെത്താം.
-          </p>
-
-          {/* Integrated Search Input matching Screen 1 & 2 */}
-          <div className="relative pt-1">
-            <div className="relative flex items-center bg-white rounded-2xl shadow-md overflow-hidden p-1 border border-white/20">
-              <Search className="w-4 h-4 ml-3 text-[#66756E] shrink-0" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="എന്താണ് തിരയുന്നത്?"
-                className="w-full px-2.5 py-2 text-xs font-bold text-[#17221D] placeholder-[#66756E] outline-none font-malayalam"
-              />
-              {searchQuery ? (
-                <button
-                  type="button"
-                  onClick={() => onSearchChange('')}
-                  className="p-1.5 text-[#66756E] hover:text-[#17221D] rounded-full cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  className="w-8 h-8 rounded-xl bg-[#10A978] hover:bg-[#0B8F68] text-white flex items-center justify-center shrink-0 shadow-xs"
-                >
-                  <Search className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
-          </div>
-
+      {/* 1. TOP SEARCH INPUT BAR (Matching Screen 1) */}
+      <div className="pt-1">
+        <div className="relative flex items-center bg-[#F5F8F6] border border-[#E3ECE7] rounded-full p-1 pl-3.5 shadow-2xs">
+          <Search className="w-4 h-4 text-[#8A9992] shrink-0" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => onSearchChange(e.target.value)}
+            placeholder="എന്താണ് തിരയുന്നത്?"
+            className="w-full px-2.5 py-1.5 text-xs font-semibold text-[#17221D] placeholder-[#8A9992] bg-transparent outline-none font-malayalam"
+          />
+          {searchQuery ? (
+            <button
+              type="button"
+              onClick={() => onSearchChange('')}
+              className="p-1.5 text-[#8A9992] hover:text-[#17221D] rounded-full cursor-pointer mr-1"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-transform cursor-pointer"
+            >
+              <Search className="w-3.5 h-3.5" />
+            </button>
+          )}
         </div>
       </div>
 
-      {/* 2. CIRCULAR CATEGORY CHIPS MATCHING SCREEN 1 */}
-      <div className="space-y-1.5">
-        <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-black text-[#17221D] font-malayalam">വിഭാഗങ്ങൾ (Categories)</span>
+      {/* 2. GREEN HERO BANNER CARD (Matching Screen 1) */}
+      <div className="space-y-2">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-5 shadow-sm min-h-[145px] flex items-center justify-between">
+          
+          {/* Subtle Glows */}
+          <div className="absolute top-0 right-1/3 w-36 h-36 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
+
+          {/* Left Text & CTA */}
+          <div className="relative z-10 max-w-[62%] space-y-1.5">
+            <h2 className="text-base sm:text-lg font-black text-white leading-tight font-malayalam m-0">
+              നാടൻ കർഷകരിൽ നിന്ന് നേരിട്ട്!
+            </h2>
+            <p className="text-[11px] text-[#DDF5EA] font-medium leading-tight font-malayalam m-0">
+              പച്ചക്കറികളും ഫ്രെഷായ ഉൽപ്പന്നങ്ങൾ
+            </p>
+
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => onSelectCategory('vegetables')}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 hover:bg-white text-[#063B2A] text-[11px] font-black rounded-full shadow-xs active:scale-95 transition-all font-malayalam cursor-pointer"
+              >
+                <span>കാണുക</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
+
+          {/* Right Basket Graphic */}
+          <div className="relative z-10 w-28 h-28 shrink-0 flex items-center justify-center drop-shadow-md">
+            <img
+              src="https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg"
+              alt="Fresh harvest"
+              onError={(e) => {
+                // Fallback icon if image fails
+                (e.target as HTMLElement).style.display = 'none';
+              }}
+              className="w-full h-full object-contain drop-shadow-lg"
+            />
+            {/* Fallback emoji */}
+            <span className="text-5xl select-none" style={{ display: 'none' }}>🧺</span>
+          </div>
+
         </div>
 
-        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 font-malayalam">
-          {[
-            { id: 'fruits', label: 'പഴങ്ങൾ', icon: '🍌' },
-            { id: 'vegetables', label: 'പച്ചക്കറികൾ', icon: '🥦' },
-            { id: 'dairy', label: 'പാൽ & പാൽ ഉൽപ്പന്നങ്ങൾ', icon: '🥛' },
-            { id: 'rice-grains', label: 'അരി & ധാന്യങ്ങൾ', icon: '🌾' },
-            { id: 'biscuits-snacks', label: 'മറ്റ് സാധനങ്ങൾ', icon: '🥫' },
-            { id: 'all', label: 'കൂടുതൽ', icon: '⋯' },
-          ].map((cat) => {
+        {/* Dots Pagination Indicator (Matching Screen 1) */}
+        <div className="flex items-center justify-center gap-1.5 pt-0.5">
+          <span className="w-4 h-1.5 bg-[#0B8F68] rounded-full transition-all" />
+          <span className="w-1.5 h-1.5 bg-[#D5DFD9] rounded-full" />
+          <span className="w-1.5 h-1.5 bg-[#D5DFD9] rounded-full" />
+        </div>
+      </div>
+
+      {/* 3. CATEGORIES SECTION (Matching Desktop Categories) */}
+      <div className="space-y-2.5 pt-1">
+        <div className="flex items-center justify-between px-1">
+          <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
+            വിഭാഗങ്ങൾ
+          </h2>
+          <button
+            type="button"
+            onClick={() => onSelectCategory('all')}
+            className="text-xs font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
+          >
+            <span>എല്ലാം കാണുക</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {/* 7 Category Rounded Cards Grid (Matching Desktop 7 Categories) */}
+        <div className="grid grid-cols-4 gap-2 font-malayalam">
+          {homeCategories.map((cat) => {
             const isSelected = selectedCategoryId === cat.id;
+
             return (
               <button
                 key={cat.id}
+                type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`flex flex-col items-center gap-1.5 p-2.5 rounded-2xl transition-all cursor-pointer text-center ${
+                className={`flex flex-col items-center justify-center p-2.5 rounded-2xl transition-all cursor-pointer text-center group ${
                   isSelected
-                    ? 'bg-[#DDF5EA] border-2 border-[#0B8F68] shadow-xs'
-                    : 'bg-white border border-[#E3ECE7] shadow-2xs hover:bg-[#F5F8F6]'
+                    ? 'bg-[#E8F5EE] border-2 border-[#0B8F68] shadow-xs'
+                    : 'bg-[#F5F8F6] border border-[#E3ECE7] hover:bg-[#E8F5EE] hover:border-[#C3EEDC]'
                 }`}
               >
-                <div className={`w-11 h-11 rounded-2xl flex items-center justify-center text-xl border shadow-2xs ${
-                  isSelected ? 'bg-white border-[#0B8F68]/30' : 'bg-[#F5F8F6] border-[#E3ECE7]'
-                }`}>
-                  {cat.icon}
+                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-1 overflow-hidden transition-transform group-hover:scale-105">
+                  {cat.image ? (
+                    <ProductImage
+                      image={cat.image}
+                      emoji={cat.emoji}
+                      alt={cat.label}
+                      className="w-full h-full"
+                      imgClassName="max-h-full max-w-full object-contain"
+                      fallbackEmojiClassName="text-2xl"
+                    />
+                  ) : (
+                    <span className="text-xl text-[#063B2A] font-bold">{cat.fallbackEmoji}</span>
+                  )}
                 </div>
-                <span className={`text-[10px] font-bold leading-tight line-clamp-2 ${isSelected ? 'text-[#063B2A] font-black' : 'text-[#66756E]'}`}>
+                <span className="text-[10px] font-bold text-[#17221D] leading-tight line-clamp-2">
                   {cat.label}
                 </span>
               </button>
@@ -188,181 +271,112 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         </div>
       </div>
 
-      {/* 3. FILTER CHIPS & LOCATION BAR MATCHING SCREEN 2 */}
-      <div className="space-y-2 pt-1">
-        
-        {/* Filter Chips Ribbon matching Screen 2 */}
-        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar font-malayalam">
-          {[
-            { id: 'all', label: 'എല്ലാം' },
-            { id: 'nearby', label: 'സമീപം' },
-            { id: 'lowest', label: 'കുറഞ്ഞ വില' },
-            { id: 'organic', label: '🌿 ഓർഗാനിക്' },
-            { id: 'under100', label: '₹100-ൽ താഴെ' },
-          ].map((f) => (
-            <button
-              key={f.id}
-              onClick={() => setFilterMode(f.id as any)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 ${
-                filterMode === f.id
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'bg-white text-[#66756E] border border-[#E3ECE7] hover:bg-[#F5F8F6]'
-              }`}
-            >
-              {f.label}
-            </button>
-          ))}
-        </div>
-
-        {/* Location Indicator Bar matching Screen 2 */}
-        <div
-          onClick={onOpenLocationModal}
-          className="flex items-center justify-between px-3.5 py-2 bg-white rounded-2xl border border-[#E3ECE7] shadow-2xs cursor-pointer font-malayalam"
-        >
-          <div className="flex items-center gap-2 text-xs font-bold text-[#17221D] min-w-0">
-            <MapPin className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
-            <span className="truncate">നിങ്ങളുടെ സ്ഥാനം ({currentLocation?.name || 'തിരൂർ'})</span>
-          </div>
-          <span className="text-[11px] font-bold text-[#063B2A] bg-[#DDF5EA] px-2 py-0.5 rounded-full shrink-0">
-            📍 1.2 km ചുറ്റളവിൽ
-          </span>
-        </div>
-
-      </div>
-
-      {/* 4. COMPACT PRODUCT COMPARISON CARDS LIST MATCHING SCREEN 2 */}
-      <div className="space-y-2">
+      {/* 4. POPULAR PRODUCTS SECTION (Matching Screen 1) */}
+      <div className="space-y-2.5 pt-2">
         <div className="flex items-center justify-between px-1">
-          <span className="text-xs font-black text-[#17221D] font-malayalam">
-            ഉൽപ്പന്നങ്ങൾ ({displayedProducts.length})
-          </span>
-          <span className="text-[11px] text-[#66756E] font-semibold font-malayalam">
-            വില വിവരങ്ങൾ കാണാൻ ടാപ്പ് ചെയ്യുക
-          </span>
+          <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
+            ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ
+          </h2>
+          <button
+            type="button"
+            onClick={() => {
+              onSelectCategory('all');
+              if (onViewAllProducts) onViewAllProducts();
+            }}
+            className="text-xs font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
+          >
+            <span>എല്ലാം കാണുക</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        <div className="space-y-2">
-          {displayedProducts.map((product) => {
-            const basketItem = basket.find((b) => b.productId === product.id);
+        {/* Products Grid matching Screen 1 Card Design */}
+        <div className="grid grid-cols-3 gap-2.5">
+          {popularProducts.map((product) => {
             const isFav = favorites.includes(product.id);
             const priceValues = Object.values(product.prices || {});
-            const minPrice = priceValues.length ? Math.min(...priceValues) : 0;
-            const cheapestShopEntry = Object.entries(product.prices || {}).sort((a, b) => a[1] - b[1])[0];
-            const lowestShopName = cheapestShopEntry ? cheapestShopEntry[0] : 'FreshMart';
-            const shopInfo = shops.find((s) => s.name.toLowerCase() === lowestShopName.toLowerCase());
+            const price = priceValues.length > 0 ? Math.min(...priceValues) : 30;
+            const basketItem = basket.find((b) => b.productId === product.id);
+            const qty = basketItem ? basketItem.quantity : 0;
 
             return (
               <div
                 key={product.id}
                 onClick={() => onSelectProductForDetail(product)}
-                className="p-3 bg-white rounded-2xl border border-[#E3ECE7] shadow-2xs hover:border-[#0B8F68] transition-all cursor-pointer flex items-center justify-between gap-3"
+                className="bg-white border border-[#E3ECE7] rounded-2xl p-2.5 shadow-2xs hover:border-[#0B8F68] hover:shadow-xs transition-all flex flex-col justify-between cursor-pointer relative group"
               >
-                {/* Left: Thumbnail & Info matching Screen 2 */}
-                <div className="flex items-center gap-3 min-w-0 flex-1">
-                  <div className="w-14 h-14 rounded-xl bg-[#F5F8F6] border border-[#E3ECE7] flex items-center justify-center p-1 shrink-0">
-                    <ProductImage
-                      productId={product.id}
-                      image={product.image}
-                      emoji={product.emoji}
-                      alt={product.name}
-                      className="w-full h-full"
-                      imgClassName="max-h-full max-w-full object-contain"
-                      fallbackEmojiClassName="text-2xl"
+                {/* Top: Favorite Heart Icon */}
+                <div className="flex justify-end w-full">
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleFavorite(product);
+                    }}
+                    className="p-1 text-[#8A9992] hover:text-[#E11D48] transition-colors rounded-full cursor-pointer"
+                  >
+                    <Heart
+                      className={`w-3.5 h-3.5 ${
+                        isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-[#8A9992]'
+                      }`}
                     />
-                  </div>
-
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-1.5">
-                      <b className="text-xs font-black text-[#17221D] truncate font-malayalam">
-                        {product.name}
-                      </b>
-                      {product.isOrganic && (
-                        <span className="text-[9px] text-[#063B2A] bg-[#DDF5EA] px-1.5 py-0.2 rounded font-bold font-malayalam shrink-0">
-                          🌿
-                        </span>
-                      )}
-                    </div>
-
-                    {/* Lowest Shop & Rating badge matching Screen 2 */}
-                    <div className="flex items-center gap-1.5 text-[11px] text-[#66756E] mt-0.5 font-medium">
-                      <span className="font-bold text-[#17221D] truncate font-malayalam max-w-[90px]">
-                        {lowestShopName}
-                      </span>
-                      <span className="text-[9px] bg-[#DDF5EA] text-[#063B2A] font-bold px-1.5 py-0.2 rounded font-malayalam shrink-0">
-                        കുറഞ്ഞ വില
-                      </span>
-                    </div>
-
-                    {(() => {
-                      const shopCoords = shopInfo ? getShopCoordinates(shopInfo, currentLocation ? [currentLocation] : []) : null;
-                      const roadDist = shopCoords && currentLocation
-                        ? calculateRoadDistanceKm(currentLocation.lat, currentLocation.lng, shopCoords.lat, shopCoords.lng)
-                        : (shopInfo?.distanceKm || 1.2);
-
-                      return (
-                        <div className="flex items-center gap-2 text-[10px] text-[#66756E] mt-0.5">
-                          <span className="flex items-center gap-0.5 text-[#F4B740] font-bold">
-                            <Star className="w-3 h-3 fill-[#F4B740] text-[#F4B740]" /> {shopInfo?.rating || '4.6'}
-                          </span>
-                          <span>•</span>
-                          <span className="font-semibold text-[#66756E]">📍 {roadDist} km</span>
-                        </div>
-                      );
-                    })()}
-                  </div>
+                  </button>
                 </div>
 
-                {/* Right: Price & Quick Action matching Screen 2 */}
-                <div className="text-right shrink-0 flex flex-col items-end justify-between self-stretch">
-                  
-                  {/* Price */}
-                  <div>
-                    <div className="text-sm font-black text-[#17221D] font-sans">
-                      ₹ {minPrice}
-                      <span className="text-[10px] text-[#66756E] font-normal">/{product.defaultUnit}</span>
-                    </div>
-                    <div className="text-[10px] text-[#66756E]/60 line-through -mt-0.5">
-                      ₹{Math.round(minPrice * 1.14)}
-                    </div>
-                  </div>
+                {/* Product Image (Using existing ImageKit images via ProductImage) */}
+                <div className="w-full h-16 flex items-center justify-center p-1 my-1">
+                  <ProductImage
+                    productId={product.id}
+                    image={product.image}
+                    emoji={product.emoji}
+                    alt={product.name}
+                    className="w-full h-full"
+                    imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+                    fallbackEmojiClassName="text-2xl"
+                  />
+                </div>
 
-                  {/* Quantity Stepper or Add button */}
-                  <div
-                    onClick={(e) => e.stopPropagation()}
-                    className="mt-1"
-                  >
-                    {basketItem && basketItem.quantity > 0 ? (
-                      <div className="flex items-center bg-[#DDF5EA] border border-[#0B8F68]/30 rounded-xl p-0.5 shadow-2xs">
+                {/* Bottom Info: Name, Price, and Plus Button */}
+                <div className="space-y-1">
+                  <h3 className="text-xs font-black text-[#17221D] font-malayalam truncate m-0">
+                    {product.name}
+                  </h3>
+
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-extrabold text-[#17221D] font-sans">
+                      ₹ {price} <span className="text-[10px] text-[#8A9992] font-normal">/{product.defaultUnit || 'kg'}</span>
+                    </span>
+
+                    <div onClick={(e) => e.stopPropagation()}>
+                      {qty > 0 ? (
+                        <div className="flex items-center bg-[#063B2A] text-white rounded-full px-1 py-0.5 shadow-xs">
+                          <button
+                            type="button"
+                            onClick={() => onQuantityChange(product.id, -1)}
+                            className="w-4 h-4 flex items-center justify-center hover:bg-white/20 rounded-full"
+                          >
+                            <Minus className="w-2.5 h-2.5" />
+                          </button>
+                          <span className="px-1 text-[10px] font-black font-sans">{qty}</span>
+                          <button
+                            type="button"
+                            onClick={() => onQuantityChange(product.id, 1)}
+                            className="w-4 h-4 flex items-center justify-center hover:bg-white/20 rounded-full"
+                          >
+                            <Plus className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+                      ) : (
                         <button
                           type="button"
-                          onClick={() => onQuantityChange(product.id, -1)}
-                          className="w-6 h-6 bg-white text-[#063B2A] rounded-lg flex items-center justify-center font-bold text-xs shadow-2xs active:scale-90"
+                          onClick={() => onAddToBasket(product, product.defaultUnit)}
+                          className="w-6 h-6 rounded-full bg-[#063B2A] hover:bg-[#0B8F68] text-white flex items-center justify-center shadow-xs active:scale-90 transition-all cursor-pointer"
                         >
-                          <Minus className="w-3 h-3" />
+                          <Plus className="w-3.5 h-3.5" />
                         </button>
-                        <span className="px-2 text-xs font-black text-[#063B2A] font-sans">
-                          {basketItem.quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => onQuantityChange(product.id, 1)}
-                          className="w-6 h-6 bg-[#0B8F68] text-white rounded-lg flex items-center justify-center font-bold text-xs shadow-2xs active:scale-90"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => onAddToBasket(product, product.defaultUnit)}
-                        className="py-1 px-2.5 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-[11px] font-black shadow-2xs flex items-center gap-1 font-malayalam"
-                      >
-                        <Plus className="w-3 h-3" />
-                        <span>ചേർക്കുക</span>
-                      </button>
-                    )}
+                      )}
+                    </div>
                   </div>
-
                 </div>
 
               </div>

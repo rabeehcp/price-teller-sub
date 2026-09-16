@@ -40,6 +40,7 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
   onProductAddedToShop,
   onOpenCreateCustom,
 }) => {
+  const [localMasterProducts, setLocalMasterProducts] = useState<Product[]>(masterProducts);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCat, setSelectedCat] = useState('all');
   const [pricesInput, setPricesInput] = useState<Record<string, string>>({});
@@ -47,7 +48,25 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
   const [addedSuccessIds, setAddedSuccessIds] = useState<Record<string, boolean>>({});
   const [filterMode, setFilterMode] = useState<'all' | 'not_in_store'>('not_in_store');
 
-  const filteredProducts = masterProducts.filter((p) => {
+  // Ensure the modal has the entire 2600+ Master Catalog
+  React.useEffect(() => {
+    if (masterProducts && masterProducts.length >= 2000) {
+      setLocalMasterProducts(masterProducts);
+    } else {
+      relistMerchantProductApi; // keep import valid
+      import('../services/api').then(({ fetchProducts }) => {
+        fetchProducts({ includeMaster: true })
+          .then((fullList) => {
+            if (fullList && fullList.length > 0) {
+              setLocalMasterProducts(fullList);
+            }
+          })
+          .catch(console.error);
+      });
+    }
+  }, [masterProducts]);
+
+  const filteredProducts = localMasterProducts.filter((p) => {
     const isCarried = p.prices && p.prices[shopName] !== undefined && p.prices[shopName] > 0;
     if (filterMode === 'not_in_store' && isCarried) return false;
 
@@ -77,15 +96,26 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
     const rawVal = pricesInput[prod.id];
     let priceNum = rawVal ? parseFloat(rawVal) : NaN;
     if (isNaN(priceNum) || priceNum <= 0) {
-      // Default fallback
-      const existingVals = Object.values(prod.prices || {}).filter((v) => typeof v === 'number');
-      priceNum = existingVals.length > 0 ? existingVals[0] : 60;
+      // Default fallback from Master Catalog price or existing values
+      const masterSuggest = prod.prices ? (prod.prices['Master Catalog'] || Object.values(prod.prices)[0]) : undefined;
+      priceNum = (typeof masterSuggest === 'number' && masterSuggest > 0) ? masterSuggest : 50;
     }
 
     setAddingIds((prev) => ({ ...prev, [prod.id]: true }));
     try {
       await relistMerchantProductApi(shopName, prod.id, priceNum);
       onProductAddedToShop(prod.id, priceNum);
+      setLocalMasterProducts((prev) =>
+        prev.map((item) =>
+          item.id === prod.id
+            ? {
+                ...item,
+                prices: { ...item.prices, [shopName]: priceNum },
+                stockStatus: { ...item.stockStatus, [shopName]: 'in_stock' },
+              }
+            : item
+        )
+      );
       setAddedSuccessIds((prev) => ({ ...prev, [prod.id]: true }));
       setTimeout(() => {
         setAddedSuccessIds((prev) => {
@@ -285,7 +315,8 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
               {filteredProducts.map((p) => {
                 const isCarried = p.prices && p.prices[shopName] !== undefined && p.prices[shopName] > 0;
                 const currentPrice = isCarried ? p.prices[shopName] : undefined;
-                const inputPrice = pricesInput[p.id] ?? (currentPrice ? String(currentPrice) : '');
+                const defaultSuggestPrice = p.prices ? (p.prices['Master Catalog'] || Object.values(p.prices)[0]) : undefined;
+                const inputPrice = pricesInput[p.id] ?? (currentPrice ? String(currentPrice) : (defaultSuggestPrice ? String(defaultSuggestPrice) : ''));
                 const isAdding = !!addingIds[p.id];
                 const isSuccess = !!addedSuccessIds[p.id];
 

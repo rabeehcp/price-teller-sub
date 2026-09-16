@@ -72,10 +72,17 @@ import {
   Square,
   Tag,
   ChevronDown,
+  Bell,
+  FileText,
+  AlertCircle,
+  Settings,
+  ShoppingBag,
 } from 'lucide-react';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileAdminView } from './MobileAdminView';
 import { MobileDrawer } from './MobileDrawer';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
+import { DesktopAdminOverview } from './DesktopAdminOverview';
 
 export const MASTER_CATALOG_CATEGORIES: { id: string; name: string; icon: string; description: string }[] = [
   { id: 'all', name: 'All Master Items', icon: '✨', description: 'Browse and manage all platform master products' },
@@ -736,250 +743,226 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
-      {/* 1. DESKTOP LEFT SIDEBAR (Matching Merchant & Consumer portal) */}
-      {/* 1. DESKTOP LEFT SIDEBAR (Executive Console) */}
-      <aside className="w-64 bg-[#05291e] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#094732] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
+      {/* 1. DESKTOP LEFT SIDEBAR (Matching Ash Black Theme) */}
+      <aside className="w-64 bg-[#141816] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
         <div>
-          {/* Brand Logo & Console Tag */}
+          {/* Brand Logo matching Image 2 */}
           <div
-            onClick={onBackToShopper}
-            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-4 border border-emerald-500/20 bg-[#073628]"
+            onClick={() => setActiveTab('overview')}
+            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-3"
           >
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-emerald-600 text-[#05291e] flex items-center justify-center font-black text-base shadow-sm">
-              <ShieldCheck className="w-5 h-5 fill-current" />
-            </div>
-            <div className="min-w-0 flex-1">
-              <div className="text-base font-black tracking-tight text-white flex items-center gap-1.5 font-sans">
-                <span>PriceTeller</span>
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" title="System Live" />
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#10A978] text-[#141816] flex items-center justify-center font-black text-base shadow-sm">
+                🌿
               </div>
-              <div className="text-[10px] text-emerald-300/80 font-medium font-malayalam truncate">
-                സൂപ്പർ അഡ്മിൻ കൺട്രോൾ
+              <div>
+                <div className="text-base font-black tracking-tight text-white flex items-center gap-1 font-sans">
+                  EnteBazaar
+                </div>
+                <div className="text-[10px] text-[#8F9F97] font-medium">
+                  Local Shops. Better Prices.
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Navigation Links */}
-          <nav className="space-y-1.5">
+          {/* Admin Role Pill matching Image 2 */}
+          <div className="mb-4 px-2">
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1D2220] border border-[#2F3733] text-xs font-bold text-emerald-300">
+              <span>👑</span>
+              <span>Admin</span>
+            </div>
+          </div>
+
+          {/* Navigation Links matching Image 2 */}
+          <nav className="space-y-1">
             <button
               onClick={() => setActiveTab('overview')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'overview'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <LayoutGrid className="w-4 h-4 text-emerald-300 shrink-0" />
-              <div className="text-left leading-tight">
-                <span className="block font-sans">Overview</span>
-                <span className="text-[10px] opacity-70 font-malayalam font-normal">അവലോകനം</span>
-              </div>
+              <LayoutGrid className="w-4 h-4 text-emerald-400" />
+              <span>Dashboard</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('overview')}
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-[#A2B1A9] hover:bg-[#202623] hover:text-white"
+            >
+              <Users className="w-4 h-4 text-emerald-400" />
+              <span>Users</span>
             </button>
 
             <button
               onClick={() => setActiveTab('stores')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'stores'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <div className="flex items-center gap-3 text-left leading-tight">
-                <Store className="w-4 h-4 text-emerald-300 shrink-0" />
-                <div>
-                  <span className="block font-sans">Stores Directory</span>
-                  <span className="text-[10px] opacity-70 font-malayalam font-normal">സ്റ്റോറുകൾ</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <Store className="w-4 h-4 text-emerald-400" />
+                <span>Merchants</span>
               </div>
-              <span className="bg-emerald-950/60 text-emerald-200 text-[11px] font-black px-2 py-0.5 rounded-full font-sans border border-emerald-400/30">
+              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
                 {shops.length}
               </span>
             </button>
 
             <button
               onClick={() => setActiveTab('catalog')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'catalog'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <div className="flex items-center gap-3 text-left leading-tight">
-                <Package className="w-4 h-4 text-emerald-300 shrink-0" />
-                <div>
-                  <span className="block font-sans">Master Catalog</span>
-                  <span className="text-[10px] opacity-70 font-malayalam font-normal">മാസ്റ്റർ കാറ്റലോഗ്</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <Package className="w-4 h-4 text-emerald-400" />
+                <span>Products</span>
               </div>
-              <span className="bg-emerald-950/60 text-emerald-200 text-[11px] font-black px-2 py-0.5 rounded-full font-sans border border-emerald-400/30">
+              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
                 {activeProductList.length}
               </span>
             </button>
 
             <button
-              onClick={() => setActiveTab('locations')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'locations'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3 text-left leading-tight">
-                <MapPin className="w-4 h-4 text-emerald-300 shrink-0" />
-                <div>
-                  <span className="block font-sans">Regional Hubs</span>
-                  <span className="text-[10px] opacity-70 font-malayalam font-normal">ലൊക്കേഷൻ ഹബ്ബുകൾ</span>
-                </div>
-              </div>
-              <span className="bg-emerald-950/60 text-emerald-200 text-[11px] font-black px-2 py-0.5 rounded-full font-sans border border-emerald-400/30">
-                {locations.length}
-              </span>
-            </button>
-
-            <button
               onClick={() => setActiveTab('moderation')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'moderation'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <div className="flex items-center gap-3 text-left leading-tight">
-                <ShieldCheck className="w-4 h-4 text-emerald-300 shrink-0" />
-                <div>
-                  <span className="block font-sans">Moderation Queue</span>
-                  <span className="text-[10px] opacity-70 font-malayalam font-normal">മോഡറേഷൻ ക്യൂ</span>
-                </div>
+              <div className="flex items-center gap-3">
+                <AlertCircle className="w-4 h-4 text-emerald-400" />
+                <span>Complaints</span>
               </div>
-              {reports.filter((r) => r.status === 'pending').length > 0 ? (
-                <span className="bg-amber-500 text-slate-950 text-[11px] font-black px-2 py-0.5 rounded-full font-sans animate-pulse">
+              {reports.filter((r) => r.status === 'pending').length > 0 && (
+                <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-full font-sans">
                   {reports.filter((r) => r.status === 'pending').length}
                 </span>
-              ) : (
-                <span className="text-[10px] text-emerald-300/50 font-bold font-sans">0</span>
               )}
             </button>
 
             <button
               onClick={() => setActiveTab('subscriptions')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'subscriptions'
-                  ? 'bg-gradient-to-r from-emerald-600 to-emerald-700 text-white shadow-md font-black border-l-4 border-emerald-300'
-                  : 'text-emerald-100/80 hover:bg-white/5 hover:text-white'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
               }`}
             >
-              <CreditCard className="w-4 h-4 text-emerald-300 shrink-0" />
-              <div className="text-left leading-tight">
-                <span className="block font-sans">Subscriptions</span>
-                <span className="text-[10px] opacity-70 font-malayalam font-normal">സബ്സ്ക്രിപ്ഷൻ</span>
+              <FileText className="w-4 h-4 text-emerald-400" />
+              <span>Reports</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('locations')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'locations'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Settings className="w-4 h-4 text-emerald-400" />
+                <span>Locations</span>
               </div>
+              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
+                {locations.length}
+              </span>
             </button>
           </nav>
         </div>
 
-        {/* Lower Sidebar Actions */}
-        <div className="space-y-2 pt-3 border-t border-emerald-900/60">
-          <div className="px-2.5 py-2 rounded-xl bg-emerald-950/50 border border-emerald-800/40 flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-emerald-700/60 border border-emerald-500/40 flex items-center justify-center font-bold text-xs text-white uppercase">
-                {(authUser?.username || 'A')[0]}
-              </div>
-              <div className="min-w-0">
-                <div className="text-xs font-bold text-white truncate font-sans">@{authUser?.username || 'admin'}</div>
-                <div className="text-[9px] text-emerald-300 uppercase tracking-wider font-semibold">Super Admin</div>
-              </div>
+        {/* Lower Sidebar Actions matching Image 2 */}
+        <div className="space-y-3 pt-3 border-t border-[#242A27]">
+          {/* Ash card */}
+          <div className="p-3 bg-[#1D2220] border border-[#2F3733] rounded-2xl flex items-center gap-2.5">
+            <span className="text-xl">🌱</span>
+            <div className="text-[10px] text-[#A2B1A9] leading-tight font-medium">
+              Together for a stronger local economy.
             </div>
-            {onLogout && (
-              <button
-                onClick={onLogout}
-                title="Logout from Admin"
-                className="p-1.5 text-emerald-300 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
-              >
-                <LogOut className="w-3.5 h-3.5" />
-              </button>
-            )}
           </div>
 
-          <button
-            onClick={onBackToShopper}
-            className="w-full flex items-center justify-between px-3 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-[11px] font-bold text-emerald-100 transition-all border border-emerald-500/20 cursor-pointer"
-          >
-            <span>← ഷോപ്പർ മോഡ് (Shopper View)</span>
-            <ArrowLeft className="w-3.5 h-3.5 text-emerald-400" />
-          </button>
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              title="Logout from Admin"
+              className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-rose-300 hover:text-white hover:bg-rose-600/30 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-rose-500/20"
+            >
+              <LogOut className="w-4 h-4" />
+              <span>Logout</span>
+            </button>
+          )}
         </div>
       </aside>
 
       {/* 2. MAIN ADMIN WORKSPACE */}
       <div className="flex-1 flex flex-col min-w-0 md:ml-64">
-        {/* Top Header Bar */}
+        {/* Top Header Bar matching Image 2 */}
         <header className="bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] px-4 sm:px-6 py-3 sticky top-0 z-20 flex items-center justify-between gap-4 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={onBackToShopper}
-              className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] rounded-xl text-[#17221D] transition-colors"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="p-1.5 bg-emerald-50 text-emerald-700 rounded-lg border border-emerald-200">
-                  <ShieldCheck className="w-4 h-4" />
-                </span>
-                <div>
-                  <div className="flex items-center gap-1.5 text-xs text-gray-400 font-bold uppercase tracking-wider">
-                    <span>Admin Console</span>
-                    <span>/</span>
-                    <span className="text-emerald-700 font-extrabold capitalize">
-                      {activeTab === 'catalog' ? 'Master Catalog' : activeTab === 'stores' ? 'Stores Directory' : activeTab === 'locations' ? 'Regional Hubs' : activeTab === 'moderation' ? 'Moderation Queue' : activeTab === 'subscriptions' ? 'Subscriptions' : 'Overview'}
-                    </span>
-                  </div>
-                  <h1 className="text-sm sm:text-base font-black text-slate-dark leading-tight flex items-center gap-2">
-                    <span>
-                      {activeTab === 'catalog' && 'മാസ്റ്റർ പ്രൊഡക്റ്റ് കാറ്റലോഗ് (Master Catalog)'}
-                      {activeTab === 'stores' && 'സ്റ്റോർ മാനേജ്‌മെന്റ് (Store Directory)'}
-                      {activeTab === 'locations' && 'ലൊക്കേഷൻ ഹബ്ബ് മാനേജർ (Regional Hubs)'}
-                      {activeTab === 'moderation' && 'പ്രൈസ് റിപ്പോർട്ട് മോഡറേഷൻ (Price Moderation)'}
-                      {activeTab === 'subscriptions' && 'സബ്‌സ്‌ക്രിപ്‌ഷൻ മാനേജ്‌മെന്റ് (Subscriptions)'}
-                      {activeTab === 'overview' && 'പ്ലാറ്റ്‌ഫോം അവലോകനം (Platform Overview)'}
-                    </span>
-                  </h1>
-                </div>
-              </div>
+          {/* Left: Search Bar matching Image 2 */}
+          <div className="flex items-center gap-3 flex-1 max-w-md">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={storeSearch}
+                onChange={(e) => setStoreSearch(e.target.value)}
+                placeholder="Search anything..."
+                className="w-full pl-9 pr-4 py-2 bg-[#F5F8F6] border border-[#E3ECE7] rounded-xl text-xs font-semibold text-slate-800 placeholder:text-gray-400 focus:outline-none focus:border-[#0B8F68] focus:bg-white transition-all"
+              />
             </div>
           </div>
 
-          {/* Right Header Quick Actions */}
-          <div className="flex items-center gap-2.5">
+          {/* Right Header Quick Actions & Profile matching Image 2 */}
+          <div className="flex items-center gap-3">
             {activeTab === 'catalog' && onOpenAddProductModal && (
               <button
                 onClick={() => onOpenAddProductModal(catalogCategoryFilter !== 'all' ? catalogCategoryFilter : undefined)}
-                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                <span>Add Master Product</span>
+                <span>Add Product</span>
               </button>
             )}
 
             {activeTab === 'stores' && (
               <button
                 onClick={() => setIsAddStoreOpen(true)}
-                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                className="px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                <span>Add Store</span>
+                <span>Add Merchant</span>
               </button>
             )}
 
-            {activeTab === 'locations' && (
-              <button
-                onClick={() => setIsAddLocationOpen(true)}
-                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add Region Hub</span>
-              </button>
-            )}
+            {/* Notification Bell with red badge */}
+            <button
+              onClick={() => setActiveTab('moderation')}
+              className="relative p-2 rounded-xl text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors cursor-pointer"
+              title="Notifications"
+            >
+              <Bell className="w-5 h-5" />
+              <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border border-white" />
+            </button>
+
+            {/* Admin Profile Pill matching Image 2 */}
+            <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
+              <div className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center font-black text-xs">
+                A
+              </div>
+              <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-slate-800">
+                <span>Admin</span>
+                <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+              </div>
+            </div>
           </div>
         </header>
 
@@ -1041,185 +1024,31 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* 1. OVERVIEW TAB */}
       {activeTab === 'overview' && (
         <>
-          {/* Mobile Admin View matching Screen 8 */}
+          {/* Mobile Admin View */}
           <div className="md:hidden">
             <MobileAdminView
               authUser={authUser || null}
               shops={shops}
               products={products}
               locations={locations}
+              reports={reports}
               onOpenDrawer={() => setIsMobileDrawerOpen(true)}
-              onBackToShopper={onBackToShopper}
               onNavigateTab={(tab) => setActiveTab(tab as any)}
             />
           </div>
 
-          {/* Desktop Overview (Preserved 100%) */}
+          {/* Desktop Overview */}
           <div className="hidden md:block space-y-6 animate-in fade-in duration-150">
-            {/* KPI Metrics Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white border border-[#E3ECE7] rounded-2xl p-5 shadow-xs">
-                <div className="flex items-center justify-between text-gray-400 mb-2">
-                  <span className="text-xs font-bold uppercase tracking-wider">Active Products</span>
-                  <Package className="w-5 h-5 text-brand-600" />
-                </div>
-              <div className="text-3xl font-black text-slate-dark">{products.length}</div>
-              <span className="text-[11px] text-emerald-600 font-bold mt-1 block">
-                Across 10 Categories
-              </span>
-            </div>
-
-            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between text-gray-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Registered Stores</span>
-                <Store className="w-5 h-5 text-blue-600" />
-              </div>
-              <div className="text-3xl font-black text-slate-dark">{shops.length}</div>
-              <span className="text-[11px] text-blue-600 font-bold mt-1 block">
-                {shops.filter((s) => s.isVerified).length} Verified Outlets across {locations.length} Hubs
-              </span>
-            </div>
-
-            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between text-gray-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Daily Shopper Savings</span>
-                <DollarSign className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div className="text-3xl font-black text-emerald-700">₹{stats?.totalDailySavingsEstimated || 18450}</div>
-              <span className="text-[11px] text-gray-400 font-medium mt-1 block">
-                Avg. ₹142 saved per basket
-              </span>
-            </div>
-
-            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-5 shadow-xs">
-              <div className="flex items-center justify-between text-gray-400 mb-2">
-                <span className="text-xs font-bold uppercase tracking-wider">Moderation Queue</span>
-                <Users className="w-5 h-5 text-amber-500" />
-              </div>
-              <div className="text-3xl font-black text-amber-600">
-                {reports.filter((r) => r.status === 'pending').length}
-              </div>
-              <span className="text-[11px] text-gray-400 font-medium mt-1 block">
-                Shopper price updates pending review
-              </span>
-            </div>
-          </div>
-
-          {/* Regional Store Distribution Overview Widget */}
-          <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-4 border-b border-gray-100 mb-4">
-              <div>
-                <h3 className="text-base font-black text-slate-dark m-0 flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-brand-600" />
-                  <span>Regional Store Coverage & Hub Distribution</span>
-                </h3>
-                <span className="text-xs text-gray-400 font-semibold">
-                  Monitor how grocery outlets and shops are distributed across regional shopping hubs
-                </span>
-              </div>
-              <button
-                onClick={() => setActiveTab('locations')}
-                className="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1 cursor-pointer"
-              >
-                <span>View All {locations.length} Hubs</span>
-                <span>→</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {locations.map((loc) => {
-                const locShops = shops.filter((s) => s.locationId === loc.id);
-                return (
-                  <div
-                    key={loc.id}
-                    onClick={() => {
-                      setStoreRegionFilter(loc.id);
-                      setActiveTab('stores');
-                    }}
-                    className="p-3.5 rounded-2xl border border-gray-200 bg-gray-50/70 hover:bg-brand-50/60 hover:border-brand-300 transition-all cursor-pointer group"
-                  >
-                    <div className="flex items-center justify-between mb-1">
-                      <b className="text-xs font-black text-slate-dark group-hover:text-brand-800 transition-colors truncate">
-                        📍 {loc.name}
-                      </b>
-                      <span
-                        className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                          locShops.length > 0
-                            ? 'bg-emerald-100 text-emerald-800'
-                            : 'bg-gray-200 text-gray-600'
-                        }`}
-                      >
-                        {locShops.length} {locShops.length === 1 ? 'Shop' : 'Shops'}
-                      </span>
-                    </div>
-                    <div className="text-[11px] text-gray-500 truncate">{loc.subArea || loc.state}</div>
-                    {locShops.length > 0 ? (
-                      <div className="mt-2 text-[10px] text-brand-700 font-bold flex items-center gap-1">
-                        <span>Click to filter {locShops.length} stores</span>
-                        <span>→</span>
-                      </div>
-                    ) : (
-                      <div className="mt-2 text-[10px] text-gray-400">No stores yet</div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Quick Management Shortcuts */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="bg-gradient-to-br from-brand-50 to-emerald-100/50 border border-brand-200 rounded-3xl p-6 flex flex-col justify-between">
-              <div>
-                <b className="text-base font-black text-brand-950 block mb-1">Add New Master Product</b>
-                <p className="text-xs text-brand-800 leading-relaxed mb-4">
-                  Add fruits, vegetables, dairy, or grocery items to make them available across all stores.
-                </p>
-              </div>
-              <button
-                onClick={() => onOpenAddProductModal?.()}
-                className="py-2.5 px-4 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Create Master Product</span>
-              </button>
-            </div>
-
-            <div className="bg-gradient-to-br from-blue-50 to-indigo-100/50 border border-blue-200 rounded-3xl p-6 flex flex-col justify-between">
-              <div>
-                <b className="text-base font-black text-blue-950 block mb-1">Register New Store</b>
-                <p className="text-xs text-blue-800 leading-relaxed mb-4">
-                  Onboard a new supermarket, grocery store, or organic market with region determination.
-                </p>
-              </div>
-              <button
-                onClick={() => {
-                  setActiveTab('stores');
-                  setIsAddStoreOpen(true);
-                }}
-                className="py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <Building2 className="w-4 h-4" />
-                <span>Onboard New Store</span>
-              </button>
-            </div>
-
-            <div className="bg-gradient-to-br from-amber-50 to-orange-100/50 border border-amber-200 rounded-3xl p-6 flex flex-col justify-between">
-              <div>
-                <b className="text-base font-black text-amber-950 block mb-1">Price Moderation Queue</b>
-                <p className="text-xs text-amber-800 leading-relaxed mb-4">
-                  Verify crowd-sourced prices submitted by verified local shoppers to maintain accuracy.
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveTab('moderation')}
-                className="py-2.5 px-4 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
-              >
-                <ShieldCheck className="w-4 h-4" />
-                <span>Review Pending Reports</span>
-              </button>
-            </div>
-          </div>
+            <DesktopAdminOverview
+              shops={shops}
+              products={products}
+              locations={locations}
+              reports={reports}
+              subStats={subStats}
+              onNavigateTab={(tab) => setActiveTab(tab as any)}
+              onOpenAddProduct={() => onOpenAddProductModal?.()}
+              onOpenAddStore={() => setIsAddStoreOpen(true)}
+            />
           </div>
         </>
       )}
@@ -1811,7 +1640,116 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </div>
             ) : (
               <div className="space-y-4">
-                <div className="overflow-x-auto rounded-2xl border border-gray-200 shadow-2xs">
+                {/* Mobile Touch-Friendly Product Cards (< md) */}
+                <div className="block md:hidden space-y-2.5">
+                  {paginatedProducts.map((p) => {
+                    const priceValues = Object.values(p.prices || {}).filter((v) => typeof v === 'number' && !isNaN(v));
+                    const minPrice = priceValues.length > 0 ? Math.min(...priceValues) : null;
+                    const catMeta = MASTER_CATALOG_CATEGORIES.find((c) => c.id.toLowerCase() === p.categoryId?.toLowerCase());
+                    const isSelected = selectedProductIds.has(p.id);
+
+                    return (
+                      <div
+                        key={p.id}
+                        onClick={() => setEditingProduct(p)}
+                        className={`p-3.5 rounded-2xl border transition-all cursor-pointer bg-white active:scale-[0.99] shadow-2xs ${
+                          isSelected ? 'border-emerald-500 bg-emerald-50/40 ring-2 ring-emerald-200' : 'border-gray-200 hover:border-emerald-300'
+                        }`}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-14 h-14 shrink-0 p-1 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center overflow-hidden">
+                            <ProductImage
+                              productId={p.id}
+                              image={p.image}
+                              emoji={p.emoji || catMeta?.icon || '📦'}
+                              alt={p.name}
+                              className="w-full h-full"
+                              imgClassName="w-full h-full object-contain"
+                              fallbackEmojiClassName="text-2xl"
+                            />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center justify-between gap-1.5">
+                              <h4 className="font-extrabold text-slate-900 text-sm truncate m-0">
+                                {p.name}
+                              </h4>
+                              <input
+                                type="checkbox"
+                                checked={isSelected}
+                                onClick={(e) => e.stopPropagation()}
+                                onChange={() => handleToggleSelectProduct(p.id)}
+                                className="rounded text-emerald-600 cursor-pointer"
+                              />
+                            </div>
+
+                            {p.nutritionalNote && (
+                              <p className="text-[11px] text-gray-500 truncate m-0">
+                                {p.nutritionalNote}
+                              </p>
+                            )}
+
+                            <div className="flex items-center gap-1.5 mt-1 flex-wrap">
+                              <span className="text-[10px] font-bold px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md">
+                                {catMeta?.icon || '🏷️'} {p.categoryId}
+                              </span>
+                              <span className="text-[10px] font-mono px-1.5 py-0.5 bg-gray-100 text-gray-600 rounded-md">
+                                {p.defaultUnit}
+                              </span>
+                              {p.badge && (
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 bg-amber-50 text-amber-800 border border-amber-200 rounded-md">
+                                  {p.badge}
+                                </span>
+                              )}
+                              {p.isOrganic && (
+                                <span className="text-[10px] font-bold px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded-md">
+                                  🌿 Organic
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Prices row & Touch Edit Button */}
+                        <div className="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
+                          <div>
+                            <div className="text-[10px] text-gray-400 font-bold uppercase">Store Price</div>
+                            <div className="text-sm font-black text-emerald-700">
+                              {minPrice !== null ? `₹${minPrice}` : 'Unpriced'}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center gap-1.5">
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setEditingProduct(p);
+                              }}
+                              className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black flex items-center gap-1.5 shadow-xs cursor-pointer active:scale-95"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                              <span>Edit Details</span>
+                            </button>
+                            <button
+                              type="button"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteProduct(p.id, p.name);
+                              }}
+                              className="p-1.5 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-xl"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Desktop Table View (>= md) */}
+                <div className="hidden md:block overflow-x-auto rounded-2xl border border-gray-200 shadow-2xs">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
                       <tr className="border-b border-gray-200 bg-gray-50/90 text-gray-600 font-bold uppercase tracking-wider text-[11px]">
@@ -1824,10 +1762,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                             title="Select all on this page"
                           />
                         </th>
-                        <th className="py-3 px-3.5">Product & Details</th>
+                        <th className="py-3 px-3.5">Product & Details (Click to edit)</th>
                         <th className="py-3 px-3">Category</th>
                         <th className="py-3 px-3">Default Unit</th>
-                        <th className="py-3 px-3">Lowest Shop Price</th>
+                        <th className="py-3 px-3">Store Price</th>
                         <th className="py-3 px-3">Organic</th>
                         <th className="py-3 px-3 text-right">Actions</th>
                       </tr>
@@ -1843,11 +1781,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                         return (
                           <tr
                             key={p.id}
-                            className={`transition-colors ${
-                              isSelected ? 'bg-emerald-50/60' : 'hover:bg-emerald-50/30'
+                            onClick={() => setEditingProduct(p)}
+                            className={`transition-colors cursor-pointer group ${
+                              isSelected ? 'bg-emerald-50/60' : 'hover:bg-emerald-50/40'
                             }`}
+                            title="Click anywhere on this row to edit price and details"
                           >
-                            <td className="py-3 px-3 text-center">
+                            <td className="py-3 px-3 text-center" onClick={(e) => e.stopPropagation()}>
                               <input
                                 type="checkbox"
                                 checked={isSelected}
@@ -1858,7 +1798,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
                             <td className="py-3 px-3.5">
                               <div className="flex items-center gap-3">
-                                <div className="w-11 h-11 shrink-0 p-1 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden shadow-xs">
+                                <div className="w-11 h-11 shrink-0 p-1 bg-gray-50 border border-gray-200 rounded-xl flex items-center justify-center overflow-hidden shadow-xs group-hover:border-emerald-300">
                                   <ProductImage
                                     productId={p.id}
                                     image={p.image}
@@ -1870,7 +1810,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                                   />
                                 </div>
                                 <div className="min-w-0">
-                                  <b className="font-extrabold text-slate-dark block text-xs tracking-tight truncate max-w-sm sm:max-w-md">
+                                  <b className="font-extrabold text-slate-dark block text-xs tracking-tight truncate max-w-sm sm:max-w-md group-hover:text-emerald-800">
                                     {p.name}
                                   </b>
                                   {p.nutritionalNote && (
@@ -1896,7 +1836,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
                             <td className="py-3 px-3">
                               <button
-                                onClick={() => setCatalogCategoryFilter(p.categoryId?.toLowerCase() || 'all')}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setCatalogCategoryFilter(p.categoryId?.toLowerCase() || 'all');
+                                }}
                                 className="inline-flex items-center gap-1 px-2.5 py-1 bg-gray-100 hover:bg-emerald-50 hover:text-emerald-800 hover:border-emerald-300 border border-transparent rounded-lg text-xs font-bold text-gray-700 transition-all cursor-pointer"
                                 title={`Filter by ${catMeta?.name || p.categoryId}`}
                               >
@@ -1913,10 +1857,15 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
                             <td className="py-3 px-3">
                               {minPrice !== null ? (
-                                <div>
-                                  <span className="font-black text-emerald-700 text-xs">₹{minPrice}</span>
-                                  <span className="text-[10px] text-gray-400 font-medium block">
-                                    in {shopCount} {shopCount === 1 ? 'store' : 'stores'}
+                                <div className="flex items-center gap-1.5">
+                                  <div>
+                                    <span className="font-black text-emerald-700 text-xs">₹{minPrice}</span>
+                                    <span className="text-[10px] text-gray-400 font-medium block">
+                                      in {shopCount} {shopCount === 1 ? 'store' : 'stores'}
+                                    </span>
+                                  </div>
+                                  <span className="text-[10px] bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.5 rounded font-bold opacity-70 group-hover:opacity-100 transition-opacity">
+                                    Edit
                                   </span>
                                 </div>
                               ) : (
@@ -1936,16 +1885,18 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                               )}
                             </td>
 
-                            <td className="py-3 px-3 text-right">
+                            <td className="py-3 px-3 text-right" onClick={(e) => e.stopPropagation()}>
                               <div className="flex items-center justify-end gap-1.5">
                                 <button
+                                  type="button"
                                   onClick={() => setEditingProduct(p)}
                                   className="p-1.5 text-blue-600 hover:bg-blue-50 border border-blue-200 rounded-lg transition-all cursor-pointer shadow-xs"
-                                  title="Edit Master Product Details"
+                                  title="Edit Master Product Details & Prices"
                                 >
                                   <Pencil className="w-3.5 h-3.5" />
                                 </button>
                                 <button
+                                  type="button"
                                   onClick={() => handleDeleteProduct(p.id, p.name)}
                                   className="p-1.5 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg transition-all cursor-pointer shadow-xs"
                                   title="Delete from Master Catalog"
@@ -3333,6 +3284,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         <EditProductModal
           product={editingProduct}
           categories={categories}
+          shops={shops}
           onClose={() => setEditingProduct(null)}
           onProductUpdated={(updated) => {
             setMasterProducts((prev) => prev.map((item) => (item.id === updated.id ? updated : item)));

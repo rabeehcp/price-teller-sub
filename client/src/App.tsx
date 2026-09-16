@@ -57,8 +57,15 @@ import { MobileDrawer } from './components/MobileDrawer';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { MobileLocationModal } from './components/MobileLocationModal';
 import { MobileHomeView } from './components/MobileHomeView';
+import { MobileCategoryView } from './components/MobileCategoryView';
 import { MobileProductDetailModal } from './components/MobileProductDetailModal';
 import { MobileBasketView } from './components/MobileBasketView';
+import { MobileProfileView } from './components/MobileProfileView';
+import { DesktopHeader } from './components/DesktopHeader';
+import { DesktopLeftSidebar } from './components/DesktopLeftSidebar';
+import { DesktopHomeView } from './components/DesktopHomeView';
+import { DesktopRightSidebar } from './components/DesktopRightSidebar';
+import { EnteBazaarLogo } from './components/EnteBazaarLogo';
 import { loadActiveBasket, persistActiveBasket, clearActiveBasket, rehydrateBasket } from './services/sessionManager';
 
 import { User, ConsumerData, ConsumerSavedList, ConsumerSavedListItem, SubscriptionStatusResponse } from './types';
@@ -149,8 +156,8 @@ export const App: React.FC = () => {
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
-  // Shopper Main View Tab ('home' | 'shops' | 'map' | 'favorites' | 'orders' | 'profile')
-  const [shopperTab, setShopperTab] = useState<'home' | 'shops' | 'map' | 'favorites' | 'orders' | 'profile'>('home');
+  // Shopper Main View Tab ('home' | 'search' | 'cart' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
+  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
 
   // App View State ('welcome' | 'portal' | 'consumer' | 'merchant' | 'admin')
   const [appView, setAppView] = useState<'welcome' | 'portal' | 'consumer' | 'merchant' | 'admin'>(() => {
@@ -359,6 +366,7 @@ export const App: React.FC = () => {
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
   const [isMobileLocationModalOpen, setIsMobileLocationModalOpen] = useState<boolean>(false);
   const [selectedMobileProduct, setSelectedMobileProduct] = useState<Product | null>(null);
+  const [selectedMobileCategory, setSelectedMobileCategory] = useState<Category | null>(null);
 
   // Pre-Booking States
   const [isPreBookingModalOpen, setIsPreBookingModalOpen] = useState<boolean>(false);
@@ -612,6 +620,7 @@ export const App: React.FC = () => {
         let shps: Shop[];
         let deals: FlashDeal[];
 
+        const isMerchant = currentRole === 'merchant' || authUser?.role === 'merchant';
         if (currentLocation?.id) {
           try {
             localStorage.setItem('priceteller_consumer_location_id', currentLocation.id);
@@ -621,6 +630,7 @@ export const App: React.FC = () => {
               category: selectedCategoryId,
               search: searchQuery,
               locationId: currentLocation.id,
+              includeMaster: isMerchant,
             }),
             fetchShops(currentLocation.id),
             fetchFlashDeals(currentLocation.id),
@@ -630,6 +640,7 @@ export const App: React.FC = () => {
             fetchProducts({
               category: selectedCategoryId,
               search: searchQuery,
+              includeMaster: isMerchant,
             }),
             fetchShops(),
             fetchFlashDeals(),
@@ -1222,10 +1233,6 @@ export const App: React.FC = () => {
             } catch {}
           }}
           onLogout={handleLogout}
-          onBackToApp={() => {
-            window.history.pushState({}, '', '/consumer');
-            setAppView('consumer');
-          }}
         />
       );
     }
@@ -1318,239 +1325,71 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
       
-      {/* 1. DESKTOP LEFT SIDEBAR (Matching Screen 2 of Reference Image) */}
-      <aside className="w-60 bg-[#063B2A] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#084D37] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 font-malayalam select-none overflow-y-auto">
-        <div>
-          {/* Brand Logo */}
-          <div
-            onClick={() => {
-              window.history.pushState({}, '', '/');
-              setShopperTab('home');
-              setAppView('welcome');
-            }}
-            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-4"
-          >
-            <div className="w-9 h-9 rounded-xl bg-[#10A978] text-[#063B2A] flex items-center justify-center font-black text-base shadow-sm">
-              <MapPin className="w-5 h-5 fill-current" />
-            </div>
-            <div>
-              <div className="text-base font-black tracking-tight text-white flex items-center gap-1 font-sans">
-                PriceTeller
-              </div>
-              <div className="text-[10px] text-emerald-300/80 font-medium">
-                വില താരതമ്യം
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="space-y-1.5">
-            <button
-              onClick={() => setShopperTab('home')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                shopperTab === 'home'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
-              }`}
-            >
-              <Home className="w-4 h-4 text-emerald-300" />
-              <span>ഹോം (Home)</span>
-            </button>
-
-            <button
-              onClick={() => setShopperTab('shops')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                shopperTab === 'shops'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
-              }`}
-            >
-              <Store className="w-4 h-4 text-emerald-300" />
-              <span>ഷോപ്പുകൾ (Stores)</span>
-            </button>
-
-            <button
-              onClick={() => setShopperTab('map')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                shopperTab === 'map'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white'
-              }`}
-            >
-              <MapPin className="w-4 h-4 text-emerald-300" />
-              <span>മാപ്പ് (Nearby Map)</span>
-            </button>
-
-            <button
-              onClick={() => {
-                if (!authUser) {
-                  handleOpenAuthModal('consumer-login');
-                } else {
-                  setIsConsumerDashboardOpen(true);
-                }
-              }}
-              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white"
-            >
-              <Heart className="w-4 h-4 text-emerald-300" />
-              <span>ഇഷ്ടപ്പെട്ടവ (Favorites)</span>
-            </button>
-
-            <button
-              onClick={() => {
-                if (!authUser) {
-                  handleOpenAuthModal('consumer-login');
-                } else {
-                  setIsConsumerPreBookingsOpen(true);
-                }
-              }}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white"
-            >
-              <div className="flex items-center gap-3">
-                <Clock className="w-4 h-4 text-emerald-300" />
-                <span>ഓർഡറുകൾ (Orders)</span>
-              </div>
-              {consumerPreBookingsCount > 0 && (
-                <span className="bg-[#10A978] text-white text-[10px] font-black px-1.5 py-0.2 rounded-full font-sans">
-                  {consumerPreBookingsCount}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => {
-                if (!authUser) {
-                  handleOpenAuthModal('consumer-login');
-                } else {
-                  setIsConsumerDashboardOpen(true);
-                }
-              }}
-              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white"
-            >
-              <UserIcon className="w-4 h-4 text-emerald-300" />
-              <span>പ്രൊഫൈൽ (Profile)</span>
-            </button>
-          </nav>
-        </div>
-
-        {/* Lower Sidebar Actions */}
-        <div className="space-y-2 pt-4 border-t border-[#084D37]">
-          <button
-            onClick={() => {
-              if (authUser?.role === 'merchant') {
-                setAppView('merchant');
-              } else {
-                handleOpenAuthModal('merchant-login');
-              }
-            }}
-            className="w-full flex items-center justify-between px-3 py-2 bg-[#084D37]/70 hover:bg-[#084D37] rounded-xl text-[11px] font-bold text-[#DDF5EA] transition-all border border-[#10A978]/30 cursor-pointer"
-          >
-            <span>വ്യാപാരി പാനൽ (Merchant)</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
-
-          {authUser && (
-            <div className="flex items-center justify-between px-2 py-1.5 text-xs text-[#DDF5EA]/70 font-sans">
-              <span className="truncate max-w-[120px] font-medium">{authUser.name}</span>
-              <button
-                onClick={handleLogout}
-                className="text-[11px] text-red-300 hover:text-red-200 hover:underline cursor-pointer"
-              >
-                Logout
-              </button>
-            </div>
-          )}
-        </div>
-      </aside>
+      {/* 1. DESKTOP LEFT SIDEBAR (Matching Image 1 Reference) */}
+      <DesktopLeftSidebar
+        currentTab={shopperTab}
+        onSelectTab={(tab) => {
+          setShopperTab(tab);
+          if (tab === 'home') setSelectedCategoryId('all');
+        }}
+        currentLocation={currentLocation}
+        onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+        authUser={authUser}
+        onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+      />
 
       {/* 2. MAIN APPLICATION WORKSPACE */}
-      <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0 md:ml-60">
+      <div className="flex-1 flex flex-col min-w-0 pb-16 md:pb-0 md:ml-64">
         
         {/* Mobile Header matching Screen 1 */}
         <MobileHeader
           currentLocation={currentLocation}
           onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
           onOpenDrawer={() => setIsMobileDrawerOpen(true)}
-          onOpenChat={() => handleOpenChat()}
-          basketCount={totalBasketCount}
-          onOpenBasket={() => setIsMobileBasketOpen(true)}
+          onOpenProfile={() => setShopperTab('profile')}
           authUser={authUser}
-          onOpenAuthModal={handleOpenAuthModal}
+          unreadNotificationsCount={1}
         />
 
-        {/* Desktop Header (Preserved 100%) */}
+        {/* Desktop Header (Matching Image 1) with Location Selector */}
         <div className="hidden md:block">
-          <Header
-            locations={locations}
+          <DesktopHeader
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            authUser={authUser}
             currentLocation={currentLocation}
-            onSelectLocation={handleSelectLocation}
-            customerCoords={customerCoords}
-            onCustomerCoordsChanged={(coords) => {
-              setCustomerCoords(coords);
-              if (coords) {
-                try {
-                  localStorage.setItem('priceteller_customer_coords', JSON.stringify(coords));
-                } catch {}
-              } else {
-                try {
-                  localStorage.removeItem('priceteller_customer_coords');
-                } catch {}
-              }
+            onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+            onOpenAuthModal={handleOpenAuthModal}
+            onOpenFavorites={() => {
+              if (!authUser) handleOpenAuthModal('consumer-login');
+              else setIsConsumerDashboardOpen(true);
             }}
-            basketCount={totalBasketCount}
-            onOpenBasketMobile={() => setIsMobileBasketOpen(true)}
-            currentRole={currentRole}
+            onOpenOrders={() => {
+              if (!authUser) handleOpenAuthModal('consumer-login');
+              else setIsConsumerPreBookingsOpen(true);
+            }}
+            onOpenProfile={() => {
+              if (!authUser) handleOpenAuthModal('consumer-login');
+              else setIsConsumerDashboardOpen(true);
+            }}
             onSelectRole={(r) => {
               if (r === 'shopper') {
-                window.history.pushState({}, '', '/consumer');
                 setAppView('consumer');
-              } else if (r === 'merchant' && authUser?.role === 'merchant') {
-                window.history.pushState({}, '', '/merchant');
+              } else if (r === 'merchant') {
                 setAppView('merchant');
-              } else if (r === 'admin' && authUser?.role === 'admin') {
-                window.history.pushState({}, '', '/admin');
+              } else if (r === 'admin') {
                 setAppView('admin');
-              } else {
-                handleOpenAuthModal('merchant-login');
               }
             }}
-            onOpenDeals={() => setShowDealsBanner(true)}
-            onOpenShopCatalogue={() => setShopperTab('shops')}
-            authUser={authUser}
-            consumerData={consumerData}
-            onOpenAuthModal={handleOpenAuthModal}
-            onOpenConsumerDashboard={() => setIsConsumerDashboardOpen(true)}
-            onOpenMerchantDashboard={() => {
-              window.history.pushState({}, '', '/merchant');
-              setAppView('merchant');
-            }}
-            onOpenAdminDashboard={() => {
-              window.history.pushState({}, '', '/admin');
-              setAppView('admin');
-            }}
-            onOpenChat={() => handleOpenChat()}
-            onOpenPreBookings={() => {
-              if (!authUser) {
-                handleOpenAuthModal('consumer-login');
-              } else {
-                setIsConsumerPreBookingsOpen(true);
-              }
-            }}
-            pendingPreBookingsCount={consumerPreBookingsCount}
             onLogout={handleLogout}
-            onResetTrip={handleClearBasket}
-            onGoHome={() => {
-              window.history.pushState({}, '', '/');
-              setShopperTab('home');
-              setAppView('welcome');
-            }}
           />
         </div>
 
-        <main className="flex-1 max-w-[1280px] w-full mx-auto px-3 sm:px-6 py-4">
+        <main className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 py-5">
 
           {/* Flash Deals Ticker */}
           {showDealsBanner && (
-            <div className="hidden md:block">
+            <div className="hidden md:block mb-4">
               <FlashDealsBanner
                 deals={flashDeals}
                 onAddDealToBasket={handleQuickAdd}
@@ -1558,11 +1397,24 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 1: HOME VIEW */}
-          {shopperTab === 'home' && (
-            <>
-              {/* Mobile Home Screen matching Screen 1 & Screen 2 */}
-              <div className="md:hidden">
+          {/* MOBILE SCREENS (Matching the 5 mobile views) */}
+          <div className="md:hidden">
+            {shopperTab === 'home' && (
+              selectedMobileCategory ? (
+                <MobileCategoryView
+                  category={selectedMobileCategory}
+                  products={products}
+                  basket={basket}
+                  onBack={() => {
+                    setSelectedMobileCategory(null);
+                    setSelectedCategoryId('all');
+                  }}
+                  onOpenCart={() => setShopperTab('cart')}
+                  onSelectProduct={(p) => setSelectedMobileProduct(p)}
+                  onAddToBasket={handleAddToBasket}
+                  onQuantityChange={handleQuantityChange}
+                />
+              ) : (
                 <MobileHomeView
                   products={displayedProducts}
                   shops={verifiedShops.length > 0 ? verifiedShops : shops}
@@ -1573,164 +1425,285 @@ export const App: React.FC = () => {
                   searchQuery={searchQuery}
                   onSearchChange={setSearchQuery}
                   selectedCategoryId={selectedCategoryId}
-                  onSelectCategory={setSelectedCategoryId}
+                  onSelectCategory={(catId) => {
+                    const cat: Category = {
+                      id: catId,
+                      name:
+                        catId === 'vegetables'
+                          ? 'പച്ചക്കറികൾ'
+                          : catId === 'fruits'
+                          ? 'പഴങ്ങൾ'
+                          : catId === 'rice-grains'
+                          ? 'ധാന്യങ്ങൾ'
+                          : catId === 'dairy'
+                          ? 'പാൽ & പാലുൽപ്പന്നങ്ങൾ'
+                          : catId === 'spices'
+                          ? 'മസാലകൾ'
+                          : catId === 'grocery'
+                          ? 'കറി സാധനങ്ങൾ'
+                          : catId === 'biscuits-snacks'
+                          ? 'സ്നാക്സ് & പാനീയങ്ങൾ'
+                          : 'എല്ലാ ഉൽപ്പന്നങ്ങളും',
+                      slug: catId,
+                      icon:
+                        catId === 'vegetables'
+                          ? '🥬'
+                          : catId === 'fruits'
+                          ? '🍌'
+                          : catId === 'rice-grains'
+                          ? '🌾'
+                          : catId === 'dairy'
+                          ? '🥛'
+                          : catId === 'spices'
+                          ? '🌶️'
+                          : catId === 'grocery'
+                          ? '🥫'
+                          : '🛒',
+                      description: '',
+                      itemCount: 0,
+                    };
+                    setSelectedMobileCategory(cat);
+                    setSelectedCategoryId(catId);
+                  }}
                   onAddToBasket={handleAddToBasket}
                   onQuantityChange={handleQuantityChange}
                   onToggleFavorite={handleToggleFavorite}
                   onSelectProductForDetail={(p) => setSelectedMobileProduct(p)}
                   onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                   onOpenShopCatalogue={(s) => handleOpenShopCatalogue(s)}
+                  onViewAllCategories={() => {
+                    const cat: Category = {
+                      id: 'all',
+                      name: 'എല്ലാ ഉൽപ്പന്നങ്ങളും',
+                      slug: 'all',
+                      icon: '🛒',
+                      description: '',
+                      itemCount: products.length,
+                    };
+                    setSelectedMobileCategory(cat);
+                    setSelectedCategoryId('all');
+                  }}
+                  onViewAllProducts={() => {
+                    const cat: Category = {
+                      id: 'all',
+                      name: 'എല്ലാ ഉൽപ്പന്നങ്ങളും',
+                      slug: 'all',
+                      icon: '🛒',
+                      description: '',
+                      itemCount: products.length,
+                    };
+                    setSelectedMobileCategory(cat);
+                    setSelectedCategoryId('all');
+                  }}
                 />
-              </div>
+              )
+            )}
 
-              {/* Desktop Home Screen (Preserved 100%) */}
-              <div className="hidden md:block space-y-4">
-                {/* Hero Banner with Kerala Greeting */}
-                <Hero
-                  currentLocationName={currentLocation ? currentLocation.name : 'Tirur'}
-                  totalProductsCount={products.length}
-                  totalShopsCount={verifiedShops.length}
-                  userName={authUser?.name || 'സുഹൃത്തേ'}
-                  onQuickAddPopular={handleQuickAddPopular}
-                  onOpenShopCatalogue={() => setShopperTab('shops')}
-                />
+            {shopperTab === 'search' && (
+              <MobileCategoryView
+                category={{
+                  id: 'all',
+                  name: 'തിരയുക',
+                  slug: 'search',
+                  icon: '🔍',
+                  description: '',
+                  itemCount: products.length,
+                }}
+                products={products}
+                basket={basket}
+                onBack={() => setShopperTab('home')}
+                onOpenCart={() => setShopperTab('cart')}
+                onSelectProduct={(p) => setSelectedMobileProduct(p)}
+                onAddToBasket={handleAddToBasket}
+                onQuantityChange={handleQuantityChange}
+              />
+            )}
 
-                {/* ⚡ Smart Shopping List Quick-Paste / Auto-Add */}
-                <SmartListQuickAdd
-                  products={products}
-                  onAddMultipleItems={handleAddMultipleItems}
-                />
+            {shopperTab === 'cart' && (
+              <MobileBasketView
+                basketItems={basket}
+                comparison={comparison}
+                onBack={() => setShopperTab('home')}
+                onQuantityChange={handleQuantityChange}
+                onUnitChange={handleUnitChange}
+                onRemoveItem={handleRemoveItem}
+                onClearBasket={handleClearBasket}
+                onCheckout={() => {
+                  if (!authUser) {
+                    handleOpenAuthModal('consumer-login');
+                  } else {
+                    handleOpenPreBooking();
+                  }
+                }}
+              />
+            )}
 
-                {/* 2-Column Responsive Layout */}
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  
-                  {/* Left Column: Basket & Product Catalog (7 or 8 cols) */}
-                  <div className="lg:col-span-7 xl:col-span-8 space-y-6">
-                    
-                    {/* 1. My Basket Panel */}
-                    <SmartBasket
-                      basketItems={basket}
-                      onQuantityChange={handleQuantityChange}
-                      onUnitChange={handleUnitChange}
-                      onRemoveItem={handleRemoveItem}
-                      onClearBasket={handleClearBasket}
-                      onQuickAdd={handleQuickAdd}
-                      onOpenChat={() => handleOpenChat()}
-                      onPreBookBasket={() => handleOpenPreBooking()}
-                      onSaveList={() => {
-                        if (!authUser) {
-                          handleOpenAuthModal('consumer-login');
-                        } else {
-                          setIsSaveBasketModalOpen(true);
-                        }
-                      }}
-                    />
+            {shopperTab === 'profile' && (
+              <MobileProfileView
+                authUser={authUser}
+                onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onLogout={handleLogout}
+                onSelectSubTab={(tabId) => {
+                  if (tabId === 'orders') {
+                    if (!authUser) handleOpenAuthModal('consumer-login');
+                    else setIsConsumerPreBookingsOpen(true);
+                  } else if (tabId === 'addresses' || tabId === 'payments') {
+                    if (!authUser) handleOpenAuthModal('consumer-login');
+                    else setIsConsumerDashboardOpen(true);
+                  }
+                }}
+              />
+            )}
 
-                    {/* 2. Products Catalog Section */}
-                    <section className="bg-white border border-surface-border rounded-2xl p-4 sm:p-6 shadow-xs font-sans">
-                      <div className="flex items-center justify-between gap-2 mb-1">
-                        <div className="flex items-center gap-2">
-                          <h2 className="text-lg sm:text-xl font-black text-slate-dark m-0 font-malayalam">ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ (Popular Products)</h2>
-                          <span className="text-xs text-brand-800 bg-brand-50 border border-brand-200 px-2.5 py-0.5 rounded-full font-bold font-malayalam">
-                            {displayedProducts.length} സാധനങ്ങൾ
-                          </span>
-                        </div>
-                      </div>
-                      <p className="text-xs text-slate-muted font-medium mb-3 font-malayalam">
-                        സാധനങ്ങൾ ബാസ്ക്കറ്റിൽ ചേർക്കൂ. അടുത്തുള്ള സൂപ്പർമാർക്കറ്റുകളിലെ ലൈവ് വിലകൾ തത്സമയം താരതമ്യം ചെയ്യാം.
-                      </p>
-
-                      {/* Categories & Search */}
-                      <CategoryFilter
-                        categories={categoriesWithCounts}
-                        selectedCategoryId={selectedCategoryId}
-                        onSelectCategory={setSelectedCategoryId}
-                        searchQuery={searchQuery}
-                        onSearchChange={setSearchQuery}
-                        isOrganicOnly={isOrganicOnly}
-                        onToggleOrganicOnly={() => setIsOrganicOnly(!isOrganicOnly)}
-                        isUnder100Only={isUnder100Only}
-                        onToggleUnder100Only={() => setIsUnder100Only(!isUnder100Only)}
-                      />
-
-                      {/* Products Grid */}
-                      <div className="relative mt-2 rounded-2xl bg-surface-subtle/50 border border-surface-border p-2 sm:p-3">
-                        <div
-                          className="max-h-[580px] sm:max-h-[640px] overflow-y-auto overscroll-contain pr-1 sm:pr-1.5 scroll-smooth"
-                          id="products"
-                        >
-                          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-2.5 sm:gap-3.5">
-                            {displayedProducts.map((product) => {
-                              const basketItem = basket.find((b) => b.productId === product.id);
-                              const isFav = !!consumerData?.favorites?.includes(product.id);
-                              return (
-                                <ProductCard
-                                  key={product.id}
-                                  product={product}
-                                  quantityInBasket={basketItem?.quantity || 0}
-                                  currentUnit={basketItem?.selectedUnit || product.defaultUnit}
-                                  isFavorite={isFav}
-                                  onAdd={handleAddToBasket}
-                                  onQuantityChange={handleQuantityChange}
-                                  onViewHistory={(p) => setHistoryProduct(p)}
-                                  onReportPrice={(p) => setReportProduct(p)}
-                                  onToggleFavorite={handleToggleFavorite}
-                                />
-                              );
-                            })}
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-
-                  </div>
-
-                  {/* Right Column: Sticky Price Comparison Engine */}
-                  <div className="lg:col-span-5 xl:col-span-4">
-                    <ComparisonSummary
-                      comparison={comparison}
-                      isLoading={isComparing}
-                      onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
-                      onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
-                      onOpenItemizedMatrix={() => setIsItemizedMatrixOpen(true)}
-                      onOpenStoreDuel={() => setIsStoreDuelOpen(true)}
-                      onOpenChat={(shopName) => handleOpenChat(shopName)}
-                      onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
-                    />
-                  </div>
-
+            {shopperTab === 'orders' && (
+              <div className="p-4 space-y-3 font-sans pb-24">
+                <div className="flex items-center justify-between pb-2 border-b border-[#F0F4F2]">
+                  <h2 className="text-base font-extrabold text-[#17221D] font-malayalam">എന്റെ ഓർഡറുകൾ</h2>
                 </div>
+                {authUser ? (
+                  <div className="p-6 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3 shadow-2xs">
+                    <div className="w-14 h-14 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto text-xl">
+                      📦
+                    </div>
+                    <h3 className="text-sm font-black text-[#17221D] font-malayalam">
+                      സജീവമായ ഓർഡറുകൾ ഇല്ല
+                    </h3>
+                    <p className="text-xs text-[#66756E] font-malayalam">
+                      നിങ്ങൾ ഓർഡർ ചെയ്ത സാധനങ്ങളുടെ വിവരങ്ങൾ ഇവിടെ കാണാം.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setShopperTab('home')}
+                      className="py-2.5 px-5 bg-[#063B2A] text-white text-xs font-bold rounded-xl cursor-pointer font-malayalam"
+                    >
+                      ഷോപ്പിംഗ് തുടരുക
+                    </button>
+                  </div>
+                ) : (
+                  <div className="p-8 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3 shadow-2xs mt-4">
+                    <div className="w-16 h-16 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto text-2xl">
+                      📦
+                    </div>
+                    <h3 className="text-base font-black text-[#17221D] font-malayalam">
+                      ഓർഡറുകൾ കാണാൻ ലോഗിൻ ചെയ്യുക
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenAuthModal('consumer-login')}
+                      className="py-3 px-6 bg-[#063B2A] text-white text-xs font-bold rounded-2xl cursor-pointer font-malayalam"
+                    >
+                      ലോഗിൻ / രജിസ്റ്റർ
+                    </button>
+                  </div>
+                )}
               </div>
-            </>
-          )}
+            )}
 
-          {/* TAB 2: STORES DIRECTORY VIEW */}
-          {shopperTab === 'shops' && (
-            <StoresListView
-              shops={shops}
-              verifiedShops={verifiedShops}
-              locations={locations}
-              currentLocation={currentLocation}
-              onSelectLocation={handleSelectLocation}
-              products={products}
-              onOpenShopCatalogue={(shopName) => handleOpenShopCatalogue(shopName)}
-              onOpenChat={(shopName) => handleOpenChat(shopName)}
-              onOpenPreBooking={(shopName) => handleOpenPreBooking(shopName)}
-              onViewOnMap={() => setShopperTab('map')}
-              onGoHome={() => setShopperTab('home')}
-            />
-          )}
+            {shopperTab === 'shops' && (
+              <StoresListView
+                shops={shops}
+                verifiedShops={verifiedShops}
+                locations={locations}
+                currentLocation={currentLocation}
+                onSelectLocation={handleSelectLocation}
+                products={products}
+                onOpenShopCatalogue={(shopName) => handleOpenShopCatalogue(shopName)}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onOpenPreBooking={(shopName) => handleOpenPreBooking(shopName)}
+                onViewOnMap={() => setShopperTab('map')}
+                onGoHome={() => setShopperTab('home')}
+              />
+            )}
 
-          {/* TAB 3: NEARBY SHOPS MAP VIEW */}
-          {shopperTab === 'map' && (
-            <NearbyShopsMapView
-              shops={verifiedShops}
-              currentLocation={currentLocation}
-              customerCoords={customerCoords}
-              onSelectShop={(shopName) => setSelectedShopDetail(shopName)}
-              onOpenShopCatalogue={handleOpenShopCatalogue}
-            />
-          )}
+            {shopperTab === 'map' && (
+              <NearbyShopsMapView
+                shops={verifiedShops}
+                currentLocation={currentLocation}
+                customerCoords={customerCoords}
+                onSelectShop={(shopName) => setSelectedShopDetail(shopName)}
+                onOpenShopCatalogue={handleOpenShopCatalogue}
+              />
+            )}
+          </div>
+
+          {/* DESKTOP MAIN APPLICATION VIEW */}
+          <div className="hidden md:block">
+            {shopperTab === 'home' && (
+              <div className="flex gap-6 items-start">
+                <div className="flex-1 min-w-0">
+                  <DesktopHomeView
+                    products={displayedProducts}
+                    shops={verifiedShops.length > 0 ? verifiedShops : shops}
+                    categories={categoriesWithCounts}
+                    currentLocation={currentLocation}
+                    basket={basket}
+                    favorites={consumerData?.favorites || []}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    selectedCategoryId={selectedCategoryId}
+                    onSelectCategory={(catId) => setSelectedCategoryId(catId)}
+                    onAddToBasket={handleAddToBasket}
+                    onQuantityChange={handleQuantityChange}
+                    onToggleFavorite={handleToggleFavorite}
+                    onSelectProductForDetail={(p) => setSelectedMobileProduct(p)}
+                    onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                    onOpenShopCatalogue={(s) => handleOpenShopCatalogue(s)}
+                    onClearBasket={handleClearBasket}
+                    onOpenOrders={() => {
+                      if (!authUser) handleOpenAuthModal('consumer-login');
+                      else setIsConsumerPreBookingsOpen(true);
+                    }}
+                    onOpenDeals={() => setShowDealsBanner(true)}
+                  />
+                </div>
+                <DesktopRightSidebar
+                  basket={basket}
+                  shops={verifiedShops.length > 0 ? verifiedShops : shops}
+                  currentLocation={currentLocation}
+                  comparison={comparison}
+                  isLoadingComparison={isComparing}
+                  onQuantityChange={handleQuantityChange}
+                  onRemoveItem={handleRemoveItem}
+                  onClearBasket={handleClearBasket}
+                  onOpenCart={() => setIsMobileBasketOpen(true)}
+                  onOpenShops={() => setShopperTab('shops')}
+                  onOpenDeals={() => setShowDealsBanner(true)}
+                  onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
+                  onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
+                  onOpenItemizedMatrix={() => setIsItemizedMatrixOpen(true)}
+                  onOpenStoreDuel={() => setIsStoreDuelOpen(true)}
+                  onOpenChat={(shopName) => handleOpenChat(shopName)}
+                  onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
+                />
+              </div>
+            )}
+
+            {shopperTab === 'shops' && (
+              <StoresListView
+                shops={shops}
+                verifiedShops={verifiedShops}
+                locations={locations}
+                currentLocation={currentLocation}
+                onSelectLocation={handleSelectLocation}
+                products={products}
+                onOpenShopCatalogue={(shopName) => handleOpenShopCatalogue(shopName)}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onOpenPreBooking={(shopName) => handleOpenPreBooking(shopName)}
+                onViewOnMap={() => setShopperTab('map')}
+                onGoHome={() => setShopperTab('home')}
+              />
+            )}
+
+            {shopperTab === 'map' && (
+              <NearbyShopsMapView
+                shops={verifiedShops}
+                currentLocation={currentLocation}
+                customerCoords={customerCoords}
+                onSelectShop={(shopName) => setSelectedShopDetail(shopName)}
+                onOpenShopCatalogue={handleOpenShopCatalogue}
+              />
+            )}
+          </div>
 
         </main>
 
@@ -1754,25 +1727,10 @@ export const App: React.FC = () => {
         <MobileBottomNav
           activeTab={shopperTab}
           onSelectTab={(tab) => {
-            if (tab === 'profile') {
-              if (!authUser) {
-                handleOpenAuthModal('consumer-login');
-              } else {
-                setIsConsumerDashboardOpen(true);
-              }
-            } else {
-              setShopperTab(tab);
-            }
+            setSelectedMobileCategory(null);
+            setShopperTab(tab);
           }}
           basketCount={totalBasketCount}
-          onOpenBasket={() => setIsMobileBasketOpen(true)}
-          onOpenProfile={() => {
-            if (!authUser) {
-              handleOpenAuthModal('consumer-login');
-            } else {
-              setIsConsumerDashboardOpen(true);
-            }
-          }}
         />
 
       </div>
@@ -2116,22 +2074,18 @@ export const App: React.FC = () => {
         }}
       />
 
-      {/* Redesigned Mobile Product Multi-Store Comparison Modal matching Screen 3 */}
+      {/* Redesigned Mobile Product Detail Modal matching Screen 3 */}
       {selectedMobileProduct && (
         <MobileProductDetailModal
           product={selectedMobileProduct}
-          shops={verifiedShops.length > 0 ? verifiedShops : shops}
-          quantityInBasket={basket.find((b) => b.productId === selectedMobileProduct.id)?.quantity || 0}
-          currentUnit={basket.find((b) => b.productId === selectedMobileProduct.id)?.selectedUnit || selectedMobileProduct.defaultUnit}
-          isFavorite={!!consumerData?.favorites?.includes(selectedMobileProduct.id)}
+          basket={basket}
           onClose={() => setSelectedMobileProduct(null)}
+          onOpenCart={() => {
+            setSelectedMobileProduct(null);
+            setShopperTab('cart');
+          }}
           onAdd={(p, u) => handleAddToBasket(p, u)}
           onQuantityChange={handleQuantityChange}
-          onToggleFavorite={handleToggleFavorite}
-          onOpenShopCatalogue={(shopName) => {
-            setSelectedMobileProduct(null);
-            handleOpenShopCatalogue(shopName);
-          }}
         />
       )}
     </div>

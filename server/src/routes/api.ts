@@ -181,15 +181,17 @@ apiRouter.get('/shops/:id/catalogue', async (req: Request, res: Response) => {
   }
 });
 
-// 4. Products list & search (only verified store prices for consumers by default)
+// 4. Products list & search (only verified store prices for consumers by default, master catalog when requested)
 apiRouter.get('/products', async (req: Request, res: Response) => {
   try {
-    const { category, search, locationId, includeUnverified } = req.query;
+    const { category, search, locationId, includeUnverified, includeMaster } = req.query;
+    const isMerchantOrAdmin = req.headers['x-view'] === 'merchant' || req.headers['x-view'] === 'admin';
     const products = await db.getProducts({
       category: category as string,
       search: search as string,
       locationId: locationId as string,
       includeUnverifiedShops: includeUnverified === 'true',
+      includeMaster: includeMaster === 'true' || isMerchantOrAdmin,
     });
     res.json({ success: true, count: products.length, data: products });
   } catch (err: any) {

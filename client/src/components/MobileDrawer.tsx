@@ -289,22 +289,6 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             {/* Switch Mode & Role Switchers */}
             <div className="pt-3 pb-2 border-t border-[#084D37] my-2 space-y-1.5">
-              {onBackToShopper && (
-                <button
-                  onClick={() => {
-                    onClose();
-                    onBackToShopper();
-                  }}
-                  className="w-full flex items-center justify-between px-3 py-2 bg-[#084D37]/70 hover:bg-[#084D37] rounded-xl text-xs font-bold text-[#DDF5EA] border border-[#10A978]/30 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <ArrowLeft className="w-3.5 h-3.5 text-emerald-300" />
-                    <span>ഷോപ്പർ മോഡ് (Shopper Mode)</span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              )}
-
               {onOpenSubscriptionModal && (
                 <button
                   onClick={() => {
@@ -436,23 +420,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
             </button>
 
-            <div className="pt-3 pb-2 border-t border-[#084D37] my-2">
-              {onBackToShopper && (
-                <button
-                  onClick={() => {
-                    onClose();
-                    onBackToShopper();
-                  }}
-                  className="w-full flex items-center justify-between px-3 py-2 bg-[#084D37]/70 hover:bg-[#084D37] rounded-xl text-xs font-bold text-[#DDF5EA] border border-[#10A978]/30 transition-colors cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <ArrowLeft className="w-3.5 h-3.5 text-emerald-300" />
-                    <span>ഷോപ്പർ മോഡ് (Shopper Mode)</span>
-                  </div>
-                  <ChevronRight className="w-3.5 h-3.5" />
-                </button>
-              )}
-            </div>
+            <div className="pt-3 pb-2 border-t border-[#084D37] my-2"></div>
 
             {authUser && (
               <button

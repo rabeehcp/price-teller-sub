@@ -29,7 +29,15 @@ import {
 
 
 const REMOTE_API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
-const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '/api' : REMOTE_API_BASE);
+const isLocalhost =
+  typeof window !== 'undefined' &&
+  (window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname.endsWith('.localhost'));
+const API_BASE =
+  import.meta.env.VITE_API_BASE_URL ||
+  import.meta.env.VITE_API_BASE ||
+  (import.meta.env.DEV || isLocalhost ? '/api' : REMOTE_API_BASE);
 
 export function getAuthToken(): string | null {
   try {
@@ -176,12 +184,13 @@ export async function fetchShopCatalogueApi(
   return null;
 }
 
-export async function fetchProducts(params?: { category?: string; search?: string; locationId?: string; includeUnverified?: boolean }): Promise<Product[]> {
+export async function fetchProducts(params?: { category?: string; search?: string; locationId?: string; includeUnverified?: boolean; includeMaster?: boolean }): Promise<Product[]> {
   const searchParams = new URLSearchParams();
   if (params?.category && params.category !== 'all') searchParams.set('category', params.category);
   if (params?.search) searchParams.set('search', params.search);
   if (params?.locationId) searchParams.set('locationId', params.locationId);
   if (params?.includeUnverified) searchParams.set('includeUnverified', 'true');
+  if (params?.includeMaster) searchParams.set('includeMaster', 'true');
 
   const json = await safeFetchJson<{ success: boolean; data: Product[] }>(`${API_BASE}/products?${searchParams.toString()}`);
   if (json?.success && Array.isArray(json.data)) return json.data;

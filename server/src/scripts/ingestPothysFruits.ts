@@ -160,8 +160,10 @@ export async function ingestPothysFruits() {
       // Fallback clean ImageKit images for products without a specific photo
       if (p.name.toLowerCase().includes('apple')) {
         finalImageUrl = 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-5f6ab4c1.jpg'; // Fuji apple fallback
-      } else {
+      } else if (p.name.toLowerCase().includes('banana')) {
         finalImageUrl = 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/test-banana-green.jpg';
+      } else {
+        finalImageUrl = '';
       }
       uploadSkippedCount++;
     }
@@ -288,9 +290,11 @@ export async function ingestPothysFruits() {
       await client.query(`UPDATE products SET image = $1 WHERE id = $2`, [match.image, pf.id]);
       pinFixedCount++;
     } else {
-      // Clean high-res fallback
-      const cleanFallback = 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/test-banana-green.jpg';
-      await client.query(`UPDATE products SET image = $1 WHERE id = $2`, [cleanFallback, pf.id]);
+      // Clean fallback only if it's a banana product
+      if (pfName.includes('banana') || pfName.includes('വാഴ') || pfName.includes('പഴം')) {
+        const cleanFallback = 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/test-banana-green.jpg';
+        await client.query(`UPDATE products SET image = $1 WHERE id = $2`, [cleanFallback, pf.id]);
+      }
       pinFixedCount++;
     }
   }

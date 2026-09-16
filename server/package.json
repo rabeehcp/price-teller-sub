@@ -10,7 +10,8 @@
     "db:init": "tsx src/db/init.ts",
     "seed:zeev": "tsx src/seedZeevCatalog.ts",
     "imagekit:migrate": "tsx src/scripts/migrateToImageKit.ts",
-    "ingest:shysha": "tsx src/scripts/ingestShyshaBakery.ts"
+    "ingest:shysha": "tsx src/scripts/ingestShyshaBakery.ts",
+    "ingest:pothys-snacks": "tsx src/scripts/ingestPothysSnacks.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

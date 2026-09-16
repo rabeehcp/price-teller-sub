@@ -1,17 +1,14 @@
 import React from 'react';
-import { User, Shop, Product, Location } from '../types';
+import { User, Shop, Product, Location, PriceReport } from '../types';
 import {
   ShieldCheck,
   Store,
   Package,
   MapPin,
-  CreditCard,
   AlertCircle,
-  TrendingUp,
-  Clock,
-  ArrowLeft,
   ChevronRight,
   Menu,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface MobileAdminViewProps {
@@ -19,24 +16,30 @@ interface MobileAdminViewProps {
   shops: Shop[];
   products: Product[];
   locations: Location[];
+  reports?: PriceReport[];
   onOpenDrawer: () => void;
-  onBackToShopper: () => void;
+  onBackToShopper?: () => void;
   onNavigateTab: (tab: 'stores' | 'catalog' | 'locations' | 'moderation' | 'subscriptions') => void;
 }
 
 export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
-  authUser,
-  shops,
-  products,
-  locations,
+  shops = [],
+  products = [],
+  locations = [],
+  reports = [],
   onOpenDrawer,
-  onBackToShopper,
   onNavigateTab,
 }) => {
+  const verifiedStores = shops.filter((s) => s.isVerified !== false).length;
+  const pricedProductsCount = products.filter(
+    (p) => p.prices && Object.values(p.prices).some((val) => typeof val === 'number' && val > 0)
+  ).length;
+  const pendingReports = reports.filter((r) => r.status === 'pending');
+
   return (
     <div className="md:hidden space-y-4 font-sans pb-24 animate-in fade-in duration-150">
       
-      {/* 1. TOP HEADER MATCHING SCREEN 8 */}
+      {/* 1. TOP HEADER */}
       <div className="flex items-center justify-between px-1 py-1">
         <div className="flex items-center gap-2.5">
           <button
@@ -53,137 +56,114 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onBackToShopper}
-          className="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold font-malayalam flex items-center gap-1"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>ഷോപ്പർ</span>
-        </button>
+        <span className="px-2.5 py-1 bg-amber-50 text-amber-900 border border-amber-300 text-[11px] font-bold rounded-full font-sans">
+          Admin
+        </span>
       </div>
 
-      {/* 2. 2x2 METRIC CARDS MATCHING SCREEN 8 */}
+      {/* 2. 2x2 REAL METRIC CARDS */}
       <div className="grid grid-cols-2 gap-2.5 font-malayalam">
         
-        {/* Metric 1 */}
+        {/* Metric 1: Stores */}
         <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
           <span className="text-[10px] font-bold text-slate-400 block truncate">
-            മൊത്തം ഉപയോക്താക്കൾ
+            രജിസ്റ്റർ ചെയ്ത കടകൾ
           </span>
           <div className="text-xl font-black text-slate-950 my-1 font-sans">
-            2,482
+            {shops.length}
           </div>
           <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-sans inline-block">
-            ▲ +12%
+            {verifiedStores} വെരിഫൈഡ്
           </span>
         </div>
 
-        {/* Metric 2 */}
+        {/* Metric 2: Master Products */}
         <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
           <span className="text-[10px] font-bold text-slate-400 block truncate">
-            മൊത്തം കടകൾ
+            കാറ്റലോഗ് ഉൽപ്പന്നങ്ങൾ
           </span>
           <div className="text-xl font-black text-slate-950 my-1 font-sans">
-            {shops.length > 0 ? shops.length : 142}
+            {products.length}
           </div>
           <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-sans inline-block">
-            ▲ +5%
+            {pricedProductsCount} വിലയുള്ളവ
           </span>
         </div>
 
-        {/* Metric 3 */}
+        {/* Metric 3: Locations */}
         <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
           <span className="text-[10px] font-bold text-slate-400 block truncate">
-            മൊത്തം ഉൽപ്പന്നങ്ങൾ
+            റീജിയണൽ ഹബ്ബുകൾ
           </span>
           <div className="text-xl font-black text-slate-950 my-1 font-sans">
-            {products.length > 0 ? products.length : '12,584'}
+            {locations.length}
           </div>
           <span className="text-[10px] font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md font-sans inline-block">
-            ▲ +8%
+            കേരള നെറ്റ്വർക്ക്
           </span>
         </div>
 
-        {/* Metric 4 */}
+        {/* Metric 4: Moderation Queue */}
         <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
           <span className="text-[10px] font-bold text-slate-400 block truncate">
-            ഇന്നത്തെ ഓർഡറുകൾ
+            വില റിപ്പോർട്ടുകൾ
           </span>
           <div className="text-xl font-black text-slate-950 my-1 font-sans">
-            248
+            {reports.length}
           </div>
-          <span className="text-[10px] font-black text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md font-sans inline-block">
-            ▼ -6%
+          <span className={`text-[10px] font-black px-2 py-0.5 rounded-md font-sans inline-block ${
+            pendingReports.length > 0 ? 'text-amber-700 bg-amber-50' : 'text-emerald-700 bg-emerald-50'
+          }`}>
+            {pendingReports.length > 0 ? `${pendingReports.length} റിവ്യൂ ചെയ്യാനുള്ളവ` : 'പൂർത്തിയായി'}
           </span>
         </div>
 
       </div>
 
-      {/* 3. RECENT ACTIVITY LIST MATCHING SCREEN 8 */}
+      {/* 3. REAL RECENT STORES DIRECTORY */}
       <div className="p-4 bg-white border border-slate-200 rounded-3xl shadow-2xs space-y-3 font-malayalam">
-        <h3 className="text-xs font-black text-slate-950 block">
-          സമീപകാല പ്രവർത്തനം (Recent Activity)
-        </h3>
+        <div className="flex items-center justify-between">
+          <h3 className="text-xs font-black text-slate-950 block">
+            രജിസ്റ്റർ ചെയ്ത കടകൾ (Registered Stores)
+          </h3>
+          <button
+            onClick={() => onNavigateTab('stores')}
+            className="text-[11px] font-bold text-emerald-700"
+          >
+            എല്ലാം കാണുക ({shops.length})
+          </button>
+        </div>
 
         <div className="space-y-2 text-xs">
-          
-          <div
-            onClick={() => onNavigateTab('stores')}
-            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-2xl flex items-center justify-between gap-2 cursor-pointer transition-colors"
-          >
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm shrink-0">
-                🏪
+          {shops.slice(0, 4).map((shop) => (
+            <div
+              key={shop.id || shop.name}
+              onClick={() => onNavigateTab('stores')}
+              className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-2xl flex items-center justify-between gap-2 cursor-pointer transition-colors"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm shrink-0">
+                  🏪
+                </div>
+                <div className="min-w-0">
+                  <b className="text-xs text-slate-900 block truncate">{shop.name}</b>
+                  <span className="text-[10px] text-slate-400">{shop.address || shop.locationId || 'Kerala'}</span>
+                </div>
               </div>
-              <div className="min-w-0">
-                <b className="text-xs text-slate-900 block truncate">പുതിയ കട രജിസ്ട്രേഷൻ</b>
-                <span className="text-[10px] text-slate-400">FreshMart • 2 മണിക്കൂർ മുമ്പ്</span>
-              </div>
+              <ChevronRight className="w-4 h-4 text-slate-400 shrink-0" />
             </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
-          </div>
-
-          <div
-            onClick={() => onNavigateTab('catalog')}
-            className="p-2.5 bg-slate-50 hover:bg-slate-100 rounded-2xl flex items-center justify-between gap-2 cursor-pointer transition-colors"
-          >
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-sm shrink-0">
-                🍎
-              </div>
-              <div className="min-w-0">
-                <b className="text-xs text-slate-900 block truncate">പുതിയ ഉൽപ്പന്നം</b>
-                <span className="text-[10px] text-slate-400">തക്കാളി • 3 മണിക്കൂർ മുമ്പ്</span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
-          </div>
-
-          <div className="p-2.5 bg-slate-50 rounded-2xl flex items-center justify-between gap-2">
-            <div className="flex items-center gap-2.5 min-w-0">
-              <div className="w-8 h-8 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center text-sm shrink-0">
-                👤
-              </div>
-              <div className="min-w-0">
-                <b className="text-xs text-slate-900 block truncate">ഉപയോക്താവ് സൈൻ അപ്പ്</b>
-                <span className="text-[10px] text-slate-400">user123 • 4 മണിക്കൂർ മുമ്പ്</span>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4 text-slate-400" />
-          </div>
-
+          ))}
         </div>
       </div>
 
-      {/* 4. SYSTEM STATUS PILL MATCHING SCREEN 8 */}
+      {/* 4. SYSTEM STATUS */}
       <div className="p-4 bg-white border border-slate-200 rounded-3xl shadow-2xs space-y-1.5 font-malayalam">
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
           സിസ്റ്റം സ്റ്റാറ്റസ് (System Status)
         </span>
         <div className="flex items-center gap-2 text-xs font-black text-emerald-800 bg-emerald-50 border border-emerald-200 p-2.5 rounded-2xl">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse" />
-          <span>എല്ലാം സാധാരണമാണ് (All Systems Operational)</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse shrink-0" />
+          <span>എല്ലാ സേവനങ്ങളും തത്സമയം പ്രവർത്തിക്കുന്നു (Operational)</span>
         </div>
       </div>
 
