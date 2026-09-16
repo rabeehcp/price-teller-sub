@@ -168,7 +168,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
   ];
 
   return (
-    <div className="h-[100dvh] max-h-[100dvh] overflow-hidden md:h-auto md:max-h-none md:min-h-screen md:overflow-y-auto bg-[#EFF4F1] text-[#17221D] flex flex-col justify-between font-sans selection:bg-[#0D4A36] selection:text-white">
+    <div className="h-[100dvh] max-h-[100dvh] overflow-y-auto md:h-auto md:max-h-none md:min-h-screen md:overflow-y-auto bg-[#EFF4F1] text-[#17221D] flex flex-col font-sans selection:bg-[#0D4A36] selection:text-white">
       
       {/* 1. TOP HEADER */}
       <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] shrink-0 px-3 sm:px-8 py-1.5 md:py-3 z-40">
@@ -293,10 +293,10 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       </header>
 
       {/* 2. MAIN WORKSPACE (Strict zero scroll on mobile viewport, full height on desktop) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-6 lg:px-8 py-1.5 md:py-6 flex flex-col justify-between gap-1.5 sm:gap-3 md:gap-6 min-h-0 overflow-hidden md:overflow-visible">
+      <main className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-6 lg:px-8 py-2 md:py-6 flex flex-col justify-start md:justify-between gap-3 md:gap-6 min-h-0">
 
         {/* HERO SECTION (Mint green card exactly matching reference) */}
-        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-2.5 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden shrink min-h-0 flex flex-col justify-between">
+        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-2.5 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden shrink-0 flex flex-col justify-between">
           
           {/* Subtle background decorative foliage */}
           <div className="absolute top-2 right-1/4 text-emerald-800/10 text-5xl pointer-events-none select-none hidden md:block">
