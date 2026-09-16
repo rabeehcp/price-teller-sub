@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapPin, Navigation, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { MapPin, Navigation, X, Search, Check } from 'lucide-react';
 import { Location } from '../types';
 
 interface MobileLocationModalProps {
@@ -21,67 +21,83 @@ export const MobileLocationModal: React.FC<MobileLocationModalProps> = ({
   currentLocation,
   onSelectLocation,
 }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+
   if (!isOpen) return null;
+
+  const filteredLocations = locations.filter((loc) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase().trim();
+    return (
+      loc.name.toLowerCase().includes(q) ||
+      (loc.subArea && loc.subArea.toLowerCase().includes(q))
+    );
+  });
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-6 shadow-2xl animate-in slide-in-from-bottom duration-300 font-sans max-h-[90dvh] overflow-y-auto">
+      <div className="w-full max-w-md bg-white rounded-t-3xl sm:rounded-3xl p-5 shadow-2xl animate-in slide-in-from-bottom duration-300 font-sans max-h-[90dvh] flex flex-col">
         
-        {/* Close Button */}
-        <div className="flex justify-end -mt-1 -mr-1">
+        {/* Close Button & Header */}
+        <div className="flex items-center justify-between pb-2 border-b border-slate-100 shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center">
+              <MapPin className="w-4 h-4 text-[#0B8F68]" />
+            </div>
+            <span className="text-sm font-black text-slate-900 font-malayalam">
+              പ്രദേശം തിരഞ്ഞെടുക്കുക
+            </span>
+          </div>
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors"
+            className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        {/* Pin Graphic matching Screen 10 */}
-        <div className="flex flex-col items-center text-center -mt-2">
-          <div className="w-24 h-24 rounded-full bg-emerald-50 border-4 border-emerald-100 flex items-center justify-center text-emerald-600 shadow-inner mb-4 relative">
-            <div className="absolute inset-2 rounded-full bg-emerald-100/50 animate-ping opacity-30" />
-            <div className="w-14 h-14 rounded-full bg-emerald-600 text-white flex items-center justify-center shadow-md">
-              <MapPin className="w-7 h-7 fill-white" />
-            </div>
-          </div>
-
-          <h3 className="text-xl font-black text-slate-900 font-malayalam tracking-tight mb-2">
-            നിങ്ങളുടെ സ്ഥാനം അനുവദിക്കൂ
-          </h3>
-
-          <p className="text-xs text-slate-600 font-malayalam leading-relaxed px-4 mb-6">
-            അടുത്തുള്ള കടകളുടെ വിലയും ദൂരവും കൃത്യമായി കാണാൻ നിങ്ങളുടെ സ്ഥാനം ഉപയോഗിക്കുന്നു.
-          </p>
-        </div>
-
-        {/* Action Buttons matching Screen 10 */}
-        <div className="space-y-2.5">
+        {/* GPS Quick Action */}
+        <div className="py-2 shrink-0">
           <button
             onClick={onAllowLocation}
             disabled={isDetecting}
-            className="w-full py-3.5 px-4 bg-[#064e3b] hover:bg-[#043d2e] active:scale-98 text-white text-sm font-black rounded-2xl shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
+            className="w-full py-2.5 px-4 bg-[#E8F5EE] hover:bg-[#D4EEDE] text-[#064E3B] text-xs font-black rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam border border-[#BBD8C8]"
           >
-            <Navigation className={`w-4 h-4 ${isDetecting ? 'animate-spin' : ''}`} />
-            <span>{isDetecting ? 'സ്ഥാനം കണ്ടെത്തുന്നു...' : 'സ്ഥാനം അനുവദിക്കുക'}</span>
-          </button>
-
-          <button
-            onClick={onClose}
-            className="w-full py-3 px-4 bg-transparent hover:bg-slate-50 active:scale-98 text-slate-700 text-xs font-bold rounded-2xl border border-slate-200 transition-all cursor-pointer font-malayalam"
-          >
-            <span>ഇപ്പോൾ വേണ്ട</span>
+            <Navigation className={`w-3.5 h-3.5 ${isDetecting ? 'animate-spin' : ''}`} />
+            <span>{isDetecting ? 'സ്ഥാനം കണ്ടെത്തുന്നു...' : 'എന്റെ ലൊക്കേഷൻ കണ്ടെത്തുക (GPS)'}</span>
           </button>
         </div>
 
-        {/* Quick Hub Chooser */}
+        {/* Search Bar for Locations */}
+        <div className="relative my-1 shrink-0">
+          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="സ്ഥലം തിരയുക / Search town (e.g. Manjeri, Tirur)..."
+            className="w-full bg-slate-50 hover:bg-white focus:bg-white border border-slate-200 focus:border-[#0B8F68] rounded-xl pl-8.5 pr-8 py-2 text-xs text-slate-800 placeholder-slate-400 outline-none transition-all font-malayalam"
+            autoFocus
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+
+        {/* Locations List */}
         {locations.length > 0 && onSelectLocation && (
-          <div className="mt-6 pt-4 border-t border-slate-100">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-2 font-malayalam text-center">
-              അല്ലെങ്കിൽ പ്രദേശം നേരിട്ട് തിരഞ്ഞെടുക്കുക:
-            </span>
-            <div className="flex flex-wrap justify-center gap-1.5 max-h-32 overflow-y-auto no-scrollbar py-1">
-              {locations.map((loc) => {
+          <div className="flex-1 overflow-y-auto min-h-0 space-y-1 py-1 mt-1">
+            {filteredLocations.length === 0 ? (
+              <div className="text-center py-6 text-slate-400 text-xs font-malayalam">
+                &ldquo;{searchQuery}&rdquo; എന്ന പേരിൽ സ്ഥലം കണ്ടെത്താനായില്ല.
+              </div>
+            ) : (
+              filteredLocations.map((loc) => {
                 const isSelected = currentLocation?.id === loc.id;
                 return (
                   <button
@@ -90,17 +106,25 @@ export const MobileLocationModal: React.FC<MobileLocationModalProps> = ({
                       onSelectLocation(loc);
                       onClose();
                     }}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                    className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-emerald-600 text-white shadow-2xs font-black'
-                        : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
+                        ? 'bg-[#0B8F68] text-white font-black shadow-xs'
+                        : 'bg-slate-50/80 hover:bg-[#E8F5EE] text-slate-800'
                     }`}
                   >
-                    {loc.name}
+                    <div className="min-w-0">
+                      <div className="font-bold truncate">{loc.name}</div>
+                      {loc.subArea && (
+                        <div className={`text-[10px] truncate ${isSelected ? 'text-emerald-100' : 'text-slate-500'}`}>
+                          {loc.subArea}
+                        </div>
+                      )}
+                    </div>
+                    {isSelected && <Check className="w-4 h-4 shrink-0 text-white ml-2" />}
                   </button>
                 );
-              })}
-            </div>
+              })
+            )}
           </div>
         )}
 

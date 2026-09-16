@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, Search, ShoppingBag, ClipboardList, User as UserIcon } from 'lucide-react';
+import { Home, Search, ShoppingBag, ClipboardList, User as UserIcon, Scale } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeTab: string;
-  onSelectTab: (tab: 'home' | 'search' | 'cart' | 'orders' | 'profile') => void;
+  onSelectTab: (tab: 'home' | 'search' | 'compare' | 'cart' | 'orders' | 'profile') => void;
   basketCount: number;
 }
 
@@ -13,7 +13,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   basketCount,
 }) => {
   const navItems: Array<{
-    id: 'home' | 'search' | 'cart' | 'orders' | 'profile';
+    id: 'home' | 'search' | 'compare' | 'cart' | 'profile';
     label: string;
     icon: React.ReactNode;
     badge?: number;
@@ -29,15 +29,15 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       icon: <Search className="w-5 h-5" />,
     },
     {
+      id: 'compare',
+      label: 'താരതമ്യം',
+      icon: <Scale className="w-5 h-5" />,
+    },
+    {
       id: 'cart',
       label: 'കാർട്ട്',
       icon: <ShoppingBag className="w-5 h-5" />,
       badge: basketCount,
-    },
-    {
-      id: 'orders',
-      label: 'ഓർഡറുകൾ',
-      icon: <ClipboardList className="w-5 h-5" />,
     },
     {
       id: 'profile',

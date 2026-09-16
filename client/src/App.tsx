@@ -60,6 +60,7 @@ import { MobileHomeView } from './components/MobileHomeView';
 import { MobileCategoryView } from './components/MobileCategoryView';
 import { MobileProductDetailModal } from './components/MobileProductDetailModal';
 import { MobileBasketView } from './components/MobileBasketView';
+import { MobileCompareView } from './components/MobileCompareView';
 import { MobileProfileView } from './components/MobileProfileView';
 import { DesktopHeader } from './components/DesktopHeader';
 import { DesktopLeftSidebar } from './components/DesktopLeftSidebar';
@@ -80,7 +81,7 @@ import {
   fetchCurrentUserApi,
   getAuthToken,
 } from './services/api';
-import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight } from 'lucide-react';
+import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale } from 'lucide-react';
 
 
 // Helper utilities to accurately identify admin, merchant, or consumer route intents
@@ -157,8 +158,8 @@ export const App: React.FC = () => {
   const [authUser, setAuthUser] = useState<User | null>(null);
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
-  // Shopper Main View Tab ('home' | 'search' | 'cart' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
-  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
+  // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
+  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
 
   // App View State ('welcome' | 'portal' | 'consumer' | 'merchant' | 'admin')
   const [appView, setAppView] = useState<'welcome' | 'portal' | 'consumer' | 'merchant' | 'admin'>(() => {
@@ -1368,6 +1369,7 @@ export const App: React.FC = () => {
           onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
           onOpenDrawer={() => setIsMobileDrawerOpen(true)}
           onOpenProfile={() => setShopperTab('profile')}
+          onOpenCompare={() => setShopperTab('compare')}
           authUser={authUser}
           unreadNotificationsCount={1}
         />
@@ -1545,6 +1547,7 @@ export const App: React.FC = () => {
                 basketItems={basket}
                 comparison={comparison}
                 onBack={() => setShopperTab('home')}
+                onGoToCompare={() => setShopperTab('compare')}
                 onQuantityChange={handleQuantityChange}
                 onUnitChange={handleUnitChange}
                 onRemoveItem={handleRemoveItem}
@@ -1556,6 +1559,20 @@ export const App: React.FC = () => {
                     handleOpenPreBooking();
                   }
                 }}
+              />
+            )}
+
+            {shopperTab === 'compare' && (
+              <MobileCompareView
+                basketItems={basket}
+                comparison={comparison}
+                currentLocation={currentLocation}
+                onBack={() => setShopperTab('home')}
+                onGoToSearch={() => setShopperTab('search')}
+                onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
+                onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
               />
             )}
 
@@ -1801,30 +1818,38 @@ export const App: React.FC = () => {
       </div>
 
       {/* Floating Bottom Basket Bar for Mobile */}
-      {basket.length > 0 && !isMobileBasketOpen && (
+      {basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare' && (
         <div className="md:hidden fixed bottom-14 left-3 right-3 z-30 bg-[#063B2A] text-white rounded-2xl p-3 shadow-xl flex items-center justify-between animate-in slide-in-from-bottom duration-200 border border-[#0B8F68]/30 font-malayalam">
           <div
-            onClick={() => setIsMobileBasketOpen(true)}
+            onClick={() => setShopperTab('compare')}
             className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0 pr-2"
           >
             <div className="w-9 h-9 rounded-xl bg-[#10A978] flex items-center justify-center text-[#063B2A] shrink-0 shadow-xs">
-              <ShoppingCart className="w-4 h-4" />
+              <Scale className="w-4 h-4" />
             </div>
             <div className="min-w-0">
               <div className="text-xs font-bold text-[#DDF5EA] truncate">
-                {totalBasketCount} സാധനങ്ങൾ ബാസ്ക്കറ്റിൽ
+                {totalBasketCount} സാധനങ്ങൾ · വില താരതമ്യം
               </div>
               <div className="text-sm font-black text-[#10A978] font-sans">
-                ഏറ്റവും മികച്ചത്: ₹{comparison?.bestTotal || 0}
+                ഏറ്റവും കുറഞ്ഞത്: ₹{comparison?.bestTotal || 0}
               </div>
             </div>
           </div>
           <div className="flex items-center gap-1.5 shrink-0">
             <button
-              onClick={() => setIsMobileBasketOpen(true)}
-              className="px-3.5 py-2 bg-[#10A978] hover:bg-[#0B8F68] text-white text-xs font-black rounded-xl cursor-pointer active:scale-95 shadow-xs"
+              onClick={() => setShopperTab('compare')}
+              className="px-3 py-2 bg-[#10A978] hover:bg-[#0B8F68] text-white text-xs font-black rounded-xl cursor-pointer active:scale-95 shadow-xs flex items-center gap-1"
             >
-              ബാസ്ക്കറ്റ് കാണുക
+              <Scale className="w-3.5 h-3.5" />
+              <span>താരതമ്യം</span>
+            </button>
+            <button
+              onClick={() => setIsMobileBasketOpen(true)}
+              className="px-2.5 py-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-xl cursor-pointer active:scale-95"
+              title="ബാസ്ക്കറ്റ് കാണുക"
+            >
+              <ShoppingCart className="w-4 h-4" />
             </button>
           </div>
         </div>
@@ -1850,6 +1875,10 @@ export const App: React.FC = () => {
               <MobileBasketView
                 basketItems={basket}
                 comparison={comparison}
+                onGoToCompare={() => {
+                  setIsMobileBasketOpen(false);
+                  setShopperTab('compare');
+                }}
                 onQuantityChange={handleQuantityChange}
                 onUnitChange={handleUnitChange}
                 onRemoveItem={handleRemoveItem}

@@ -15,6 +15,9 @@ import {
   CalendarCheck,
   Globe,
   Flame,
+  Search,
+  X,
+  Check,
 } from 'lucide-react';
 
 interface HeaderProps {
@@ -71,6 +74,7 @@ export const Header: React.FC<HeaderProps> = ({
   const [isLocationMenuOpen, setIsLocationMenuOpen] = useState(false);
   const [isDetectingGps, setIsDetectingGps] = useState(false);
   const [isMapPickerOpen, setIsMapPickerOpen] = useState(false);
+  const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -230,34 +234,66 @@ export const Header: React.FC<HeaderProps> = ({
                 </div>
               )}
 
-              <div className="max-h-56 overflow-y-auto space-y-1">
-                {locations.map((loc) => {
-                  const isSelected = currentLocation?.id === loc.id;
-                  return (
-                    <button
-                      key={loc.id}
-                      onClick={() => {
-                        onSelectLocation(loc);
-                        setIsLocationMenuOpen(false);
-                      }}
-                      className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-all cursor-pointer ${
-                        isSelected
-                          ? 'bg-[#0B8F68] text-white font-bold'
-                          : 'hover:bg-[#DDF5EA]/40 text-slate-dark'
-                      }`}
-                    >
-                      <div>
-                        <div className="font-bold">{loc.name}</div>
-                        {loc.subArea && (
-                          <div className={`text-[10px] ${isSelected ? 'text-[#DDF5EA]' : 'text-slate-muted'}`}>
-                            {loc.subArea}
-                          </div>
-                        )}
-                      </div>
-                      {isSelected && <span className="text-xs">✓</span>}
-                    </button>
-                  );
-                })}
+              {/* Location Search Input */}
+              <div className="relative mb-2">
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2" />
+                <input
+                  type="text"
+                  value={locationSearchQuery}
+                  onChange={(e) => setLocationSearchQuery(e.target.value)}
+                  placeholder="സ്ഥലം തിരയുക / Search town..."
+                  className="w-full bg-[#F5F8F6] border border-surface-border rounded-xl pl-8 pr-7 py-1.5 text-xs text-slate-dark placeholder-slate-400 outline-none focus:border-[#0B8F68] focus:bg-white transition-all font-malayalam"
+                  autoFocus
+                />
+                {locationSearchQuery && (
+                  <button
+                    type="button"
+                    onClick={() => setLocationSearchQuery('')}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                )}
+              </div>
+
+              <div className="max-h-56 overflow-y-auto space-y-1 pr-0.5">
+                {locations
+                  .filter((loc) => {
+                    if (!locationSearchQuery.trim()) return true;
+                    const q = locationSearchQuery.toLowerCase().trim();
+                    return (
+                      loc.name.toLowerCase().includes(q) ||
+                      (loc.subArea && loc.subArea.toLowerCase().includes(q))
+                    );
+                  })
+                  .map((loc) => {
+                    const isSelected = currentLocation?.id === loc.id;
+                    return (
+                      <button
+                        key={loc.id}
+                        onClick={() => {
+                          onSelectLocation(loc);
+                          setIsLocationMenuOpen(false);
+                          setLocationSearchQuery('');
+                        }}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition-all cursor-pointer ${
+                          isSelected
+                            ? 'bg-[#0B8F68] text-white font-bold'
+                            : 'hover:bg-[#DDF5EA]/40 text-slate-dark'
+                        }`}
+                      >
+                        <div className="min-w-0 pr-2">
+                          <div className="font-bold truncate">{loc.name}</div>
+                          {loc.subArea && (
+                            <div className={`text-[10px] truncate ${isSelected ? 'text-[#DDF5EA]' : 'text-slate-muted'}`}>
+                              {loc.subArea}
+                            </div>
+                          )}
+                        </div>
+                        {isSelected && <Check className="w-3.5 h-3.5 shrink-0 text-white" />}
+                      </button>
+                    );
+                  })}
               </div>
             </div>
           )}

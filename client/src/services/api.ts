@@ -26,6 +26,7 @@ import {
   SubscriptionStats,
   AuditLog,
 } from '../types';
+import { MALAPPURAM_LOCATIONS } from '../data/malappuramLocations';
 
 
 const REMOTE_API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
@@ -109,13 +110,8 @@ async function readJsonResponse(res: Response): Promise<any> {
 
 export async function fetchLocations(): Promise<Location[]> {
   const json = await safeFetchJson<{ success: boolean; data: Location[] }>(`${API_BASE}/locations`);
-  if (json?.success && Array.isArray(json.data)) return json.data;
-  return [
-    { id: 'tirur', name: 'Tirur', subArea: 'Town & Central Market', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 10.9155, lng: 75.9238 },
-    { id: 'tirur-bpangadi', name: 'Tirur - BP Angadi', subArea: 'South Junction', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 10.9022, lng: 75.9351 },
-    { id: 'calicut', name: 'Calicut (Kozhikode)', subArea: 'Palayam & Mavoor Rd', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.2588, lng: 75.7804 },
-    { id: 'kochi', name: 'Kochi (Cochin)', subArea: 'Edapally & MG Road', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 9.9312, lng: 76.2673 },
-  ];
+  if (json?.success && Array.isArray(json.data) && json.data.length > 0) return json.data;
+  return MALAPPURAM_LOCATIONS;
 }
 
 export async function fetchCategories(): Promise<Category[]> {

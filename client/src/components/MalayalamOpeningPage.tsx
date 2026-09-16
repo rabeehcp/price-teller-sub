@@ -14,7 +14,10 @@ import {
   Sparkles,
   LogOut,
   ShoppingCart,
+  X,
+  Check,
 } from 'lucide-react';
+import { MobileLocationModal } from './MobileLocationModal';
 
 interface MalayalamOpeningPageProps {
   locations: Location[];
@@ -45,6 +48,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 }) => {
   const [searchInput, setSearchInput] = useState('');
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
+  const [locationSearchQuery, setLocationSearchQuery] = useState('');
+  const [isMobileLocationModalOpen, setIsMobileLocationModalOpen] = useState(false);
 
   const locationName = currentLocation?.name || 'കോഴിക്കോട്';
 
@@ -219,10 +224,11 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <button
               type="button"
               onClick={onEnterAsConsumer}
-              className="hidden sm:flex w-8 h-8 sm:w-9 sm:h-9 rounded-full hover:bg-black/5 items-center justify-center text-[#4D6158] transition-colors cursor-pointer"
-              title="വില താരതമ്യം"
+              className="flex w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#E5EFE9] text-[#0D4A36] hover:bg-[#D4EEDE] items-center justify-center transition-all cursor-pointer active:scale-95"
+              title="വില താരതമ്യം (Compare Prices)"
+              aria-label="Compare"
             >
-              <Scale className="w-4 h-4" />
+              <Scale className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
             </button>
 
             {/* Notification bell */}
@@ -239,8 +245,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Mobile Location Selector Indicator */}
             <button
               type="button"
-              onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
-              className="md:hidden flex items-center gap-1 bg-[#E5EFE9] text-[#0D4A36] px-2 py-0.5 rounded-full text-[10px] font-bold font-malayalam"
+              onClick={() => setIsMobileLocationModalOpen(true)}
+              className="md:hidden flex items-center gap-1 bg-[#E5EFE9] text-[#0D4A36] px-2 py-0.5 rounded-full text-[10px] font-bold font-malayalam active:scale-95"
             >
               <MapPin className="w-3 h-3 text-[#0D4A36]" />
               <span className="truncate max-w-[65px]">{locationName}</span>
@@ -370,30 +376,88 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                     </button>
 
                     {isLocationDropdownOpen && (
-                      <div className="absolute right-0 top-full mt-1 w-44 bg-white border border-[#E3ECE7] rounded-xl shadow-xl z-50 py-1 font-sans">
-                        <div className="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider font-malayalam">
-                          സ്ഥലം തിരഞ്ഞെടുക്കുക:
-                        </div>
-                        {locations.map((loc) => (
+                      <div className="absolute right-0 top-full mt-1 w-64 bg-white border border-[#E3ECE7] rounded-xl shadow-xl z-50 p-2 font-sans animate-in fade-in zoom-in-95 duration-150">
+                        <div className="flex items-center justify-between pb-1 border-b border-gray-100">
+                          <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider font-malayalam">
+                            സ്ഥലം തിരഞ്ഞെടുക്കുക:
+                          </span>
                           <button
-                            key={loc.id}
                             type="button"
                             onClick={() => {
-                              onSelectLocation(loc);
                               setIsLocationDropdownOpen(false);
+                              setLocationSearchQuery('');
                             }}
-                            className={`w-full text-left px-3 py-1.5 text-xs font-bold transition-colors cursor-pointer flex items-center justify-between ${
-                              loc.id === currentLocation?.id
-                                ? 'bg-[#E8F5EE] text-[#0D4A36]'
-                                : 'text-[#17221D] hover:bg-gray-50'
-                            }`}
+                            className="text-gray-400 hover:text-gray-600 p-0.5"
                           >
-                            <span>{loc.name}</span>
-                            {loc.id === currentLocation?.id && (
-                              <span className="text-emerald-600 text-[10px]">✓</span>
-                            )}
+                            <X className="w-3 h-3" />
                           </button>
-                        ))}
+                        </div>
+
+                        {/* Search Bar */}
+                        <div className="relative my-1.5">
+                          <Search className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                          <input
+                            type="text"
+                            value={locationSearchQuery}
+                            onChange={(e) => setLocationSearchQuery(e.target.value)}
+                            placeholder="തിരയുക / Search town..."
+                            className="w-full bg-[#F5F8F6] border border-[#E3ECE7] rounded-lg pl-6 pr-6 py-1 text-xs text-[#17221D] placeholder-gray-400 outline-none focus:border-[#0D4A36] font-malayalam"
+                            autoFocus
+                          />
+                          {locationSearchQuery && (
+                            <button
+                              type="button"
+                              onClick={() => setLocationSearchQuery('')}
+                              className="absolute right-1.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5"
+                            >
+                              <X className="w-2.5 h-2.5" />
+                            </button>
+                          )}
+                        </div>
+
+                        {/* List */}
+                        <div className="max-h-52 overflow-y-auto space-y-0.5 pr-0.5">
+                          {locations
+                            .filter((loc) => {
+                              if (!locationSearchQuery.trim()) return true;
+                              const q = locationSearchQuery.toLowerCase().trim();
+                              return (
+                                loc.name.toLowerCase().includes(q) ||
+                                (loc.subArea && loc.subArea.toLowerCase().includes(q))
+                              );
+                            })
+                            .map((loc) => {
+                              const isSelected = loc.id === currentLocation?.id;
+                              return (
+                                <button
+                                  key={loc.id}
+                                  type="button"
+                                  onClick={() => {
+                                    onSelectLocation(loc);
+                                    setIsLocationDropdownOpen(false);
+                                    setLocationSearchQuery('');
+                                  }}
+                                  className={`w-full text-left px-2 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-between ${
+                                    isSelected
+                                      ? 'bg-[#E8F5EE] text-[#0D4A36]'
+                                      : 'text-[#17221D] hover:bg-gray-50'
+                                  }`}
+                                >
+                                  <div className="min-w-0 pr-1">
+                                    <div className="truncate">{loc.name}</div>
+                                    {loc.subArea && (
+                                      <div className="text-[9px] text-gray-500 truncate font-normal">
+                                        {loc.subArea}
+                                      </div>
+                                    )}
+                                  </div>
+                                  {isSelected && (
+                                    <Check className="w-3 h-3 text-[#0D4A36] shrink-0" />
+                                  )}
+                                </button>
+                              );
+                            })}
+                        </div>
                       </div>
                     )}
                   </div>
@@ -617,6 +681,22 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           </div>
         </div>
       </footer>
+
+      {/* 6. MOBILE LOCATION SELECTION MODAL */}
+      <MobileLocationModal
+        isOpen={isMobileLocationModalOpen}
+        onClose={() => setIsMobileLocationModalOpen(false)}
+        onAllowLocation={() => {
+          setIsMobileLocationModalOpen(false);
+          onEnterAsConsumer();
+        }}
+        locations={locations}
+        currentLocation={currentLocation}
+        onSelectLocation={(loc) => {
+          onSelectLocation(loc);
+          setIsMobileLocationModalOpen(false);
+        }}
+      />
 
     </div>
   );

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { BasketItem, FullComparisonResponse, Product } from '../types';
 import { ProductImage } from './ProductImage';
-import { ArrowLeft, Trash2, Plus, Minus, Check, Tag } from 'lucide-react';
+import { ArrowLeft, Trash2, Plus, Minus, Check, Tag, Scale, ShoppingBag, ChevronRight } from 'lucide-react';
 
 interface MobileBasketViewProps {
   basketItems: BasketItem[];
   comparison?: FullComparisonResponse | null;
   onBack?: () => void;
+  onGoToCompare?: () => void;
   onQuantityChange: (productId: string, delta: number) => void;
   onUnitChange?: (productId: string, unit: string) => void;
   onRemoveItem: (productId: string) => void;
@@ -23,6 +24,7 @@ export const MobileBasketView: React.FC<MobileBasketViewProps> = ({
   basketItems,
   comparison,
   onBack,
+  onGoToCompare,
   onQuantityChange,
   onRemoveItem,
   onClearBasket,
@@ -88,6 +90,29 @@ export const MobileBasketView: React.FC<MobileBasketViewProps> = ({
           <div className="w-5" />
         )}
       </div>
+
+      {/* Cart vs Compare Tab Switcher */}
+      {onGoToCompare && (
+        <div className="px-4 pt-1">
+          <div className="grid grid-cols-2 gap-1 bg-[#F5F8F6] p-1 rounded-xl text-xs font-bold border border-[#E3ECE7]">
+            <button
+              type="button"
+              className="py-2 px-2 rounded-lg bg-white text-slate-900 shadow-2xs font-black flex items-center justify-center gap-1.5 font-malayalam"
+            >
+              <ShoppingBag className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <span>കാർട്ട് ({basketItems.length})</span>
+            </button>
+            <button
+              type="button"
+              onClick={onGoToCompare}
+              className="py-2 px-2 rounded-lg text-slate-600 hover:text-slate-900 flex items-center justify-center gap-1.5 font-malayalam cursor-pointer active:scale-95"
+            >
+              <Scale className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <span>വില താരതമ്യം</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className="px-4 space-y-4">
         {/* Empty State */}
@@ -204,8 +229,34 @@ export const MobileBasketView: React.FC<MobileBasketViewProps> = ({
               </div>
             </div>
 
+            {/* Comparison Callout Card */}
+            {comparison && onGoToCompare && (
+              <div
+                onClick={onGoToCompare}
+                className="p-3 bg-gradient-to-r from-[#E8F5EE] to-[#DDF5EA] border border-[#C3EEDC] rounded-2xl flex items-center justify-between cursor-pointer active:scale-98 transition-all font-malayalam shadow-2xs"
+              >
+                <div className="flex items-center gap-2.5 min-w-0 pr-2">
+                  <div className="w-8 h-8 rounded-xl bg-[#0B8F68] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <Scale className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-black text-[#063B2A] truncate">
+                      ഏറ്റവും കുറഞ്ഞ കട: {comparison.bestShopName}
+                    </div>
+                    <div className="text-[10px] text-[#0B8F68] font-bold truncate">
+                      ₹{comparison.bestTotal} ആകെ തുക {comparison.maxSavings > 0 ? `· ₹${comparison.maxSavings} ലാഭിക്കാം` : ''}
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-0.5 text-xs font-black text-[#063B2A] shrink-0">
+                  <span>താരതമ്യം</span>
+                  <ChevronRight className="w-4 h-4" />
+                </div>
+              </div>
+            )}
+
             {/* 4. Checkout CTA Button (Matching Screen 4) */}
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 type="button"
                 onClick={handleOrder}
