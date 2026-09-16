@@ -168,7 +168,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
   ];
 
   return (
-    <div className="h-[100dvh] max-h-[100dvh] overflow-y-auto md:h-auto md:max-h-none md:min-h-screen md:overflow-y-auto bg-[#EFF4F1] text-[#17221D] flex flex-col font-sans selection:bg-[#0D4A36] selection:text-white">
+    <div className="min-h-[100dvh] h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto md:h-auto md:max-h-none md:min-h-screen bg-[#EFF4F1] text-[#17221D] flex flex-col font-sans selection:bg-[#0D4A36] selection:text-white">
       
       {/* 1. TOP HEADER */}
       <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] shrink-0 px-3 sm:px-8 py-1.5 md:py-3 z-40">
@@ -246,33 +246,33 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <button
               type="button"
               onClick={() => setIsMobileLocationModalOpen(true)}
-              className="md:hidden flex items-center gap-1 bg-[#E5EFE9] text-[#0D4A36] px-2 py-0.5 rounded-full text-[10px] font-bold font-malayalam active:scale-95"
+              className="md:hidden flex items-center gap-1 bg-[#E5EFE9] text-[#0D4A36] px-2 py-1 rounded-full text-[10px] font-bold font-malayalam active:scale-95 shrink-0"
             >
-              <MapPin className="w-3 h-3 text-[#0D4A36]" />
-              <span className="truncate max-w-[65px]">{locationName}</span>
-              <ChevronDown className="w-2.5 h-2.5" />
+              <MapPin className="w-3 h-3 text-[#0D4A36] shrink-0" />
+              <span className="truncate max-w-[50px]">{locationName}</span>
+              <ChevronDown className="w-2.5 h-2.5 shrink-0" />
             </button>
 
             {/* Login / Sign Up Pill Button */}
             {authUser ? (
-              <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                 <button
                   type="button"
                   onClick={onEnterAsConsumer}
-                  className="flex items-center gap-1.5 px-3 sm:px-4 py-1 sm:py-2 bg-[#0D4A36] hover:bg-[#073626] text-white text-xs sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-malayalam"
+                  className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-malayalam shrink-0"
                 >
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] sm:text-[10px] font-black">
+                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] sm:text-[10px] font-black shrink-0">
                     {authUser.name ? authUser.name.charAt(0).toUpperCase() : '👤'}
                   </div>
-                  <span>കടകളിലേക്ക്</span>
-                  <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 ml-0.5" />
+                  <span>കടകൾ</span>
+                  <ArrowRight className="w-3 h-3 ml-0.5 shrink-0" />
                 </button>
 
                 {onLogout && (
                   <button
                     type="button"
                     onClick={onLogout}
-                    className="p-1 text-gray-400 hover:text-rose-600 rounded-full hover:bg-rose-50 transition-colors cursor-pointer"
+                    className="p-1 text-gray-400 hover:text-rose-600 rounded-full hover:bg-rose-50 transition-colors cursor-pointer shrink-0"
                     title="ലോഗ് ഔട്ട്"
                   >
                     <LogOut className="w-3.5 h-3.5" />
@@ -283,17 +283,17 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <button
                 type="button"
                 onClick={onOpenConsumerLogin || onEnterAsConsumer}
-                className="px-3 sm:px-5 py-1 sm:py-2 bg-[#0D4A36] hover:bg-[#073626] text-white text-xs sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-sans tracking-tight active:scale-95"
+                className="px-2.5 sm:px-4 py-1 sm:py-1.5 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-xs font-bold rounded-full transition-all cursor-pointer shadow-xs font-sans tracking-tight active:scale-95 shrink-0"
               >
-                Login / Sign Up
+                Login
               </button>
             )}
           </div>
         </div>
       </header>
 
-      {/* 2. MAIN WORKSPACE (Strict zero scroll on mobile viewport, full height on desktop) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-2 sm:px-6 lg:px-8 py-2 md:py-6 flex flex-col justify-start md:justify-between gap-3 md:gap-6 min-h-0">
+      {/* 2. MAIN WORKSPACE (Balanced layout on mobile viewport, full height on desktop) */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 py-2 sm:py-3 md:py-6 flex flex-col justify-between gap-2.5 sm:gap-3 md:gap-6 min-h-0">
 
         {/* HERO SECTION (Mint green card exactly matching reference) */}
         <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-2.5 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden shrink-0 flex flex-col justify-between">
@@ -516,10 +516,10 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           </div>
 
           {/* MOBILE LAYOUT (< md): Ultra-optimized zero-scroll split layout */}
-          <div className="md:hidden flex flex-col justify-between gap-1.5 min-h-0">
+          <div className="md:hidden flex flex-col justify-between gap-2 min-h-0">
             {/* Top row: Left Headline & Search + Right 3D Illustration */}
             <div className="flex items-center justify-between gap-2">
-              <div className="flex-1 min-w-0 space-y-1">
+              <div className="flex-1 min-w-0 space-y-1.5">
                 <h1 className="text-base sm:text-lg font-black text-[#0B3D2D] leading-[1.2] font-malayalam tracking-tight m-0">
                   ഓരോ ആവശ്യത്തിനും<br />
                   <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
@@ -528,45 +528,45 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 {/* Compact Search Bar for Mobile */}
                 <form
                   onSubmit={handleSearchSubmit}
-                  className="bg-white rounded-full p-1 pl-2.5 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-1.5 transition-all"
+                  className="bg-white rounded-full p-1 pl-3 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-1.5 transition-all"
                 >
-                  <Search className="w-3 h-3 text-[#6B8579] shrink-0" />
+                  <Search className="w-3.5 h-3.5 text-[#6B8579] shrink-0" />
                   <input
                     type="text"
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     placeholder="സാധനങ്ങൾ തിരയുക..."
-                    className="w-full bg-transparent text-[10px] text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
+                    className="w-full bg-transparent text-xs text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
                   />
                   <button
                     type="submit"
-                    className="w-6 h-6 rounded-full bg-[#0D4A36] text-white flex items-center justify-center shrink-0 active:scale-95"
+                    className="w-7 h-7 rounded-full bg-[#0D4A36] text-white flex items-center justify-center shrink-0 active:scale-95 cursor-pointer shadow-xs"
                   >
-                    <Search className="w-2.5 h-2.5" />
+                    <Search className="w-3 h-3" />
                   </button>
                 </form>
               </div>
 
               {/* Seamless 3D Grocery Hero Illustration on Right */}
-              <div className="w-[110px] sm:w-[130px] shrink-0 flex items-center justify-center">
+              <div className="w-[115px] sm:w-[135px] shrink-0 flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
                   alt="Fresh Choices Better Prices"
-                  className="w-full h-auto max-h-[95px] object-contain drop-shadow-xs pointer-events-none"
+                  className="w-full h-auto max-h-[105px] object-contain drop-shadow-xs pointer-events-none"
                 />
               </div>
             </div>
 
             {/* Mobile Live Price Ticker Strip */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 font-malayalam">
-              <span className="text-[9px] font-black text-[#0D4A36] bg-white/90 px-1.5 py-0.5 rounded-md shrink-0 border border-[#BBD8C8]">
+              <span className="text-[9px] font-black text-[#0D4A36] bg-white/90 px-2 py-0.5 rounded-md shrink-0 border border-[#BBD8C8]">
                 ഇന്നത്തെ വില:
               </span>
               {todayPrices.map((item) => (
                 <div
                   key={item.id}
                   onClick={onEnterAsConsumer}
-                  className="bg-white/95 text-[#0D4A36] text-[9px] font-bold px-2 py-0.5 rounded-full border border-white shadow-2xs shrink-0 flex items-center gap-1 cursor-pointer active:scale-95"
+                  className="bg-white/95 text-[#0D4A36] text-[9px] font-bold px-2.5 py-0.5 rounded-full border border-white shadow-2xs shrink-0 flex items-center gap-1 cursor-pointer active:scale-95"
                 >
                   <span>{item.emoji}</span>
                   <span>{item.name}</span>
@@ -600,16 +600,16 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
-                className="w-[62px] sm:w-[72px] md:w-auto shrink-0 bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#BBD8C8] rounded-xl md:rounded-2xl p-1 sm:p-1.5 md:p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-95"
+                className="w-[66px] sm:w-[74px] md:w-auto shrink-0 bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#BBD8C8] rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-95"
               >
                 {/* Circular Icon Container */}
                 <div
-                  className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full ${cat.bgColor} flex items-center justify-center text-base sm:text-lg md:text-xl mb-0.5 sm:mb-1 md:mb-1.5 transition-transform group-hover:scale-110 shadow-2xs`}
+                  className={`w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full ${cat.bgColor} flex items-center justify-center text-base sm:text-lg md:text-xl mb-1 transition-transform group-hover:scale-110 shadow-2xs`}
                 >
                   <span>{cat.emoji}</span>
                 </div>
 
-                <span className="text-[8px] sm:text-[9px] md:text-[11px] font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] truncate w-full">
+                <span className="text-[9px] sm:text-[10px] md:text-[11px] font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] truncate w-full">
                   {cat.label}
                 </span>
               </button>
@@ -618,58 +618,79 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </section>
 
         {/* 4. VALUE PROPOSITION / TRUST CARDS (Bottom 4 Cards) */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-1.5 md:gap-3 font-malayalam shrink-0">
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-1.5 sm:gap-2 md:gap-3 font-malayalam shrink-0">
           
           {/* Card 1: വില താരതമ്യം */}
-          <div className="bg-[#E6F0EB] border border-[#D5E5DC] rounded-lg sm:rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3.5 flex items-center gap-1.5 sm:gap-2 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 rounded-md sm:rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <TrendingDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[9px] sm:text-[10px] md:text-xs font-black text-[#17221D] truncate">വില താരതമ്യം</div>
-              <div className="text-[7px] sm:text-[8px] md:text-[11px] text-[#556960] font-medium truncate">മികച്ച നിരക്കുകൾ</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">വില താരതമ്യം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">മികച്ച നിരക്കുകൾ</div>
             </div>
           </div>
 
           {/* Card 2: പ്രാദേശിക കടകൾ */}
-          <div className="bg-[#E6F0EB] border border-[#D5E5DC] rounded-lg sm:rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3.5 flex items-center gap-1.5 sm:gap-2 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 rounded-md sm:rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <Store className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <Store className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[9px] sm:text-[10px] md:text-xs font-black text-[#17221D] truncate">പ്രാദേശിക കടകൾ</div>
-              <div className="text-[7px] sm:text-[8px] md:text-[11px] text-[#556960] font-medium truncate">സൂപ്പർമാർക്കറ്റുകൾ</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">പ്രാദേശിക കടകൾ</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">സൂപ്പർമാർക്കറ്റുകൾ</div>
             </div>
           </div>
 
           {/* Card 3: നേരിട്ട് മുൻകൂട്ടി ബുക്കിംഗ് */}
-          <div className="bg-[#E6F0EB] border border-[#D5E5DC] rounded-lg sm:rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3.5 flex items-center gap-1.5 sm:gap-2 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 rounded-md sm:rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <ShieldCheck className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[9px] sm:text-[10px] md:text-xs font-black text-[#17221D] truncate">നേരിട്ട് ബുക്കിംഗ്</div>
-              <div className="text-[7px] sm:text-[8px] md:text-[11px] text-[#556960] font-medium truncate">സ്റ്റോക്ക് ലഭ്യത</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">നേരിട്ട് ബുക്കിംഗ്</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">സ്റ്റോക്ക് ലഭ്യത</div>
             </div>
           </div>
 
           {/* Card 4: 100% സൗജന്യ സേവനം */}
-          <div className="bg-[#E6F0EB] border border-[#D5E5DC] rounded-lg sm:rounded-xl md:rounded-2xl p-1.5 sm:p-2 md:p-3.5 flex items-center gap-1.5 sm:gap-2 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-6 h-6 sm:w-7 sm:h-7 md:w-9 md:h-9 rounded-md sm:rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[9px] sm:text-[10px] md:text-xs font-black text-[#17221D] truncate">100% സൗജന്യം</div>
-              <div className="text-[7px] sm:text-[8px] md:text-[11px] text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">100% സൗജന്യം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി</div>
             </div>
           </div>
 
         </section>
 
+        {/* 5. MOBILE QUICK-ACTION / EXPLORE STORES CTA (Fills space nicely & looks premium) */}
+        <div className="md:hidden bg-gradient-to-r from-[#0D4A36] via-[#125841] to-[#0D4A36] rounded-xl sm:rounded-2xl p-2.5 sm:p-3 text-white shadow-xs flex items-center justify-between gap-2.5 font-malayalam shrink-0">
+          <div className="min-w-0">
+            <div className="text-[11px] sm:text-xs font-black tracking-tight text-white flex items-center gap-1.5">
+              <span className="text-sm">🛍️</span>
+              <span>കടകൾ കാണാൻ തുടങ്ങാം</span>
+            </div>
+            <p className="text-[9px] sm:text-[10px] text-emerald-200 font-medium m-0 truncate">
+              നിങ്ങളുടെ പ്രദേശത്തെ ഏറ്റവും കുറഞ്ഞ നിരക്കുകൾ
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onEnterAsConsumer}
+            className="px-3 py-1.5 bg-white text-[#0D4A36] hover:bg-emerald-50 text-[11px] font-black rounded-lg shrink-0 flex items-center gap-1 shadow-xs active:scale-95 transition-all cursor-pointer font-malayalam"
+          >
+            <span>തുടങ്ങാം</span>
+            <ArrowRight className="w-3 h-3 text-[#0D4A36]" />
+          </button>
+        </div>
+
       </main>
 
-      {/* 5. FOOTER */}
-      <footer className="w-full bg-white border-t border-[#E3ECE7] py-1 md:py-3 px-3 md:px-4 text-center text-[9px] md:text-xs text-[#66756E] font-malayalam shrink-0">
+      {/* 6. FOOTER */}
+      <footer className="w-full bg-white border-t border-[#E3ECE7] py-1.5 md:py-3 px-3 md:px-4 text-center text-[9px] md:text-xs text-[#66756E] font-malayalam shrink-0 overflow-hidden">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 truncate">
             <span className="font-bold text-[#17221D] font-sans">PriceTeller Kerala</span>
