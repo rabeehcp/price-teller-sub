@@ -8,6 +8,11 @@ import {
   Plus,
   Minus,
   ChevronRight,
+  TrendingDown,
+  Store,
+  ShieldCheck,
+  Sparkles,
+  Flame,
 } from 'lucide-react';
 
 interface MobileHomeViewProps {
@@ -31,6 +36,25 @@ interface MobileHomeViewProps {
   onViewAllProducts?: () => void;
 }
 
+const CATEGORY_CONFIG = [
+  { id: 'vegetables', label: 'പച്ചക്കറി', emoji: '🥬', bg: 'bg-emerald-50', border: 'border-emerald-100' },
+  { id: 'fruits',     label: 'പഴങ്ങൾ',   emoji: '🍌', bg: 'bg-amber-50',   border: 'border-amber-100' },
+  { id: 'rice-grains',label: 'അരി & ധാന്യം', emoji: '🌾', bg: 'bg-yellow-50', border: 'border-yellow-100' },
+  { id: 'dairy',      label: 'പാൽ',       emoji: '🥛', bg: 'bg-sky-50',     border: 'border-sky-100' },
+  { id: 'spices',     label: 'മസാലകൾ',   emoji: '🌶️', bg: 'bg-red-50',     border: 'border-red-100' },
+  { id: 'grocery',    label: 'ഗ്രോസറി',  emoji: '🥫', bg: 'bg-orange-50',  border: 'border-orange-100' },
+  { id: 'oils-spices',label: 'എണ്ണ',     emoji: '🫗', bg: 'bg-lime-50',    border: 'border-lime-100' },
+  { id: 'all',        label: 'എല്ലാം',   emoji: '🛒', bg: 'bg-[#E8F5EE]', border: 'border-emerald-200' },
+];
+
+const TODAY_PRICES = [
+  { name: 'തക്കാളി', emoji: '🍅', price: 28, unit: 'kg' },
+  { name: 'സവാള',   emoji: '🧅', price: 35, unit: 'kg' },
+  { name: 'ഉരുളക്കിഴങ്ങ്', emoji: '🥔', price: 32, unit: 'kg' },
+  { name: 'പാൽ',    emoji: '🥛', price: 56, unit: 'ലി' },
+  { name: 'എണ്ണ',   emoji: '🫗', price: 150, unit: 'ലി' },
+];
+
 export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   products,
   shops,
@@ -51,54 +75,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   onViewAllCategories,
   onViewAllProducts,
 }) => {
-  // Categories matching Desktop view exactly
-  const homeCategories = [
-    {
-      id: 'vegetables',
-      label: 'പച്ചക്കറികൾ',
-      emoji: '🥬',
-      fallbackEmoji: '🥬',
-    },
-    {
-      id: 'fruits',
-      label: 'പഴങ്ങൾ',
-      emoji: '🍌',
-      fallbackEmoji: '🍌',
-    },
-    {
-      id: 'rice-grains',
-      label: 'ധാന്യങ്ങൾ',
-      emoji: '🌾',
-      fallbackEmoji: '🌾',
-    },
-    {
-      id: 'dairy',
-      label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
-      emoji: '🥛',
-      fallbackEmoji: '🥛',
-    },
-    {
-      id: 'spices',
-      label: 'മസാലകൾ',
-      emoji: '🌶️',
-      fallbackEmoji: '🌶️',
-    },
-    {
-      id: 'grocery',
-      label: 'കറി സാധനങ്ങൾ',
-      emoji: '🥫',
-      fallbackEmoji: '🥫',
-    },
-    {
-      id: 'all',
-      label: 'കൂടുതൽ',
-      emoji: '⋯',
-      fallbackEmoji: '⋯',
-      isMore: true,
-    },
-  ];
 
-  // Pick top popular products (or filtered by search if typed)
+  // Pick top popular products
   const popularProducts = useMemo(() => {
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
@@ -107,29 +85,24 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         (p.categoryId && p.categoryId.toLowerCase().includes(q))
       );
     }
-
-    // Default popular products: Tomato, Banana, Onion, Carrot, Brinjal, Beans, etc.
-    const priorityNames = ['tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli'];
+    const priorityNames = ['tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'];
     const sorted = [...products].sort((a, b) => {
-      const aName = a.name.toLowerCase();
-      const bName = b.name.toLowerCase();
-      const aIndex = priorityNames.findIndex((n) => aName.includes(n));
-      const bIndex = priorityNames.findIndex((n) => bName.includes(n));
+      const aIndex = priorityNames.findIndex((n) => a.name.toLowerCase().includes(n));
+      const bIndex = priorityNames.findIndex((n) => b.name.toLowerCase().includes(n));
       if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
       if (aIndex !== -1) return -1;
       if (bIndex !== -1) return 1;
       return 0;
     });
-
     return sorted.slice(0, 12);
   }, [products, searchQuery]);
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-24 animate-in fade-in duration-150">
-      
-      {/* 1. TOP SEARCH INPUT BAR (Matching Screen 1) */}
-      <div className="pt-1">
-        <div className="relative flex items-center bg-[#F5F8F6] border border-[#E3ECE7] rounded-full p-1 pl-3.5 shadow-2xs">
+    <div className="md:hidden space-y-3 font-sans pb-28 animate-in fade-in duration-200">
+
+      {/* 1. SEARCH BAR */}
+      <div>
+        <div className="relative flex items-center bg-white border border-[#E3ECE7] rounded-full p-1 pl-4 shadow-sm">
           <Search className="w-4 h-4 text-[#8A9992] shrink-0" />
           <input
             type="text"
@@ -149,7 +122,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
           ) : (
             <button
               type="button"
-              className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-transform cursor-pointer"
+              className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center shrink-0 shadow-sm active:scale-95 transition-transform cursor-pointer"
             >
               <Search className="w-3.5 h-3.5" />
             </button>
@@ -157,95 +130,100 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         </div>
       </div>
 
-      {/* 2. GREEN HERO BANNER CARD (Matching Screen 1) */}
-      <div className="space-y-2">
-        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-5 shadow-sm min-h-[145px] flex items-center justify-between">
-          
-          {/* Subtle Glows */}
-          <div className="absolute top-0 right-1/3 w-36 h-36 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
+      {/* 2. HERO BANNER */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-5 shadow-md min-h-[150px] flex items-center justify-between">
+        {/* Decorative glows */}
+        <div className="absolute top-0 right-1/3 w-32 h-32 bg-[#10A978]/20 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-4 left-0 w-24 h-24 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
 
-          {/* Left Text & CTA */}
-          <div className="relative z-10 max-w-[62%] space-y-1.5">
-            <h2 className="text-base sm:text-lg font-black text-white leading-tight font-malayalam m-0">
-              നാടൻ കർഷകരിൽ നിന്ന് നേരിട്ട്!
-            </h2>
-            <p className="text-[11px] text-[#DDF5EA] font-medium leading-tight font-malayalam m-0">
-              പച്ചക്കറികളും ഫ്രെഷായ ഉൽപ്പന്നങ്ങൾ
-            </p>
-
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => onSelectCategory('vegetables')}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/95 hover:bg-white text-[#063B2A] text-[11px] font-black rounded-full shadow-xs active:scale-95 transition-all font-malayalam cursor-pointer"
-              >
-                <span>കാണുക</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-
-          {/* Right Basket Graphic */}
-          <div className="relative z-10 w-28 h-28 shrink-0 flex items-center justify-center drop-shadow-md">
-            <img
-              src="https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg"
-              alt="Fresh harvest"
-              onError={(e) => {
-                // Fallback icon if image fails
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-              className="w-full h-full object-contain drop-shadow-lg"
-            />
-            {/* Fallback emoji */}
-            <span className="text-5xl select-none" style={{ display: 'none' }}>🧺</span>
-          </div>
-
-        </div>
-
-        {/* Dots Pagination Indicator (Matching Screen 1) */}
-        <div className="flex items-center justify-center gap-1.5 pt-0.5">
-          <span className="w-4 h-1.5 bg-[#0B8F68] rounded-full transition-all" />
-          <span className="w-1.5 h-1.5 bg-[#D5DFD9] rounded-full" />
-          <span className="w-1.5 h-1.5 bg-[#D5DFD9] rounded-full" />
-        </div>
-      </div>
-
-      {/* 3. CATEGORIES SECTION (Matching Desktop Categories) */}
-      <div className="space-y-2.5 pt-1">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
-            വിഭാഗങ്ങൾ
+        {/* Left */}
+        <div className="relative z-10 max-w-[58%] space-y-2">
+          <h2 className="text-lg font-black text-white leading-tight font-malayalam m-0">
+            ഓരോ ആവശ്യത്തിനും<br />
+            <span className="text-[#7FFFC4]">ഏറ്റവും നല്ല വില</span>
           </h2>
+          <p className="text-[11px] text-[#C0EDD9] font-medium leading-snug font-malayalam m-0">
+            നാടൻ കടകളിൽ നിന്ന് ഏറ്റവും കുറഞ്ഞ നിരക്ക്
+          </p>
           <button
             type="button"
-            onClick={() => onSelectCategory('all')}
-            className="text-xs font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
+            onClick={() => onSelectCategory('vegetables')}
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white text-[#063B2A] text-[11px] font-black rounded-full shadow-sm active:scale-95 transition-all font-malayalam cursor-pointer"
           >
-            <span>എല്ലാം കാണുക</span>
+            <span>ഇപ്പോൾ തിരയുക</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* 7 Category Rounded Cards Grid (Matching Desktop 7 Categories) */}
-        <div className="grid grid-cols-4 gap-2 font-malayalam">
-          {homeCategories.map((cat) => {
-            const isSelected = selectedCategoryId === cat.id;
+        {/* Right: Emoji illustration collage */}
+        <div className="relative z-10 w-28 h-28 shrink-0 flex items-end justify-center">
+          <div className="relative w-full h-full">
+            <span className="absolute top-0 right-2 text-4xl drop-shadow-md select-none">🥬</span>
+            <span className="absolute top-6 left-0 text-3xl drop-shadow-md select-none">🍅</span>
+            <span className="absolute bottom-2 right-0 text-3xl drop-shadow-md select-none">🧅</span>
+            <span className="absolute bottom-0 left-4 text-2xl drop-shadow-sm select-none">🌶️</span>
+            <span className="absolute top-1 right-0 text-xl drop-shadow-sm select-none opacity-60">✨</span>
+          </div>
+        </div>
 
+        {/* Pagination dots */}
+        <div className="absolute bottom-3 left-5 flex items-center gap-1.5">
+          <span className="w-4 h-1.5 bg-white rounded-full" />
+          <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
+          <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
+        </div>
+      </div>
+
+      {/* 3. LIVE PRICE TICKER */}
+      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 -mx-0.5 px-0.5">
+        <span className="text-[9px] font-black text-[#063B2A] bg-[#E8F5EE] px-2 py-1 rounded-lg shrink-0 border border-emerald-200 font-malayalam">
+          ഇന്ന്:
+        </span>
+        {TODAY_PRICES.map((item) => (
+          <div
+            key={item.name}
+            className="bg-white text-[#17221D] text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#E3ECE7] shadow-sm shrink-0 flex items-center gap-1 whitespace-nowrap"
+          >
+            <span>{item.emoji}</span>
+            <span className="font-malayalam">{item.name}</span>
+            <span className="font-sans font-black text-[#063B2A]">₹{item.price}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* 4. CATEGORIES */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between px-0.5">
+          <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">കാറ്റഗറികൾ</h2>
+          <button
+            type="button"
+            onClick={onViewAllCategories}
+            className="text-[11px] font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
+          >
+            <span>എല്ലാം</span>
+            <ChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+
+        {/* 4-column grid */}
+        <div className="grid grid-cols-4 gap-2 font-malayalam">
+          {CATEGORY_CONFIG.map((cat) => {
+            const isSelected = selectedCategoryId === cat.id;
             return (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`flex flex-col items-center justify-center p-2.5 rounded-2xl transition-all cursor-pointer text-center group ${
+                className={`flex flex-col items-center justify-center py-2.5 px-1 rounded-2xl transition-all cursor-pointer text-center group border ${
                   isSelected
-                    ? 'bg-[#E8F5EE] border-2 border-[#0B8F68] shadow-xs'
-                    : 'bg-[#F5F8F6] border border-[#E3ECE7] hover:bg-[#E8F5EE] hover:border-[#C3EEDC]'
+                    ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-sm ring-1 ring-[#0B8F68]/20'
+                    : `${cat.bg} ${cat.border} hover:border-[#0B8F68]/40`
                 }`}
               >
-                <div className="w-11 h-11 rounded-xl flex items-center justify-center text-2xl mb-1 overflow-hidden transition-transform group-hover:scale-105">
-                  <span className="text-xl text-[#063B2A] font-bold">{cat.fallbackEmoji || cat.emoji}</span>
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center mb-1 text-2xl transition-transform group-hover:scale-110 group-active:scale-95">
+                  {cat.emoji}
                 </div>
-                <span className="text-[10px] font-bold text-[#17221D] leading-tight line-clamp-2">
+                <span className="text-[9px] font-bold text-[#17221D] leading-tight line-clamp-2 w-full text-center">
                   {cat.label}
                 </span>
               </button>
@@ -254,117 +232,182 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         </div>
       </div>
 
-      {/* 4. POPULAR PRODUCTS SECTION (Matching Screen 1) */}
-      <div className="space-y-2.5 pt-2">
-        <div className="flex items-center justify-between px-1">
-          <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
-            ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ
-          </h2>
+      {/* 5. POPULAR PRODUCTS (or search results) */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between px-0.5">
+          <div className="flex items-center gap-1.5">
+            {searchQuery ? (
+              <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
+                തിരയൽ ഫലം ({popularProducts.length})
+              </h2>
+            ) : (
+              <>
+                <Flame className="w-4 h-4 text-orange-500 shrink-0" />
+                <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">ജനപ്രിയം</h2>
+              </>
+            )}
+          </div>
           <button
             type="button"
             onClick={() => {
               onSelectCategory('all');
               if (onViewAllProducts) onViewAllProducts();
             }}
-            className="text-xs font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
+            className="text-[11px] font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer"
           >
-            <span>എല്ലാം കാണുക</span>
-            <ChevronRight className="w-3.5 h-3.5" />
+            <span>എല്ലാം</span>
+            <ChevronRight className="w-3 h-3" />
           </button>
         </div>
 
-        {/* Products Grid matching Screen 1 Card Design */}
-        <div className="grid grid-cols-3 gap-2.5">
-          {popularProducts.map((product) => {
-            const isFav = favorites.includes(product.id);
-            const priceValues = Object.values(product.prices || {});
-            const price = priceValues.length > 0 ? Math.min(...priceValues) : 30;
-            const basketItem = basket.find((b) => b.productId === product.id);
-            const qty = basketItem ? basketItem.quantity : 0;
+        {popularProducts.length === 0 ? (
+          /* Empty state */
+          <div className="py-10 flex flex-col items-center gap-3 text-center font-malayalam">
+            <span className="text-4xl">🔍</span>
+            <p className="text-sm font-bold text-[#17221D]">ഒന്നും കണ്ടില്ല</p>
+            <p className="text-xs text-[#66756E]">മറ്റൊരു വാക്ക് ഉപയോഗിച്ച് തിരയൂ</p>
+            <button
+              type="button"
+              onClick={() => onSearchChange('')}
+              className="px-4 py-2 bg-[#063B2A] text-white text-xs font-bold rounded-full cursor-pointer"
+            >
+              ക്ലിയർ ചെയ്യുക
+            </button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-3 gap-2.5">
+            {popularProducts.map((product) => {
+              const isFav = favorites.includes(product.id);
+              const priceValues = Object.values(product.prices || {});
+              const price = priceValues.length > 0 ? Math.min(...priceValues) : 0;
+              const basketItem = basket.find((b) => b.productId === product.id);
+              const qty = basketItem ? basketItem.quantity : 0;
 
-            return (
-              <div
-                key={product.id}
-                onClick={() => onSelectProductForDetail(product)}
-                className="bg-white border border-[#E3ECE7] rounded-2xl p-2.5 shadow-2xs hover:border-[#0B8F68] hover:shadow-xs transition-all flex flex-col justify-between cursor-pointer relative group"
-              >
-                {/* Top: Favorite Heart Icon */}
-                <div className="flex justify-end w-full">
+              return (
+                <div
+                  key={product.id}
+                  onClick={() => onSelectProductForDetail(product)}
+                  className="bg-white border border-[#E3ECE7] rounded-2xl overflow-hidden shadow-sm hover:border-[#0B8F68]/50 hover:shadow-md transition-all cursor-pointer flex flex-col group relative"
+                >
+                  {/* Favorite */}
                   <button
                     type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleFavorite(product);
-                    }}
-                    className="p-1 text-[#8A9992] hover:text-[#E11D48] transition-colors rounded-full cursor-pointer"
+                    onClick={(e) => { e.stopPropagation(); onToggleFavorite(product); }}
+                    className="absolute top-2 right-2 z-10 p-1 bg-white/80 backdrop-blur-sm rounded-full shadow-sm cursor-pointer"
                   >
                     <Heart
-                      className={`w-3.5 h-3.5 ${
-                        isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-[#8A9992]'
-                      }`}
+                      className={`w-3 h-3 ${isFav ? 'fill-rose-500 text-rose-500' : 'text-[#8A9992]'}`}
                     />
                   </button>
-                </div>
 
-                {/* Product Image (Using existing ImageKit images via ProductImage) */}
-                <div className="w-full h-16 flex items-center justify-center p-1 my-1">
-                  <ProductImage
-                    productId={product.id}
-                    image={product.image}
-                    emoji={product.emoji}
-                    alt={product.name}
-                    className="w-full h-full"
-                    imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
-                    fallbackEmojiClassName="text-2xl"
-                  />
-                </div>
+                  {/* Product Image / Emoji */}
+                  <div className="w-full h-[72px] flex items-center justify-center bg-[#F5F8F6] border-b border-[#F0F4F2] relative overflow-hidden">
+                    <ProductImage
+                      productId={product.id}
+                      image={product.image}
+                      emoji={product.emoji || '📦'}
+                      alt={product.name}
+                      className="w-full h-full"
+                      imgClassName="w-full h-full object-contain p-1.5 transition-transform group-hover:scale-110"
+                      fallbackEmojiClassName="text-3xl transition-transform group-hover:scale-110"
+                    />
+                  </div>
 
-                {/* Bottom Info: Name, Price, and Plus Button */}
-                <div className="space-y-1">
-                  <h3 className="text-xs font-black text-[#17221D] font-malayalam truncate m-0">
-                    {product.name}
-                  </h3>
+                  {/* Info */}
+                  <div className="p-2 flex flex-col gap-1 flex-1">
+                    <h3 className="text-[10px] font-black text-[#17221D] font-malayalam leading-tight line-clamp-2 m-0">
+                      {product.name}
+                    </h3>
 
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-extrabold text-[#17221D] font-sans">
-                      ₹ {price} <span className="text-[10px] text-[#8A9992] font-normal">/{product.defaultUnit || 'kg'}</span>
-                    </span>
+                    <div className="flex items-center justify-between mt-auto">
+                      <div>
+                        {price > 0 ? (
+                          <span className="text-xs font-extrabold text-[#17221D] font-sans">
+                            ₹{price}
+                            <span className="text-[9px] text-[#8A9992] font-normal">
+                              /{product.defaultUnit || 'kg'}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className="text-[9px] text-[#8A9992] font-malayalam">വില ഇല്ല</span>
+                        )}
+                      </div>
 
-                    <div onClick={(e) => e.stopPropagation()}>
-                      {qty > 0 ? (
-                        <div className="flex items-center bg-[#063B2A] text-white rounded-full px-1 py-0.5 shadow-xs">
+                      <div onClick={(e) => e.stopPropagation()}>
+                        {qty > 0 ? (
+                          <div className="flex items-center bg-[#063B2A] text-white rounded-full px-1 py-0.5 gap-0.5 shadow-sm">
+                            <button
+                              type="button"
+                              onClick={() => onQuantityChange(product.id, -1)}
+                              className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-white/20 active:scale-90"
+                            >
+                              <Minus className="w-2.5 h-2.5" />
+                            </button>
+                            <span className="px-0.5 text-[10px] font-black font-sans min-w-[10px] text-center">{qty}</span>
+                            <button
+                              type="button"
+                              onClick={() => onQuantityChange(product.id, 1)}
+                              className="w-4 h-4 flex items-center justify-center rounded-full hover:bg-white/20 active:scale-90"
+                            >
+                              <Plus className="w-2.5 h-2.5" />
+                            </button>
+                          </div>
+                        ) : (
                           <button
                             type="button"
-                            onClick={() => onQuantityChange(product.id, -1)}
-                            className="w-4 h-4 flex items-center justify-center hover:bg-white/20 rounded-full"
+                            onClick={() => onAddToBasket(product, product.defaultUnit)}
+                            className="w-6 h-6 rounded-full bg-[#063B2A] hover:bg-[#0B8F68] text-white flex items-center justify-center shadow-sm active:scale-90 transition-all cursor-pointer"
                           >
-                            <Minus className="w-2.5 h-2.5" />
+                            <Plus className="w-3.5 h-3.5" />
                           </button>
-                          <span className="px-1 text-[10px] font-black font-sans">{qty}</span>
-                          <button
-                            type="button"
-                            onClick={() => onQuantityChange(product.id, 1)}
-                            className="w-4 h-4 flex items-center justify-center hover:bg-white/20 rounded-full"
-                          >
-                            <Plus className="w-2.5 h-2.5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => onAddToBasket(product, product.defaultUnit)}
-                          className="w-6 h-6 rounded-full bg-[#063B2A] hover:bg-[#0B8F68] text-white flex items-center justify-center shadow-xs active:scale-90 transition-all cursor-pointer"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                        </button>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
-              </div>
-            );
-          })}
+      {/* 6. VALUE PROPOSITION CARDS */}
+      <div className="grid grid-cols-2 gap-2 font-malayalam pt-1">
+        <div className="bg-[#E8F5EE] border border-emerald-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+            <TrendingDown className="w-4 h-4 text-[#063B2A]" />
+          </div>
+          <div>
+            <div className="text-[10px] font-black text-[#17221D]">വില താരതമ്യം</div>
+            <div className="text-[8px] text-[#556960]">മികച്ച നിരക്കുകൾ</div>
+          </div>
+        </div>
+        <div className="bg-[#E8F5EE] border border-emerald-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+            <Store className="w-4 h-4 text-[#063B2A]" />
+          </div>
+          <div>
+            <div className="text-[10px] font-black text-[#17221D]">പ്രാദേശിക കടകൾ</div>
+            <div className="text-[8px] text-[#556960]">സൂപ്പർമാർക്കറ്റ്</div>
+          </div>
+        </div>
+        <div className="bg-[#E8F5EE] border border-emerald-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+            <ShieldCheck className="w-4 h-4 text-[#063B2A]" />
+          </div>
+          <div>
+            <div className="text-[10px] font-black text-[#17221D]">നേരിട്ട് ബുക്കിംഗ്</div>
+            <div className="text-[8px] text-[#556960]">സ്റ്റോക്ക് ലഭ്യത</div>
+          </div>
+        </div>
+        <div className="bg-[#E8F5EE] border border-emerald-200 rounded-2xl p-3 flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center shrink-0 shadow-sm">
+            <Sparkles className="w-4 h-4 text-[#063B2A]" />
+          </div>
+          <div>
+            <div className="text-[10px] font-black text-[#17221D]">100% സൗജന്യം</div>
+            <div className="text-[8px] text-[#556960]">ഉപഭോക്താക്കൾ</div>
+          </div>
         </div>
       </div>
 
