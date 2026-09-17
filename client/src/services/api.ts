@@ -35,10 +35,13 @@ const isLocalhost =
   (window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1' ||
     window.location.hostname.endsWith('.localhost'));
+const isVercel =
+  typeof window !== 'undefined' &&
+  (window.location.hostname.endsWith('.vercel.app') || window.location.hostname.includes('vercel'));
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
   import.meta.env.VITE_API_BASE ||
-  (import.meta.env.DEV || isLocalhost ? '/api' : REMOTE_API_BASE);
+  (import.meta.env.DEV || isLocalhost || isVercel ? '/api' : REMOTE_API_BASE);
 
 export function getAuthToken(): string | null {
   try {

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "outputDirectory": "client/dist",
+  "buildCommand": "npm --prefix client run build",
+  "installCommand": "npm --prefix client install",
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
