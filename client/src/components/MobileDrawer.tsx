@@ -26,6 +26,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { User } from '../types';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 export type DrawerMode = 'shopper' | 'merchant' | 'admin';
 
@@ -105,14 +106,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {/* Top Header */}
         <div className="p-5 border-b border-[#084D37] bg-[#04281C]">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-[#10A978] text-[#063B2A] flex items-center justify-center font-black text-sm shadow-sm">
-                {isMerchant ? '🏪' : isAdmin ? '🛡️' : '🛒'}
-              </div>
-              <span className="font-black text-base text-white tracking-tight font-sans">
-                {isMerchant ? 'Merchant Portal' : isAdmin ? 'Admin Panel' : 'EnteBazaar'}
-              </span>
-            </div>
+            <EnteBazaarLogo
+              size="sm"
+              theme="dark"
+            />
             <button
               onClick={onClose}
               className="p-1.5 rounded-full hover:bg-white/10 text-[#DDF5EA] transition-colors cursor-pointer"

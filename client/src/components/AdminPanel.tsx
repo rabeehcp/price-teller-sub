@@ -746,24 +746,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* 1. DESKTOP LEFT SIDEBAR (Matching Ash Black Theme) */}
       <aside className="w-64 bg-[#141816] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
         <div>
-          {/* Brand Logo matching Image 2 */}
-          <div
-            onClick={() => setActiveTab('overview')}
-            className="flex items-center gap-2.5 px-3 py-3 rounded-2xl cursor-pointer hover:bg-white/5 transition-colors mb-3"
-          >
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-[#10A978] text-[#141816] flex items-center justify-center font-black text-base shadow-sm">
-                🌿
-              </div>
-              <div>
-                <div className="text-base font-black tracking-tight text-white flex items-center gap-1 font-sans">
-                  EnteBazaar
-                </div>
-                <div className="text-[10px] text-[#8F9F97] font-medium">
-                  Local Shops. Better Prices.
-                </div>
-              </div>
-            </div>
+          {/* Official Brand Logo */}
+          <div className="px-2 py-2 mb-3">
+            <EnteBazaarLogo
+              size="md"
+              theme="dark"
+              withTagline={true}
+              onClick={() => setActiveTab('overview')}
+            />
           </div>
 
           {/* Admin Role Pill matching Image 2 */}

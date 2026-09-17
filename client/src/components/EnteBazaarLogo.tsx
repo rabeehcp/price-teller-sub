@@ -1,58 +1,125 @@
 import React from 'react';
 
-interface EnteBazaarLogoProps {
-  size?: 'sm' | 'md' | 'lg';
+export interface EnteBazaarLogoProps {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  variant?: 'horizontal' | 'icon' | 'full';
+  theme?: 'light' | 'dark';
   withTagline?: boolean;
+  withMalayalam?: boolean;
   className?: string;
+  onClick?: () => void;
+  alt?: string;
 }
 
 export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
   size = 'md',
+  variant = 'horizontal',
+  theme = 'light',
   withTagline = false,
+  withMalayalam = false,
   className = '',
+  onClick,
+  alt = 'EnteBazaar',
 }) => {
-  const isLg = size === 'lg';
-  const isSm = size === 'sm';
+  // If variant === 'full', display the complete official emblem card
+  if (variant === 'full') {
+    const fullSizes = {
+      xs: 'w-16 h-16',
+      sm: 'w-24 h-24',
+      md: 'w-32 h-32 sm:w-36 sm:h-36',
+      lg: 'w-44 h-44 sm:w-48 sm:h-48',
+      xl: 'w-56 h-56 sm:w-64 sm:h-64',
+    };
+    return (
+      <div
+        onClick={onClick}
+        className={`relative inline-block rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-emerald-900/20 select-none ${
+          fullSizes[size] || fullSizes.md
+        } ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95 transition-transform' : ''} ${className}`}
+      >
+        <img
+          src="/logo.png"
+          alt={alt}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
+
+  // Sizing configurations for horizontal & icon
+  const iconSizes = {
+    xs: 'w-6 h-6 rounded-md',
+    sm: 'w-8 h-8 rounded-lg',
+    md: 'w-9 h-9 sm:w-10 sm:h-10 rounded-xl',
+    lg: 'w-11 h-11 sm:w-12 sm:h-12 rounded-xl',
+    xl: 'w-14 h-14 sm:w-16 sm:h-16 rounded-2xl',
+  };
+
+  const textSizes = {
+    xs: 'text-xs',
+    sm: 'text-sm sm:text-base',
+    md: 'text-base sm:text-lg',
+    lg: 'text-lg sm:text-xl',
+    xl: 'text-xl sm:text-2xl',
+  };
+
+  const isDark = theme === 'dark';
+
+  if (variant === 'icon') {
+    return (
+      <div
+        onClick={onClick}
+        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs select-none transition-transform hover:scale-105 active:scale-95 border border-emerald-800/15 ${
+          iconSizes[size] || iconSizes.md
+        } ${onClick ? 'cursor-pointer' : ''} ${className}`}
+        title="EnteBazaar"
+      >
+        <img
+          src="/logo.png"
+          alt={alt}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    );
+  }
 
   return (
-    <div className={`flex items-center gap-2 select-none ${className}`}>
-      {/* Leaf Sprout Icon */}
-      <div className="relative flex items-center justify-center shrink-0">
-        <svg
-          viewBox="0 0 36 36"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className={`${isLg ? 'w-9 h-9' : isSm ? 'w-6 h-6' : 'w-7 h-7'}`}
-        >
-          <path
-            d="M18 32C18 32 18 20 28 14C28 14 26 26 18 32Z"
-            fill="#10A978"
-          />
-          <path
-            d="M18 32C18 32 18 16 8 10C8 10 10 24 18 32Z"
-            fill="#064E3B"
-          />
-          <path
-            d="M18 32V8"
-            stroke="#04281C"
-            strokeWidth="2"
-            strokeLinecap="round"
-          />
-          <circle cx="18" cy="8" r="3" fill="#10A978" />
-        </svg>
+    <div
+      onClick={onClick}
+      className={`flex items-center gap-2 sm:gap-2.5 select-none transition-transform group ${
+        onClick ? 'cursor-pointer active:scale-98' : ''
+      } ${className}`}
+    >
+      {/* Official Emblem Mark */}
+      <div
+        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs border border-emerald-800/15 group-hover:scale-105 transition-transform ${
+          iconSizes[size] || iconSizes.md
+        }`}
+      >
+        <img
+          src="/logo.png"
+          alt={alt}
+          className="w-full h-full object-cover"
+        />
       </div>
 
-      <div className="flex flex-col">
-        <span
-          className={`font-black tracking-tight text-[#063B2A] leading-none ${
-            isLg ? 'text-2xl' : isSm ? 'text-base' : 'text-xl'
-          }`}
-          style={{ fontFamily: '"Plus Jakarta Sans", sans-serif' }}
+      {/* Brand Typography */}
+      <div className="flex flex-col leading-tight min-w-0">
+        <div
+          className={`font-black tracking-tight flex items-center gap-0.5 font-sans leading-none ${
+            isDark ? 'text-white' : 'text-[#17221D]'
+          } ${textSizes[size] || textSizes.md}`}
         >
-          Ente<span className="text-[#0B8F68]">Bazaar</span>
-        </span>
+          <span>Ente</span>
+          <span className="text-[#10A978]">Bazaar</span>
+        </div>
+
         {withTagline && (
-          <span className="text-[10px] text-[#66756E] font-medium tracking-normal mt-0.5 font-sans">
+          <span
+            className={`text-[8px] sm:text-[9px] lg:text-[10px] font-medium tracking-tight mt-0.5 leading-none ${
+              isDark ? 'text-[#8F9F97]' : 'text-[#66756E]'
+            }`}
+          >
             Local Shops. Better Prices.
           </span>
         )}

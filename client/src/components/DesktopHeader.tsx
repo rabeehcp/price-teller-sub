@@ -35,7 +35,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-6 py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
-      <div className="flex items-center justify-between gap-4 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between gap-4 w-full max-w-[1720px] mx-auto">
         
         {/* Left: Location Selector Pill in Header */}
         {onOpenLocationModal && (

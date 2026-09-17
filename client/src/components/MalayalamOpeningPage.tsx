@@ -19,6 +19,7 @@ import {
 } from 'lucide-react';
 import { MobileLocationModal } from './MobileLocationModal';
 import { requestBrowserGps, reverseGeocode, findNearestLocation } from '../services/locationService';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface MalayalamOpeningPageProps {
   locations: Location[];
@@ -236,52 +237,41 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
     <div className="min-h-[100dvh] h-[100dvh] max-h-[100dvh] overflow-x-hidden overflow-y-auto md:h-auto md:max-h-none md:min-h-screen bg-[#EFF4F1] text-[#17221D] flex flex-col font-sans selection:bg-[#0D4A36] selection:text-white">
 
       {/* 1. TOP HEADER */}
-      <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] shrink-0 px-3 sm:px-8 py-1.5 md:py-3 z-40">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      <header className="w-full bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] shrink-0 px-3 sm:px-6 lg:px-10 xl:px-12 py-1.5 md:py-3 z-40">
+        <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-3 md:gap-6">
 
-          {/* Logo */}
-          <div
+          {/* Official EnteBazaar Logo */}
+          <EnteBazaarLogo
+            size="md"
+            withTagline={true}
             onClick={onEnterAsConsumer}
-            className="flex items-center gap-2 sm:gap-2.5 cursor-pointer select-none group shrink-0"
-          >
-            <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl bg-[#0D4A36] text-white flex items-center justify-center font-black text-sm sm:text-base shadow-xs group-hover:scale-105 transition-transform">
-              <ShoppingCart className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-300" />
-            </div>
-            <div>
-              <div className="text-sm sm:text-lg font-black tracking-tight text-[#17221D] flex items-center gap-1 font-sans leading-tight">
-                Ente<span className="text-[#10A978]">Bazaar</span>
-              </div>
-              <div className="text-[8px] sm:text-[10px] text-[#66756E] font-medium tracking-tight leading-none">
-                Local Shop. Better Price.
-              </div>
-            </div>
-          </div>
+          />
 
           {/* Desktop Search Bar */}
           <form
             onSubmit={handleSearchSubmit}
-            className="hidden md:flex flex-1 max-w-2xl items-center bg-[#E5EFE9] hover:bg-[#DDEAE2] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0D4A36]/30 border border-[#D5E5DC] rounded-full px-4 py-2 transition-all"
+            className="hidden md:flex flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl items-center bg-[#E5EFE9] hover:bg-[#DDEAE2] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0D4A36]/30 border border-[#D5E5DC] rounded-full px-4 lg:px-5 py-2 lg:py-2.5 transition-all"
           >
-            <Search className="w-4 h-4 text-[#6B8579] shrink-0 mr-2.5" />
+            <Search className="w-4 h-4 lg:w-4.5 lg:h-4.5 text-[#6B8579] shrink-0 mr-2.5" />
             <input
               type="text"
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="ഉദ്ദേശിക്കുന്ന സാധനങ്ങൾ ടൈപ്പ് ചെയ്യുക..."
-              className="w-full bg-transparent text-xs text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
+              placeholder="ഉദ്ദേശിക്കുന്ന സാധനങ്ങൾ ടൈപ്പ് ചെയ്യുക... (ഉദാ: തക്കാളി, പാൽ, അരി)"
+              className="w-full bg-transparent text-xs lg:text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
             />
           </form>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
             {/* Merchant Portal entrance button */}
             <button
               type="button"
               onClick={onOpenMerchantPortal}
-              className="hidden lg:flex items-center gap-1.5 text-xs font-bold text-[#4D6158] hover:text-[#0D4A36] hover:bg-white px-2.5 py-1.5 rounded-full border border-transparent hover:border-[#D5E5DC] transition-all cursor-pointer font-malayalam"
+              className="hidden lg:flex items-center gap-1.5 text-xs lg:text-sm font-bold text-[#4D6158] hover:text-[#0D4A36] hover:bg-white px-3 py-1.5 lg:py-2 rounded-full border border-transparent hover:border-[#D5E5DC] transition-all cursor-pointer font-malayalam"
               title="വ്യാപാരികൾക്കായി"
             >
-              <Store className="w-3.5 h-3.5 text-[#6B8579]" />
+              <Store className="w-4 h-4 text-[#6B8579]" />
               <span>വ്യാപാരികൾക്കായി</span>
             </button>
 
@@ -289,21 +279,21 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <button
               type="button"
               onClick={onEnterAsConsumer}
-              className="flex w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-[#E5EFE9] text-[#0D4A36] hover:bg-[#D4EEDE] items-center justify-center transition-all cursor-pointer active:scale-95"
+              className="flex w-7 h-7 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full bg-[#E5EFE9] text-[#0D4A36] hover:bg-[#D4EEDE] items-center justify-center transition-all cursor-pointer active:scale-95"
               title="വില താരതമ്യം (Compare Prices)"
               aria-label="Compare"
             >
-              <Scale className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
+              <Scale className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-4.5 lg:h-4.5 text-[#0D4A36]" />
             </button>
 
             {/* Notification bell */}
             <button
               type="button"
               onClick={onEnterAsConsumer}
-              className="hidden sm:flex w-8 h-8 sm:w-9 sm:h-9 rounded-full hover:bg-black/5 items-center justify-center text-[#4D6158] transition-colors cursor-pointer relative"
+              className="hidden sm:flex w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full hover:bg-black/5 items-center justify-center text-[#4D6158] transition-colors cursor-pointer relative"
               title="അറിയിപ്പുകൾ"
             >
-              <Bell className="w-4 h-4" />
+              <Bell className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
               <span className="w-2 h-2 rounded-full bg-emerald-500 absolute top-2 right-2 border border-white" />
             </button>
 
@@ -311,12 +301,12 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <button
               type="button"
               onClick={() => setIsMobileLocationModalOpen(true)}
-              className="flex items-center gap-1 bg-[#E5EFE9] hover:bg-[#D4EEDE] text-[#0D4A36] px-2.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold font-malayalam transition-all cursor-pointer active:scale-95 shrink-0 shadow-2xs"
+              className="flex items-center gap-1.5 bg-[#E5EFE9] hover:bg-[#D4EEDE] text-[#0D4A36] px-2.5 sm:px-3.5 py-1 sm:py-1.5 lg:py-2 rounded-full text-[10px] sm:text-xs lg:text-sm font-bold font-malayalam transition-all cursor-pointer active:scale-95 shrink-0 shadow-2xs"
               title="സ്ഥലം മാറ്റുക (Change Location)"
             >
-              <MapPin className="w-3.5 h-3.5 text-[#0D4A36] shrink-0" />
-              <span className="truncate max-w-[70px] sm:max-w-[120px]">{locationName}</span>
-              <ChevronDown className="w-3 h-3 text-[#0D4A36] shrink-0" />
+              <MapPin className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-[#0D4A36] shrink-0" />
+              <span className="truncate max-w-[70px] sm:max-w-[120px] lg:max-w-[160px]">{locationName}</span>
+              <ChevronDown className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-[#0D4A36] shrink-0" />
             </button>
 
             {/* Login / Sign Up Pill Button */}
@@ -325,7 +315,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 <button
                   type="button"
                   onClick={onEnterAsConsumer}
-                  className="flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-malayalam shrink-0"
+                  className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 lg:py-2.5 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-malayalam shrink-0"
                 >
                   <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] sm:text-[10px] font-black shrink-0">
                     {authUser.name ? authUser.name.charAt(0).toUpperCase() : '👤'}
@@ -349,7 +339,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <button
                 type="button"
                 onClick={onOpenConsumerLogin || onEnterAsConsumer}
-                className="px-2.5 sm:px-4 py-1 sm:py-1.5 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-xs font-bold rounded-full transition-all cursor-pointer shadow-xs font-sans tracking-tight active:scale-95 shrink-0"
+                className="px-3 sm:px-5 py-1 sm:py-1.5 lg:py-2 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-xs lg:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-sans tracking-tight active:scale-95 shrink-0"
               >
                 Login
               </button>
@@ -358,11 +348,11 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </div>
       </header>
 
-      {/* 2. MAIN WORKSPACE (Compact cohesive spacing on mobile, full height on desktop) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-2.5 sm:px-6 lg:px-8 pt-2 pb-2 sm:py-2.5 md:py-6 flex flex-col justify-between gap-2.5 sm:gap-3 md:gap-6 min-h-0">
+      {/* 2. MAIN WORKSPACE (Compact on mobile, expansive 100% fit on desktop) */}
+      <main className="flex-1 w-full max-w-[1720px] mx-auto px-2.5 sm:px-6 lg:px-10 xl:px-12 pt-2 pb-2 sm:py-2.5 md:py-5 lg:py-6 flex flex-col justify-between gap-2.5 sm:gap-3 md:gap-5 lg:gap-6 min-h-0">
 
-        {/* HERO SECTION (Mint green card exactly matching reference) */}
-        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-3 sm:p-5 lg:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden flex flex-col justify-between">
+        {/* HERO SECTION (Mint green card matching reference) */}
+        <div className="bg-gradient-to-br from-[#DCEFE5] via-[#D0EDD9] to-[#C7E5D1] rounded-2xl md:rounded-[36px] p-3 sm:p-5 lg:p-7 xl:p-8 border border-[#BDDDC8] shadow-2xs relative overflow-hidden flex flex-col justify-between">
 
           {/* Subtle background decorative foliage */}
           <div className="absolute top-2 right-1/4 text-emerald-800/10 text-5xl pointer-events-none select-none hidden md:block">
@@ -373,61 +363,90 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           </div>
 
           {/* DESKTOP LAYOUT (>= md) */}
-          <div className="hidden md:grid md:grid-cols-12 gap-4 lg:gap-8 items-center min-h-0">
+          <div className="hidden md:grid md:grid-cols-12 gap-4 lg:gap-8 xl:gap-10 items-center min-h-0">
 
-            {/* Left Column: Heading, Subtitle & Embedded Search Box */}
-            <div className="md:col-span-6 lg:col-span-5 space-y-3 lg:space-y-4">
-              <h1 className="text-2xl lg:text-[40px] font-black text-[#0B3D2D] leading-[1.2] font-malayalam tracking-tight m-0">
+            {/* Left Column: Heading, Subtitle, Embedded Search Box & Popular Quick Tags */}
+            <div className="md:col-span-5 lg:col-span-5 xl:col-span-5 space-y-3 lg:space-y-4 xl:space-y-5">
+              <h1 className="text-2xl lg:text-[36px] xl:text-[44px] font-black text-[#0B3D2D] leading-[1.18] font-malayalam tracking-tight m-0">
                 ഓരോ ആവശ്യത്തിനും<br />
                 <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
               </h1>
 
-              <p className="text-xs lg:text-sm text-[#405C4F] font-medium font-malayalam leading-relaxed max-w-md m-0">
+              <p className="text-xs lg:text-sm xl:text-base text-[#405C4F] font-medium font-malayalam leading-relaxed max-w-lg m-0">
                 നിങ്ങളുടെ പ്രദേശത്തെ എല്ലാ കടകളുടെയും ഏറ്റവും മികച്ച വിലകൾ കണ്ടെത്തൂ. ചെറിയ ചിലവിൽ കൂടുതൽ നേടൂ.
               </p>
 
               {/* Embedded Search Input Pill */}
               <form
                 onSubmit={handleSearchSubmit}
-                className="bg-white rounded-full p-1.5 pl-4 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-2 max-w-lg transition-all focus-within:border-[#0D4A36] focus-within:ring-2 focus-within:ring-[#0D4A36]/20"
+                className="bg-white rounded-full p-1.5 lg:p-2 pl-4 lg:pl-5 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-2 max-w-lg xl:max-w-xl transition-all focus-within:border-[#0D4A36] focus-within:ring-2 focus-within:ring-[#0D4A36]/20"
               >
-                <Search className="w-4 h-4 text-[#6B8579] shrink-0" />
+                <Search className="w-4 h-4 lg:w-5 lg:h-5 text-[#6B8579] shrink-0" />
                 <input
                   type="text"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
                   placeholder="ഉദ്ദേശിക്കുന്ന സാധനങ്ങൾ ടൈപ്പ് ചെയ്യുക..."
-                  className="w-full bg-transparent text-xs lg:text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
+                  className="w-full bg-transparent text-xs lg:text-sm xl:text-base text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
                 />
                 <button
                   type="submit"
-                  className="w-8 h-8 lg:w-9 lg:h-9 rounded-full bg-[#0D4A36] hover:bg-[#063B2A] text-white flex items-center justify-center shrink-0 cursor-pointer shadow-xs transition-transform active:scale-95"
+                  className="w-8 h-8 lg:w-10 lg:h-10 rounded-full bg-[#0D4A36] hover:bg-[#063B2A] text-white flex items-center justify-center shrink-0 cursor-pointer shadow-xs transition-transform active:scale-95"
                 >
-                  <Search className="w-4 h-4" />
+                  <Search className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
                 </button>
               </form>
+
+              {/* Quick Suggestion Pills */}
+              <div className="flex items-center gap-1.5 lg:gap-2 flex-wrap font-malayalam pt-0.5">
+                <span className="text-[10px] lg:text-xs font-bold text-[#0D4A36]/70">ജനപ്രിയ സാധനങ്ങൾ:</span>
+                {[
+                  { name: 'തക്കാളി', price: '₹28' },
+                  { name: 'സവാള', price: '₹35' },
+                  { name: 'പാൽ', price: '₹56' },
+                  { name: 'വെളിച്ചെണ്ണ', price: '₹150' },
+                  { name: 'അരി', price: '₹42' },
+                ].map((tag) => (
+                  <button
+                    key={tag.name}
+                    type="button"
+                    onClick={() => {
+                      setSearchInput(tag.name);
+                      if (onSearch) onSearch(tag.name);
+                      else onEnterAsConsumer();
+                    }}
+                    className="bg-white/85 hover:bg-white text-[#0D4A36] px-2.5 py-0.5 lg:py-1 rounded-full text-[10px] lg:text-xs font-semibold border border-white/90 shadow-2xs hover:shadow-xs transition-all cursor-pointer flex items-center gap-1 active:scale-95"
+                  >
+                    <span>{tag.name}</span>
+                    <span className="font-sans font-black text-emerald-800 text-[9px] lg:text-[10px]">{tag.price}</span>
+                  </button>
+                ))}
+              </div>
             </div>
 
             {/* Center Column: Seamless 3D Market Stall & Essentials Hero Illustration */}
-            <div className="md:col-span-6 lg:col-span-4 flex items-center justify-center relative">
+            <div className="md:col-span-4 lg:col-span-4 xl:col-span-4 flex items-center justify-center relative">
               <div className="relative group w-full flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
                   alt="Fresh Choices Better Prices - Daily Groceries & Essentials"
-                  className="w-full max-h-[220px] lg:max-h-[260px] object-contain drop-shadow-sm select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
+                  className="w-full max-h-[220px] md:max-h-[260px] lg:max-h-[320px] xl:max-h-[360px] object-contain drop-shadow-md select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
             </div>
 
             {/* Right Column: Floating "ഇന്നത്തെ വിലകൾ" (Today's Prices) Card */}
-            <div className="hidden lg:flex lg:col-span-3 justify-end">
-              <div className="w-full max-w-[270px] bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-lg border border-white/80 font-malayalam space-y-1.5">
+            <div className="hidden md:flex md:col-span-3 lg:col-span-3 xl:col-span-3 justify-end">
+              <div className="w-full max-w-[270px] lg:max-w-[310px] xl:max-w-[340px] bg-white/95 backdrop-blur-md rounded-2xl lg:rounded-3xl p-3 lg:p-4 xl:p-4.5 shadow-lg border border-white/80 font-malayalam space-y-1.5 lg:space-y-2">
 
                 {/* Card Header with Location Dropdown */}
-                <div className="flex items-center justify-between border-b border-[#F0F4F2] pb-1 relative">
-                  <h3 className="text-xs font-black text-[#17221D] m-0">
-                    ഇന്നത്തെ വിലകൾ
-                  </h3>
+                <div className="flex items-center justify-between border-b border-[#F0F4F2] pb-1.5 relative">
+                  <div>
+                    <h3 className="text-xs lg:text-sm font-black text-[#17221D] m-0">
+                      ഇന്നത്തെ വിലകൾ
+                    </h3>
+                    <span className="text-[9px] lg:text-[10px] text-emerald-700 font-semibold">തത്സമയ നിരക്കുകൾ</span>
+                  </div>
 
                   {/* Location Selector Pill */}
                   <div className="relative">
@@ -676,35 +695,35 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </div>
 
         {/* 3. CATEGORIES SECTION ("കാറ്റഗറികൾ") */}
-        <section className="space-y-1.5 sm:space-y-2">
+        <section className="space-y-1.5 sm:space-y-2 lg:space-y-2.5">
           <div className="flex items-center justify-between px-0.5">
-            <h2 className="text-sm sm:text-sm md:text-base font-black text-[#17221D] font-malayalam m-0">
+            <h2 className="text-sm sm:text-base lg:text-lg font-black text-[#17221D] font-malayalam m-0">
               കാറ്റഗറികൾ
             </h2>
             <button
               type="button"
               onClick={onEnterAsConsumer}
-              className="text-[11px] sm:text-xs font-bold text-[#0D4A36] hover:underline font-malayalam cursor-pointer"
+              className="text-[11px] sm:text-xs lg:text-sm font-bold text-[#0D4A36] hover:underline font-malayalam cursor-pointer"
             >
               എല്ലാം കാണുക →
             </button>
           </div>
 
           {/* Categories: 4-col grid on mobile (2 rows of 4), 8-col on desktop */}
-          <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-2.5 md:gap-3 font-malayalam">
+          <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5 font-malayalam">
             {categories.map((cat) => (
               <button
                 key={cat.id}
                 type="button"
                 onClick={() => handleCategoryClick(cat.id)}
-                className="bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#BBD8C8] rounded-2xl p-2 sm:p-2.5 md:p-3 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-xs active:scale-95 w-full"
+                className="bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#0D4A36]/30 rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 w-full"
               >
                 <div
-                  className={`w-11 h-11 sm:w-12 sm:h-12 md:w-12 md:h-12 rounded-full ${cat.bgColor} flex items-center justify-center text-xl sm:text-xl md:text-xl mb-1.5 transition-transform group-hover:scale-110 shadow-2xs`}
+                  className={`w-11 h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-15 lg:h-15 xl:w-16 xl:h-16 rounded-2xl ${cat.bgColor} flex items-center justify-center text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-1.5 lg:mb-2 transition-transform group-hover:scale-110 shadow-2xs`}
                 >
                   <span>{cat.emoji}</span>
                 </div>
-                <span className="text-[10px] sm:text-[11px] md:text-[11px] font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] line-clamp-2 w-full text-center">
+                <span className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] line-clamp-2 w-full text-center">
                   {cat.label}
                 </span>
               </button>
@@ -713,49 +732,49 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </section>
 
         {/* 4. VALUE PROPOSITION / TRUST CARDS (Bottom 4 Cards) */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3 font-malayalam">
+        <section className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5 font-malayalam">
 
           {/* Card 1: വില താരതമ്യം */}
-          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">വില താരതമ്യം</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">മികച്ച നിരക്കുകൾ</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">വില താരതമ്യം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">മികച്ച നിരക്കുകൾ</div>
             </div>
           </div>
 
           {/* Card 2: പ്രാദേശിക കടകൾ */}
-          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <Store className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <Store className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">പ്രാദേശിക കടകൾ</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">സൂപ്പർമാർക്കറ്റുകൾ</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">പ്രാദേശിക കടകൾ</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">സൂപ്പർമാർക്കറ്റുകൾ</div>
             </div>
           </div>
 
           {/* Card 3: നേരിട്ട് മുൻകൂട്ടി ബുക്കിംഗ് */}
-          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">നേരിട്ട് ബുക്കിംഗ്</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">സ്റ്റോക്ക് ലഭ്യത</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">നേരിട്ട് ബുക്കിംഗ്</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">സ്റ്റോക്ക് ലഭ്യത</div>
             </div>
           </div>
 
           {/* Card 4: 100% സൗജന്യ സേവനം */}
-          <div className="bg-[#E8F3ED] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 transition-all hover:bg-[#DDECE4]">
-            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg md:rounded-xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
-              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#0D4A36]" />
+          <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
+              <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs font-black text-[#17221D] truncate">100% സൗജന്യം</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">100% സൗജന്യം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി</div>
             </div>
           </div>
 
@@ -785,14 +804,14 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       </main>
 
       {/* 6. FOOTER */}
-      <footer className="w-full bg-white border-t border-[#E3ECE7] py-1.5 md:py-3 px-3 md:px-4 text-center text-[9px] md:text-xs text-[#66756E] font-malayalam shrink-0 overflow-hidden">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
+      <footer className="w-full bg-white border-t border-[#E3ECE7] py-2 md:py-3.5 px-3 md:px-6 lg:px-10 xl:px-12 text-center text-[9px] md:text-xs lg:text-sm text-[#66756E] font-malayalam shrink-0 overflow-hidden">
+        <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 truncate">
             <span className="font-bold text-[#17221D] font-sans">EnteBazaar Kerala</span>
             <span>·</span>
             <span className="truncate">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
           </div>
-          <div className="text-[8px] md:text-[11px] shrink-0 text-[#0D4A36] font-bold">
+          <div className="text-[8px] md:text-[11px] lg:text-xs shrink-0 text-[#0D4A36] font-bold">
             📍 Kerala
           </div>
         </div>
