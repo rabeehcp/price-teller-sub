@@ -1798,7 +1798,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   title="വിപണി വിശകലനവും വിശദാംശങ്ങളും കാണാൻ ക്ലിക്ക് ചെയ്യുക"
                                 >
                                   <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs group-hover:border-[#0B8F68] transition-colors">
+                                    <div className="w-10 h-10 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs group-hover:border-[#0B8F68] transition-colors relative overflow-hidden">
                                       <ProductImage
                                         productId={p.id}
                                         image={p.image}
@@ -1807,11 +1807,18 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                         className="w-full h-full"
                                         imgClassName="w-full h-full object-contain"
                                         fallbackEmojiClassName="text-xl"
+                                        isOutOfStock={currentStock === 'out_of_stock'}
+                                        stampSize="xs"
                                       />
                                     </div>
                                     <div>
                                       <div className="flex items-center gap-1.5 flex-wrap">
                                         <b className="font-bold text-slate-900 group-hover:text-[#0B8F68] transition-colors block text-xs leading-snug">{p.name}</b>
+                                        {currentStock === 'out_of_stock' && (
+                                          <span className="px-1.5 py-0.2 bg-rose-100 text-rose-800 border border-rose-300 rounded font-black text-[9px] tracking-tight">
+                                            OUT OF STOCK
+                                          </span>
+                                        )}
                                         {isDirty && (
                                           <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-bold text-[9px]">
                                             മാറ്റം വരുത്തി
@@ -2010,7 +2017,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 onChange={() => toggleSelectProduct(p.id)}
                                 className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4 shrink-0"
                               />
-                              <div className="w-11 h-11 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs">
+                              <div className="w-11 h-11 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs relative overflow-hidden">
                                 <ProductImage
                                   productId={p.id}
                                   image={p.image}
@@ -2019,6 +2026,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   className="w-full h-full"
                                   imgClassName="w-full h-full object-contain"
                                   fallbackEmojiClassName="text-xl"
+                                  isOutOfStock={currentStock === 'out_of_stock'}
+                                  stampSize="xs"
                                 />
                               </div>
                               <div className="min-w-0 flex-1">
@@ -2026,6 +2035,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate">
                                     {p.name}
                                   </h4>
+                                  {currentStock === 'out_of_stock' && (
+                                    <span className="px-1.5 py-0.2 bg-rose-100 text-rose-800 border border-rose-300 text-[8px] font-black rounded shrink-0">
+                                      OUT OF STOCK
+                                    </span>
+                                  )}
                                   {isDirty && (
                                     <span className="px-1.5 py-0.2 bg-amber-100 text-amber-900 text-[8px] font-black rounded shrink-0">
                                       മാറ്റം

@@ -115,9 +115,11 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                         productId={item.productId}
                         emoji={item.emoji}
                         alt={item.productName}
-                        className="w-4 h-4 shrink-0"
+                        className="w-4 h-4 shrink-0 relative"
                         imgClassName="w-4 h-4 object-contain"
                         fallbackEmojiClassName="text-xs"
+                        isOutOfStock={isOutOfStock}
+                        stampSize="xs"
                       />
                       <span>{item.productName} ({item.quantity} × {item.unit})</span>
                     </div>

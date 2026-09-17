@@ -72,10 +72,17 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
   const unitPrice = Math.round(basePrice * multiplier);
   const totalPrice = unitPrice * qty;
 
+  const isOutOfStock = Boolean(
+    product.stockStatus &&
+    Object.values(product.stockStatus).length > 0 &&
+    Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
+  );
+
   const rating = 4.5;
   const reviewCount = 120;
 
   const handleAddToCart = () => {
+    if (isOutOfStock) return;
     onAdd(product, selectedUnit);
     if (qty > 1) {
       onQuantityChange(product.id, qty - 1);
@@ -95,7 +102,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
         className="relative z-10 w-full sm:max-w-md h-full sm:h-auto sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100"
       >
         {/* 1. TOP HERO IMAGE WITH FLOATING CONTROLS */}
-        <div className="relative w-full h-52 bg-[#F8FAF7] border-b border-[#E8ECE3] flex items-center justify-center p-4 shrink-0">
+        <div className="relative w-full h-52 bg-[#F8FAF7] border-b border-[#E8ECE3] flex items-center justify-center p-4 shrink-0 overflow-hidden">
           {/* Close Button */}
           <button
             type="button"
@@ -122,7 +129,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
           )}
 
           {/* Main Product Hero Image */}
-          <div className="w-36 h-36 flex items-center justify-center p-2">
+          <div className="w-36 h-36 flex items-center justify-center p-2 relative">
             <ProductImage
               productId={product.id}
               image={product.image}
@@ -131,6 +138,8 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
               className="w-full h-full"
               imgClassName="max-h-full max-w-full object-contain"
               fallbackEmojiClassName="text-6xl"
+              isOutOfStock={isOutOfStock}
+              stampSize="md"
             />
           </div>
         </div>
@@ -232,22 +241,32 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
             </div>
           </div>
 
-          {/* Primary Green CTA Button with Real-time dynamic total price */}
+          {/* Primary CTA Button with Real-time dynamic total price */}
           <div className="pt-1 space-y-2">
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="w-full py-3.5 px-4 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-98 text-white text-sm font-extrabold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
-            >
-              {isAdded ? (
-                <>
-                  <Check className="w-4 h-4 text-[#34D399]" />
-                  <span>കാർട്ടിൽ ചേർത്തു!</span>
-                </>
-              ) : (
-                <span>കാർട്ടിൽ ചേർക്കുക • ₹{totalPrice}</span>
-              )}
-            </button>
+            {isOutOfStock ? (
+              <button
+                type="button"
+                disabled
+                className="w-full py-3.5 px-4 bg-red-50 border-2 border-dashed border-red-300 text-red-700 text-sm font-black rounded-2xl flex items-center justify-center gap-2 cursor-not-allowed font-malayalam select-none shadow-2xs"
+              >
+                <span>🚫 നിലവിൽ സ്റ്റോക്കില്ല (Out of Stock)</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={handleAddToCart}
+                className="w-full py-3.5 px-4 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-98 text-white text-sm font-extrabold rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
+              >
+                {isAdded ? (
+                  <>
+                    <Check className="w-4 h-4 text-[#34D399]" />
+                    <span>കാർട്ടിൽ ചേർത്തു!</span>
+                  </>
+                ) : (
+                  <span>കാർട്ടിൽ ചേർക്കുക • ₹{totalPrice}</span>
+                )}
+              </button>
+            )}
 
             {onOpenChat && (
               <button

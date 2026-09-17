@@ -361,11 +361,19 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
             const lowestShopName = cheapestShopEntry ? cheapestShopEntry[0] : 'കുടുംബശ്രീ സ്റ്റാൾ';
             const shopInfo = shops.find((s) => s.name.toLowerCase() === lowestShopName.toLowerCase());
 
+            const isOutOfStock = Boolean(
+              product.stockStatus &&
+              Object.values(product.stockStatus).length > 0 &&
+              Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
+            );
+
             return (
               <div
                 key={product.id}
                 onClick={() => onSelectProductForDetail(product)}
-                className="bg-white border border-[#E3ECE7] rounded-2xl p-3 shadow-2xs hover:border-[#0B8F68] hover:shadow-md transition-all flex flex-col justify-between cursor-pointer group"
+                className={`bg-white border rounded-2xl p-3 shadow-2xs transition-all flex flex-col justify-between cursor-pointer group ${
+                  isOutOfStock ? 'border-red-100 bg-red-50/15 opacity-85' : 'border-[#E3ECE7] hover:border-[#0B8F68] hover:shadow-md'
+                }`}
               >
                 {/* Top: Heart Favorite Button */}
                 <div className="flex justify-end w-full">
@@ -386,7 +394,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 </div>
 
                 {/* Product Thumbnail (ImageKit image via ProductImage) */}
-                <div className="w-full h-24 flex items-center justify-center p-2 my-1">
+                <div className="w-full h-24 flex items-center justify-center p-2 my-1 relative">
                   <ProductImage
                     productId={product.id}
                     image={product.image}
@@ -395,14 +403,23 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                     className="w-full h-full"
                     imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
                     fallbackEmojiClassName="text-4xl"
+                    isOutOfStock={isOutOfStock}
+                    stampSize="sm"
                   />
                 </div>
 
                 {/* Middle Info: Name, Price, Rating */}
                 <div className="space-y-1 pt-1">
-                  <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
-                    {product.name}
-                  </h3>
+                  <div className="flex items-center gap-1">
+                    <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
+                      {product.name}
+                    </h3>
+                    {isOutOfStock && (
+                      <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
+                        OUT
+                      </span>
+                    )}
+                  </div>
 
                   <div className="flex items-baseline gap-1">
                     <span className="text-sm font-black text-[#17221D] font-sans">
@@ -435,7 +452,15 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
 
                 {/* Bottom CTA Button */}
                 <div className="pt-2.5" onClick={(e) => e.stopPropagation()}>
-                  {qty > 0 ? (
+                  {isOutOfStock ? (
+                    <button
+                      type="button"
+                      disabled
+                      className="w-full py-1.5 px-3 bg-red-50 border border-red-200 text-red-600 text-[11px] font-black rounded-xl select-none flex items-center justify-center gap-1 font-malayalam cursor-not-allowed"
+                    >
+                      <span>🚫 സ്റ്റോക്കില്ല</span>
+                    </button>
+                  ) : qty > 0 ? (
                     <div className="flex items-center justify-between bg-[#063B2A] text-white rounded-xl p-1 shadow-xs">
                       <button
                         type="button"

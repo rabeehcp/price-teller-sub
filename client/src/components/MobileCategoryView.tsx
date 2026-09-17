@@ -386,15 +386,22 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
               const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 30;
               const rating = 4.2 + (Math.abs(p.name.length % 7) / 10);
               const reviewCount = 80 + (p.name.length * 5);
+              const isOutOfStock = Boolean(
+                p.stockStatus &&
+                Object.values(p.stockStatus).length > 0 &&
+                Object.values(p.stockStatus).every((s) => s === 'out_of_stock')
+              );
 
               return (
                 <div
                   key={p.id}
                   onClick={() => onSelectProduct(p)}
-                  className="flex items-center justify-between p-3 bg-white border border-[#E3ECE7] rounded-2xl shadow-2xs hover:border-[#0B8F68] transition-all cursor-pointer"
+                  className={`flex items-center justify-between p-3 bg-white border rounded-2xl shadow-2xs transition-all cursor-pointer ${
+                    isOutOfStock ? 'border-red-100 bg-red-50/20 opacity-80' : 'border-[#E3ECE7] hover:border-[#0B8F68]'
+                  }`}
                 >
                   {/* Product Thumbnail on Left */}
-                  <div className="w-16 h-16 rounded-xl bg-[#F8FAF7] border border-[#E8ECE3] p-1.5 shrink-0 flex items-center justify-center overflow-hidden">
+                  <div className="w-16 h-16 rounded-xl bg-[#F8FAF7] border border-[#E8ECE3] p-1.5 shrink-0 flex items-center justify-center overflow-hidden relative">
                     <ProductImage
                       productId={p.id}
                       image={p.image}
@@ -402,14 +409,23 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
                       alt={p.name}
                       className="w-full h-full"
                       imgClassName="max-h-full max-w-full object-contain"
+                      isOutOfStock={isOutOfStock}
+                      stampSize="xs"
                     />
                   </div>
 
                   {/* Middle Info */}
                   <div className="flex-1 min-w-0 px-3.5 space-y-0.5">
-                    <h3 className="text-sm font-extrabold text-[#17221D] font-malayalam truncate m-0">
-                      {p.name}
-                    </h3>
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      <h3 className="text-sm font-extrabold text-[#17221D] font-malayalam truncate m-0">
+                        {p.name}
+                      </h3>
+                      {isOutOfStock && (
+                        <span className="text-[9px] font-black uppercase tracking-wider text-red-600 bg-red-50 border border-red-200 px-1.5 py-0.2 rounded font-mono">
+                          OUT OF STOCK
+                        </span>
+                      )}
+                    </div>
                     <div className="flex items-baseline gap-1">
                       <span className="text-xs font-black text-[#17221D] font-sans">
                         ₹ {price}
@@ -434,7 +450,11 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
                     className="shrink-0"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    {qty > 0 ? (
+                    {isOutOfStock ? (
+                      <span className="text-[10px] font-black font-malayalam text-red-600 bg-red-50 border border-red-200 px-2 py-1 rounded-lg select-none">
+                        തീർന്നു
+                      </span>
+                    ) : qty > 0 ? (
                       <div className="flex items-center bg-[#063B2A] text-white rounded-full p-0.5 shadow-xs">
                         <button
                           type="button"

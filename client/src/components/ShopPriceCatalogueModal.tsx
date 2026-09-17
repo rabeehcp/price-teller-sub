@@ -586,7 +586,7 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
                     <div>
                       {/* Top: Thumbnail & Stock Pill */}
                       <div className="flex items-start justify-between gap-1.5 mb-1.5">
-                        <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
                           <ProductImage
                             productId={prod.id}
                             image={prod.image}
@@ -595,6 +595,8 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
                             className="w-full h-full"
                             imgClassName="w-full h-full object-contain"
                             fallbackEmojiClassName="text-xl"
+                            isOutOfStock={isOutOfStock}
+                            stampSize="xs"
                           />
                         </div>
                         <div className="flex flex-col items-end gap-0.5">
@@ -728,7 +730,7 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
                         >
                           <td className="py-1.5 px-3">
                             <div className="flex items-center gap-2">
-                              <div className="w-7 h-7 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center">
+                              <div className="w-7 h-7 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center relative overflow-hidden">
                                 <ProductImage
                                   productId={prod.id}
                                   image={prod.image}
@@ -737,6 +739,8 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
                                   className="w-full h-full"
                                   imgClassName="w-full h-full object-contain"
                                   fallbackEmojiClassName="text-base"
+                                  isOutOfStock={isOutOfStock}
+                                  stampSize="xs"
                                 />
                               </div>
                               <div className="font-bold text-slate-dark text-xs flex items-center gap-1.5">

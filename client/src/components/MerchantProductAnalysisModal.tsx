@@ -219,6 +219,8 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
                 className="w-full h-full"
                 imgClassName="max-h-full max-w-full object-contain drop-shadow-md transition-transform duration-300 group-hover:scale-105"
                 fallbackEmojiClassName="text-6xl sm:text-7xl select-none"
+                isOutOfStock={currentStock === 'out_of_stock'}
+                stampSize="md"
               />
 
               {/* Floating Prev Button on Image */}

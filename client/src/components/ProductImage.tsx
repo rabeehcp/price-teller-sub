@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getProxiedImageUrl } from '../services/api';
+import { OutOfStockStamp } from './OutOfStockStamp';
 
 interface ProductImageProps {
   productId?: string;
@@ -10,6 +11,8 @@ interface ProductImageProps {
   imgClassName?: string;
   fallbackEmojiClassName?: string;
   loading?: 'lazy' | 'eager';
+  isOutOfStock?: boolean;
+  stampSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
 function resolveProductImageSrc(image?: string): string | null {
@@ -44,6 +47,8 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   imgClassName = 'w-full h-full object-contain',
   fallbackEmojiClassName = 'text-2xl',
   loading = 'lazy',
+  isOutOfStock = false,
+  stampSize,
 }) => {
   const [currentSrc, setCurrentSrc] = useState<string | null>(null);
   const [hasError, setHasError] = useState(false);
@@ -72,8 +77,11 @@ export const ProductImage: React.FC<ProductImageProps> = ({
 
   if (!currentSrc || hasError) {
     return (
-      <div className={`inline-flex items-center justify-center select-none max-w-full max-h-full ${className}`}>
-        <span className={fallbackEmojiClassName}>{emoji}</span>
+      <div className={`relative inline-flex items-center justify-center select-none max-w-full max-h-full overflow-hidden ${className}`}>
+        <span className={`${fallbackEmojiClassName} ${isOutOfStock ? 'opacity-40 grayscale' : ''}`}>{emoji}</span>
+        {isOutOfStock && (
+          <OutOfStockStamp isOverlay size={stampSize || 'xs'} />
+        )}
       </div>
     );
   }
@@ -88,8 +96,13 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onError={handleImageError}
-        className={`max-w-full max-h-full transition-all duration-200 ${imgClassName}`}
+        className={`max-w-full max-h-full transition-all duration-200 ${imgClassName} ${
+          isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''
+        }`}
       />
+      {isOutOfStock && (
+        <OutOfStockStamp isOverlay size={stampSize || 'sm'} />
+      )}
     </div>
   );
 };

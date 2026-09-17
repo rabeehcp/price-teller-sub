@@ -315,12 +315,19 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
               const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
               const basketItem = basket.find((b) => b.productId === product.id);
               const qty = basketItem ? basketItem.quantity : 0;
+              const isOutOfStock = Boolean(
+                product.stockStatus &&
+                Object.values(product.stockStatus).length > 0 &&
+                Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
+              );
 
               return (
                 <div
                   key={product.id}
                   onClick={() => onSelectProductForDetail(product)}
-                  className="bg-white border border-[#E3ECE7] rounded-2xl overflow-hidden shadow-sm hover:border-[#0B8F68]/50 hover:shadow-md transition-all cursor-pointer flex flex-col group relative"
+                  className={`bg-white border rounded-2xl overflow-hidden shadow-sm transition-all cursor-pointer flex flex-col group relative ${
+                    isOutOfStock ? 'border-red-100 opacity-85' : 'border-[#E3ECE7] hover:border-[#0B8F68]/50 hover:shadow-md'
+                  }`}
                 >
                   {/* Favorite */}
                   <button
@@ -343,6 +350,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                       className="w-full h-full"
                       imgClassName="w-full h-full object-contain p-1.5 transition-transform group-hover:scale-110"
                       fallbackEmojiClassName="text-3xl transition-transform group-hover:scale-110"
+                      isOutOfStock={isOutOfStock}
+                      stampSize="xs"
                     />
                   </div>
 
@@ -367,7 +376,11 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                       </div>
 
                       <div onClick={(e) => e.stopPropagation()}>
-                        {qty > 0 ? (
+                        {isOutOfStock ? (
+                          <span className="text-[8px] font-black font-malayalam text-red-600 bg-red-50 border border-red-200 px-1 py-0.5 rounded select-none">
+                            തീർന്നു
+                          </span>
+                        ) : qty > 0 ? (
                           <div className="flex items-center bg-[#063B2A] text-white rounded-full px-1 py-0.5 gap-0.5 shadow-sm">
                             <button
                               type="button"
