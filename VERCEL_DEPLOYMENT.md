@@ -39,20 +39,23 @@ git push origin main
 
 ### Step 3: Configure Project Settings
 
-You can deploy using either of the two directory options below:
+#### Recommended Setup (Root Directory: `client`)
+1. In the **Root Directory** setting, click **Edit** and choose `client` (or type `client`).
+2. Under **Build and Output Settings**:
+   - **Framework Preset**: Select **Vite** (auto-detected).
+   - **Build Command**: Leave the toggle **OFF** (it defaults to `npm run build` or `vite build`).
+   - **Output Directory**: Leave the toggle **OFF** (it defaults to `dist`).
+   - **Install Command**: Leave the toggle **OFF** (it defaults to `npm install`).
+   > [!IMPORTANT]
+   > Do **NOT** turn on the Install Command override and enter `npm --prefix client install` when Root Directory is already `client`. Doing so causes npm to look for `client/client/package.json` and fail with `ENOENT`. Keep all overrides **OFF** (default)!
 
-#### Option A: Root Directory (Default — No changes needed!)
+#### Alternative Setup (Root Directory: `./`)
+If you prefer not changing the Root Directory:
+- **Root Directory**: `./` (leave default repository root)
 - **Framework Preset**: `Vite`
-- **Root Directory**: `./` (leave default)
-- **Build Command**: `npm --prefix client run build` (or leave default, loaded from `vercel.json`)
-- **Output Directory**: `client/dist` (loaded automatically from `vercel.json`)
-
-#### Option B: Set Root Directory to `client`
-- Click **Edit** next to **Root Directory** and select `client`.
-- **Framework Preset**: `Vite` (auto-detected)
-- **Build Command**: `npm run build`
-- **Output Directory**: `dist`
-*(Note: `client/vercel.json` is already present to handle rewrites for this mode!)*
+- **Build Command**: Toggle ON -> `npm --prefix client run build`
+- **Output Directory**: Toggle ON -> `client/dist`
+- **Install Command**: Toggle ON -> `npm --prefix client install`
 
 ### Step 4: Environment Variables (Optional)
 The application automatically routes to the Azure backend via the Vercel API proxy. If you wish to explicitly set or override the backend URL:
@@ -109,3 +112,14 @@ Once deployed, verify the following:
 1. **Home Page**: Open the Vercel URL and check that products, categories, and shops load properly.
 2. **Sub-Route Refresh**: Navigate to `/admin` or `/merchant` and refresh the page (press `F5`). The page should reload without a 404 error.
 3. **API Proxy Check**: Open your browser DevTools (`F12`) > **Network** tab. API requests should show status `200 OK` routed to `/api/...`.
+
+### Common Issues
+
+#### `ENOENT: no such file or directory, open '/vercel/path0/client/client/package.json'`
+- **Cause**: In your Vercel Project Settings, **Root Directory** is set to `client`, but **Install Command** is overridden with `npm --prefix client install`. Inside the `client` folder, `--prefix client` looks for an extra nested `client` folder (`client/client`).
+- **Fix**:
+  1. Open your project on [Vercel Dashboard](https://vercel.com/dashboard).
+  2. Go to **Settings** > **Build & Development Settings**.
+  3. Under **Install Command**, toggle the override switch to **OFF** (or reset it to default).
+  4. Under **Build Command** and **Output Directory**, also make sure the override switches are **OFF** (default).
+  5. Go to **Deployments** and click **Redeploy**.
