@@ -21,13 +21,7 @@ import {
   fetchMerchantShopApi,
   logoutUserApi,
 } from './services/api';
-import { Header } from './components/Header';
-import { Hero } from './components/Hero';
-import { CategoryFilter } from './components/CategoryFilter';
-import { ProductCard } from './components/ProductCard';
-import { SmartBasket } from './components/SmartBasket';
-import { findNearestLocation } from './services/locationService';
-import { ComparisonSummary } from './components/ComparisonSummary';
+import { findNearestLocation, requestBrowserGps, reverseGeocodeDetails, GpsDebugInfo } from './services/locationService';
 import { PriceHistoryModal } from './components/PriceHistoryModal';
 import { CrowdReportModal } from './components/CrowdReportModal';
 import { MerchantDashboard } from './components/MerchantDashboard';
@@ -45,7 +39,6 @@ import { OpeningPage } from './components/OpeningPage';
 import { MalayalamOpeningPage } from './components/MalayalamOpeningPage';
 import { ConsumerDashboardModal } from './components/ConsumerDashboardModal';
 import { SaveBasketModal } from './components/SaveBasketModal';
-import { SmartListQuickAdd } from './components/SmartListQuickAdd';
 import { ConsumerChatModal } from './components/ConsumerChatModal';
 import { PreBookingModal } from './components/PreBookingModal';
 import { ConsumerPreBookingsModal } from './components/ConsumerPreBookingsModal';
@@ -81,7 +74,7 @@ import {
   fetchCurrentUserApi,
   getAuthToken,
 } from './services/api';
-import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale } from 'lucide-react';
+import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale, MessageCircle } from 'lucide-react';
 
 
 // Helper utilities to accurately identify admin, merchant, or consumer route intents
@@ -509,6 +502,84 @@ export const App: React.FC = () => {
     } catch {}
   }, []);
 
+  const [isDetectingGps, setIsDetectingGps] = useState<boolean>(false);
+  const [gpsFeedback, setGpsFeedback] = useState<{ text: string; isWarning?: boolean } | null>(null);
+  const [gpsDebugDetails, setGpsDebugDetails] = useState<GpsDebugInfo | null>(null);
+
+  const handleCustomerCoordsChanged = useCallback((coords: { lat: number; lng: number; name?: string } | null) => {
+    setCustomerCoords(coords);
+    if (coords) {
+      try {
+        localStorage.setItem('priceteller_customer_coords', JSON.stringify(coords));
+      } catch {}
+    } else {
+      try {
+        localStorage.removeItem('priceteller_customer_coords');
+      } catch {}
+    }
+  }, []);
+
+  const handleDetectGpsLocation = useCallback(() => {
+    setIsDetectingGps(true);
+    setGpsFeedback(null);
+    requestBrowserGps(
+      async (coords) => {
+        const lat = coords.lat;
+        const lng = coords.lng;
+        
+        const details = await reverseGeocodeDetails(lat, lng, coords.accuracy);
+        setGpsDebugDetails(details);
+
+        if (details.isAcceptableAccuracy === false) {
+          setIsDetectingGps(false);
+          const accuracyKm = Math.round((coords.accuracy / 1000) * 10) / 10;
+          setGpsFeedback({
+            text: `GPS സിഗ്നൽ കൃത്യത കുറവാണ് (${accuracyKm} km). ദയവായി പട്ടികയിൽ നിന്ന് സ്ഥലം നേരിട്ട് തിരഞ്ഞെടുക്കുക.`,
+            isWarning: true,
+          });
+          return;
+        }
+
+        const placeName = details.locality || details.townCity || details.district || details.displayName;
+        const newCoords = { lat, lng, name: placeName };
+        handleCustomerCoordsChanged(newCoords);
+
+        const result = findNearestLocation(lat, lng, locations);
+        if (result) {
+          handleSelectLocation(result.nearestLocation);
+          if (result.isWithinHubArea) {
+            setGpsFeedback({
+              text: `${placeName} (${result.nearestLocation.name} Hub, ${result.distanceKm} km)`,
+              isWarning: false,
+            });
+            setTimeout(() => {
+              setIsMobileLocationModalOpen(false);
+              setGpsFeedback(null);
+            }, 3000);
+          } else {
+            setGpsFeedback({
+              text: `നിങ്ങളുടെ സ്ഥലം (${placeName}) മലപ്പുറം ഹബ്ബിന് പുറത്താണ്. സമീപത്തെ ഹബ്ബ്: ${result.nearestLocation.name} (${result.distanceKm} km)`,
+              isWarning: true,
+            });
+          }
+        } else {
+          setIsMobileLocationModalOpen(false);
+        }
+        setIsDetectingGps(false);
+      },
+      (errorMsg, debugInfo) => {
+        setIsDetectingGps(false);
+        if (debugInfo) {
+          setGpsDebugDetails(debugInfo);
+        }
+        setGpsFeedback({
+          text: errorMsg,
+          isWarning: true,
+        });
+      }
+    );
+  }, [locations, handleSelectLocation, handleCustomerCoordsChanged]);
+
   // Initial Data Fetch & Hyperlocal Region Resolution
   useEffect(() => {
     async function loadInitialData() {
@@ -547,26 +618,7 @@ export const App: React.FC = () => {
         setCurrentLocation(chosenLoc);
       }
 
-      // 4. Background GPS Detection ONLY on first visit when user has not explicitly chosen a region
-      if (!hasExplicitSavedLoc && 'geolocation' in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          (pos) => {
-            // Check again in case user picked location while GPS was resolving
-            const latestSaved = localStorage.getItem('priceteller_consumer_location_id');
-            if (latestSaved) return;
-
-            const gpsRes = findNearestLocation(pos.coords.latitude, pos.coords.longitude, locs);
-            if (gpsRes?.nearestLocation) {
-              setCurrentLocation(gpsRes.nearestLocation);
-              try {
-                localStorage.setItem('priceteller_consumer_location_id', gpsRes.nearestLocation.id);
-              } catch {}
-            }
-          },
-          () => {},
-          { timeout: 6000, enableHighAccuracy: true }
-        );
-      }
+      // 4. Default to saved or first registered hub without auto-overriding via IP geolocation
     }
     loadInitialData();
   }, [authUser?.locationId]);
@@ -1035,7 +1087,7 @@ export const App: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PriceTeller Session...</span>
+            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying EnteBazaar Session...</span>
           </div>
           <p className="text-xs text-gray-500 font-medium">Validating credentials with secure server authority</p>
         </div>
@@ -1119,6 +1171,7 @@ export const App: React.FC = () => {
           currentLocation={currentLocation}
           authUser={authUser}
           onSelectLocation={handleSelectLocation}
+          onCustomerCoordsChanged={handleCustomerCoordsChanged}
           onEnterAsConsumer={() => {
             if (authUser) {
               window.history.pushState({}, '', '/consumer');
@@ -1369,7 +1422,7 @@ export const App: React.FC = () => {
           onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
           onOpenDrawer={() => setIsMobileDrawerOpen(true)}
           onOpenProfile={() => setShopperTab('profile')}
-          onOpenCompare={() => setShopperTab('compare')}
+          onOpenChat={() => handleOpenChat()}
           authUser={authUser}
           unreadNotificationsCount={1}
         />
@@ -1585,6 +1638,8 @@ export const App: React.FC = () => {
                   if (tabId === 'orders') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
                     else setIsConsumerPreBookingsOpen(true);
+                  } else if (tabId === 'chat') {
+                    handleOpenChat();
                   } else if (tabId === 'addresses' || tabId === 'payments') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
                     else setIsConsumerDashboardOpen(true);
@@ -1796,8 +1851,8 @@ export const App: React.FC = () => {
               <div className="w-6 h-6 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center text-xs">
                 🛒
               </div>
-              <span className="font-bold text-slate-dark">PriceTeller</span>
-              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PriceTeller”</span>
+              <span className="font-bold text-slate-dark">EnteBazaar</span>
+              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — EnteBazaar”</span>
             </div>
             <div className="flex items-center gap-3 text-[11px] font-medium text-slate-muted">
               <span>📍 Serving Kerala Supermarkets</span>
@@ -2115,6 +2170,7 @@ export const App: React.FC = () => {
           if (!authUser) handleOpenAuthModal('consumer-login');
           else setIsConsumerPreBookingsOpen(true);
         }}
+        onOpenChat={() => handleOpenChat()}
         onOpenMerchantPortal={() => {
           if (authUser?.role === 'merchant') {
             window.history.pushState({}, '', '/merchant');
@@ -2137,35 +2193,17 @@ export const App: React.FC = () => {
       {/* Redesigned Mobile Location Permission Sheet matching Screen 10 */}
       <MobileLocationModal
         isOpen={isMobileLocationModalOpen}
-        onClose={() => setIsMobileLocationModalOpen(false)}
+        onClose={() => {
+          setIsMobileLocationModalOpen(false);
+          setGpsFeedback(null);
+        }}
+        isDetecting={isDetectingGps}
+        gpsFeedback={gpsFeedback}
+        gpsDebugDetails={gpsDebugDetails}
         locations={locations}
         currentLocation={currentLocation}
         onSelectLocation={handleSelectLocation}
-        onAllowLocation={() => {
-          if ('geolocation' in navigator) {
-            navigator.geolocation.getCurrentPosition(
-              (pos) => {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
-                setCustomerCoords({ lat, lng, name: 'Live GPS Location' });
-                try {
-                  localStorage.setItem('priceteller_customer_coords', JSON.stringify({ lat, lng, name: 'Live GPS Location' }));
-                } catch {}
-                const result = findNearestLocation(lat, lng, locations);
-                if (result) {
-                  handleSelectLocation(result.nearestLocation);
-                }
-                setIsMobileLocationModalOpen(false);
-              },
-              () => {
-                setIsMobileLocationModalOpen(false);
-              },
-              { timeout: 8000, enableHighAccuracy: true }
-            );
-          } else {
-            setIsMobileLocationModalOpen(false);
-          }
-        }}
+        onAllowLocation={handleDetectGpsLocation}
       />
 
       {/* Redesigned Mobile Product Detail Modal matching Screen 3 */}
@@ -2178,9 +2216,34 @@ export const App: React.FC = () => {
             setSelectedMobileProduct(null);
             setShopperTab('cart');
           }}
+          onOpenChat={() => handleOpenChat()}
           onAdd={(p, u) => handleAddToBasket(p, u)}
           onQuantityChange={handleQuantityChange}
         />
+      )}
+
+      {/* Dedicated Floating Quick Chat Button for Mobile View */}
+      {(appView === 'consumer' || appView === 'welcome') && !isChatModalOpen && (
+        <div
+          className={`md:hidden fixed right-3 z-30 transition-all duration-200 ${
+            basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare'
+              ? 'bottom-28'
+              : 'bottom-16'
+          }`}
+        >
+          <button
+            type="button"
+            onClick={() => handleOpenChat()}
+            className="flex items-center gap-1.5 px-3 py-2 bg-[#063B2A] hover:bg-[#0B8F68] text-white rounded-full shadow-lg border border-[#10A978]/40 active:scale-95 transition-all cursor-pointer font-malayalam"
+            title="കടകളുമായി ചാറ്റ് ചെയ്യുക (Chat with Store)"
+            aria-label="Chat with Store"
+          >
+            <div className="relative w-5 h-5 rounded-full bg-[#10A978] flex items-center justify-center text-[#063B2A] shrink-0 shadow-xs">
+              <MessageCircle className="w-3 h-3 text-[#063B2A]" />
+            </div>
+            <span className="text-[11px] font-bold text-white tracking-tight">ചാറ്റ്</span>
+          </button>
+        </div>
       )}
     </div>
   );

@@ -19,6 +19,7 @@ import {
   Bell,
   Trash2,
   Check,
+  TrendingDown,
 } from 'lucide-react';
 
 interface DesktopHomeViewProps {
@@ -185,7 +186,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. HERO BANNER WITH CAROUSEL (Matching Image 1) */}
+      {/* 1. HERO BANNER WITH PLATFORM PURPOSE & PRICE COMPARISON VISUAL */}
       <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#063B2A] via-[#0B5C40] to-[#E3F2EB] shadow-md border border-[#0B8F68]/20 min-h-[260px] flex items-center justify-between p-8 text-white">
         
         {/* Background Overlay Effects */}
@@ -196,80 +197,85 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
         <div className="relative z-10 max-w-[55%] space-y-3.5">
           
           <h1 className="text-2xl lg:text-3xl font-black text-white leading-snug font-malayalam tracking-tight m-0 drop-shadow-xs">
-            നാടൻ കർഷകരിൽ നിന്ന് നിങ്ങളുടെ വീട്ടിലേക്ക്
+            നാട്ടിലെ കടകളിൽ നിന്ന്<br />
+            <span className="text-[#7FFFC4]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
           </h1>
 
           <p className="text-xs lg:text-sm text-[#DDF5EA] font-medium leading-relaxed font-malayalam m-0">
-            നമ്മുടെ നാട്ടിലെ വിശ്വസനീയമായ കടകളിൽ നിന്ന് നേരിട്ട്.
+            അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് നിങ്ങൾക്ക് അനുയോജ്യമായ വില കണ്ടെത്തൂ.
           </p>
 
-          {/* 3 Value Pillars */}
-          <div className="flex items-center gap-4 text-xs font-semibold text-white/90 pt-1 font-sans">
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/10">
-              <Tag className="w-3.5 h-3.5 text-[#34D399]" /> Best Prices
+          {/* 4 Value Pillars */}
+          <div className="flex items-center gap-2.5 text-xs font-semibold text-white/90 pt-1 font-malayalam flex-wrap">
+            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
+              <Store className="w-3.5 h-3.5 text-[#34D399]" /> പ്രാദേശിക കടകൾ
             </span>
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/10">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#34D399]" /> Verified Shops
+            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
+              <TrendingDown className="w-3.5 h-3.5 text-[#34D399]" /> വില താരതമ്യം
             </span>
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/10">
-              <Headphones className="w-3.5 h-3.5 text-[#34D399]" /> Local Support
+            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
+              <Tag className="w-3.5 h-3.5 text-[#34D399]" /> മികച്ച ലാഭം
             </span>
-          </div>
-
-          {/* CTA Button */}
-          <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => onSelectCategory('vegetables')}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-[#063B2A] hover:bg-[#084D37] text-white text-xs font-black rounded-full border border-emerald-400/40 shadow-md active:scale-95 transition-all cursor-pointer font-sans"
-            >
-              <span>Shop Now</span>
-              <ChevronRight className="w-4 h-4" />
-            </button>
+            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
+              <MapPin className="w-3.5 h-3.5 text-[#34D399]" /> സമീപത്തുള്ള ഷോപ്പിംഗ്
+            </span>
           </div>
 
         </div>
 
-        {/* Right Produce Basket Graphic with Floating Badge */}
-        <div className="relative z-10 w-[42%] max-w-[340px] flex items-center justify-end">
+        {/* Right Multi-Category Price Comparison Visual Card */}
+        <div className="relative z-10 w-[42%] max-w-[360px] space-y-2">
           
-          {/* Floating Malayalam Badge ("നല്ലത് നാട്ടിൽ നിന്ന്") */}
-          <div className="absolute -left-4 top-1/2 -translate-y-1/2 bg-[#063B2A]/90 backdrop-blur-md text-[#DDF5EA] border border-emerald-400/30 px-3.5 py-1.5 rounded-full text-xs font-bold font-malayalam shadow-lg z-20 transform -rotate-6">
-            ✨ നല്ലത് നാട്ടിൽ നിന്ന്
+          {/* Top Pill */}
+          <div className="flex items-center justify-between bg-white/15 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-2xl text-[11px] font-bold text-white font-malayalam shadow-md">
+            <span className="flex items-center gap-1">
+              <Store className="w-3.5 h-3.5 text-[#34D399]" /> സമീപത്തെ കടകളുടെ തത്സമയ നിരക്ക്
+            </span>
+            <span className="bg-[#34D399] text-[#063B2A] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
+              ലഭ്യം
+            </span>
           </div>
 
-          <div className="w-full h-56 rounded-2xl overflow-hidden flex items-center justify-center p-2 drop-shadow-2xl">
-            <img
-              src="https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg"
-              alt="Harvest Basket"
-              className="max-h-full max-w-full object-contain rounded-xl drop-shadow-lg"
-              onError={(e) => {
-                (e.target as HTMLElement).style.display = 'none';
-              }}
-            />
-          </div>
-
-          {/* Carousel Arrows & Dots on Bottom Right */}
-          <div className="absolute bottom-1 right-2 flex items-center gap-2 bg-[#063B2A]/80 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/10 shadow-sm">
-            <button
-              type="button"
-              onClick={() => setCurrentSlide((s) => Math.max(0, s - 1))}
-              className="p-1 hover:bg-white/20 rounded-full text-white cursor-pointer transition-colors"
-            >
-              <ChevronLeft className="w-3.5 h-3.5" />
-            </button>
-            <div className="flex items-center gap-1">
-              <span className={`w-3 h-1 rounded-full ${currentSlide === 0 ? 'bg-[#34D399]' : 'bg-white/40'}`} />
-              <span className={`w-1.5 h-1.5 rounded-full ${currentSlide === 1 ? 'bg-[#34D399]' : 'bg-white/40'}`} />
-              <span className={`w-1.5 h-1.5 rounded-full ${currentSlide === 2 ? 'bg-[#34D399]' : 'bg-white/40'}`} />
+          {/* Comparison Cards Stack */}
+          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-white text-slate-800 space-y-2 font-malayalam">
+            {/* Comparison Item 1: Grocery / Oil */}
+            <div className="flex items-center justify-between p-2 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-xl shrink-0 select-none">🫗</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-black text-slate-900 truncate">വെളിച്ചെണ്ണ 1L</div>
+                  <div className="text-[10px] text-slate-500 truncate">Al-Iqwan • 1.2 km</div>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <div className="text-xs font-black text-[#0B8F68] font-sans">₹145</div>
+                <div className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded font-sans">₹10 ലാഭം</div>
+              </div>
             </div>
-            <button
-              type="button"
-              onClick={() => setCurrentSlide((s) => Math.min(2, s + 1))}
-              className="p-1 hover:bg-white/20 rounded-full text-white cursor-pointer transition-colors"
-            >
-              <ChevronRight className="w-3.5 h-3.5" />
-            </button>
+
+            {/* Comparison Item 2: Staples / Rice */}
+            <div className="flex items-center justify-between p-2 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-xl shrink-0 select-none">🌾</span>
+                <div className="min-w-0">
+                  <div className="text-xs font-black text-slate-900 truncate">മട്ട അരി 5kg</div>
+                  <div className="text-[10px] text-slate-500 truncate">Malabar Store • 0.8 km</div>
+                </div>
+              </div>
+              <div className="text-right shrink-0">
+                <div className="text-xs font-black text-[#0B8F68] font-sans">₹225</div>
+                <div className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded font-sans">₹15 ലാഭം</div>
+              </div>
+            </div>
+
+            {/* Category Ribbon */}
+            <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px] font-bold text-slate-600">
+              <span>🥫 ഗ്രോസറി</span>
+              <span>🥛 പാൽ</span>
+              <span>🌾 ധാന്യം</span>
+              <span>🥬 പച്ചക്കറി</span>
+              <span>🌶️ മസാല</span>
+            </div>
           </div>
 
         </div>
@@ -347,7 +353,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
           {displayedProducts.map((product) => {
             const isFav = favorites.includes(product.id);
             const priceValues = Object.values(product.prices || {});
-            const price = priceValues.length > 0 ? Math.min(...priceValues) : 30;
+            const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 30;
             const basketItem = basket.find((b) => b.productId === product.id);
             const qty = basketItem ? basketItem.quantity : 0;
 

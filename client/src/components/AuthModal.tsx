@@ -240,7 +240,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 🛒
               </div>
               <span className="text-xl font-black tracking-tight text-white">
-                Price<span className="text-brand-400">Teller</span>
+                Ente<span className="text-brand-400">Bazaar</span>
               </span>
             </div>
 
@@ -249,7 +249,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 സ്വാഗതം
               </span>
               <h2 className="text-2xl font-black leading-snug font-malayalam text-white">
-                നിങ്ങളുടെ PriceTeller അക്കൗണ്ടിലേക്ക് സ്വാഗതം
+                നിങ്ങളുടെ EnteBazaar അക്കൗണ്ടിലേക്ക് സ്വാഗതം
               </h2>
               <p className="text-xs text-brand-100/80 font-malayalam leading-relaxed">
                 കേരളത്തിലെ സൂപ്പർമാർക്കറ്റുകളിലെ കൃത്യമായ വില വിവരങ്ങളും ഓഫറുകളും ഇപ്പോൾ നിങ്ങളുടെ വിരൽത്തുമ്പിൽ.

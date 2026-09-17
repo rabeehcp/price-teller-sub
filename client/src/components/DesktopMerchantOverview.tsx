@@ -17,23 +17,42 @@ interface DesktopMerchantOverviewProps {
   shops: Shop[];
   products: Product[];
   preBookings: PreBooking[];
+  shopCategories?: string[];
   onNavigateTab: (tab: string) => void;
   onOpenAddProduct?: () => void;
 }
+
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  vegetables: ['vegetables'],
+  fruits: ['fruits'],
+  staples: ['staples', 'rice-grains', 'pulses-legumes'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+  household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'beverages'],
+};
 
 export const DesktopMerchantOverview: React.FC<DesktopMerchantOverviewProps> = ({
   shopName,
   products = [],
   preBookings = [],
+  shopCategories = [],
   onNavigateTab,
   onOpenAddProduct,
 }) => {
-  // 1. Real Store Inventory Data
-  const carriedProducts = products.filter(
+  // 1. Real Store Inventory Data filtered by eligible shop categories
+  const eligibleProducts = products.filter((p) => {
+    if (!shopCategories || shopCategories.length === 0) return true;
+    const eligibleCategoryIds = new Set(
+      shopCategories.flatMap((category) => CATEGORY_ALIASES[category] || [category])
+    );
+    return eligibleCategoryIds.has(p.categoryId) || (p.isOrganic && shopCategories.includes('organic'));
+  });
+
+  const carriedProducts = eligibleProducts.filter(
     (p) => p.prices && typeof p.prices[shopName] === 'number' && p.prices[shopName] > 0
   );
 
-  const totalCatalogCount = products.length;
+  const totalCatalogCount = eligibleProducts.length;
   const storeListedCount = carriedProducts.length;
   const coveragePercent = totalCatalogCount > 0 ? Math.round((storeListedCount / totalCatalogCount) * 100) : 0;
 

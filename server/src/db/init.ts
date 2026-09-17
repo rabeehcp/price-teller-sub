@@ -17,6 +17,16 @@ const BASELINE_LOCATIONS = [
   { id: 'kottakkal', name: 'Kottakkal', subArea: 'Ayurveda Town & Changuvetty', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 10.9991, lng: 76.0024, radiusKm: 15.0 },
   { id: 'parappanangadi', name: 'Parappanangadi', subArea: 'Railway Station Road', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.0478, lng: 75.8606, radiusKm: 15.0 },
   { id: 'areekode', name: 'Areekode', subArea: 'Town & River Junction', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.2384, lng: 76.0504, radiusKm: 15.0 },
+  { id: 'malappuram', name: 'Malappuram', subArea: 'District HQ & Kizhakkethala', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.0510, lng: 76.0711, radiusKm: 15.0 },
+  { id: 'manjeri', name: 'Manjeri', subArea: 'Court Road & Commercial Capital', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.1200, lng: 76.1200, radiusKm: 15.0 },
+  { id: 'perinthalmanna', name: 'Perinthalmanna', subArea: 'Hospital City & Commercial Hub', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 10.9765, lng: 76.2269, radiusKm: 15.0 },
+  { id: 'nilambur', name: 'Nilambur', subArea: 'Teak City & Railway Station', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.2855, lng: 76.2386, radiusKm: 15.0 },
+  { id: 'ponnani', name: 'Ponnani', subArea: 'Port City & Harbour', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 10.7700, lng: 75.9000, radiusKm: 15.0 },
+  { id: 'kondotty', name: 'Kondotty', subArea: 'Airport City & Vaidyar Smarakam', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.1467, lng: 75.9621, radiusKm: 15.0 },
+  { id: 'kizhisseri', name: 'Kizhisseri', subArea: 'Kondotty - Areekode Highway', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.1895, lng: 76.0142, radiusKm: 15.0 },
+  { id: 'pookkottur', name: 'Pookkottur', subArea: 'Calicut - Malappuram Highway', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.1012, lng: 76.0425, radiusKm: 15.0 },
+  { id: 'vazhikkadavu', name: 'Vazhikkadavu', subArea: 'Nilambur - Gudalur Checkpost', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.3852, lng: 76.3314, radiusKm: 15.0 },
+  { id: 'karuvarakundu', name: 'Karuvarakundu', subArea: 'Silent Valley Foothills', state: 'Kerala', country: 'India', currency: 'INR', currencySymbol: '₹', lat: 11.1415, lng: 76.3350, radiusKm: 15.0 },
 ];
 
 export async function initDb(): Promise<boolean> {

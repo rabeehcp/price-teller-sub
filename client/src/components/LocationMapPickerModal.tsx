@@ -13,7 +13,7 @@ import {
   ZoomOut,
   Layers,
 } from 'lucide-react';
-import { reverseGeocode, searchAddressNominatim } from '../services/locationService';
+import { reverseGeocode, searchAddressNominatim, requestBrowserGps } from '../services/locationService';
 
 interface LocationMapPickerModalProps {
   isOpen: boolean;
@@ -113,10 +113,24 @@ export const LocationMapPickerModal: React.FC<LocationMapPickerModalProps> = ({
           zoomControl: false,
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 19,
-          attribution: '&copy; OpenStreetMap contributors',
-        }).addTo(map);
+        const primaryTileLayer = L.tileLayer(
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            subdomains: 'abc',
+            maxZoom: 19,
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(map);
+
+        primaryTileLayer.on('tileerror', (error: any) => {
+          if (error.tile) {
+            const z = error.coords.z;
+            const x = error.coords.x;
+            const y = error.coords.y;
+            error.tile.src = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}`;
+          }
+        });
 
         // Custom pinpoint icon
         const customIcon = L.divIcon({
@@ -234,16 +248,11 @@ export const LocationMapPickerModal: React.FC<LocationMapPickerModalProps> = ({
 
   const handleUseCurrentLocation = () => {
     setGpsError(null);
-    if (!('geolocation' in navigator)) {
-      setGpsError('Geolocation is not supported by your browser.');
-      return;
-    }
-
     setIsDetectingGps(true);
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        const curLat = pos.coords.latitude;
-        const curLng = pos.coords.longitude;
+    requestBrowserGps(
+      (pos) => {
+        const curLat = pos.lat;
+        const curLng = pos.lng;
         setLat(curLat);
         setLng(curLng);
         setZoom(16);
@@ -256,11 +265,10 @@ export const LocationMapPickerModal: React.FC<LocationMapPickerModalProps> = ({
         setIsDetectingGps(false);
         updateReverseAddress(curLat, curLng);
       },
-      (err) => {
+      (errorMsg) => {
         setIsDetectingGps(false);
-        setGpsError(err.message || 'Unable to access your current location. Please grant permission.');
-      },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        setGpsError(errorMsg);
+      }
     );
   };
 

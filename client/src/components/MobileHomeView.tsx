@@ -12,7 +12,6 @@ import {
   Store,
   ShieldCheck,
   Sparkles,
-  Flame,
 } from 'lucide-react';
 
 interface MobileHomeViewProps {
@@ -76,17 +75,30 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   onViewAllProducts,
 }) => {
 
-  // Pick top popular products
+  // Filter products by selected category or search query
   const popularProducts = useMemo(() => {
+    let filtered = products;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      return products.filter((p) =>
+      filtered = products.filter((p) =>
         p.name.toLowerCase().includes(q) ||
         (p.categoryId && p.categoryId.toLowerCase().includes(q))
       );
+    } else if (selectedCategoryId && selectedCategoryId !== 'all') {
+      const aliases: Record<string, string[]> = {
+        vegetables: ['vegetables'],
+        fruits: ['fruits'],
+        staples: ['staples', 'rice-grains', 'pulses-legumes'],
+        'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+        household: ['household', 'cleaning-household', 'storage-containers'],
+        'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'beverages'],
+      };
+      const targetCats = aliases[selectedCategoryId] || [selectedCategoryId];
+      filtered = products.filter((p) => targetCats.includes(p.categoryId));
     }
+
     const priorityNames = ['tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'];
-    const sorted = [...products].sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       const aIndex = priorityNames.findIndex((n) => a.name.toLowerCase().includes(n));
       const bIndex = priorityNames.findIndex((n) => b.name.toLowerCase().includes(n));
       if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
@@ -94,8 +106,9 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       if (bIndex !== -1) return 1;
       return 0;
     });
-    return sorted.slice(0, 12);
-  }, [products, searchQuery]);
+  }, [products, searchQuery, selectedCategoryId]);
+
+  const currentCategoryObj = categories.find((c) => c.id === selectedCategoryId);
 
   return (
     <div className="md:hidden space-y-3 font-sans pb-28 animate-in fade-in duration-200">
@@ -131,43 +144,56 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       </div>
 
       {/* 2. HERO BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-5 shadow-md min-h-[150px] flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-4 sm:p-5 shadow-md min-h-[155px] flex items-center justify-between">
         {/* Decorative glows */}
         <div className="absolute top-0 right-1/3 w-32 h-32 bg-[#10A978]/20 rounded-full blur-2xl pointer-events-none" />
         <div className="absolute -bottom-4 left-0 w-24 h-24 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
 
-        {/* Left */}
-        <div className="relative z-10 max-w-[58%] space-y-2">
-          <h2 className="text-lg font-black text-white leading-tight font-malayalam m-0">
-            ഓരോ ആവശ്യത്തിനും<br />
-            <span className="text-[#7FFFC4]">ഏറ്റവും നല്ല വില</span>
+        {/* Left Content */}
+        <div className="relative z-10 max-w-[62%] space-y-2">
+          <h2 className="text-base sm:text-lg font-black text-white leading-tight font-malayalam m-0">
+            നാട്ടിലെ കടകളിൽ നിന്ന്<br />
+            <span className="text-[#7FFFC4]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
           </h2>
-          <p className="text-[11px] text-[#C0EDD9] font-medium leading-snug font-malayalam m-0">
-            നാടൻ കടകളിൽ നിന്ന് ഏറ്റവും കുറഞ്ഞ നിരക്ക്
+          <p className="text-[10px] sm:text-[11px] text-[#C0EDD9] font-medium leading-snug font-malayalam m-0">
+            അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് നിങ്ങൾക്ക് അനുയോജ്യമായ വില കണ്ടെത്തൂ.
           </p>
-          <button
-            type="button"
-            onClick={() => onSelectCategory('vegetables')}
-            className="inline-flex items-center gap-1.5 px-3.5 py-2 bg-white text-[#063B2A] text-[11px] font-black rounded-full shadow-sm active:scale-95 transition-all font-malayalam cursor-pointer"
-          >
-            <span>ഇപ്പോൾ തിരയുക</span>
-            <ChevronRight className="w-3.5 h-3.5" />
-          </button>
         </div>
 
-        {/* Right: Emoji illustration collage */}
-        <div className="relative z-10 w-28 h-28 shrink-0 flex items-end justify-center">
-          <div className="relative w-full h-full">
-            <span className="absolute top-0 right-2 text-4xl drop-shadow-md select-none">🥬</span>
-            <span className="absolute top-6 left-0 text-3xl drop-shadow-md select-none">🍅</span>
-            <span className="absolute bottom-2 right-0 text-3xl drop-shadow-md select-none">🧅</span>
-            <span className="absolute bottom-0 left-4 text-2xl drop-shadow-sm select-none">🌶️</span>
-            <span className="absolute top-1 right-0 text-xl drop-shadow-sm select-none opacity-60">✨</span>
+        {/* Right Glassmorphic Multi-Category Price Comparison Visual Card */}
+        <div className="relative z-10 w-[130px] sm:w-[150px] shrink-0 font-malayalam">
+          <div className="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-2 sm:p-2.5 text-white shadow-xl space-y-1.5">
+            {/* Header Badge */}
+            <div className="flex items-center justify-between border-b border-white/20 pb-1">
+              <span className="text-[9px] font-bold flex items-center gap-1">
+                🏪 കടകൾ
+              </span>
+              <span className="text-[8px] font-black bg-[#34D399] text-[#063B2A] px-1.5 py-0.5 rounded-full uppercase">
+                താരതമ്യം 📊
+              </span>
+            </div>
+
+            {/* Live Product Comparisons */}
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-[9px] bg-black/25 px-1.5 py-1 rounded-lg">
+                <span className="truncate">🫗 വെളിച്ചെണ്ണ</span>
+                <span className="font-extrabold text-[#7FFFC4] shrink-0 font-sans">₹150</span>
+              </div>
+              <div className="flex items-center justify-between text-[9px] bg-black/25 px-1.5 py-1 rounded-lg">
+                <span className="truncate">🌾 മട്ട അരി</span>
+                <span className="font-extrabold text-[#7FFFC4] shrink-0 font-sans">₹44</span>
+              </div>
+            </div>
+
+            {/* Savings Callout Pill */}
+            <div className="bg-gradient-to-r from-[#34D399] to-[#6EE7B7] text-[#063B2A] text-[9px] font-black text-center py-0.5 rounded-lg shadow-xs">
+              💰 ₹15 വരെ ലാഭം!
+            </div>
           </div>
         </div>
 
         {/* Pagination dots */}
-        <div className="absolute bottom-3 left-5 flex items-center gap-1.5">
+        <div className="absolute bottom-2.5 left-4 flex items-center gap-1.5">
           <span className="w-4 h-1.5 bg-white rounded-full" />
           <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
           <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
@@ -240,11 +266,18 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
               <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">
                 തിരയൽ ഫലം ({popularProducts.length})
               </h2>
+            ) : currentCategoryObj && selectedCategoryId !== 'all' ? (
+              <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0 flex items-center gap-1.5">
+                <span>{currentCategoryObj.icon || (currentCategoryObj as any).emoji || '📦'}</span>
+                <span>{currentCategoryObj.name || (currentCategoryObj as any).label || 'ഉൽപ്പന്നങ്ങൾ'}</span>
+                <span className="text-xs text-[#0B8F68] font-sans font-extrabold">({popularProducts.length})</span>
+              </h2>
             ) : (
-              <>
-                <Flame className="w-4 h-4 text-orange-500 shrink-0" />
-                <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0">ജനപ്രിയം</h2>
-              </>
+              <h2 className="text-sm font-black text-[#17221D] font-malayalam m-0 flex items-center gap-1.5">
+                <span>📦</span>
+                <span>എല്ലാ ഉൽപ്പന്നങ്ങളും</span>
+                <span className="text-xs text-[#0B8F68] font-sans font-extrabold">({popularProducts.length})</span>
+              </h2>
             )}
           </div>
           <button
@@ -279,7 +312,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             {popularProducts.map((product) => {
               const isFav = favorites.includes(product.id);
               const priceValues = Object.values(product.prices || {});
-              const price = priceValues.length > 0 ? Math.min(...priceValues) : 0;
+              const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
               const basketItem = basket.find((b) => b.productId === product.id);
               const qty = basketItem ? basketItem.quantity : 0;
 

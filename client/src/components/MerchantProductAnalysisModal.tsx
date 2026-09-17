@@ -99,25 +99,25 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
   const competitorPrices = competitorEntries.map((c) => c.price);
   const avgMarketPrice =
     competitorPrices.length > 0
-      ? Math.round((competitorPrices.reduce((a, b) => a + b, 0) / competitorPrices.length) * 10) / 10
+      ? Math.round(competitorPrices.reduce((a, b) => a + b, 0) / competitorPrices.length)
       : currentPrice > 0
       ? currentPrice
       : 50;
 
   const minMarketPrice = competitorPrices.length > 0 ? Math.min(...competitorPrices) : currentPrice;
   const maxMarketPrice = competitorPrices.length > 0 ? Math.max(...competitorPrices) : currentPrice;
-  const priceDiff = currentPrice - avgMarketPrice;
-  const originalDelta = currentPrice - originalPrice;
+  const priceDiff = Math.round(currentPrice - avgMarketPrice);
+  const originalDelta = Math.round(currentPrice - originalPrice);
 
   // Quick price adjustment helpers
   const handleFlatAdjust = (delta: number) => {
-    const next = Math.max(1, Math.round((currentPrice + delta) * 10) / 10);
+    const next = Math.max(1, Math.round(currentPrice + delta));
     onPriceChange(next);
   };
 
   const handlePercentAdjust = (percent: number) => {
     const factor = 1 + percent / 100;
-    const next = Math.max(1, Math.round(currentPrice * factor * 10) / 10);
+    const next = Math.max(1, Math.round(currentPrice * factor));
     onPriceChange(next);
   };
 
@@ -335,7 +335,7 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
                 <TrendingDown className="w-4 h-4 text-emerald-700 shrink-0 mt-0.5" />
                 <div>
                   <b className="font-black">മികച്ച വില!</b> നിങ്ങളുടെ വില വിപണി ശരാശരിയേക്കാൾ{' '}
-                  <span className="font-black font-sans">₹{Math.abs(priceDiff).toFixed(1)}</span> കുറവാണ്. ഇത്
+                  <span className="font-black font-sans">₹{Math.abs(priceDiff)}</span> കുറവാണ്. ഇത്
                   കൂടുതൽ ഉപഭോക്താക്കളെ നിങ്ങളുടെ കടയിലേക്ക് ആകർഷിക്കും!
                 </div>
               </div>
@@ -344,7 +344,7 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
                 <TrendingUp className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
                 <div className="flex-1">
                   <b className="font-black">ശ്രദ്ധിക്കുക:</b> നിങ്ങളുടെ വില വിപണി ശരാശരിയേക്കാൾ{' '}
-                  <span className="font-black font-sans">₹{priceDiff.toFixed(1)}</span> കൂടുതലാണ്.
+                  <span className="font-black font-sans">₹{priceDiff}</span> കൂടുതലാണ്.
                   വിൽപ്പന വർദ്ധിപ്പിക്കാൻ നിരക്ക് ക്രമീകരിക്കാം.
                 </div>
                 <button
@@ -505,7 +505,7 @@ export const MerchantProductAnalysisModal: React.FC<MerchantProductAnalysisModal
                       : 'bg-rose-100 text-rose-800'
                   }`}
                 >
-                  {originalDelta > 0 ? `+₹${originalDelta.toFixed(1)}` : `-₹${Math.abs(originalDelta).toFixed(1)}`}
+                  {originalDelta > 0 ? `+₹${originalDelta}` : `-₹${Math.abs(originalDelta)}`}
                 </span>
               )}
             </div>

@@ -271,7 +271,7 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
       const statusIcon = p.stockStatus === 'out_of_stock' ? '❌ Out of stock' : '✅ In Stock';
       text += `• ${p.emoji} ${p.name} (${u}) - ₹${pr} [${statusIcon}]\n`;
     });
-    text += `\n_Checked via PriceTeller Smart Hyperlocal Portal_`;
+    text += `\n_Checked via EnteBazaar Smart Hyperlocal Portal_`;
 
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');

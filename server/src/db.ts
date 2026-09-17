@@ -691,7 +691,7 @@ const newShop: Shop = {
         let filteredStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
         for (const [shopName, price] of Object.entries(p.prices || {})) {
           if (allowedShopNames.has(shopName)) {
-            filteredPrices[shopName] = price;
+            filteredPrices[shopName] = Math.round(Number(price) || 0);
           }
         }
         for (const [shopName, stock] of Object.entries(p.stockStatus || {})) {
@@ -700,7 +700,11 @@ const newShop: Shop = {
           }
         }
         if (params?.includeMaster && p.prices) {
-          filteredPrices = { ...p.prices, ...filteredPrices };
+          const roundedMaster: Record<string, number> = {};
+          for (const [k, v] of Object.entries(p.prices)) {
+            roundedMaster[k] = Math.round(Number(v) || 0);
+          }
+          filteredPrices = { ...roundedMaster, ...filteredPrices };
         }
         return {
           ...p,
@@ -740,7 +744,7 @@ const newShop: Shop = {
       const filteredStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
       for (const [shopName, price] of Object.entries(prod.prices || {})) {
         if (scopedShopNames.has(shopName)) {
-          filteredPrices[shopName] = price;
+          filteredPrices[shopName] = Math.round(Number(price) || 0);
         }
       }
       for (const [shopName, stock] of Object.entries(prod.stockStatus || {})) {

@@ -170,10 +170,24 @@ export const NearbyShopsMapView: React.FC<NearbyShopsMapViewProps> = ({
           zoomControl: false,
         });
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '© OpenStreetMap contributors',
-          maxZoom: 19,
-        }).addTo(map);
+        const primaryTileLayer = L.tileLayer(
+          'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          {
+            subdomains: 'abc',
+            maxZoom: 19,
+            attribution:
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          }
+        ).addTo(map);
+
+        primaryTileLayer.on('tileerror', (error: any) => {
+          if (error.tile) {
+            const z = error.coords.z;
+            const x = error.coords.x;
+            const y = error.coords.y;
+            error.tile.src = `https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}`;
+          }
+        });
 
         leafletMapRef.current = map;
       }
@@ -271,15 +285,23 @@ export const NearbyShopsMapView: React.FC<NearbyShopsMapViewProps> = ({
 
         // Fit map bounds smoothly so user can see both start and shop destination
         try {
-          const bounds = L.latLngBounds([
-            [centerLat, centerLng],
-            [coords.lat, coords.lng],
-          ]);
-          map.fitBounds(bounds, {
-            padding: [60, 60],
-            maxZoom: 16,
-            animate: true,
-          });
+          if (
+            typeof centerLat === 'number' && typeof centerLng === 'number' &&
+            coords && typeof coords.lat === 'number' && typeof coords.lng === 'number' &&
+            !isNaN(centerLat) && !isNaN(centerLng) && !isNaN(coords.lat) && !isNaN(coords.lng)
+          ) {
+            const bounds = L.latLngBounds([
+              [centerLat, centerLng],
+              [coords.lat, coords.lng],
+            ]);
+            if (bounds && bounds.isValid()) {
+              map.fitBounds(bounds, {
+                padding: [60, 60],
+                maxZoom: 16,
+                animate: true,
+              });
+            }
+          }
         } catch {}
       }
     };

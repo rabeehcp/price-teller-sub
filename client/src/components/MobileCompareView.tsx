@@ -159,7 +159,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                   </div>
                   {comparison.maxSavings > 0 && (
                     <span className="bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 text-[10px] font-black px-2 py-0.5 rounded-full font-malayalam">
-                      ₹{comparison.maxSavings} വരെ ലാഭം
+                      ₹{Math.round(comparison.maxSavings)} വരെ ലാഭം
                     </span>
                   )}
                 </div>
@@ -173,11 +173,11 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                   </div>
                   <div className="text-right">
                     <span className="text-2xl font-black text-emerald-300 font-sans">
-                      ₹{comparison.bestTotal}
+                      ₹{Math.round(comparison.bestTotal)}
                     </span>
                     {comparison.averageMarketTotal > comparison.bestTotal && (
                       <span className="text-[10px] text-slate-300 block line-through font-sans">
-                        ശരാശരി: ₹{comparison.averageMarketTotal}
+                        ശരാശരി: ₹{Math.round(comparison.averageMarketTotal)}
                       </span>
                     )}
                   </div>
@@ -296,7 +296,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                         {/* Total Price & Distance */}
                         <div className="flex items-baseline justify-between my-1.5">
                           <div className="text-2xl font-black text-slate-900 font-sans tracking-tight">
-                            ₹{shop.total}
+                            ₹{Math.round(shop.total)}
                           </div>
                           <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
                             <MapPin className="w-3 h-3 text-[#0B8F68]" />
@@ -345,7 +345,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                             </span>
                           ) : (
                             <span className="text-slate-500">
-                              {bestShop?.shopName}-നേക്കാൾ ₹{shop.differenceVsBest} കൂടുതൽ
+                              {bestShop?.shopName}-നേക്കാൾ ₹{Math.round(shop.differenceVsBest)} കൂടുതൽ
                             </span>
                           )}
                         </div>
@@ -397,7 +397,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                     <div className="p-3.5 bg-gradient-to-r from-amber-50 to-emerald-50 border border-amber-200 rounded-2xl space-y-1 shadow-2xs">
                       <div className="flex items-center gap-1.5 text-xs font-black text-[#063B2A]">
                         <Sparkles className="w-4 h-4 text-amber-500" />
-                        <span>സ്പ്ലിറ്റ് ചെയ്താൽ ₹{splitOpt.additionalSavings} അധികം ലാഭം!</span>
+                        <span>സ്പ്ലിറ്റ് ചെയ്താൽ ₹{Math.round(splitOpt.additionalSavings)} അധികം ലാഭം!</span>
                       </div>
                       <p className="text-[11px] text-slate-600 leading-snug">
                         {splitOpt.tipMessage || 'രണ്ട് കടകളിൽ നിന്ന് ഏറ്റവും വിലകുറഞ്ഞവ വേർതിരിച്ച് വാങ്ങി കൂടുതൽ ലാഭിക്കാം.'}
@@ -413,7 +413,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                             <h4 className="text-xs font-black text-slate-900 m-0">{st.shopName}</h4>
                           </div>
                           <span className="text-sm font-black text-[#0B8F68] font-sans">
-                            ₹{st.subtotal}
+                            ₹{Math.round(st.subtotal)}
                           </span>
                         </div>
 
@@ -424,7 +424,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                             {st.items?.map((it, i) => (
                               <div key={i} className="flex items-center justify-between text-[11px] text-slate-700 bg-slate-50 p-1.5 rounded-lg">
                                 <span className="truncate">{it.productName} ({it.quantity} {it.unit})</span>
-                                <span className="font-bold font-sans">₹{it.lineTotal}</span>
+                                <span className="font-bold font-sans">₹{Math.round(it.lineTotal)}</span>
                               </div>
                             ))}
                           </div>

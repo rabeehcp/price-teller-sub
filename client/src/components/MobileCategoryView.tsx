@@ -82,7 +82,6 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
     if (category.id === 'fruits') {
       return [
         { id: 'all', label: 'എല്ലാം' },
-        { id: 'popular', label: 'ജനപ്രിയം' },
         { id: 'local', label: 'നാടൻ പഴങ്ങൾ' },
         { id: 'citrus_melon', label: 'സിട്രസ് & തണ്ണിമത്തൻ' },
         { id: 'exotic', label: 'എക്സോട്ടിക് & ബെറികൾ' },
@@ -113,7 +112,6 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
     }
     return [
       { id: 'all', label: 'എല്ലാം' },
-      { id: 'popular', label: 'ജനപ്രിയം' },
       { id: 'fresh', label: 'പുതിയത്' },
       { id: 'offer', label: 'ഓഫറുകൾ' },
     ];
@@ -385,7 +383,7 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
               const basketItem = basket.find((b) => b.productId === p.id || (b as any).product?.id === p.id);
               const qty = basketItem ? basketItem.quantity : 0;
               const priceValues = Object.values(p.prices || {});
-              const price = priceValues.length > 0 ? Math.min(...priceValues) : 30;
+              const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 30;
               const rating = 4.2 + (Math.abs(p.name.length % 7) / 10);
               const reviewCount = 80 + (p.name.length * 5);
 

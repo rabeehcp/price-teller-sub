@@ -74,6 +74,85 @@ export function isValidKeralaCoord(lat: number, lng: number): boolean {
 }
 
 /**
+ * Robust browser GPS location requester with high-accuracy attempt and instant low-accuracy fallback
+ */
+export const MAX_ACCEPTABLE_ACCURACY_METERS = 10000; // 10 km maximum acceptable accuracy for EnteBazaar
+
+/**
+ * Robust browser GPS location requester with accuracy validation
+ */
+export function requestBrowserGps(
+  onSuccess: (coords: { lat: number; lng: number; accuracy: number; isFresh?: boolean }) => void,
+  onError: (errorMsg: string, debugInfo?: GpsDebugInfo) => void,
+  maxAccuracyMeters: number = MAX_ACCEPTABLE_ACCURACY_METERS
+) {
+  if (!('geolocation' in navigator)) {
+    onError('Geolocation is not supported by your browser.');
+    return;
+  }
+
+  // Clear cached customerCoords for fresh test
+  try {
+    localStorage.removeItem('priceteller_customer_coords');
+  } catch {}
+
+  const processPosition = async (pos: GeolocationPosition) => {
+    const lat = pos.coords.latitude;
+    const lng = pos.coords.longitude;
+    const accuracy = pos.coords.accuracy || 0;
+
+    // Check accuracy BEFORE reverse-geocoding or accepting location
+    if (accuracy > maxAccuracyMeters) {
+      const accuracyKm = Math.round((accuracy / 1000) * 10) / 10;
+      const debugInfo: GpsDebugInfo = {
+        lat,
+        lng,
+        accuracyMeters: Math.round(accuracy),
+        isFreshGps: true,
+        isAcceptableAccuracy: false,
+        statusText: `REJECTED (${accuracyKm} km accuracy > 10 km limit)`,
+        locality: '(നിഷ്ഫലമായ സിഗ്നൽ - accuracy poor)',
+        townCity: '',
+        district: '',
+        displayName: `Rejected (${accuracyKm} km accuracy)`,
+        rawAddress: {},
+        timestamp: new Date().toLocaleTimeString(),
+      };
+
+      console.warn(
+        `[GPS REJECTED] Received accuracy of ${accuracy} meters (${accuracyKm} km), exceeding threshold of ${maxAccuracyMeters}m (10 km). Skipping reverse-geocoding & local storage.`
+      );
+
+      const userMsg = `GPS സിഗ്നൽ കൃത്യത കുറവാണ് (${accuracyKm} km). കൃത്യമായ ലൊക്കേഷനായി GPS വീണ്ടും ശ്രമിക്കുക അല്ലെങ്കിൽ താഴെയുള്ള ലിസ്റ്റിൽ നിന്ന് നിങ്ങളുടെ സ്ഥലം നേരിട്ട് തിരഞ്ഞെടുക്കുക.`;
+      onError(userMsg, debugInfo);
+      return;
+    }
+
+    onSuccess({ lat, lng, accuracy, isFresh: true });
+  };
+
+  // High accuracy attempt with maximumAge: 0
+  navigator.geolocation.getCurrentPosition(
+    (pos) => processPosition(pos),
+    (err) => {
+      // Fallback low accuracy retry with maximumAge: 0
+      navigator.geolocation.getCurrentPosition(
+        (pos2) => processPosition(pos2),
+        (err2) => {
+          let msg = 'Unable to get location permission or GPS signal.';
+          if (err2.code === 1) msg = 'Location permission was denied. Please allow location access in your browser settings.';
+          else if (err2.code === 2) msg = 'Position unavailable. Check your device GPS connection.';
+          else if (err2.code === 3) msg = 'Location request timed out. Please try again.';
+          onError(msg);
+        },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 0 }
+      );
+    },
+    { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }
+  );
+}
+
+/**
  * Calibrates origin coordinates to prevent extreme distance errors (e.g. 10,841 km)
  * when GPS is outside coverage or in testing environment.
  */
@@ -88,12 +167,7 @@ export function sanitizeOriginCoords(
     return { lat: hubLat, lng: hubLng, isLiveGps: false };
   }
 
-  // If user is within 35km of the active location hub, use live GPS; otherwise center on hub
-  const distFromHub = calculateDistanceKm(userCoords.lat, userCoords.lng, hubLat, hubLng);
-  if (distFromHub > 45) {
-    return { lat: hubLat, lng: hubLng, isLiveGps: false };
-  }
-
+  // Preserve valid Kerala GPS location
   return { lat: userCoords.lat, lng: userCoords.lng, isLiveGps: true };
 }
 
@@ -311,7 +385,52 @@ export function findNearestLocation(
 /**
  * Reverse geocode latitude/longitude to a readable place name / address using free OpenStreetMap Nominatim.
  */
-export async function reverseGeocode(lat: number, lng: number): Promise<string> {
+export interface GpsDebugInfo {
+  lat: number;
+  lng: number;
+  accuracyMeters: number | string;
+  isFreshGps: boolean;
+  isAcceptableAccuracy: boolean;
+  statusText?: string;
+  locality: string;
+  townCity: string;
+  district: string;
+  displayName: string;
+  rawAddress: any;
+  timestamp: string;
+}
+
+export async function reverseGeocodeDetails(lat: number, lng: number, accuracy?: number, isFreshGps: boolean = true): Promise<GpsDebugInfo> {
+  const accuracyNum = accuracy !== undefined ? accuracy : 0;
+  const isAcceptable = accuracyNum <= MAX_ACCEPTABLE_ACCURACY_METERS;
+  const accuracyKm = Math.round((accuracyNum / 1000) * 10) / 10;
+
+  if (!isAcceptable && accuracyNum > 0) {
+    const rejectedInfo: GpsDebugInfo = {
+      lat,
+      lng,
+      accuracyMeters: Math.round(accuracyNum),
+      isFreshGps,
+      isAcceptableAccuracy: false,
+      statusText: `REJECTED (${accuracyKm} km > 10 km limit)`,
+      locality: '(poor accuracy)',
+      townCity: '',
+      district: '',
+      displayName: `Rejected (${accuracyKm} km accuracy)`,
+      rawAddress: {},
+      timestamp: new Date().toLocaleTimeString(),
+    };
+
+    console.warn(`[GPS REJECTED] Reverse geocoding skipped because accuracy (${accuracyKm} km) exceeds 10 km limit.`);
+    return rejectedInfo;
+  }
+
+  let displayName = `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+  let locality = '';
+  let townCity = '';
+  let district = '';
+  let rawAddress: any = {};
+
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 4000);
@@ -323,19 +442,59 @@ export async function reverseGeocode(lat: number, lng: number): Promise<string> 
       }
     );
     clearTimeout(timeoutId);
-    if (!res.ok) throw new Error('Geocoding failed');
-    const data = await res.json();
-    if (data.display_name) {
-      const parts = data.display_name.split(',').map((s: string) => s.trim());
-      if (parts.length > 3) {
-        return parts.slice(0, 3).join(', ');
+    if (res.ok) {
+      const data = await res.json();
+      displayName = data.display_name || displayName;
+      if (data && data.address) {
+        rawAddress = data.address;
+        locality = rawAddress.suburb || rawAddress.village || rawAddress.neighbourhood || rawAddress.hamlet || rawAddress.road || '';
+        townCity = rawAddress.town || rawAddress.city || rawAddress.municipality || rawAddress.city_district || '';
+        district = rawAddress.county || rawAddress.state_district || rawAddress.district || '';
       }
-      return data.display_name;
     }
-  } catch {
-    // Fallback
+  } catch (err) {
+    console.error('[GPS DEBUG] Geocoding fetch error:', err);
   }
-  return `${lat.toFixed(4)}, ${lng.toFixed(4)}`;
+
+  const debugInfo: GpsDebugInfo = {
+    lat,
+    lng,
+    accuracyMeters: accuracy !== undefined ? Math.round(accuracy) : 'Unknown',
+    isFreshGps,
+    isAcceptableAccuracy: true,
+    statusText: `ACCEPTED (${accuracyKm} km <= 10 km)`,
+    locality,
+    townCity,
+    district,
+    displayName,
+    rawAddress,
+    timestamp: new Date().toLocaleTimeString(),
+  };
+
+  console.log('================ [GPS LOCATION DEBUG LOG] ================');
+  console.log('0. Geolocation API Status: ACCEPTED (< 10 km accuracy)');
+  console.log('1. Latitude:', debugInfo.lat);
+  console.log('2. Longitude:', debugInfo.lng);
+  console.log('3. GPS Accuracy:', debugInfo.accuracyMeters, 'meters');
+  console.log('4. Reverse-geocoded Locality:', debugInfo.locality || '(none)');
+  console.log('5. City / Town:', debugInfo.townCity || '(none)');
+  console.log('6. District:', debugInfo.district || '(none)');
+  console.log('7. Full Display Name:', debugInfo.displayName);
+  console.log('8. Raw Nominatim Address Object:', debugInfo.rawAddress);
+  console.log('==========================================================');
+
+  return debugInfo;
+}
+
+export async function reverseGeocode(lat: number, lng: number): Promise<string> {
+  const details = await reverseGeocodeDetails(lat, lng);
+  const primary = details.locality || details.townCity || details.district;
+  if (primary) {
+    return details.district && !primary.toLowerCase().includes(details.district.toLowerCase())
+      ? `${primary}, ${details.district}`
+      : primary;
+  }
+  return details.displayName;
 }
 
 /**

@@ -70,14 +70,14 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
 
   const totalBasketCount = basket.reduce((sum, item) => sum + item.quantity, 0);
 
-  const subtotal = basket.reduce((sum, item) => {
+  const subtotal = Math.round(basket.reduce((sum, item) => {
     const prod = item.product;
     const priceValues = Object.values(prod.prices || {});
     const basePrice = priceValues.length > 0 ? Math.min(...priceValues) : 30;
     const unit = item.selectedUnit || prod.defaultUnit || 'kg';
     const mult = prod.unitMultiplier?.[unit] ?? 1;
-    return sum + basePrice * mult * item.quantity;
-  }, 0);
+    return sum + Math.round(basePrice * mult) * item.quantity;
+  }, 0));
 
   const hasItems = basket.length > 0;
   const bestShop = comparison?.shops[0];
@@ -94,7 +94,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
   }
 
   return (
-    <aside className="w-[380px] shrink-0 space-y-4 font-sans select-none sticky top-20">
+    <aside className="w-[380px] shrink-0 space-y-4 font-sans select-none sticky top-20 max-h-[calc(100vh-90px)] overflow-y-auto no-scrollbar pb-6">
       {/* 0. TOP TAB SWITCHER (Cart vs Live Price Comparison) */}
       <div className="bg-white border border-[#E3ECE7] rounded-2xl p-1.5 shadow-2xs grid grid-cols-2 gap-1 font-malayalam">
         <button
@@ -167,7 +167,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
               </div>
             </div>
 
-            {/* Cart Item Rows */}
+            {/* Cart Item Rows (Scrollable for increased items) */}
             {basket.length === 0 ? (
               <div className="py-6 text-center space-y-2">
                 <div className="w-10 h-10 rounded-full bg-[#F5F8F6] text-[#8A9992] flex items-center justify-center mx-auto text-base">
@@ -178,7 +178,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5 max-h-56 overflow-y-auto pr-1">
+              <div className="space-y-2.5 max-h-[48vh] min-h-[140px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-emerald-200">
                 {basket.map((item) => {
                   const prod = item.product;
                   const priceValues = Object.values(prod.prices || {});

@@ -10,6 +10,7 @@ import {
   ChevronRight,
   CheckCircle2,
   LogOut,
+  MessageCircle,
 } from 'lucide-react';
 
 interface MobileProfileViewProps {
@@ -32,8 +33,13 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
   const menuItems = [
     {
       id: 'orders',
-      title: 'എന്റെ ഓർഡറുകൾ',
+      title: 'എന്റെ ഓർഡറുകൾ (Orders)',
       icon: <Package className="w-5 h-5 text-[#4D6158]" />,
+    },
+    {
+      id: 'chat',
+      title: 'കടകളുമായി ചാറ്റ് (Chat with Shops)',
+      icon: <MessageCircle className="w-5 h-5 text-[#0B8F68]" />,
     },
     {
       id: 'addresses',

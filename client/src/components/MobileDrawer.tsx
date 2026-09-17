@@ -43,6 +43,7 @@ interface MobileDrawerProps {
   onOpenAuthModal?: (mode?: 'consumer-login' | 'consumer-register' | 'merchant-login' | 'merchant-register' | 'gateway') => void;
   onOpenConsumerDashboard?: () => void;
   onOpenPreBookings?: () => void;
+  onOpenChat?: () => void;
   onOpenMerchantPortal?: () => void;
   onOpenAdminPortal?: () => void;
   
@@ -72,6 +73,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onOpenAuthModal,
   onOpenConsumerDashboard,
   onOpenPreBookings,
+  onOpenChat,
   onOpenMerchantPortal,
   onOpenAdminPortal,
   merchantTab = 'dashboard',
@@ -108,7 +110,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 {isMerchant ? '🏪' : isAdmin ? '🛡️' : '🛒'}
               </div>
               <span className="font-black text-base text-white tracking-tight font-sans">
-                {isMerchant ? 'Merchant Portal' : isAdmin ? 'Admin Panel' : 'PriceTeller'}
+                {isMerchant ? 'Merchant Portal' : isAdmin ? 'Admin Panel' : 'EnteBazaar'}
               </span>
             </div>
             <button
@@ -491,12 +493,31 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-3.5">
-                <Clock className="w-4 h-4 text-emerald-300 shrink-0" />
-                <span>ഓർഡറുകൾ (Orders)</span>
+                 <Clock className="w-4 h-4 text-emerald-300 shrink-0" />
+                 <span>ഓർഡറുകൾ (Orders)</span>
               </div>
               {pendingOrdersCount > 0 && (
                 <span className="bg-[#10A978] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
                   {pendingOrdersCount}
+                </span>
+              )}
+            </button>
+
+            <button
+              onClick={() => {
+                onClose();
+                if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
+                else if (onOpenChat) onOpenChat();
+              }}
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white transition-colors text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-3.5">
+                <MessageCircle className="w-4 h-4 text-emerald-300 shrink-0" />
+                <span>കടകളുമായി ചാറ്റ് (Chat with Shops)</span>
+              </div>
+              {unreadChatsCount > 0 && (
+                <span className="bg-[#10A978] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                  {unreadChatsCount}
                 </span>
               )}
             </button>
@@ -539,7 +560,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             <button
               onClick={() => {
-                alert('PriceTeller സഹായം: കസ്റ്റമർ സപ്പോർട്ടിനായി support@priceteller.in ബന്ധപ്പെടുക.');
+                alert('EnteBazaar സഹായം: കസ്റ്റമർ സപ്പോർട്ടിനായി support@entebazaar.in ബന്ധപ്പെടുക.');
                 onClose();
               }}
               className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#DDF5EA]/80 hover:bg-[#DDF5EA]/10 hover:text-white transition-colors text-left cursor-pointer"

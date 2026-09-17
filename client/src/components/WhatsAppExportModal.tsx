@@ -26,10 +26,10 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
 
   // Generate formatted WhatsApp message text
   const generateWhatsAppMessage = (): string => {
-    let msg = `🛒 *PriceTeller Smart Shopping List*\n`;
+    let msg = `🛒 *EnteBazaar Smart Shopping List*\n`;
     msg += `📍 Location: ${locationName} · ${dateStr}\n`;
     if (bestShop) {
-      msg += `🏆 Recommended Shop: *${bestShop.shopName}* (Lowest total: ₹${bestShop.total})\n`;
+      msg += `🏆 Recommended Shop: *${bestShop.shopName}* (Lowest total: ₹${Math.round(bestShop.total)})\n`;
     }
     msg += `--------------------------------\n`;
 
@@ -42,11 +42,11 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
     });
 
     msg += `--------------------------------\n`;
-    msg += `💰 *Est. Total: ₹${bestShop?.total || 0}*\n`;
+    msg += `💰 *Est. Total: ₹${Math.round(bestShop?.total || 0)}*\n`;
     if (comparison && comparison.maxSavings > 0) {
-      msg += `✨ Saved ₹${comparison.maxSavings} comparing across ${comparison.shops.length} shops!\n`;
+      msg += `✨ Saved ₹${Math.round(comparison.maxSavings)} comparing across ${comparison.shops.length} shops!\n`;
     }
-    msg += `\nShared via PriceTeller · Smart Basket Comparison`;
+    msg += `\nShared via EnteBazaar · Smart Basket Comparison`;
     return msg;
   };
 

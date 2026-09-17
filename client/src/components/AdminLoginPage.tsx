@@ -61,7 +61,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-lg font-black tracking-tight text-white">PriceTeller</span>
+              <span className="text-lg font-black tracking-tight text-white">EnteBazaar</span>
               <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                 Operations
               </span>
@@ -196,7 +196,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* Footer */}
       <footer className="w-full py-4 text-center text-xs text-gray-500 border-t border-slate-800/60 bg-slate-950/40">
-        <span>PriceTeller Master Administrative System · Strict Authorization Enforced</span>
+        <span>EnteBazaar Master Administrative System · Strict Authorization Enforced</span>
       </footer>
     </div>
   );

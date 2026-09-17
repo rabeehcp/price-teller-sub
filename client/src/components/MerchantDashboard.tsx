@@ -630,7 +630,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
         expiresInMinutes: Number(dealDuration),
         tag: dealTag,
       });
-      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on PriceTeller!`);
+      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on EnteBazaar!`);
       setTimeout(() => setDealSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
@@ -1328,8 +1328,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 <DesktopMerchantOverview
                   shopName={authUser?.shopName || selectedShopName}
                   shops={shops}
-                  products={products}
+                  products={activeProductCatalog}
                   preBookings={preBookings}
+                  shopCategories={shopCategories}
                   onNavigateTab={(tab) => setMerchantTab(tab as any)}
                   onOpenAddProduct={() => setIsMasterPickerOpen(true)}
                 />

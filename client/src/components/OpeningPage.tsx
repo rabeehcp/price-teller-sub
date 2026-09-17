@@ -140,7 +140,7 @@ export const OpeningPage: React.FC<OpeningPageProps> = ({
             </div>
             <div>
               <span className="text-2xl font-black tracking-tight text-slate-900">
-                Price<span className="text-brand-600">Teller</span>
+                Ente<span className="text-brand-600">Bazaar</span>
               </span>
               <span className="ml-2 text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full uppercase tracking-wider hidden sm:inline-block">
                 Grocery Intelligence Platform
@@ -551,7 +551,7 @@ export const OpeningPage: React.FC<OpeningPageProps> = ({
                 {/* Card Footer */}
                 <div className="pt-3 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-500">
                   <span>🔒 Verified SSL Session</span>
-                  <span className="font-semibold text-slate-700">PriceTeller v2.4</span>
+                  <span className="font-semibold text-slate-700">EnteBazaar v2.4</span>
                 </div>
 
               </div>
@@ -565,7 +565,7 @@ export const OpeningPage: React.FC<OpeningPageProps> = ({
       {/* Footer */}
       <footer className="w-full bg-white border-t border-[#e2e7dd] py-4 px-6 text-center text-xs text-gray-500">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>© 2026 PriceTeller Inc. All grocery prices indexed from verified local retail shops.</span>
+          <span>© 2026 EnteBazaar Inc. All grocery prices indexed from verified local retail shops.</span>
           <div className="flex items-center gap-4 font-semibold text-gray-600">
             <span>Privacy</span>
             <span>Terms</span>

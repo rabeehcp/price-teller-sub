@@ -111,10 +111,10 @@ export const ItemizedMatrixModal: React.FC<ItemizedMatrixModalProps> = ({
                                   : 'text-slate-900'
                               }`}
                             >
-                              ₹{priceInfo.lineTotal}
+                              ₹{Math.round(priceInfo.lineTotal)}
                             </div>
                             <div className="text-[10px] text-gray-500 mt-0.5">
-                              ₹{priceInfo.unitPrice}/{row.unit}
+                              ₹{Math.round(priceInfo.unitPrice)}/{row.unit}
                             </div>
                           </>
                         )}
@@ -134,14 +134,14 @@ export const ItemizedMatrixModal: React.FC<ItemizedMatrixModalProps> = ({
                       i === 0 ? 'text-emerald-800 bg-brand-50/70' : 'text-slate-900'
                     }`}
                   >
-                    <div className="text-base font-black">₹{s.total}</div>
+                    <div className="text-base font-black">₹{Math.round(s.total)}</div>
                     {i === 0 ? (
                       <span className="text-[10px] text-emerald-700 font-bold flex items-center justify-center gap-0.5">
                         <Award className="w-3 h-3" /> മികച്ച വില (Best)
                       </span>
                     ) : (
                       <span className="text-[10px] text-gray-500 font-medium">
-                        +₹{s.differenceVsBest}
+                        +₹{Math.round(s.differenceVsBest)}
                       </span>
                     )}
                   </td>

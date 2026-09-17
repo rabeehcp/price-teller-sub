@@ -18,6 +18,7 @@ import {
   Check,
 } from 'lucide-react';
 import { MobileLocationModal } from './MobileLocationModal';
+import { requestBrowserGps, reverseGeocode, findNearestLocation } from '../services/locationService';
 
 interface MalayalamOpeningPageProps {
   locations: Location[];
@@ -31,6 +32,7 @@ interface MalayalamOpeningPageProps {
   onLogout?: () => void;
   onSearch?: (query: string) => void;
   onSelectCategory?: (categoryId: string) => void;
+  onCustomerCoordsChanged?: (coords: { lat: number; lng: number; name?: string } | null) => void;
 }
 
 export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
@@ -45,11 +47,74 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
   onLogout,
   onSearch,
   onSelectCategory,
+  onCustomerCoordsChanged,
 }) => {
   const [searchInput, setSearchInput] = useState('');
   const [isLocationDropdownOpen, setIsLocationDropdownOpen] = useState(false);
   const [locationSearchQuery, setLocationSearchQuery] = useState('');
   const [isMobileLocationModalOpen, setIsMobileLocationModalOpen] = useState(false);
+  const [isDetectingGps, setIsDetectingGps] = useState(false);
+  const [gpsFeedback, setGpsFeedback] = useState<{ text: string; isWarning?: boolean } | null>(null);
+
+  const handleDetectGps = () => {
+    setIsDetectingGps(true);
+    setGpsFeedback(null);
+    requestBrowserGps(
+      async (coords) => {
+        const lat = coords.lat;
+        const lng = coords.lng;
+
+        if (coords.accuracy && coords.accuracy > 10000) {
+          setIsDetectingGps(false);
+          const accuracyKm = Math.round((coords.accuracy / 1000) * 10) / 10;
+          setGpsFeedback({
+            text: `GPS സിഗ്നൽ കൃത്യത കുറവാണ് (${accuracyKm} km). ദയവായി പട്ടികയിൽ നിന്ന് സ്ഥലം നേരിട്ട് തിരഞ്ഞെടുക്കുക.`,
+            isWarning: true,
+          });
+          return;
+        }
+
+        let placeName = 'Live GPS Location';
+        try {
+          const rev = await reverseGeocode(lat, lng);
+          if (rev) placeName = rev;
+        } catch {}
+
+        const newCoords = { lat, lng, name: placeName };
+        onCustomerCoordsChanged?.(newCoords);
+
+        const result = findNearestLocation(lat, lng, locations);
+        if (result) {
+          onSelectLocation(result.nearestLocation);
+          if (result.isWithinHubArea) {
+            setGpsFeedback({
+              text: `${placeName} (${result.nearestLocation.name} Hub, ${result.distanceKm} km)`,
+              isWarning: false,
+            });
+            setTimeout(() => {
+              setIsMobileLocationModalOpen(false);
+              setGpsFeedback(null);
+            }, 1200);
+          } else {
+            setGpsFeedback({
+              text: `നിങ്ങളുടെ സ്ഥലം (${placeName}) മലപ്പുറം ഹബ്ബിന് പുറത്താണ്. സമീപത്തെ ഹബ്ബ്: ${result.nearestLocation.name} (${result.distanceKm} km)`,
+              isWarning: true,
+            });
+          }
+        } else {
+          setIsMobileLocationModalOpen(false);
+        }
+        setIsDetectingGps(false);
+      },
+      (errorMsg) => {
+        setIsDetectingGps(false);
+        setGpsFeedback({
+          text: errorMsg,
+          isWarning: true,
+        });
+      }
+    );
+  };
 
   const locationName = currentLocation?.name || 'കോഴിക്കോട്';
 
@@ -184,7 +249,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             </div>
             <div>
               <div className="text-sm sm:text-lg font-black tracking-tight text-[#17221D] flex items-center gap-1 font-sans leading-tight">
-                Price<span className="text-[#10A978]">Teller</span>
+                Ente<span className="text-[#10A978]">Bazaar</span>
               </div>
               <div className="text-[8px] sm:text-[10px] text-[#66756E] font-medium tracking-tight leading-none">
                 Local Shop. Better Price.
@@ -195,7 +260,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           {/* Desktop Search Bar */}
           <form
             onSubmit={handleSearchSubmit}
-            className="hidden md:flex flex-1 max-w-xl items-center bg-[#E5EFE9] hover:bg-[#DDEAE2] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0D4A36]/30 border border-[#D5E5DC] rounded-full px-4 py-2 transition-all"
+            className="hidden md:flex flex-1 max-w-2xl items-center bg-[#E5EFE9] hover:bg-[#DDEAE2] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0D4A36]/30 border border-[#D5E5DC] rounded-full px-4 py-2 transition-all"
           >
             <Search className="w-4 h-4 text-[#6B8579] shrink-0 mr-2.5" />
             <input
@@ -242,15 +307,16 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <span className="w-2 h-2 rounded-full bg-emerald-500 absolute top-2 right-2 border border-white" />
             </button>
 
-            {/* Mobile Location Selector Indicator */}
+            {/* Header Location Selector Indicator (Desktop & Mobile) */}
             <button
               type="button"
               onClick={() => setIsMobileLocationModalOpen(true)}
-              className="md:hidden flex items-center gap-1 bg-[#E5EFE9] text-[#0D4A36] px-2 py-1 rounded-full text-[10px] font-bold font-malayalam active:scale-95 shrink-0"
+              className="flex items-center gap-1 bg-[#E5EFE9] hover:bg-[#D4EEDE] text-[#0D4A36] px-2.5 py-1 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-bold font-malayalam transition-all cursor-pointer active:scale-95 shrink-0 shadow-2xs"
+              title="സ്ഥലം മാറ്റുക (Change Location)"
             >
-              <MapPin className="w-3 h-3 text-[#0D4A36] shrink-0" />
-              <span className="truncate max-w-[50px]">{locationName}</span>
-              <ChevronDown className="w-2.5 h-2.5 shrink-0" />
+              <MapPin className="w-3.5 h-3.5 text-[#0D4A36] shrink-0" />
+              <span className="truncate max-w-[70px] sm:max-w-[120px]">{locationName}</span>
+              <ChevronDown className="w-3 h-3 text-[#0D4A36] shrink-0" />
             </button>
 
             {/* Login / Sign Up Pill Button */}
@@ -323,7 +389,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               {/* Embedded Search Input Pill */}
               <form
                 onSubmit={handleSearchSubmit}
-                className="bg-white rounded-full p-1.5 pl-4 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-2 max-w-md transition-all focus-within:border-[#0D4A36] focus-within:ring-2 focus-within:ring-[#0D4A36]/20"
+                className="bg-white rounded-full p-1.5 pl-4 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-2 max-w-lg transition-all focus-within:border-[#0D4A36] focus-within:ring-2 focus-within:ring-[#0D4A36]/20"
               >
                 <Search className="w-4 h-4 text-[#6B8579] shrink-0" />
                 <input
@@ -367,8 +433,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   <div className="relative">
                     <button
                       type="button"
-                      onClick={() => setIsLocationDropdownOpen(!isLocationDropdownOpen)}
-                      className="flex items-center gap-1 text-[11px] font-bold text-[#0D4A36] hover:text-[#063B2A] bg-[#E8F5EE] px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
+                      onClick={() => setIsMobileLocationModalOpen(true)}
+                      className="flex items-center gap-1 text-[11px] font-bold text-[#0D4A36] hover:text-[#063B2A] bg-[#E8F5EE] hover:bg-[#D4EEDE] px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
                     >
                       <MapPin className="w-3 h-3 text-[#0D4A36]" />
                       <span>{locationName}</span>
@@ -415,14 +481,42 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                           )}
                         </div>
 
+                        {/* Quick Town Chips */}
+                        <div className="flex items-center gap-1 overflow-x-auto no-scrollbar my-1 pb-1 font-malayalam">
+                          {['areekode', 'malappuram', 'manjeri', 'tirur', 'kottakkal', 'nilambur', 'kondotty', 'kizhisseri'].map((townId) => {
+                            const loc = (locations || []).find((l) => l && l.id === townId);
+                            if (!loc) return null;
+                            const isSelected = loc.id === currentLocation?.id;
+                            return (
+                              <button
+                                key={loc.id}
+                                type="button"
+                                onClick={() => {
+                                  onSelectLocation(loc);
+                                  setIsLocationDropdownOpen(false);
+                                  setLocationSearchQuery('');
+                                }}
+                                className={`px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 transition-colors cursor-pointer ${
+                                  isSelected
+                                    ? 'bg-[#0D4A36] text-white'
+                                    : 'bg-[#E8F5EE] text-[#0D4A36] hover:bg-[#D4EEDE]'
+                                }`}
+                              >
+                                {loc.name}
+                              </button>
+                            );
+                          })}
+                        </div>
+
                         {/* List */}
                         <div className="max-h-52 overflow-y-auto space-y-0.5 pr-0.5">
-                          {locations
+                          {(locations || [])
                             .filter((loc) => {
+                              if (!loc) return false;
                               if (!locationSearchQuery.trim()) return true;
                               const q = locationSearchQuery.toLowerCase().trim();
                               return (
-                                loc.name.toLowerCase().includes(q) ||
+                                (loc.name && loc.name.toLowerCase().includes(q)) ||
                                 (loc.subArea && loc.subArea.toLowerCase().includes(q))
                               );
                             })
@@ -514,61 +608,62 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 
           </div>
 
-          {/* MOBILE LAYOUT (< md): Ultra-optimized zero-scroll split layout */}
-          <div className="md:hidden flex-1 h-full flex flex-col justify-between gap-3 min-h-0">
-            {/* Top row: Left Headline & Search + Right 3D Illustration */}
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0 space-y-2.5">
-                <h1 className="text-xl sm:text-2xl font-black text-[#0B3D2D] leading-[1.15] font-malayalam tracking-tight m-0">
+          {/* MOBILE LAYOUT (< md): Ultra-optimized layout with full-width lengthened search bar */}
+          <div className="md:hidden flex-1 h-full flex flex-col justify-between gap-3.5 sm:gap-4 min-h-0 py-1">
+            {/* Top row: Left Headline & Subtitle + Right 3D Illustration */}
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl sm:text-3xl font-black text-[#0B3D2D] leading-[1.2] font-malayalam tracking-tight m-0">
                   ഓരോ ആവശ്യത്തിനും<br />
                   <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
                 </h1>
-                <p className="text-[11px] sm:text-xs text-[#405C4F] font-medium font-malayalam leading-snug m-0">
+                <p className="text-xs sm:text-sm text-[#405C4F] font-semibold font-malayalam leading-snug mt-1.5 m-0">
                   നാടൻ കടകളിൽ നിന്ന് ഏറ്റവും കുറഞ്ഞ നിരക്ക്
                 </p>
-
-                {/* Search Bar for Mobile */}
-                <form
-                  onSubmit={handleSearchSubmit}
-                  className="bg-white rounded-full p-1 pl-3.5 border border-[#BBD8C8] shadow-2xs flex items-center justify-between gap-1.5 transition-all"
-                >
-                  <Search className="w-4 h-4 text-[#6B8579] shrink-0" />
-                  <input
-                    type="text"
-                    value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
-                    placeholder="സാധനങ്ങൾ തിരയുക..."
-                    className="w-full bg-transparent text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
-                  />
-                  <button
-                    type="submit"
-                    className="w-8 h-8 rounded-full bg-[#0D4A36] text-white flex items-center justify-center shrink-0 active:scale-95 cursor-pointer shadow-xs"
-                  >
-                    <Search className="w-3.5 h-3.5" />
-                  </button>
-                </form>
               </div>
 
               {/* Seamless 3D Grocery Hero Illustration on Right */}
-              <div className="w-[140px] sm:w-[160px] shrink-0 flex items-center justify-center">
+              <div className="w-[115px] sm:w-[140px] shrink-0 flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
                   alt="Fresh Choices Better Prices"
-                  className="w-full h-auto max-h-[140px] sm:max-h-[160px] object-contain drop-shadow-sm pointer-events-none"
+                  className="w-full h-auto max-h-[95px] sm:max-h-[115px] object-contain drop-shadow-md pointer-events-none"
                 />
               </div>
             </div>
 
+            {/* Full-Width Lengthened Search Bar for Mobile */}
+            <form
+              onSubmit={handleSearchSubmit}
+              className="w-full bg-white rounded-full p-1.5 pl-4 border border-[#BBD8C8] shadow-xs flex items-center justify-between gap-2.5 transition-all focus-within:border-[#0D4A36] focus-within:ring-2 focus-within:ring-[#0D4A36]/20 my-0.5"
+            >
+              <Search className="w-4 h-4 text-[#6B8579] shrink-0" />
+              <input
+                type="text"
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
+                placeholder="സാധനങ്ങൾ തിരയുക... (ഉദാ: തക്കാളി, പാൽ, അരി)"
+                className="w-full bg-transparent text-xs sm:text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam py-1"
+              />
+              <button
+                type="submit"
+                className="h-9 px-4 rounded-full bg-[#0D4A36] hover:bg-[#063B2A] text-white flex items-center justify-center gap-1.5 shrink-0 active:scale-95 cursor-pointer shadow-xs transition-transform"
+              >
+                <Search className="w-4 h-4" />
+                <span className="text-xs font-bold font-malayalam">തിരയൂ</span>
+              </button>
+            </form>
+
             {/* Mobile Live Price Ticker Strip */}
-            <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 font-malayalam">
-              <span className="text-[10px] font-black text-[#0D4A36] bg-white/90 px-2.5 py-1 rounded-md shrink-0 border border-[#BBD8C8]">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 font-malayalam">
+              <span className="text-xs font-black text-[#0D4A36] bg-white/95 px-3 py-1.5 rounded-lg shrink-0 border border-[#BBD8C8] shadow-2xs">
                 ഇന്നത്തെ വില:
               </span>
               {todayPrices.map((item) => (
                 <div
                   key={item.id}
                   onClick={onEnterAsConsumer}
-                  className="bg-white/95 text-[#0D4A36] text-[10px] font-bold px-2.5 py-1 rounded-full border border-white shadow-2xs shrink-0 flex items-center gap-1 cursor-pointer active:scale-95"
+                  className="bg-white/95 text-[#0D4A36] text-xs font-bold px-3 py-1.5 rounded-full border border-white shadow-2xs shrink-0 flex items-center gap-1.5 cursor-pointer active:scale-95"
                 >
                   <span>{item.emoji}</span>
                   <span>{item.name}</span>
@@ -693,7 +788,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       <footer className="w-full bg-white border-t border-[#E3ECE7] py-1.5 md:py-3 px-3 md:px-4 text-center text-[9px] md:text-xs text-[#66756E] font-malayalam shrink-0 overflow-hidden">
         <div className="max-w-7xl mx-auto flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 truncate">
-            <span className="font-bold text-[#17221D] font-sans">PriceTeller Kerala</span>
+            <span className="font-bold text-[#17221D] font-sans">EnteBazaar Kerala</span>
             <span>·</span>
             <span className="truncate">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
           </div>
@@ -706,11 +801,13 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       {/* 6. MOBILE LOCATION SELECTION MODAL */}
       <MobileLocationModal
         isOpen={isMobileLocationModalOpen}
-        onClose={() => setIsMobileLocationModalOpen(false)}
-        onAllowLocation={() => {
+        onClose={() => {
           setIsMobileLocationModalOpen(false);
-          onEnterAsConsumer();
+          setGpsFeedback(null);
         }}
+        onAllowLocation={handleDetectGps}
+        isDetecting={isDetectingGps}
+        gpsFeedback={gpsFeedback}
         locations={locations}
         currentLocation={currentLocation}
         onSelectLocation={(loc) => {

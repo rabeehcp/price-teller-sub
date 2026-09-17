@@ -1,6 +1,6 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { MapPin, ChevronDown, Bell, Scale } from 'lucide-react';
+import { MapPin, ChevronDown, Bell, MessageCircle } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface MobileHeaderProps {
@@ -8,9 +8,10 @@ interface MobileHeaderProps {
   onOpenLocationModal: () => void;
   onOpenDrawer?: () => void;
   onOpenProfile?: () => void;
-  onOpenCompare?: () => void;
+  onOpenChat?: () => void;
   authUser: User | null;
   unreadNotificationsCount?: number;
+  unreadChatsCount?: number;
 }
 
 export const MobileHeader: React.FC<MobileHeaderProps> = ({
@@ -18,9 +19,10 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   onOpenLocationModal,
   onOpenDrawer,
   onOpenProfile,
-  onOpenCompare,
+  onOpenChat,
   authUser,
   unreadNotificationsCount = 1,
+  unreadChatsCount = 0,
 }) => {
   const avatarLetter = authUser?.name
     ? authUser.name.charAt(0).toUpperCase()
@@ -32,7 +34,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
         {/* Left: EnteBazaar Brand Logo */}
         <EnteBazaarLogo size="sm" />
 
-        {/* Right Controls: Location Pill, Compare Scale, Bell, Avatar */}
+        {/* Right Controls: Location Pill, Chat, Bell, Avatar */}
         <div className="flex items-center gap-1.5 sm:gap-2">
           {/* Location Badge Pill */}
           <button
@@ -47,16 +49,19 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             <ChevronDown className="w-2.5 h-2.5 text-[#66756E] shrink-0" />
           </button>
 
-          {/* Compare Scale Button */}
-          {onOpenCompare && (
+          {/* Chat with Shops Button */}
+          {onOpenChat && (
             <button
               type="button"
-              onClick={onOpenCompare}
-              className="p-2 text-[#063B2A] bg-[#E8F5EE] hover:bg-[#D4EEDE] border border-[#C3EEDC] rounded-full transition-colors cursor-pointer active:scale-95"
-              title="വില താരതമ്യം (Compare Prices)"
-              aria-label="Compare"
+              onClick={onOpenChat}
+              className="relative p-2 text-[#063B2A] bg-[#E8F5EE] hover:bg-[#D4EEDE] border border-[#C3EEDC] rounded-full transition-colors cursor-pointer active:scale-95"
+              title="കടകളുമായി ചാറ്റ് ചെയ്യുക (Chat with Shops)"
+              aria-label="Chat"
             >
-              <Scale className="w-4 h-4 text-[#0B8F68]" />
+              <MessageCircle className="w-4 h-4 text-[#0B8F68]" />
+              {unreadChatsCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-[#10A978] rounded-full ring-2 ring-white" />
+              )}
             </button>
           )}
 

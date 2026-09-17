@@ -371,8 +371,12 @@ apiRouter.get('/proxy-image', async (req: Request, res: Response) => {
     res.setHeader('Cache-Control', 'public, max-age=86400');
     res.send(buffer);
   } catch (err: any) {
-    console.warn(`[proxy-image] Failed to proxy image from ${url}:`, err?.message || err);
-    res.status(404).send('Image could not be retrieved');
+    console.warn(`[proxy-image] Remote image unavailable (${url}):`, err?.message || err);
+    // Return SVG fallback placeholder on 404 to avoid browser network error logs
+    const svgFallback = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f1f5f9" rx="16"/><text x="50%" y="50%" font-size="36" text-anchor="middle" dominant-baseline="central">📦</text></svg>`;
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.status(200).send(Buffer.from(svgFallback));
   }
 });
 

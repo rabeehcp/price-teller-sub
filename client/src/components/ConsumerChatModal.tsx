@@ -373,7 +373,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                 Basket ({basketSnapshot.itemCount} items)
               </span>
               <span className="text-brand-700 font-black bg-brand-100/70 border border-brand-200 px-1.5 sm:px-2 py-0.5 rounded-md text-[11px] sm:text-xs shrink-0">
-                ₹{basketSnapshot.estimatedTotal}
+                ₹{Math.round(basketSnapshot.estimatedTotal)}
               </span>
             </div>
 
@@ -403,7 +403,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                   <span className="text-gray-400 font-normal">
                     ({it.quantity} × {it.unit})
                   </span>
-                  <span className="text-brand-700 font-bold">₹{it.lineTotal}</span>
+                  <span className="text-brand-700 font-bold">₹{Math.round(it.lineTotal || 0)}</span>
                 </span>
               ))}
             </div>
@@ -504,7 +504,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                               isMe ? 'bg-white/20 text-white' : 'bg-brand-100 text-brand-800'
                             }`}
                           >
-                            ₹{msg.basketSnapshot.estimatedTotal}
+                            ₹{Math.round(msg.basketSnapshot.estimatedTotal)}
                           </span>
                         </div>
                         <div className="flex flex-wrap gap-1">
@@ -528,7 +528,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                                     isMe ? 'text-white font-bold' : 'text-brand-700 font-bold'
                                   }
                                 >
-                                  ₹{it.lineTotal}
+                                  ₹{Math.round(it.lineTotal)}
                                 </span>
                               ) : null}
                             </span>
@@ -572,7 +572,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                 </span>
               </span>
               <span className="font-extrabold text-brand-700 bg-white border border-brand-200 px-1.5 py-0.5 rounded-md shrink-0 ml-1.5">
-                ₹{basketSnapshot.estimatedTotal}
+                ₹{Math.round(basketSnapshot.estimatedTotal)}
               </span>
             </div>
           )}

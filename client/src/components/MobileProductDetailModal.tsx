@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { Product, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
-import { ArrowLeft, ShoppingBag, Star, Plus, Minus, Check, Leaf, ShieldCheck, Sprout, X } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Star, Plus, Minus, Check, Leaf, ShieldCheck, Sprout, X, MessageCircle } from 'lucide-react';
 
 interface MobileProductDetailModalProps {
   product: Product | null;
   basket: BasketItem[];
   onClose: () => void;
   onOpenCart?: () => void;
+  onOpenChat?: () => void;
   onAdd: (product: Product, unit: string) => void;
   onQuantityChange: (productId: string, delta: number) => void;
 }
@@ -50,6 +51,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
   basket,
   onClose,
   onOpenCart,
+  onOpenChat,
   onAdd,
   onQuantityChange,
 }) => {
@@ -231,7 +233,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
           </div>
 
           {/* Primary Green CTA Button with Real-time dynamic total price */}
-          <div className="pt-1">
+          <div className="pt-1 space-y-2">
             <button
               type="button"
               onClick={handleAddToCart}
@@ -246,6 +248,20 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
                 <span>കാർട്ടിൽ ചേർക്കുക • ₹{totalPrice}</span>
               )}
             </button>
+
+            {onOpenChat && (
+              <button
+                type="button"
+                onClick={() => {
+                  onClose();
+                  onOpenChat();
+                }}
+                className="w-full py-2.5 px-4 bg-[#F5F8F6] hover:bg-[#E8F5EE] border border-[#E3ECE7] text-[#063B2A] text-xs font-bold rounded-2xl transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam active:scale-98"
+              >
+                <MessageCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
+                <span>ഈ ഉൽപ്പന്നത്തെക്കുറിച്ച് കടയോട് ചോദിക്കുക (Chat)</span>
+              </button>
+            )}
           </div>
 
           {/* 3 Value Features Row */}
