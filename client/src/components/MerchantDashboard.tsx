@@ -103,18 +103,18 @@ interface MerchantDashboardProps {
 }
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
-  { id: 'vegetables', label: 'Vegetables', icon: '🥬' },
-  { id: 'fruits', label: 'Fruits', icon: '🍎' },
-  { id: 'meats', label: 'Fresh Meats', icon: '🍗' },
-  { id: 'fish', label: 'Fish & Seafood', icon: '🐟' },
-  { id: 'dairy', label: 'Dairy & Eggs', icon: '🥛' },
-  { id: 'staples', label: 'Staples & Grains', icon: '🍚' },
-  { id: 'oils-spices', label: 'Oils & Spices', icon: '🫗' },
-  { id: 'bakery-breakfast', label: 'Bakery', icon: '🍞' },
-  { id: 'electronics', label: 'Electronics', icon: '🔌' },
-  { id: 'utensils', label: 'Kitchen Utensils', icon: '🍳' },
-  { id: 'household', label: 'Cleaning & Home', icon: '🧼' },
-  { id: 'organic', label: 'Organic Produce', icon: '🌿' },
+  { id: 'vegetables', label: 'Vegetables', labelMl: 'പച്ചക്കറികൾ', icon: '🥬' },
+  { id: 'fruits', label: 'Fruits', labelMl: 'പഴങ്ങൾ', icon: '🍎' },
+  { id: 'meats', label: 'Fresh Meats', labelMl: 'ഇറച്ചി', icon: '🍗' },
+  { id: 'fish', label: 'Fish & Seafood', labelMl: 'മത്സ്യം', icon: '🐟' },
+  { id: 'dairy', label: 'Dairy & Eggs', labelMl: 'പാൽ & മുട്ട', icon: '🥛' },
+  { id: 'staples', label: 'Staples & Grains', labelMl: 'ധാന്യങ്ങൾ', icon: '🍚' },
+  { id: 'oils-spices', label: 'Oils & Spices', labelMl: 'എണ്ണ & മസാല', icon: '🫗' },
+  { id: 'bakery-breakfast', label: 'Bakery', labelMl: 'ബേക്കറി', icon: '🍞' },
+  { id: 'electronics', label: 'Electronics', labelMl: 'ഇലക്ട്രോണിക്സ്', icon: '🔌' },
+  { id: 'utensils', label: 'Kitchen Utensils', labelMl: 'പാത്രങ്ങൾ', icon: '🍳' },
+  { id: 'household', label: 'Cleaning & Home', labelMl: 'വീട്ടുസാധനങ്ങൾ', icon: '🧼' },
+  { id: 'organic', label: 'Organic Produce', labelMl: 'ഓർഗാനിക്', icon: '🌿' },
 ];
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
@@ -1398,34 +1398,36 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 
                 {/* 1. Category Ribbon */}
                 <div className="mb-4 pb-3 border-b border-gray-100">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-2">
-                      <Tag className="w-4 h-4 text-[#0B8F68]" />
-                      <span className="text-xs font-bold text-slate-800">വിഭാഗങ്ങൾ</span>
-                      <span className="text-[11px] text-slate-400 font-sans">({eligibleProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)</span>
+                  <div className="flex items-center justify-between gap-2 mb-2.5 flex-wrap sm:flex-nowrap">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <Tag className="w-4 h-4 text-[#0B8F68] shrink-0" />
+                      <span className="text-xs font-bold text-slate-800 shrink-0">വിഭാഗങ്ങൾ</span>
+                      <span className="text-[11px] text-slate-400 font-sans whitespace-nowrap">
+                        ({eligibleProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)
+                      </span>
                     </div>
                     <button
                       onClick={() => setMerchantTab('profile')}
-                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] transition-colors cursor-pointer flex items-center gap-1"
+                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] transition-colors cursor-pointer flex items-center gap-1 shrink-0 whitespace-nowrap"
                     >
                       <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
                     </button>
                   </div>
 
-                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-thin">
+                  <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
                     <button
                       onClick={() => {
                         setInventoryCategoryFilter('all');
                         setInventoryCurrentPage(1);
                       }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
                         inventoryCategoryFilter === 'all'
                           ? 'bg-[#0B8F68] text-white shadow-xs'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       <span>✨ എല്ലാം</span>
-                      <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length})</span>
+                      <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length.toLocaleString()})</span>
                     </button>
                     {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
                       const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
@@ -1439,15 +1441,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                             setInventoryCategoryFilter(cat.id);
                             setInventoryCurrentPage(1);
                           }}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
                             inventoryCategoryFilter === cat.id
                               ? 'bg-[#0B8F68] text-white shadow-xs'
                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
                           <span>{cat.icon}</span>
-                          <span>{cat.label}</span>
-                          <span className="text-[10px] font-sans opacity-80 font-black">({count})</span>
+                          <span>{cat.labelMl || cat.label}</span>
+                          <span className="text-[10px] font-sans opacity-80 font-black">({count.toLocaleString()})</span>
                         </button>
                       );
                     })}
@@ -2645,7 +2647,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       }`}
                     >
                       <span>{cat.icon}</span>
-                      <span className="truncate">{cat.label}</span>
+                      <span className="truncate">{cat.labelMl || cat.label}</span>
                       {isChecked && <CheckCircle2 className="w-3.5 h-3.5 ml-auto shrink-0" />}
                     </button>
                   );
@@ -3696,7 +3698,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           shopName={selectedShopName}
           categories={AVAILABLE_PROVIDER_CATEGORIES.map((c) => ({
             id: c.id,
-            name: c.label,
+            name: c.labelMl || c.label,
             icon: c.icon,
             itemCount: allMasterProducts.filter((p) => ((CATEGORY_ALIASES[c.id] || [c.id]).includes(p.categoryId)) || (c.id === 'organic' && p.isOrganic)).length,
           }))}

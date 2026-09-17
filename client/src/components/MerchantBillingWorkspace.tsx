@@ -31,18 +31,18 @@ import {
 } from 'lucide-react';
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
-  { id: 'vegetables', label: 'Vegetables', icon: '🥬' },
-  { id: 'fruits', label: 'Fruits', icon: '🍎' },
-  { id: 'meats', label: 'Fresh Meats', icon: '🍗' },
-  { id: 'fish', label: 'Fish & Seafood', icon: '🐟' },
-  { id: 'dairy', label: 'Dairy & Eggs', icon: '🥛' },
-  { id: 'staples', label: 'Staples & Grains', icon: '🍚' },
-  { id: 'oils-spices', label: 'Oils & Spices', icon: '🫗' },
-  { id: 'bakery-breakfast', label: 'Bakery', icon: '🍞' },
-  { id: 'electronics', label: 'Electronics', icon: '🔌' },
-  { id: 'utensils', label: 'Kitchen Utensils', icon: '🍳' },
-  { id: 'household', label: 'Cleaning & Home', icon: '🧼' },
-  { id: 'organic', label: 'Organic Produce', icon: '🌿' },
+  { id: 'vegetables', label: 'Vegetables', labelMl: 'പച്ചക്കറികൾ', icon: '🥬' },
+  { id: 'fruits', label: 'Fruits', labelMl: 'പഴങ്ങൾ', icon: '🍎' },
+  { id: 'meats', label: 'Fresh Meats', labelMl: 'ഇറച്ചി', icon: '🍗' },
+  { id: 'fish', label: 'Fish & Seafood', labelMl: 'മത്സ്യം', icon: '🐟' },
+  { id: 'dairy', label: 'Dairy & Eggs', labelMl: 'പാൽ & മുട്ട', icon: '🥛' },
+  { id: 'staples', label: 'Staples & Grains', labelMl: 'ധാന്യങ്ങൾ', icon: '🍚' },
+  { id: 'oils-spices', label: 'Oils & Spices', labelMl: 'എണ്ണ & മസാല', icon: '🫗' },
+  { id: 'bakery-breakfast', label: 'Bakery', labelMl: 'ബേക്കറി', icon: '🍞' },
+  { id: 'electronics', label: 'Electronics', labelMl: 'ഇലക്ട്രോണിക്സ്', icon: '🔌' },
+  { id: 'utensils', label: 'Kitchen Utensils', labelMl: 'പാത്രങ്ങൾ', icon: '🍳' },
+  { id: 'household', label: 'Cleaning & Home', labelMl: 'വീട്ടുസാധനങ്ങൾ', icon: '🧼' },
+  { id: 'organic', label: 'Organic Produce', labelMl: 'ഓർഗാനിക്', icon: '🌿' },
 ];
 
 const CATEGORY_ALIASES: Record<string, string[]> = {
@@ -506,16 +506,16 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
             </div>
 
             {/* Category Filter Pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-1.5 scrollbar-none">
+            <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
               <button
                 onClick={() => setSelectedCategory('all')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap ${
                   selectedCategory === 'all'
                     ? 'bg-brand-600 text-white shadow-2xs'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                All Items ({eligibleProducts.length})
+                എല്ലാം ({eligibleProducts.length.toLocaleString()})
               </button>
               {availableCategories.map((cat) => {
                 const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
@@ -526,15 +526,15 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
+                    className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
                       selectedCategory === cat.id
                         ? 'bg-brand-600 text-white shadow-2xs'
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                     }`}
                   >
                     <span>{cat.icon}</span>
-                    <span>{cat.label}</span>
-                    <span className="text-[10px] opacity-75">({count})</span>
+                    <span>{cat.labelMl || cat.label}</span>
+                    <span className="text-[10px] opacity-75">({count.toLocaleString()})</span>
                   </button>
                 );
               })}
