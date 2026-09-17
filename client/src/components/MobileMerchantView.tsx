@@ -56,11 +56,24 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
       
       {/* 1. TOP HEADER MATCHING SCREEN 7 */}
       <div className="flex items-center justify-between px-1 py-1">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {/* Back Arrow button returning to Shopper App */}
+          <button
+            type="button"
+            onClick={onBackToShopper}
+            className="p-2 bg-white hover:bg-slate-50 border border-slate-200 active:scale-95 rounded-xl text-slate-800 shadow-2xs cursor-pointer flex items-center gap-1.5 transition-all"
+            title="കസ്റ്റമർ സ്റ്റോറിലേക്ക് മടങ്ങുക (Back to Customer Store)"
+            aria-label="Back to Customer Store"
+          >
+            <ArrowLeft className="w-5 h-5 text-[#0B8F68]" />
+            <span className="text-xs font-bold text-[#063B2A] font-malayalam hidden xs:inline">മടങ്ങുക</span>
+          </button>
+
           <button
             type="button"
             onClick={onOpenDrawer}
             className="p-2 bg-white border border-slate-200 rounded-xl text-slate-800 shadow-2xs cursor-pointer"
+            title="Open Menu"
           >
             <Menu className="w-5 h-5" />
           </button>

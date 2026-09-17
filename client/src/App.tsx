@@ -74,7 +74,7 @@ import {
   fetchCurrentUserApi,
   getAuthToken,
 } from './services/api';
-import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale, MessageCircle } from 'lucide-react';
+import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale, MessageCircle, ArrowLeft } from 'lucide-react';
 
 
 // Helper utilities to accurately identify admin, merchant, or consumer route intents
@@ -1634,6 +1634,7 @@ export const App: React.FC = () => {
                 authUser={authUser}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
                 onLogout={handleLogout}
+                onBack={() => setShopperTab('home')}
                 onSelectSubTab={(tabId) => {
                   if (tabId === 'orders') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
@@ -1650,8 +1651,17 @@ export const App: React.FC = () => {
 
             {shopperTab === 'orders' && (
               <div className="p-4 space-y-3 font-sans pb-24">
-                <div className="flex items-center justify-between pb-2 border-b border-[#F0F4F2]">
-                  <h2 className="text-base font-extrabold text-[#17221D] font-malayalam">എന്റെ ഓർഡറുകൾ</h2>
+                <div className="flex items-center gap-2 pb-2 border-b border-[#F0F4F2]">
+                  <button
+                    type="button"
+                    onClick={() => setShopperTab('home')}
+                    className="p-1.5 bg-[#F5F8F6] hover:bg-[#E8F5EE] border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-all cursor-pointer"
+                    title="ഹോമിലേക്ക് മടങ്ങുക (Back to Home)"
+                    aria-label="Back to Home"
+                  >
+                    <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
+                  </button>
+                  <h2 className="text-base font-extrabold text-[#17221D] font-malayalam m-0">എന്റെ ഓർഡറുകൾ</h2>
                 </div>
                 {authUser ? (
                   <div className="p-6 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3 shadow-2xs">
@@ -1715,6 +1725,7 @@ export const App: React.FC = () => {
                 customerCoords={customerCoords}
                 onSelectShop={(shopName) => setSelectedShopDetail(shopName)}
                 onOpenShopCatalogue={handleOpenShopCatalogue}
+                onBack={() => setShopperTab('home')}
               />
             )}
           </div>

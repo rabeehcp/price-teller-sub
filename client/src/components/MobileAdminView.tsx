@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Menu,
   CheckCircle2,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface MobileAdminViewProps {
@@ -28,6 +29,7 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
   locations = [],
   reports = [],
   onOpenDrawer,
+  onBackToShopper,
   onNavigateTab,
 }) => {
   const verifiedStores = shops.filter((s) => s.isVerified !== false).length;
@@ -41,11 +43,24 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
       
       {/* 1. TOP HEADER */}
       <div className="flex items-center justify-between px-1 py-1">
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
+          {onBackToShopper && (
+            <button
+              type="button"
+              onClick={onBackToShopper}
+              className="p-2 bg-white hover:bg-slate-50 border border-slate-200 active:scale-95 rounded-xl text-slate-800 shadow-2xs cursor-pointer flex items-center gap-1.5 transition-all"
+              title="ഷോപ്പർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper App)"
+              aria-label="Back to Shopper App"
+            >
+              <ArrowLeft className="w-5 h-5 text-emerald-600" />
+              <span className="text-xs font-bold text-emerald-950 font-malayalam hidden xs:inline">മടങ്ങുക</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={onOpenDrawer}
             className="p-2 bg-white border border-slate-200 rounded-xl text-slate-800 shadow-2xs cursor-pointer"
+            title="Open Menu"
           >
             <Menu className="w-5 h-5" />
           </button>

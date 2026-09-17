@@ -28,6 +28,7 @@ import {
   Sparkles,
   Layers,
   Check,
+  ArrowLeft,
 } from 'lucide-react';
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
@@ -58,6 +59,7 @@ interface MerchantBillingWorkspaceProps {
   selectedShopName: string;
   shopCategories?: string[];
   authUser?: User | null;
+  onBack?: () => void;
 }
 
 interface ActiveBillItem {
@@ -72,6 +74,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
   selectedShopName,
   shopCategories,
   authUser,
+  onBack,
 }) => {
   const [workspaceTab, setWorkspaceTab] = useState<'pos' | 'history'>('pos');
 
@@ -393,6 +396,18 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
     <div className="space-y-4 animate-in fade-in duration-150">
       {/* Top Workspace Navigation Tabs */}
       <div className="flex items-center justify-between gap-3 bg-white border border-gray-200 rounded-2xl p-2 shadow-2xs flex-wrap">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="p-2 bg-gray-50 hover:bg-[#DDF5EA] border border-gray-200 rounded-xl text-[#063B2A] active:scale-95 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer shrink-0"
+            title="ഡാഷ്‌ബോർഡിലേക്ക് മടങ്ങുക (Back to Dashboard)"
+            aria-label="Back to Dashboard"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
+            <span className="font-malayalam text-xs font-bold">ഡാഷ്‌ബോർഡ്</span>
+          </button>
+        )}
         <div className="flex items-center gap-1.5 flex-1 min-w-[280px]">
           <button
             onClick={() => setWorkspaceTab('pos')}

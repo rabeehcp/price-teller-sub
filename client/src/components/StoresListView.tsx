@@ -16,6 +16,7 @@ import {
   Navigation,
   Sparkles,
   ShoppingBag,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface StoresListViewProps {
@@ -87,9 +88,21 @@ export const StoresListView: React.FC<StoresListViewProps> = ({
       <div className="bg-gradient-to-r from-emerald-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-sm border border-emerald-800/40 relative overflow-hidden">
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold mb-2.5">
-              <Store className="w-3.5 h-3.5" />
-              <span>വെരിഫൈഡ് ഔട്ട്‌ലെറ്റുകൾ (Verified Outlets)</span>
+            <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+              <button
+                type="button"
+                onClick={onGoHome}
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 text-xs font-bold transition-all cursor-pointer shadow-2xs"
+                title="ഹോമിലേക്ക് മടങ്ങുക (Back to Home)"
+                aria-label="Back to Home"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 text-emerald-300" />
+                <span>ഹോം</span>
+              </button>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-xs font-bold">
+                <Store className="w-3.5 h-3.5" />
+                <span>വെരിഫൈഡ് ഔട്ട്‌ലെറ്റുകൾ (Verified Outlets)</span>
+              </div>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white m-0">
               നിങ്ങളുടെ അടുത്തുള്ള കടകൾ ({currentLocation?.name || 'Kerala'})

@@ -288,6 +288,20 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             {/* Switch Mode & Role Switchers */}
             <div className="pt-3 pb-2 border-t border-white/[0.08] my-2 space-y-1.5">
+              {onBackToShopper && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onBackToShopper();
+                  }}
+                  className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all text-left cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>കസ്റ്റമർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper)</span>
+                </button>
+              )}
+
               {onOpenSubscriptionModal && (
                 <button
                   onClick={() => {
@@ -419,7 +433,21 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
             </button>
 
-            <div className="pt-3 pb-2 border-t border-white/[0.08] my-2"></div>
+            <div className="pt-3 pb-2 border-t border-white/[0.08] my-2 space-y-1.5">
+              {onBackToShopper && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onBackToShopper();
+                  }}
+                  className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all text-left cursor-pointer"
+                >
+                  <ArrowLeft className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>കസ്റ്റമർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper)</span>
+                </button>
+              )}
+            </div>
 
             {authUser && (
               <button

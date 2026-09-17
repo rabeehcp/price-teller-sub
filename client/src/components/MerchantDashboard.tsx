@@ -1219,11 +1219,36 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       <div className="flex-1 flex flex-col min-w-0 md:ml-64">
         
         {/* Top Header Bar matching Image 2 */}
-        <header className="bg-white border-b border-[#E3ECE7] px-4 sm:px-6 py-3 sticky top-0 z-20 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 flex-1 max-w-md">
+        <header className="bg-white border-b border-[#E3ECE7] px-3 sm:px-6 py-2.5 sm:py-3 sticky top-0 z-20 flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 flex-1 max-w-md">
+            {/* Back Navigation Button */}
+            {merchantTab !== 'dashboard' ? (
+              <button
+                type="button"
+                onClick={() => setMerchantTab('dashboard')}
+                className="p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA] border border-[#E3ECE7] active:scale-95 rounded-xl text-[#063B2A] transition-all cursor-pointer flex items-center gap-1 shrink-0 shadow-2xs"
+                title="ഡാഷ്‌ബോർഡിലേക്ക് മടങ്ങുക (Back to Dashboard)"
+                aria-label="Back to Dashboard"
+              >
+                <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
+                <span className="text-xs font-bold font-malayalam hidden xs:inline">ബാക്ക്</span>
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onBackToShopper}
+                className="p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA] border border-[#E3ECE7] active:scale-95 rounded-xl text-[#063B2A] transition-all cursor-pointer flex items-center gap-1 shrink-0 shadow-2xs"
+                title="കസ്റ്റമർ സ്റ്റോറിലേക്ക് മടങ്ങുക (Back to Shopper App)"
+                aria-label="Back to Shopper App"
+              >
+                <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
+                <span className="text-xs font-bold font-malayalam hidden xs:inline">ഷോപ്പർ</span>
+              </button>
+            )}
+
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer"
+              className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer shrink-0"
               title="Open Menu"
             >
               <Menu className="w-4 h-4" />
@@ -2777,6 +2802,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           selectedShopName={selectedShopName}
           shopCategories={shopCategories}
           authUser={authUser}
+          onBack={() => setMerchantTab('dashboard')}
         />
       )}
 

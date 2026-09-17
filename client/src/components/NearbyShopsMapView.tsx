@@ -13,6 +13,7 @@ import {
   ChevronRight,
   Route,
   Compass,
+  ArrowLeft,
 } from 'lucide-react';
 import {
   getShopCoordinates,
@@ -28,6 +29,7 @@ interface NearbyShopsMapViewProps {
   customerCoords?: { lat: number; lng: number; name?: string } | null;
   onSelectShop: (shopName: string) => void;
   onOpenShopCatalogue?: (shopName: string) => void;
+  onBack?: () => void;
 }
 
 export const NearbyShopsMapView: React.FC<NearbyShopsMapViewProps> = ({
@@ -36,6 +38,7 @@ export const NearbyShopsMapView: React.FC<NearbyShopsMapViewProps> = ({
   customerCoords,
   onSelectShop,
   onOpenShopCatalogue,
+  onBack,
 }) => {
   const [selectedType, setSelectedType] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -318,18 +321,31 @@ export const NearbyShopsMapView: React.FC<NearbyShopsMapViewProps> = ({
       
       {/* Top Header Bar */}
       <div className="p-4 sm:p-5 border-b border-surface-border bg-gradient-to-r from-brand-950 via-slate-900 to-brand-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <div className="flex items-center gap-2">
-            <span className="text-xl">🗺️</span>
-            <h2 className="text-lg sm:text-xl font-black font-malayalam tracking-tight text-white flex items-center gap-2">
-              സമീപസ്ഥ കടകൾ (Nearby Shops & Navigation)
-            </h2>
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="p-2 bg-white/10 hover:bg-white/20 active:scale-95 text-white border border-white/20 rounded-xl transition-all cursor-pointer shrink-0"
+              title="ഹോമിലേക്ക് മടങ്ങുക (Back to Home)"
+              aria-label="Back to Home"
+            >
+              <ArrowLeft className="w-4 h-4 text-emerald-300" />
+            </button>
+          )}
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xl">🗺️</span>
+              <h2 className="text-lg sm:text-xl font-black font-malayalam tracking-tight text-white flex items-center gap-2">
+                സമീപസ്ഥ കടകൾ (Nearby Shops & Navigation)
+              </h2>
+            </div>
+            <p className="text-xs text-brand-200/80 font-malayalam mt-0.5 flex items-center gap-1.5">
+              <span>{currentLocation?.name || 'നിങ്ങളുടെ പ്രദേശം'} കേന്ദ്രീകരിച്ചുള്ള സൂപ്പർമാർക്കറ്റുകൾ</span>
+              <span>•</span>
+              <span className="text-emerald-400 font-bold">🛣️ യഥാർത്ഥ റോഡ് നാവിഗേഷൻ റൂട്ട് ലഭ്യമാണ്</span>
+            </p>
           </div>
-          <p className="text-xs text-brand-200/80 font-malayalam mt-0.5 flex items-center gap-1.5">
-            <span>{currentLocation?.name || 'നിങ്ങളുടെ പ്രദേശം'} കേന്ദ്രീകരിച്ചുള്ള സൂപ്പർമാർക്കറ്റുകൾ</span>
-            <span>•</span>
-            <span className="text-emerald-400 font-bold">🛣️ യഥാർത്ഥ റോഡ് നാവിഗേഷൻ റൂട്ട് ലഭ്യമാണ്</span>
-          </p>
         </div>
 
         {/* Search */}

@@ -11,6 +11,7 @@ import {
   CheckCircle2,
   LogOut,
   MessageCircle,
+  ArrowLeft,
 } from 'lucide-react';
 
 interface MobileProfileViewProps {
@@ -18,6 +19,7 @@ interface MobileProfileViewProps {
   onOpenAuthModal: () => void;
   onLogout: () => void;
   onSelectSubTab?: (tab: string) => void;
+  onBack?: () => void;
 }
 
 export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
@@ -25,6 +27,7 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
   onOpenAuthModal,
   onLogout,
   onSelectSubTab,
+  onBack,
 }) => {
   const userName = authUser?.name || 'Rabeeh Areekode';
   const userEmail = authUser?.email || 'rabeeh@gmail.com';
@@ -73,6 +76,18 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
       
       {/* 1. Dark Green Hero Header Card (Matching Screen 5) */}
       <div className="bg-gradient-to-b from-[#063B2A] via-[#084D37] to-[#063B2A] text-white pt-8 pb-10 px-6 rounded-b-[36px] text-center relative shadow-sm">
+        {onBack && (
+          <button
+            type="button"
+            onClick={onBack}
+            className="absolute top-5 left-4 p-2 bg-white/10 hover:bg-white/20 active:scale-95 text-white rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold border border-white/20"
+            title="ഹോമിലേക്ക് മടങ്ങുക (Back to Home)"
+            aria-label="Back to Home"
+          >
+            <ArrowLeft className="w-4 h-4 text-[#34D399]" />
+            <span className="font-malayalam text-xs">ഹോം</span>
+          </button>
+        )}
         
         {/* Big Avatar */}
         <div className="w-20 h-20 rounded-full bg-[#084D37] border-2 border-white/20 text-white flex items-center justify-center text-3xl font-black mx-auto shadow-md font-sans">
