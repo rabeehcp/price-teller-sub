@@ -987,9 +987,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const carriedProducts = eligibleProducts.filter((p) => p.prices && p.prices[selectedShopName] !== undefined && p.prices[selectedShopName] > 0);
   const notCarriedProducts = eligibleProducts.filter((p) => !p.prices || p.prices[selectedShopName] === undefined || p.prices[selectedShopName] <= 0);
 
-  const inStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'in_stock').length;
-  const lowStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'low_stock').length;
-  const outOfStockCount = carriedProducts.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'out_of_stock').length;
+  // Products in carriedProducts matching current category filter (for accurate stock counts in selected category)
+  const carriedProductsInCategory = carriedProducts.filter((p) => {
+    if (inventoryCategoryFilter === 'all') return true;
+    const targetCats = CATEGORY_ALIASES[inventoryCategoryFilter] || [inventoryCategoryFilter];
+    return targetCats.includes(p.categoryId) || (inventoryCategoryFilter === 'organic' && p.isOrganic);
+  });
+
+  const inStockCount = carriedProductsInCategory.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'in_stock').length;
+  const lowStockCount = carriedProductsInCategory.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'low_stock').length;
+  const outOfStockCount = carriedProductsInCategory.filter((p) => (editableStock[p.id] ?? p.stockStatus?.[selectedShopName] ?? 'in_stock') === 'out_of_stock').length;
 
   // 3. Filter current view mode by search, category tab, and stock status filter
   const filteredInventoryList = (inventoryViewMode === 'carried' ? carriedProducts : notCarriedProducts).filter((p) => {
@@ -1421,77 +1428,18 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               {/* Main Card Wrapper */}
               <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-6 shadow-xs">
                 
-                {/* 1. Category Ribbon */}
-                <div className="mb-4 pb-3 border-b border-gray-100">
-                  <div className="flex items-center justify-between gap-2 mb-2.5 flex-wrap sm:flex-nowrap">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <Tag className="w-4 h-4 text-[#0B8F68] shrink-0" />
-                      <span className="text-xs font-bold text-slate-800 shrink-0">വിഭാഗങ്ങൾ</span>
-                      <span className="text-[11px] text-slate-400 font-sans whitespace-nowrap">
-                        ({eligibleProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)
-                      </span>
-                    </div>
+                {/* 1. Primary View Mode Toggle: Listed Products vs Master Catalog */}
+                <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-gray-100 mb-4 flex-wrap sm:flex-nowrap">
+                  <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-2xl border border-gray-200 w-full sm:w-fit text-xs font-bold shadow-2xs">
                     <button
-                      onClick={() => setMerchantTab('profile')}
-                      className="px-2.5 py-1 rounded-lg text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] transition-colors cursor-pointer flex items-center gap-1 shrink-0 whitespace-nowrap"
-                    >
-                      <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
-                    </button>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
-                    <button
-                      onClick={() => {
-                        setInventoryCategoryFilter('all');
-                        setInventoryCurrentPage(1);
-                      }}
-                      className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                        inventoryCategoryFilter === 'all'
-                          ? 'bg-[#0B8F68] text-white shadow-xs'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      <span>✨ എല്ലാം</span>
-                      <span className="text-[10px] font-sans opacity-80 font-black">({eligibleProducts.length.toLocaleString()})</span>
-                    </button>
-                    {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
-                      const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
-                      const count = eligibleProducts.filter(
-                        (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
-                      ).length;
-                      return (
-                        <button
-                          key={cat.id}
-                          onClick={() => {
-                            setInventoryCategoryFilter(cat.id);
-                            setInventoryCurrentPage(1);
-                          }}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                            inventoryCategoryFilter === cat.id
-                              ? 'bg-[#0B8F68] text-white shadow-xs'
-                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                          }`}
-                        >
-                          <span>{cat.icon}</span>
-                          <span>{cat.labelMl || cat.label}</span>
-                          <span className="text-[10px] font-sans opacity-80 font-black">({count.toLocaleString()})</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* 2. Sub-Tabs & Stock Status Filter Bar */}
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 mb-4">
-                  {/* View Mode Toggle */}
-                  <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-2xl border border-gray-200 w-fit text-xs font-bold">
-                    <button
+                      type="button"
                       onClick={() => {
                         setInventoryViewMode('carried');
+                        setInventoryCategoryFilter('all');
                         setInventoryCurrentPage(1);
                         setSelectedProductIds(new Set());
                       }}
-                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`flex-1 sm:flex-none px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
                         inventoryViewMode === 'carried'
                           ? 'bg-white text-[#063B2A] shadow-xs border border-gray-200 font-black'
                           : 'text-gray-500 hover:text-gray-800'
@@ -1501,12 +1449,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       <span>ലിസ്റ്റ് ചെയ്തവ ({carriedProducts.length})</span>
                     </button>
                     <button
+                      type="button"
                       onClick={() => {
                         setInventoryViewMode('not_carried');
+                        setInventoryCategoryFilter('all');
                         setInventoryCurrentPage(1);
                         setSelectedProductIds(new Set());
                       }}
-                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
+                      className={`flex-1 sm:flex-none px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
                         inventoryViewMode === 'not_carried'
                           ? 'bg-white text-slate-900 shadow-xs border border-gray-200 font-black'
                           : 'text-gray-500 hover:text-gray-800'
@@ -1517,82 +1467,154 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     </button>
                   </div>
 
-                  {/* Stock Status Filter Pills (Active in Carried mode) */}
-                  {inventoryViewMode === 'carried' && (
-                    <div className="flex items-center gap-1 overflow-x-auto pb-1 text-xs font-bold scrollbar-none">
-                      <button
-                        onClick={() => {
-                          setInventoryStockFilter('all');
-                          setInventoryCurrentPage(1);
-                        }}
-                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer shrink-0 ${
-                          inventoryStockFilter === 'all'
-                            ? 'bg-[#0B8F68] text-white shadow-2xs font-black'
-                            : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                        }`}
-                      >
-                        എല്ലാം ({carriedProducts.length})
-                      </button>
-                      <button
-                        onClick={() => {
-                          setInventoryStockFilter('in_stock');
-                          setInventoryCurrentPage(1);
-                        }}
-                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
-                          inventoryStockFilter === 'in_stock'
-                            ? 'bg-emerald-700 text-white shadow-2xs font-black'
-                            : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
-                        }`}
-                      >
-                        <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                        <span>ഇൻ സ്റ്റോക്ക് ({inStockCount})</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setInventoryStockFilter('low_stock');
-                          setInventoryCurrentPage(1);
-                        }}
-                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
-                          inventoryStockFilter === 'low_stock'
-                            ? 'bg-amber-600 text-white shadow-2xs font-black'
-                            : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
-                        }`}
-                      >
-                        <span className="w-2 h-2 rounded-full bg-amber-500" />
-                        <span>കുറഞ്ഞത് ({lowStockCount})</span>
-                      </button>
-                      <button
-                        onClick={() => {
-                          setInventoryStockFilter('out_of_stock');
-                          setInventoryCurrentPage(1);
-                        }}
-                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
-                          inventoryStockFilter === 'out_of_stock'
-                            ? 'bg-rose-700 text-white shadow-2xs font-black'
-                            : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
-                        }`}
-                      >
-                        <span className="w-2 h-2 rounded-full bg-rose-500" />
-                        <span>തീർന്നുപോയവ ({outOfStockCount})</span>
-                      </button>
-                      {dirtyPriceIds.size > 0 && (
-                        <button
-                          onClick={() => {
-                            setInventoryStockFilter('modified');
-                            setInventoryCurrentPage(1);
-                          }}
-                          className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
-                            inventoryStockFilter === 'modified'
-                              ? 'bg-amber-600 text-white shadow-2xs font-black'
-                              : 'bg-amber-100 text-amber-900 border border-amber-300'
-                          }`}
-                        >
-                          <span>✏️ മാറ്റങ്ങൾ ({dirtyPriceIds.size})</span>
-                        </button>
-                      )}
-                    </div>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => setMerchantTab('profile')}
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] border border-[#C3EEDC]/60 transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap"
+                  >
+                    <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
+                  </button>
                 </div>
+
+                {/* 2. Category Sorting Ribbon (Exclusively for Listed Products) */}
+                {inventoryViewMode === 'carried' && (
+                  <div className="mb-4 pb-3 border-b border-gray-100 animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap sm:flex-nowrap">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <Tag className="w-4 h-4 text-[#0B8F68] shrink-0" />
+                        <span className="text-xs font-bold text-slate-800 shrink-0">വിഭാഗങ്ങൾ (ലിസ്റ്റ് ചെയ്തവ)</span>
+                        <span className="text-[11px] text-slate-400 font-sans whitespace-nowrap">
+                          ({carriedProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInventoryCategoryFilter('all');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                          inventoryCategoryFilter === 'all'
+                            ? 'bg-[#0B8F68] text-white shadow-xs'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }`}
+                      >
+                        <span>✨ എല്ലാം</span>
+                        <span className="text-[10px] font-sans opacity-80 font-black">({carriedProducts.length.toLocaleString()})</span>
+                      </button>
+                      {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
+                        const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+                        const count = carriedProducts.filter(
+                          (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+                        ).length;
+                        if (count === 0 && inventoryCategoryFilter !== cat.id) return null;
+                        return (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onClick={() => {
+                              setInventoryCategoryFilter(cat.id);
+                              setInventoryCurrentPage(1);
+                            }}
+                            className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                              inventoryCategoryFilter === cat.id
+                                ? 'bg-[#0B8F68] text-white shadow-xs'
+                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            }`}
+                          >
+                            <span>{cat.icon}</span>
+                            <span>{cat.labelMl || cat.label}</span>
+                            <span className="text-[10px] font-sans opacity-80 font-black">({count.toLocaleString()})</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {/* 3. Stock Status Filter Bar (Active in Carried mode) */}
+                {inventoryViewMode === 'carried' && (
+                  <div className="flex items-center gap-1 overflow-x-auto pb-1 text-xs font-bold scrollbar-none mb-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInventoryStockFilter('all');
+                        setInventoryCurrentPage(1);
+                      }}
+                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer shrink-0 ${
+                        inventoryStockFilter === 'all'
+                          ? 'bg-[#0B8F68] text-white shadow-2xs font-black'
+                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      }`}
+                    >
+                      എല്ലാം ({carriedProductsInCategory.length})
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInventoryStockFilter('in_stock');
+                        setInventoryCurrentPage(1);
+                      }}
+                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                        inventoryStockFilter === 'in_stock'
+                          ? 'bg-emerald-700 text-white shadow-2xs font-black'
+                          : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                      }`}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                      <span>ഇൻ സ്റ്റോക്ക് ({inStockCount})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInventoryStockFilter('low_stock');
+                        setInventoryCurrentPage(1);
+                      }}
+                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                        inventoryStockFilter === 'low_stock'
+                          ? 'bg-amber-600 text-white shadow-2xs font-black'
+                          : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+                      }`}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-amber-500" />
+                      <span>കുറഞ്ഞത് ({lowStockCount})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setInventoryStockFilter('out_of_stock');
+                        setInventoryCurrentPage(1);
+                      }}
+                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                        inventoryStockFilter === 'out_of_stock'
+                          ? 'bg-rose-700 text-white shadow-2xs font-black'
+                          : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
+                      }`}
+                    >
+                      <span className="w-2 h-2 rounded-full bg-rose-500" />
+                      <span>തീർന്നുപോയവ ({outOfStockCount})</span>
+                    </button>
+                    {dirtyPriceIds.size > 0 && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInventoryStockFilter('modified');
+                          setInventoryCurrentPage(1);
+                        }}
+                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                          inventoryStockFilter === 'modified'
+                            ? 'bg-amber-600 text-white shadow-2xs font-black'
+                            : 'bg-amber-100 text-amber-900 border border-amber-300'
+                        }`}
+                      >
+                        <span>✏️ മാറ്റങ്ങൾ ({dirtyPriceIds.size})</span>
+                      </button>
+                    )}
+                  </div>
+                )}
 
                 {/* 3. Search & Operational Actions Bar */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
