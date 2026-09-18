@@ -30,18 +30,22 @@ import { MALAPPURAM_LOCATIONS } from '../data/malappuramLocations';
 
 
 const REMOTE_API_BASE = 'https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api';
-const isLocalhost =
+const isLocalNetwork =
   typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' ||
     window.location.hostname === '127.0.0.1' ||
-    window.location.hostname.endsWith('.localhost'));
+    window.location.hostname.endsWith('.localhost') ||
+    /^192\.168\.\d+\.\d+$/.test(window.location.hostname) ||
+    /^10\.\d+\.\d+\.\d+$/.test(window.location.hostname) ||
+    /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(window.location.hostname));
 const isVercel =
   typeof window !== 'undefined' &&
   (window.location.hostname.endsWith('.vercel.app') || window.location.hostname.includes('vercel'));
 const API_BASE =
   import.meta.env.VITE_API_BASE_URL ||
   import.meta.env.VITE_API_BASE ||
-  (import.meta.env.DEV || isLocalhost || isVercel ? '/api' : REMOTE_API_BASE);
+  (import.meta.env.DEV || isLocalNetwork || isVercel ? '/api' : REMOTE_API_BASE);
+
 
 export function getAuthToken(): string | null {
   try {
