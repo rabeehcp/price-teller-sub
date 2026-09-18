@@ -29,7 +29,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     : 'R';
 
   return (
-    <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
+    <header className="lg:hidden sticky top-0 z-30 bg-white backdrop-blur-sm px-5 py-3.5 border-b border-[#EAEFF0] font-sans">
       <div className="flex items-center justify-between gap-2">
         {/* Left: EnteBazaar Brand Logo */}
         <EnteBazaarLogo size="sm" />
@@ -40,7 +40,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
           <button
             type="button"
             onClick={onOpenLocationModal}
-            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#F5F8F6] hover:bg-[#E8F5EE] border border-[#E3ECE7] rounded-full text-xs font-semibold text-[#17221D] transition-all cursor-pointer active:scale-95"
+            className="flex items-center gap-1 px-2.5 py-1.5 bg-[#F5F5F5] hover:bg-[#EFEFEF] border border-[#E5E5E5] rounded-full text-xs font-semibold text-[#17221D] transition-all cursor-pointer active:scale-95"
           >
             <MapPin className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
             <span className="text-[10px] font-bold truncate max-w-[70px] font-malayalam">
@@ -54,7 +54,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             <button
               type="button"
               onClick={onOpenChat}
-              className="relative p-2 text-[#063B2A] bg-[#E8F5EE] hover:bg-[#D4EEDE] border border-[#C3EEDC] rounded-full transition-colors cursor-pointer active:scale-95"
+              className="relative p-2 text-[#063B2A] bg-[#F0F0F0] hover:bg-[#E5E5E5] border border-[#E0E0E0] rounded-full transition-colors cursor-pointer active:scale-95"
               title="കടകളുമായി ചാറ്റ് ചെയ്യുക (Chat with Shops)"
               aria-label="Chat"
             >
@@ -69,7 +69,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
           <button
             type="button"
             onClick={onOpenDrawer}
-            className="relative p-2 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+            className="relative p-2 text-[#2D3E35] hover:bg-[#F0F0F0] rounded-full transition-colors cursor-pointer"
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4 text-[#2D3E35]" />

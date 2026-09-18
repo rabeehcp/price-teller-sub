@@ -671,7 +671,7 @@ const newShop: Shop = {
 
       if (params?.search && params.search.trim()) {
         queryParams.push(`%${params.search.toLowerCase().trim()}%`);
-        sql += ` AND (LOWER(name) LIKE $${queryParams.length} OR LOWER(category_id) LIKE $${queryParams.length} OR LOWER(COALESCE(badge, '')) LIKE $${queryParams.length})`;
+        sql += ` AND (LOWER(name) LIKE $${queryParams.length} OR LOWER(category_id) LIKE $${queryParams.length} OR LOWER(COALESCE(badge, '')) LIKE $${queryParams.length} OR LOWER(COALESCE(nutritional_note, '')) LIKE $${queryParams.length})`;
       }
 
       sql += ` ORDER BY name ASC`;

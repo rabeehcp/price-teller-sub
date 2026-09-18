@@ -1458,7 +1458,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
+    <div className="min-h-screen flex bg-white text-[#17221D] font-sans">
       
       {/* 1. DESKTOP LEFT SIDEBAR (Matching Image 1 Reference) */}
       <DesktopLeftSidebar

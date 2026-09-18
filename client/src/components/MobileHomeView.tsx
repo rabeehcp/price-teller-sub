@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Category, Product, Shop, Location, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
+import { getMalayalamName } from '../utils/malayalamNames';
 import {
   Search,
   X,
@@ -94,10 +95,10 @@ const CATEGORY_CONFIG = [
 
 const TODAY_PRICES = [
   { name: 'തക്കാളി', image: '/categories/vegetables.jpg', emoji: '🍅', price: 28, unit: 'kg' },
-  { name: 'സവാള',   image: '/categories/vegetables.jpg', emoji: '🧅', price: 35, unit: 'kg' },
+  { name: 'സവാള', image: '/categories/vegetables.jpg', emoji: '🧅', price: 35, unit: 'kg' },
   { name: 'ഉരുളക്കിഴങ്ങ്', image: '/categories/vegetables.jpg', emoji: '🥔', price: 32, unit: 'kg' },
-  { name: 'പാൽ',    image: '/categories/dairy.jpg', emoji: '🥛', price: 56, unit: 'ലി' },
-  { name: 'എണ്ണ',   image: '/categories/oils-spices.jpg', emoji: '🥥', price: 150, unit: 'ലി' },
+  { name: 'പാൽ', image: '/categories/dairy.jpg', emoji: '🥛', price: 56, unit: 'ലി' },
+  { name: 'എണ്ണ', image: '/categories/oils-spices.jpg', emoji: '🥥', price: 150, unit: 'ലി' },
 ];
 
 export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
@@ -145,7 +146,10 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       filtered = products.filter((p) => targetCats.includes(p.categoryId));
     }
 
-    const priorityNames = ['tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'];
+    const priorityNames = [
+      'തക്കാളി', 'സവാള', 'ഉരുളക്കിഴങ്ങ്', 'പച്ചമുളക്', 'വാഴപ്പഴം', 'നേന്ത്രപ്പഴം', 'കാരറ്റ്', 'പാൽ', 'വെളിച്ചെണ്ണ', 'അരി',
+      'tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'
+    ];
     return [...filtered].sort((a, b) => {
       const aIndex = priorityNames.findIndex((n) => a.name.toLowerCase().includes(n));
       const bIndex = priorityNames.findIndex((n) => b.name.toLowerCase().includes(n));
@@ -294,11 +298,10 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 w-[74px] sm:w-[82px] flex flex-col items-center justify-between p-2 rounded-2xl transition-all cursor-pointer text-center group border ${
-                  isSelected
+                className={`shrink-0 w-[74px] sm:w-[82px] flex flex-col items-center justify-between p-2 rounded-2xl transition-all cursor-pointer text-center group border ${isSelected
                     ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-xs ring-1 ring-[#0B8F68]/25'
                     : 'bg-white border-[#E3ECE7] hover:border-[#0B8F68]/40 shadow-2xs'
-                }`}
+                  }`}
               >
                 <div
                   className={`w-11 h-11 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-105 p-1 ${cat.bgColor} shadow-2xs`}
@@ -311,9 +314,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-bold leading-tight line-clamp-1 w-full text-center ${
-                    isSelected ? 'text-[#063B2A] font-black' : 'text-[#17221D]'
-                  }`}
+                  className={`text-[10px] font-bold leading-tight line-clamp-1 w-full text-center ${isSelected ? 'text-[#063B2A] font-black' : 'text-[#17221D]'
+                    }`}
                 >
                   {cat.label}
                 </span>
@@ -337,8 +339,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                   {selectedCategoryId === 'all'
                     ? 'എല്ലാ ഉൽപ്പന്നങ്ങളും'
                     : CATEGORY_CONFIG.find((c) => c.id === selectedCategoryId)?.label ||
-                      currentCategoryObj?.name ||
-                      'ഉൽപ്പന്നങ്ങൾ'}
+                    currentCategoryObj?.name ||
+                    'ഉൽപ്പന്നങ്ങൾ'}
                 </span>
                 <span className="text-[10px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full font-sans">
                   {popularProducts.length} ഇനങ്ങൾ
@@ -425,9 +427,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 <div
                   key={product.id}
                   onClick={() => onSelectProductForDetail(product)}
-                  className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(11,143,104,0.12)] hover:border-[#0B8F68]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
-                    isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7]'
-                  }`}
+                  className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(11,143,104,0.12)] hover:border-[#0B8F68]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7]'
+                    }`}
                 >
                   {/* Top: Shop Pill & Favorite Wishlist Button */}
                   <div className="flex items-center justify-between gap-1 mb-1">
@@ -444,20 +445,19 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                       title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
                     >
                       <Heart
-                        className={`w-3.5 h-3.5 transition-colors ${
-                          isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300'
-                        }`}
+                        className={`w-3.5 h-3.5 transition-colors ${isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300'
+                          }`}
                       />
                     </button>
                   </div>
 
                   {/* Product Thumbnail */}
-                  <div className="w-full h-24 sm:h-28 flex items-center justify-center p-2 my-1 relative">
+                  <div className="w-full h-28 sm:h-32 flex items-center justify-center py-3 my-1 relative">
                     <ProductImage
                       productId={product.id}
                       image={product.image}
                       emoji={product.emoji}
-                      alt={product.name}
+                      alt={getMalayalamName(product.name)}
                       className="w-full h-full"
                       imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
                       fallbackEmojiClassName="text-3xl"
@@ -470,7 +470,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                   <div className="space-y-1.5 pt-1">
                     <div className="flex items-start justify-between gap-1 min-h-[28px]">
                       <h3 className="text-xs sm:text-[13px] font-bold text-[#17221D] font-malayalam leading-tight line-clamp-2 m-0 group-hover:text-[#0B8F68] transition-colors">
-                        {product.name}
+                        {getMalayalamName(product.name)}
                       </h3>
                       {isOutOfStock && (
                         <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">

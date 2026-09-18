@@ -1,7 +1,7 @@
 [
   {
     "id": "pothys-fruit-3137759",
-    "name": "Banana Green",
+    "name": "പച്ചക്കായ",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137759.jpg",
@@ -27,11 +27,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Green"
   },
   {
     "id": "pothys-fruit-3136460",
-    "name": "Banana Morris",
+    "name": "റോബസ്റ്റ പഴം (മോറിസ്)",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136460.jpg",
@@ -57,11 +58,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Morris"
   },
   {
     "id": "pothys-fruit-3136523",
-    "name": "Mosambi",
+    "name": "മുസംബി (മധുരനാരങ്ങ)",
     "categoryId": "fruits",
     "emoji": "🍊",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136523.jpg",
@@ -87,11 +89,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mosambi"
   },
   {
     "id": "pothys-fruit-3136462",
-    "name": "Banana Poovan",
+    "name": "പൂവൻ പഴം",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136462.jpg",
@@ -117,11 +120,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Poovan"
   },
   {
     "id": "pothys-fruit-3197150",
-    "name": "Anjeer Fruit",
+    "name": "അത്തിപ്പഴം (Anjeer)",
     "categoryId": "fruits",
     "emoji": "🫒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197150.jpg",
@@ -147,11 +151,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Anjeer Fruit"
   },
   {
     "id": "pothys-fruit-3136464",
-    "name": "Banana Red",
+    "name": "ചെങ്കദളി പഴം (ചുവന്ന പഴം)",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136464.jpg",
@@ -177,11 +182,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Red"
   },
   {
     "id": "pothys-fruit-3136463",
-    "name": "Banana Rasthali",
+    "name": "രസകദളി പഴം",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136463.jpg",
@@ -207,11 +213,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Rasthali"
   },
   {
     "id": "pothys-fruit-3140459",
-    "name": "Black Grapes Paneer",
+    "name": "പനീർ മുന്തിരി (കറുത്ത മുന്തിരി)",
     "categoryId": "fruits",
     "emoji": "🍇",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140459.jpg",
@@ -237,11 +244,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Black Grapes Paneer"
   },
   {
     "id": "pothys-fruit-3136465",
-    "name": "Banana Yelakki",
+    "name": "ഞാലിപ്പൂവൻ പഴം",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136465.jpg",
@@ -267,11 +275,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Yelakki"
   },
   {
     "id": "pothys-fruit-2918117",
-    "name": "Papaya",
+    "name": "പപ്പായ (കപ്പങ്ങ / ഓമക്ക)",
     "categoryId": "fruits",
     "emoji": "🥭",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-2918117.jpg",
@@ -297,11 +306,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Papaya"
   },
   {
     "id": "pothys-fruit-3136501",
-    "name": "Guava",
+    "name": "പേരയ്ക്ക",
     "categoryId": "fruits",
     "emoji": "🍈",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136501.jpg",
@@ -327,11 +337,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Guava"
   },
   {
     "id": "pothys-fruit-3136458",
-    "name": "Banana Hill",
+    "name": "മലവാഴപ്പഴം (കുന്നൻ പഴം)",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136458.jpg",
@@ -357,11 +368,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Hill"
   },
   {
     "id": "pothys-fruit-3136459",
-    "name": "Banana Karpooravalli",
+    "name": "കർപ്പൂരവള്ളി പഴം",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136459.jpg",
@@ -387,11 +399,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Karpooravalli"
   },
   {
     "id": "pothys-fruit-3137785",
-    "name": "Orange Imported",
+    "name": "ഓറഞ്ച്",
     "categoryId": "fruits",
     "emoji": "🍊",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137785.jpg",
@@ -417,11 +430,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Orange Imported"
   },
   {
     "id": "pothys-fruit-4649827",
-    "name": "Banana Nendran / Ethan",
+    "name": "നേന്ത്രപ്പഴം (ഏത്തപ്പഴം)",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649827.jpg",
@@ -447,11 +461,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Nendran / Ethan"
   },
   {
     "id": "pothys-fruit-3137389",
-    "name": "Dragon Fruit",
+    "name": "ഡ്രാഗൺ ഫ്രൂട്ട്",
     "categoryId": "fruits",
     "emoji": "🐉",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137389.jpg",
@@ -477,11 +492,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Dragon Fruit"
   },
   {
     "id": "pothys-fruit-3136927",
-    "name": "Musk Melon / Mulampazham",
+    "name": "ഷമാം (മുഴംപഴം)",
     "categoryId": "fruits",
     "emoji": "🍈",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136927.jpg",
@@ -507,11 +523,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Musk Melon / Mulampazham"
   },
   {
     "id": "pothys-fruit-3196636",
-    "name": "Indian Plums",
+    "name": "പ്ലംസ് (ഇന്ത്യൻ പ്ലം)",
     "categoryId": "fruits",
     "emoji": "🍑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3196636.jpg",
@@ -537,11 +554,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Indian Plums"
   },
   {
     "id": "pothys-fruit-4649822",
-    "name": "Banana Karpooravalli",
+    "name": "കർപ്പൂരവള്ളി പഴം",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/test-banana-green.jpg",
@@ -567,11 +585,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Karpooravalli"
   },
   {
     "id": "pothys-fruit-3140766",
-    "name": "Grapes Red Globe Indian",
+    "name": "റെഡ് ഗ്ലോബ് മുന്തിരി (ചുവന്ന മുന്തിരി)",
     "categoryId": "fruits",
     "emoji": "🍇",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140766.jpg",
@@ -597,11 +616,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Grapes Red Globe Indian"
   },
   {
     "id": "pothys-fruit-3136456",
-    "name": "Avocado",
+    "name": "വെണ്ണപ്പഴം (Avocado)",
     "categoryId": "fruits",
     "emoji": "🥑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136456.jpg",
@@ -627,11 +647,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Avocado"
   },
   {
     "id": "pothys-fruit-3196880",
-    "name": "Country Green Pears",
+    "name": "നാടൻ സബർജില്ലി (Green Pears)",
     "categoryId": "fruits",
     "emoji": "🍐",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3196880.jpg",
@@ -657,11 +678,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Country Green Pears"
   },
   {
     "id": "pothys-fruit-3140461",
-    "name": "Kiwi",
+    "name": "കിവി",
     "categoryId": "fruits",
     "emoji": "🥝",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140461.jpg",
@@ -687,11 +709,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Kiwi"
   },
   {
     "id": "pothys-fruit-3201836",
-    "name": "Red Pears",
+    "name": "ചുവന്ന സബർജില്ലി (Red Pears)",
     "categoryId": "fruits",
     "emoji": "🍐",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3201836.jpg",
@@ -717,11 +740,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Red Pears"
   },
   {
     "id": "pothys-fruit-4649821",
-    "name": "Banana Hill",
+    "name": "മലവാഴപ്പഴം (കുന്നൻ പഴം)",
     "categoryId": "fruits",
     "emoji": "🍌",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649821.jpg",
@@ -747,11 +771,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Hill"
   },
   {
     "id": "pothys-fruit-3194564",
-    "name": "Guava Imported",
+    "name": "പേരയ്ക്ക (ഇംപോർട്ടഡ്)",
     "categoryId": "fruits",
     "emoji": "🍈",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194564.jpg",
@@ -777,11 +802,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Guava Imported"
   },
   {
     "id": "pothys-fruit-4649782",
-    "name": "Apple Shimla",
+    "name": "ഷിംല ആപ്പിൾ",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-5f6ab4c1.jpg",
@@ -807,11 +833,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Apple Shimla"
   },
   {
     "id": "pothys-fruit-3137567",
-    "name": "Baby Orange",
+    "name": "ചെറിയ ഓറഞ്ച്",
     "categoryId": "fruits",
     "emoji": "🍊",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3137567.jpg",
@@ -837,11 +864,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Baby Orange"
   },
   {
     "id": "pothys-fruit-3136670",
-    "name": "Strawberry Box",
+    "name": "സ്ട്രോബെറി ബോക്സ്",
     "categoryId": "fruits",
     "emoji": "🍓",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3136670.jpg",
@@ -867,11 +895,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Strawberry Box"
   },
   {
     "id": "pothys-fruit-4649866",
-    "name": "Blueberry Box",
+    "name": "ബ്ലൂബെറി ബോക്സ്",
     "categoryId": "fruits",
     "emoji": "🫐",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649866.jpg",
@@ -897,11 +926,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Blueberry Box"
   },
   {
     "id": "pothys-fruit-3141410",
-    "name": "Pear Green Howell",
+    "name": "സബർജില്ലി (Green Pears)",
     "categoryId": "fruits",
     "emoji": "🍐",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3141410.jpg",
@@ -927,7 +957,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Pear Green Howell"
   },
   {
     "id": "pothys-fruit-3196525",
@@ -961,7 +992,7 @@
   },
   {
     "id": "pothys-fruit-3194445",
-    "name": "Apple Fuji",
+    "name": "ഫ്യൂജി ആപ്പിൾ",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194445.jpg",
@@ -987,11 +1018,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Apple Fuji"
   },
   {
     "id": "pothys-fruit-3140656",
-    "name": "Apple Royal Gala",
+    "name": "റോയൽ ഗാല ആപ്പിൾ",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140656.jpg",
@@ -1017,11 +1049,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Apple Royal Gala"
   },
   {
     "id": "pothys-fruit-4649780",
-    "name": "Apple Red Delicious",
+    "name": "റെഡ് ഡെലീഷ്യസ് ആപ്പിൾ",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649780.jpg",
@@ -1047,11 +1080,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Apple Red Delicious"
   },
   {
     "id": "pothys-fruit-3194698",
-    "name": "Guava Imported",
+    "name": "പേരയ്ക്ക (ഇംപോർട്ടഡ്)",
     "categoryId": "fruits",
     "emoji": "🍈",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194698.jpg",
@@ -1077,11 +1111,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Guava Imported"
   },
   {
     "id": "pothys-fruit-3140460",
-    "name": "Green Apple",
+    "name": "ഗ്രീൻ ആപ്പിൾ",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3140460.jpg",
@@ -1107,11 +1142,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Green Apple"
   },
   {
     "id": "pothys-fruit-4649765",
-    "name": "Anjeer Fruit Box Small",
+    "name": "അത്തിപ്പഴം ബോക്സ്",
     "categoryId": "fruits",
     "emoji": "🫒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-4649765.jpg",
@@ -1137,11 +1173,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Anjeer Fruit Box Small"
   },
   {
     "id": "pothys-fruit-3197135",
-    "name": "Perambam Palam",
+    "name": "പ്രമ്പം പഴം",
     "categoryId": "fruits",
     "emoji": "🍎",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197135.jpg",
@@ -1167,11 +1204,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Perambam Palam"
   },
   {
     "id": "pothys-fruit-3194464",
-    "name": "Cherry",
+    "name": "ചെറി (Cherry)",
     "categoryId": "fruits",
     "emoji": "🍒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3194464.jpg",
@@ -1197,11 +1235,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Cherry"
   },
   {
     "id": "pothys-fruit-3197001",
-    "name": "Durian Imported",
+    "name": "ഡ്യൂറിയൻ പഴം",
     "categoryId": "fruits",
     "emoji": "🍈",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-fruit-3197001.jpg",
@@ -1227,6 +1266,7 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Durian Imported"
   }
 ]

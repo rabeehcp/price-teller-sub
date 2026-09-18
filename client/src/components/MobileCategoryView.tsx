@@ -282,13 +282,13 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
   const categoryDisplayName = category.name || (category.id === 'vegetables' ? 'പച്ചക്കറികൾ' : category.id === 'fruits' ? 'പഴങ്ങൾ' : 'ഉൽപ്പന്നങ്ങൾ');
 
   return (
-    <div className="md:hidden space-y-3 font-sans pb-28 animate-in fade-in duration-150">
+    <div className="md:hidden space-y-4 font-sans pb-36 animate-in fade-in duration-150">
       {/* 1. Header (Matching Screen 2) */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#F0F4F2] sticky top-0 z-30 shadow-2xs">
         <button
           type="button"
           onClick={onBack}
-          className="p-1 -ml-1 text-[#17221D] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+          className="p-1 -ml-1 text-[#17221D] hover:bg-[#F0F0F0] rounded-full transition-colors cursor-pointer"
         >
           <ArrowLeft className="w-5 h-5 text-[#17221D]" />
         </button>

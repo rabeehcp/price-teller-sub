@@ -31,7 +31,7 @@
   },
   {
     "id": "pothys-veg-4649834",
-    "name": "Banana Stem",
+    "name": "വാഴപ്പിണ്ടി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649834.jpg",
@@ -57,11 +57,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Banana Stem"
   },
   {
     "id": "pothys-veg-3136483",
-    "name": "Veg Coriander Leaves",
+    "name": "മല്ലിയില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
@@ -87,11 +88,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Coriander Leaves"
   },
   {
     "id": "pothys-veg-3137728",
-    "name": "Veg Banana Stem",
+    "name": "വാഴപ്പിണ്ടി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137728.jpg",
@@ -117,11 +119,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Banana Stem"
   },
   {
     "id": "pothys-veg-3136926",
-    "name": "Veg Green Chilli",
+    "name": "പച്ചമുളക്",
     "categoryId": "vegetables",
     "emoji": "🌶️",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136926.jpg",
@@ -147,11 +150,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Green Chilli"
   },
   {
     "id": "pothys-veg-3136925",
-    "name": "Veg Curry Leaves",
+    "name": "കറിവേപ്പില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136925.jpg",
@@ -177,11 +181,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Curry Leaves"
   },
   {
     "id": "pothys-veg-3137147",
-    "name": "Veg Brinjal Vari",
+    "name": "വരി വഴുതനങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🍆",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137147.jpg",
@@ -207,11 +212,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Brinjal Vari"
   },
   {
     "id": "pothys-veg-4649927",
-    "name": "Coriander Leaf",
+    "name": "മല്ലിയില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
@@ -237,11 +243,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Coriander Leaf"
   },
   {
     "id": "pothys-veg-3137727",
-    "name": "Veg Banana Flower",
+    "name": "വാഴക്കൂമ്പ് (കുടപ്പൻ)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137727.jpg",
@@ -267,11 +274,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Banana Flower"
   },
   {
     "id": "pothys-veg-3136522",
-    "name": "Veg Mint Leaves",
+    "name": "പുതിനയില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136522.jpg",
@@ -297,11 +305,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Mint Leaves"
   },
   {
     "id": "pothys-veg-3137264",
-    "name": "Veg Raw Banana",
+    "name": "ഏത്തക്കായ (പച്ചക്കായ)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137264.jpg",
@@ -327,11 +336,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Raw Banana"
   },
   {
     "id": "pothys-veg-3136478",
-    "name": "Veg Cabbage",
+    "name": "കാബേജ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136478.jpg",
@@ -357,11 +367,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Cabbage"
   },
   {
     "id": "pothys-veg-3136479",
-    "name": "Veg Capsicum Green",
+    "name": "പച്ച ക്യാപ്സിക്കം",
     "categoryId": "vegetables",
     "emoji": "🫑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136479.jpg",
@@ -387,11 +398,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Capsicum Green"
   },
   {
     "id": "pothys-veg-3137578",
-    "name": "Veg Brinjal Ujala",
+    "name": "നീളൻ വഴുതനങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🍆",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137578.jpg",
@@ -417,11 +429,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Brinjal Ujala"
   },
   {
     "id": "pothys-veg-3194701",
-    "name": "Veg Banana Leaf",
+    "name": "വാഴയില",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194701.jpg",
@@ -447,7 +460,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Banana Leaf"
   },
   {
     "id": "pothys-veg-4650372",
@@ -481,7 +495,7 @@
   },
   {
     "id": "pothys-veg-3194462",
-    "name": "Veg Greens Siru Keerai",
+    "name": "ചെറുചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194462.jpg",
@@ -507,11 +521,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Siru Keerai"
   },
   {
     "id": "pothys-veg-3197033",
-    "name": "Turmeric Plant Fresh",
+    "name": "പച്ചമഞ്ഞൾ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3197033.jpg",
@@ -537,11 +552,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Turmeric Plant Fresh"
   },
   {
     "id": "pothys-veg-3136544",
-    "name": "Veg White Radish",
+    "name": "മുള്ളങ്കി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136544.jpg",
@@ -567,11 +583,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg White Radish"
   },
   {
     "id": "pothys-veg-3137737",
-    "name": "Veg Cluster Beans",
+    "name": "കൊത്തമര",
     "categoryId": "vegetables",
     "emoji": "🫛",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137737.jpg",
@@ -597,11 +614,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Cluster Beans"
   },
   {
     "id": "pothys-veg-3138916",
-    "name": "Veg Country Pumpkin",
+    "name": "നാടൻ മത്തങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🎃",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138916.jpg",
@@ -627,11 +645,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Country Pumpkin"
   },
   {
     "id": "pothys-veg-3194520",
-    "name": "Veg Ginger Mango",
+    "name": "മാങ്ങാ ഇഞ്ചി",
     "categoryId": "vegetables",
     "emoji": "🫚",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194520.jpg",
@@ -657,11 +676,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Ginger Mango"
   },
   {
     "id": "pothys-veg-3137570",
-    "name": "Veg Cucumber Malabar",
+    "name": "കണിവെള്ളരി",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137570.jpg",
@@ -687,11 +707,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Cucumber Malabar"
   },
   {
     "id": "pothys-veg-3194546",
-    "name": "Veg Greens Arai Keerai",
+    "name": "അരക്കീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194546.jpg",
@@ -717,11 +738,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Arai Keerai"
   },
   {
     "id": "pothys-veg-3196682",
-    "name": "Veg Greens Ponnagkanni Keerai",
+    "name": "പൊന്നങ്കണ്ണി ചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196682.jpg",
@@ -747,11 +769,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Ponnagkanni Keerai"
   },
   {
     "id": "pothys-veg-3194493",
-    "name": "Veg Spring Onion",
+    "name": "സ്പ്രിംഗ് ഒനിയൻ (ഉള്ളിത്തണ്ട്)",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194493.jpg",
@@ -777,11 +800,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Spring Onion"
   },
   {
     "id": "pothys-veg-3196820",
-    "name": "Veg Greens Akathi Keerai",
+    "name": "അഗത്തിച്ചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196820.jpg",
@@ -807,11 +831,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Akathi Keerai"
   },
   {
     "id": "pothys-veg-2918119",
-    "name": "Veg Ash Gourd",
+    "name": "കുമ്പളങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918119.jpg",
@@ -837,11 +862,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Ash Gourd"
   },
   {
     "id": "pothys-veg-3136537",
-    "name": "Veg Snake Gourd",
+    "name": "പടവലങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136537.jpg",
@@ -867,7 +893,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Snake Gourd"
   },
   {
     "id": "pothys-veg-4650196",
@@ -931,7 +958,7 @@
   },
   {
     "id": "pothys-veg-4650334",
-    "name": "Ponnakanni Keerai",
+    "name": "പൊന്നങ്കണ്ണി ചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650334.jpg",
@@ -957,7 +984,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Ponnakanni Keerai"
   },
   {
     "id": "pothys-veg-4650339",
@@ -991,7 +1019,7 @@
   },
   {
     "id": "pothys-veg-3194532",
-    "name": "Veg Greens Manathakali Keerai",
+    "name": "മണത്തക്കാളി ഇല",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194532.jpg",
@@ -1017,11 +1045,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Manathakali Keerai"
   },
   {
     "id": "pothys-veg-3194446",
-    "name": "Veg Greens Palak",
+    "name": "പാലക് ചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194446.jpg",
@@ -1047,7 +1076,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Palak"
   },
   {
     "id": "pothys-veg-4650426",
@@ -1081,7 +1111,7 @@
   },
   {
     "id": "pothys-veg-3137735",
-    "name": "Veg Bitter Gourd Small",
+    "name": "നാടൻ പാവയ്ക്ക (കൈപ്പക്ക)",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137735.jpg",
@@ -1107,11 +1137,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Bitter Gourd Small"
   },
   {
     "id": "pothys-veg-3137736",
-    "name": "Veg Broad Beans",
+    "name": "അമരക്ക",
     "categoryId": "vegetables",
     "emoji": "🫛",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137736.jpg",
@@ -1137,11 +1168,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Broad Beans"
   },
   {
     "id": "pothys-veg-3136515",
-    "name": "Veg Ladies Finger",
+    "name": "വെണ്ടയ്ക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136515.jpg",
@@ -1167,11 +1199,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Ladies Finger"
   },
   {
     "id": "pothys-veg-3139162",
-    "name": "Veg American Sweet Corn",
+    "name": "സ്വീറ്റ് കോൺ (മധുരച്ചോളം)",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139162.jpg",
@@ -1197,11 +1230,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg American Sweet Corn"
   },
   {
     "id": "pothys-veg-3136547",
-    "name": "Veg Chow Chow",
+    "name": "ചൗ ചൗ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136547.jpg",
@@ -1227,11 +1261,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Chow Chow"
   },
   {
     "id": "pothys-veg-3136514",
-    "name": "Veg Knol khol",
+    "name": "കോൾറാബി (Knol Khol)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136514.jpg",
@@ -1257,11 +1292,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Knol khol"
   },
   {
     "id": "pothys-veg-3137760",
-    "name": "Veg Tapioca Roots",
+    "name": "കപ്പ (മരച്ചീനി)",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137760.jpg",
@@ -1287,11 +1323,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Tapioca Roots"
   },
   {
     "id": "pothys-veg-3136548",
-    "name": "Veg Potato",
+    "name": "ഉരുളക്കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136548.jpg",
@@ -1317,11 +1354,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Potato"
   },
   {
     "id": "pothys-veg-3136467",
-    "name": "Veg Beetroot",
+    "name": "ബീറ്റ്‌റൂട്ട്",
     "categoryId": "vegetables",
     "emoji": "🫒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136467.jpg",
@@ -1347,11 +1385,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Beetroot"
   },
   {
     "id": "pothys-veg-3138596",
-    "name": "Veg Cucumber Country",
+    "name": "നാടൻ വെള്ളരിക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138596.jpg",
@@ -1377,11 +1416,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Cucumber Country"
   },
   {
     "id": "pothys-veg-3138804",
-    "name": "Veg Bajji Capsicum",
+    "name": "ബജ്ജി മുളക്",
     "categoryId": "vegetables",
     "emoji": "🫑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138804.jpg",
@@ -1407,11 +1447,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Bajji Capsicum"
   },
   {
     "id": "pothys-veg-3137738",
-    "name": "Veg Coccinia",
+    "name": "കോവയ്ക്ക",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137738.jpg",
@@ -1437,11 +1478,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Coccinia"
   },
   {
     "id": "pothys-veg-3196628",
-    "name": "Parwal",
+    "name": "പടവലം (പോട്‌വൽ)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196628.jpg",
@@ -1467,11 +1509,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Parwal"
   },
   {
     "id": "pothys-veg-3136481",
-    "name": "Veg Cauliflower",
+    "name": "കോളിഫ്ലവർ",
     "categoryId": "vegetables",
     "emoji": "🥦",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136481.jpg",
@@ -1497,11 +1540,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Cauliflower"
   },
   {
     "id": "pothys-veg-3194463",
-    "name": "Veg Greens Thandu Keerai",
+    "name": "തണ്ട് ചീര",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194463.jpg",
@@ -1527,11 +1571,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Thandu Keerai"
   },
   {
     "id": "pothys-veg-3194530",
-    "name": "Veg Greens Fenugreek Leaves",
+    "name": "ഉലുവയില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194530.jpg",
@@ -1557,11 +1602,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Fenugreek Leaves"
   },
   {
     "id": "pothys-veg-3136929",
-    "name": "Veg Ridge Gourd",
+    "name": "പീച്ചിങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136929.jpg",
@@ -1587,11 +1633,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Ridge Gourd"
   },
   {
     "id": "pothys-veg-3137153",
-    "name": "Veg Yam / Karunaikizhangu",
+    "name": "ചേന",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137153.jpg",
@@ -1617,11 +1664,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Yam / Karunaikizhangu"
   },
   {
     "id": "pothys-veg-3137246",
-    "name": "Veg Bottle Gourd",
+    "name": "ചുരയ്ക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137246.jpg",
@@ -1647,11 +1695,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Bottle Gourd"
   },
   {
     "id": "pothys-veg-3136480",
-    "name": "Veg Carrot",
+    "name": "കാരറ്റ്",
     "categoryId": "vegetables",
     "emoji": "🥕",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136480.jpg",
@@ -1677,11 +1726,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Carrot"
   },
   {
     "id": "pothys-veg-3222142",
-    "name": "Veg Drumstick",
+    "name": "മുരിങ്ങക്കായ",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3222142.jpg",
@@ -1707,11 +1757,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Drumstick"
   },
   {
     "id": "pothys-veg-3137805",
-    "name": "Veg Tomato Country",
+    "name": "നാടൻ തക്കാളി",
     "categoryId": "vegetables",
     "emoji": "🍅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137805.jpg",
@@ -1737,11 +1788,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Tomato Country"
   },
   {
     "id": "pothys-veg-3137810",
-    "name": "Veg Sweet Potato",
+    "name": "മധുരക്കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🍠",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137810.jpg",
@@ -1767,11 +1819,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Sweet Potato"
   },
   {
     "id": "pothys-veg-3194459",
-    "name": "Veg Corn",
+    "name": "ചോളം",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194459.jpg",
@@ -1797,11 +1850,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Corn"
   },
   {
     "id": "pothys-veg-4213162",
-    "name": "VEG ONION KG",
+    "name": "സവാള (വലിയ ഉള്ളി)",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4213162.jpg",
@@ -1827,11 +1881,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "VEG ONION KG"
   },
   {
     "id": "pothys-veg-3138901",
-    "name": "Veg Bitter Gourd Hybrid",
+    "name": "പാവയ്ക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138901.jpg",
@@ -1857,11 +1912,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Bitter Gourd Hybrid"
   },
   {
     "id": "pothys-veg-3137702",
-    "name": "Veg Coconut Small",
+    "name": "തേങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137702.jpg",
@@ -1887,11 +1943,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Coconut Small"
   },
   {
     "id": "pothys-veg-3137640",
-    "name": "Veg Tomato Bangalore",
+    "name": "ബാംഗ്ലൂർ തക്കാളി",
     "categoryId": "vegetables",
     "emoji": "🍅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137640.jpg",
@@ -1917,11 +1974,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Tomato Bangalore"
   },
   {
     "id": "pothys-veg-4649811",
-    "name": "Baby Corn Peeled",
+    "name": "ബേബി കോൺ തൊലി കളഞ്ഞത്",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649811.jpg",
@@ -1947,11 +2005,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Baby Corn Peeled"
   },
   {
     "id": "pothys-veg-2918121",
-    "name": "Veg Baby Potato",
+    "name": "ചെറിയ ഉരുളക്കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918121.jpg",
@@ -1977,7 +2036,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Baby Potato"
   },
   {
     "id": "pothys-veg-4650429",
@@ -2011,7 +2071,7 @@
   },
   {
     "id": "pothys-veg-3139146",
-    "name": "Veg Baby Corn  200gm",
+    "name": "ബേബി കോൺ 200g",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139146.jpg",
@@ -2037,11 +2097,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Baby Corn  200gm"
   },
   {
     "id": "pothys-veg-3137816",
-    "name": "Veg Colocasia",
+    "name": "ചേമ്പ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137816.jpg",
@@ -2067,11 +2128,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Colocasia"
   },
   {
     "id": "pothys-veg-2918120",
-    "name": "Veg Baby Corn",
+    "name": "ബേബി കോൺ",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918120.jpg",
@@ -2097,11 +2159,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Baby Corn"
   },
   {
     "id": "pothys-veg-3141500",
-    "name": "Veg French Cucumber",
+    "name": "സാലഡ് വെള്ളരിക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3141500.jpg",
@@ -2127,11 +2190,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg French Cucumber"
   },
   {
     "id": "pothys-veg-3137652",
-    "name": "Veg French Beans",
+    "name": "ബീൻസ്",
     "categoryId": "vegetables",
     "emoji": "🫛",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137652.jpg",
@@ -2157,11 +2221,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg French Beans"
   },
   {
     "id": "pothys-veg-3136497",
-    "name": "Veg Ginger",
+    "name": "ഇഞ്ചി",
     "categoryId": "vegetables",
     "emoji": "🫚",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136497.jpg",
@@ -2187,11 +2252,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Ginger"
   },
   {
     "id": "pothys-veg-3137806",
-    "name": "Veg Fresh Groundnut",
+    "name": "പച്ചക്കപ്പലണ്ടി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137806.jpg",
@@ -2217,11 +2283,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Fresh Groundnut"
   },
   {
     "id": "pothys-veg-3136488",
-    "name": "Veg Greens Moringa",
+    "name": "മുരിങ്ങയില",
     "categoryId": "vegetables",
     "emoji": "🌿",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136488.jpg",
@@ -2247,11 +2314,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Greens Moringa"
   },
   {
     "id": "pothys-veg-3197112",
-    "name": "Mudavattu Kilangu",
+    "name": "മുടവത്തു കാൽ കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3197112.jpg",
@@ -2277,11 +2345,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mudavattu Kilangu"
   },
   {
     "id": "pothys-veg-3194456",
-    "name": "Veg Butter Beans",
+    "name": "ബട്ടർ ബീൻസ്",
     "categoryId": "vegetables",
     "emoji": "🫛",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194456.jpg",
@@ -2307,11 +2376,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Butter Beans"
   },
   {
     "id": "pothys-veg-4649879",
-    "name": "Brinjal Round Suphol",
+    "name": "ഉരുണ്ട വഴുതനങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🍆",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649879.jpg",
@@ -2337,11 +2407,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Brinjal Round Suphol"
   },
   {
     "id": "pothys-veg-3137808",
-    "name": "Veg Sambar Onion",
+    "name": "ചെറിയ ഉള്ളി (സാമ്പാർ ഉള്ളി)",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137808.jpg",
@@ -2367,11 +2438,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Sambar Onion"
   },
   {
     "id": "pothys-veg-3136477",
-    "name": "Veg Broccoli",
+    "name": "ബ്രോക്കോളി",
     "categoryId": "vegetables",
     "emoji": "🥦",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136477.jpg",
@@ -2397,11 +2469,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Broccoli"
   },
   {
     "id": "pothys-veg-3137155",
-    "name": "Veg Mushroom Box",
+    "name": "കൂൺ (Mushroom)",
     "categoryId": "vegetables",
     "emoji": "🍄",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137155.jpg",
@@ -2427,11 +2500,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Mushroom Box"
   },
   {
     "id": "pothys-veg-4649937",
-    "name": "Cow Pea Karamani / Nadan Payar",
+    "name": "നാടൻ വൻപയർ (പയർ)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649937.jpg",
@@ -2457,11 +2531,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Cow Pea Karamani / Nadan Payar"
   },
   {
     "id": "pothys-veg-4650043",
-    "name": "Gundu Chilli Green",
+    "name": "ഗുണ്ടു മുളക്",
     "categoryId": "vegetables",
     "emoji": "🌶️",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650043.jpg",
@@ -2487,7 +2562,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Gundu Chilli Green"
   },
   {
     "id": "pothys-veg-4650237",
@@ -2521,7 +2597,7 @@
   },
   {
     "id": "pothys-veg-3194666",
-    "name": "Pirandai / Veldt Grape",
+    "name": "ചങ്ങലംപരണ്ട",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194666.jpg",
@@ -2547,11 +2623,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Pirandai / Veldt Grape"
   },
   {
     "id": "pothys-veg-3194447",
-    "name": "Mahali Kizhangu",
+    "name": "മാഹളി കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194447.jpg",
@@ -2577,11 +2654,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mahali Kizhangu"
   },
   {
     "id": "pothys-veg-4649816",
-    "name": "Bajji Capsicum",
+    "name": "ബജ്ജി മുളക്",
     "categoryId": "vegetables",
     "emoji": "🫑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649816.jpg",
@@ -2607,11 +2685,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Bajji Capsicum"
   },
   {
     "id": "pothys-veg-3136516",
-    "name": "Veg Lemon",
+    "name": "ചെറുനാരങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136516.jpg",
@@ -2637,11 +2716,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Lemon"
   },
   {
     "id": "pothys-veg-3136496",
-    "name": "Veg Garlic",
+    "name": "വെളുത്തുള്ളി",
     "categoryId": "vegetables",
     "emoji": "🧄",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136496.jpg",
@@ -2667,7 +2747,8 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Garlic"
   },
   {
     "id": "pothys-veg-4650392",
@@ -2701,7 +2782,7 @@
   },
   {
     "id": "pothys-veg-3194508",
-    "name": "Veg Chinese Cabbage",
+    "name": "ചൈനീസ് കാബേജ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194508.jpg",
@@ -2727,11 +2808,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Chinese Cabbage"
   },
   {
     "id": "pothys-veg-3136928",
-    "name": "Veg Raw Mango",
+    "name": "പച്ചമാങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136928.jpg",
@@ -2757,11 +2839,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Raw Mango"
   },
   {
     "id": "pothys-veg-3194574",
-    "name": "Veg Parsley",
+    "name": "പാർസിലി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194574.jpg",
@@ -2787,11 +2870,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Parsley"
   },
   {
     "id": "pothys-veg-4650203",
-    "name": "Mango Ginger",
+    "name": "മാങ്ങാ ഇഞ്ചി",
     "categoryId": "vegetables",
     "emoji": "🫚",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650203.jpg",
@@ -2817,11 +2901,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mango Ginger"
   },
   {
     "id": "pothys-veg-4650240",
-    "name": "Mudavattukal Kilangu",
+    "name": "മുടവത്തു കാൽ കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650240.jpg",
@@ -2847,11 +2932,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mudavattukal Kilangu"
   },
   {
     "id": "pothys-veg-3194576",
-    "name": "Zucchini Yellow",
+    "name": "മഞ്ഞ സൂക്കിനി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194576.jpg",
@@ -2877,11 +2963,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Zucchini Yellow"
   },
   {
     "id": "pothys-veg-3194521",
-    "name": "Veg Lettuce Iceberg",
+    "name": "ലെറ്റൂസ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194521.jpg",
@@ -2907,11 +2994,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Lettuce Iceberg"
   },
   {
     "id": "pothys-veg-4650378",
-    "name": "Soya Beans",
+    "name": "സോയാബീൻ",
     "categoryId": "vegetables",
     "emoji": "🫛",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650378.jpg",
@@ -2937,11 +3025,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Soya Beans"
   },
   {
     "id": "pothys-veg-3196638",
-    "name": "Mahali Potato",
+    "name": "മാഹളി കിഴങ്ങ്",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196638.jpg",
@@ -2967,11 +3056,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mahali Potato"
   },
   {
     "id": "pothys-veg-3137202",
-    "name": "Veg Gooseberry Amla",
+    "name": "നെല്ലിക്ക",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137202.jpg",
@@ -2997,11 +3087,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Gooseberry Amla"
   },
   {
     "id": "pothys-veg-4649885",
-    "name": "Capsicum Red",
+    "name": "ചുവന്ന ക്യാപ്സിക്കം",
     "categoryId": "vegetables",
     "emoji": "🫑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649885.jpg",
@@ -3027,11 +3118,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Capsicum Red"
   },
   {
     "id": "pothys-veg-3194457",
-    "name": "Veg Celery",
+    "name": "സെലറി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194457.jpg",
@@ -3057,11 +3149,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Celery"
   },
   {
     "id": "pothys-veg-3196524",
-    "name": "Veg Leeks",
+    "name": "ലീക്സ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196524.jpg",
@@ -3087,11 +3180,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Veg Leeks"
   },
   {
     "id": "pothys-veg-4650244",
-    "name": "Mushrooms",
+    "name": "കൂൺ",
     "categoryId": "vegetables",
     "emoji": "🍄",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650244.jpg",
@@ -3117,11 +3211,12 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Mushrooms"
   },
   {
     "id": "pothys-veg-4650306",
-    "name": "Paraval",
+    "name": "പടവലം (പോട്‌വൽ)",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650306.jpg",
@@ -3147,6 +3242,7 @@
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
-    }
+    },
+    "englishNote": "Paraval"
   }
 ]

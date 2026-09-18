@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Product, Shop, Location, BasketItem, Category } from '../types';
 import { ProductImage } from './ProductImage';
+import { getMalayalamName } from '../utils/malayalamNames';
 import {
   Search,
   Star,
@@ -135,7 +136,9 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       const q = searchQuery.toLowerCase().trim();
       filtered = products.filter((p) =>
         p.name.toLowerCase().includes(q) ||
-        (p.categoryId && p.categoryId.toLowerCase().includes(q))
+        getMalayalamName(p.name).toLowerCase().includes(q) ||
+        (p.categoryId && p.categoryId.toLowerCase().includes(q)) ||
+        (p.nutritionalNote && p.nutritionalNote.toLowerCase().includes(q))
       );
     } else if (selectedCategoryId && selectedCategoryId !== 'all') {
       const aliases: Record<string, string[]> = {
@@ -533,7 +536,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                       productId={product.id}
                       image={product.image}
                       emoji={product.emoji}
-                      alt={product.name}
+                      alt={getMalayalamName(product.name)}
                       className="w-full h-full"
                       imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
                       fallbackEmojiClassName="text-4xl"
@@ -546,7 +549,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                   <div className="space-y-1 pt-1">
                     <div className="flex items-center gap-1">
                       <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
-                        {product.name}
+                        {getMalayalamName(product.name)}
                       </h3>
                       {isOutOfStock && (
                         <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
