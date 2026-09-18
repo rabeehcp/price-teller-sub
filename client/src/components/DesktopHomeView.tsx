@@ -223,113 +223,120 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. HERO BANNER WITH PLATFORM PURPOSE & PRICE COMPARISON VISUAL */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#063B2A] via-[#0B5C40] to-[#E3F2EB] shadow-md border border-[#0B8F68]/20 flex flex-col min-[1380px]:flex-row items-stretch min-[1380px]:items-center justify-between gap-5 p-5 sm:p-6 min-[1380px]:p-7 text-white min-h-0">
+      {/* 1. HERO BANNER: FRESH PEARL & MINT QUICK-COMMERCE WITH SIDE-BY-SIDE LIVE PREVIEW */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EDF7F2] via-[#F5FAF7] to-[#E3F2EB] shadow-xs border border-[#CDE5D9] p-5 sm:p-6 lg:p-7 min-h-0 text-[#17221D]">
         
-        {/* Background Overlay Effects */}
-        <div className="absolute top-0 right-1/3 w-96 h-96 bg-[#10A978]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-10 left-10 w-72 h-72 bg-[#DDF5EA]/10 rounded-full blur-2xl pointer-events-none" />
+        {/* Background Subtle Ambient Glows */}
+        <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#10A978]/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-8 left-8 w-64 h-64 bg-[#34D399]/10 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Left Content */}
-        <div className="relative z-10 w-full min-[1380px]:max-w-[58%] space-y-3">
+        {/* Side-by-Side Grid Layout: Zero Empty Void on any laptop/desktop */}
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_360px] items-center gap-6">
           
-          <h1 className="text-xl sm:text-2xl min-[1380px]:text-3xl font-black text-white leading-snug font-malayalam tracking-tight m-0 drop-shadow-xs">
-            നാട്ടിലെ കടകളിൽ നിന്ന് <span className="text-[#7FFFC4]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
-          </h1>
-
-          <p className="text-xs lg:text-sm text-[#DDF5EA] font-medium leading-relaxed font-malayalam m-0">
-            അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് നിങ്ങൾക്ക് അനുയോജ്യമായ വില കണ്ടെത്തൂ.
-          </p>
-
-          {/* 4 Value Pillars */}
-          <div className="flex items-center gap-2 text-xs font-semibold text-white/90 pt-1 font-malayalam flex-wrap">
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
-              <Store className="w-3.5 h-3.5 text-[#34D399]" /> പ്രാദേശിക കടകൾ
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
-              <TrendingDown className="w-3.5 h-3.5 text-[#34D399]" /> വില താരതമ്യം
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
-              <Tag className="w-3.5 h-3.5 text-[#34D399]" /> മികച്ച ലാഭം
-            </span>
-            <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur-xs px-2.5 py-1 rounded-full border border-white/15">
-              <MapPin className="w-3.5 h-3.5 text-[#34D399]" /> സമീപത്തുള്ള ഷോപ്പിംഗ്
-            </span>
-          </div>
-
-        </div>
-
-        {/* Right Multi-Category Price Comparison Visual Card */}
-        <div className="relative z-10 w-full min-[1380px]:w-[350px] min-[1380px]:max-w-[370px] shrink-0 space-y-2">
-          
-          {/* Top Pill */}
-          <div className="flex items-center justify-between bg-white/15 backdrop-blur-md border border-white/20 px-3 py-1.5 rounded-2xl text-[11px] font-bold text-white font-malayalam shadow-md">
-            <span className="flex items-center gap-1">
-              <Store className="w-3.5 h-3.5 text-[#34D399]" /> സമീപത്തെ കടകളുടെ തത്സമയ നിരക്ക്
-            </span>
-            <span className="bg-[#34D399] text-[#063B2A] text-[9px] font-black px-2 py-0.5 rounded-full uppercase">
-              ലഭ്യം
-            </span>
-          </div>
-
-          {/* Comparison Cards Stack */}
-          <div className="bg-white/95 backdrop-blur-md rounded-2xl p-3 shadow-xl border border-white text-slate-800 space-y-2 font-malayalam">
-            {/* Comparison Item 1: Grocery / Oil */}
-            <div className="flex items-center justify-between p-2 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center p-0.5 border border-[#E3ECE7] shrink-0">
-                  <img src="/categories/oils-spices.jpg" alt="Oil" className="w-full h-full object-contain rounded" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-black text-slate-900 truncate">വെളിച്ചെണ്ണ 1L</div>
-                  <div className="text-[10px] text-slate-500 truncate">Al-Iqwan • 1.2 km</div>
-                </div>
-              </div>
-              <div className="text-right shrink-0">
-                <div className="text-xs font-black text-[#0B8F68] font-sans">₹145</div>
-                <div className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded font-sans">₹10 ലാഭം</div>
-              </div>
+          {/* Left Content */}
+          <div className="space-y-3.5">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 border border-[#BEE3CE] rounded-full text-[11px] font-extrabold text-[#0B8F68] shadow-2xs font-malayalam">
+              <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലകൾ</span>
             </div>
 
-            {/* Comparison Item 2: Staples / Rice */}
-            <div className="flex items-center justify-between p-2 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
-              <div className="flex items-center gap-2 min-w-0">
-                <div className="w-7 h-7 rounded-lg bg-white flex items-center justify-center p-0.5 border border-[#E3ECE7] shrink-0">
-                  <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-xs font-black text-slate-900 truncate">മട്ട അരി 5kg</div>
-                  <div className="text-[10px] text-slate-500 truncate">Malabar Store • 0.8 km</div>
-                </div>
-              </div>
-              <div className="text-right shrink-0">
-                <div className="text-xs font-black text-[#0B8F68] font-sans">₹225</div>
-                <div className="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded font-sans">₹15 ലാഭം</div>
-              </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black text-[#063B2A] leading-tight font-malayalam tracking-tight m-0">
+              നാട്ടിലെ കടകളിൽ നിന്ന്<br />
+              <span className="text-[#0B8F68]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
+            </h1>
+
+            <p className="text-xs sm:text-sm text-[#465F53] font-medium leading-relaxed font-malayalam m-0 max-w-xl">
+              അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
+            </p>
+
+            {/* 4 Value Pillars: Crisp white glass pills */}
+            <div className="flex items-center gap-2 text-xs font-bold text-[#143D2E] pt-1 font-malayalam flex-wrap">
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+                <Store className="w-3.5 h-3.5 text-[#0B8F68]" /> പ്രാദേശിക കടകൾ
+              </span>
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+                <TrendingDown className="w-3.5 h-3.5 text-[#0B8F68]" /> വില താരതമ്യം
+              </span>
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+                <Tag className="w-3.5 h-3.5 text-[#0B8F68]" /> മികച്ച ലാഭം
+              </span>
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+                <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" /> സമീപത്തുള്ള ഷോപ്പിംഗ്
+              </span>
+            </div>
+          </div>
+
+          {/* Right Live Price Comparison Visual Card */}
+          <div className="w-full space-y-2 font-malayalam">
+            {/* Top Pill */}
+            <div className="flex items-center justify-between bg-white border border-[#CDE5D9] px-3.5 py-1.5 rounded-2xl text-[11px] font-bold text-[#063B2A] shadow-xs">
+              <span className="flex items-center gap-1.5">
+                <Store className="w-3.5 h-3.5 text-[#0B8F68]" /> സമീപത്തെ കടകളുടെ തത്സമയ നിരക്ക്
+              </span>
+              <span className="bg-[#0B8F68] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
+                ലഭ്യം
+              </span>
             </div>
 
-            {/* Category Ribbon */}
-            <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[9px] sm:text-[10px] font-bold text-slate-600 overflow-hidden">
-              <span className="flex items-center gap-1 min-w-0">
-                <img src="/categories/grocery.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
-                <span className="truncate">ഗ്രോസറി</span>
-              </span>
-              <span className="flex items-center gap-1 min-w-0">
-                <img src="/categories/dairy.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
-                <span className="truncate">പാൽ</span>
-              </span>
-              <span className="flex items-center gap-1 min-w-0">
-                <img src="/categories/grains.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
-                <span className="truncate">ധാന്യം</span>
-              </span>
-              <span className="flex items-center gap-1 min-w-0">
-                <img src="/categories/vegetables.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
-                <span className="truncate">പച്ചക്കറി</span>
-              </span>
-              <span className="flex items-center gap-1 min-w-0">
-                <img src="/categories/oils-spices.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
-                <span className="truncate">മസാല</span>
-              </span>
+            {/* Comparison Cards Stack */}
+            <div className="bg-white rounded-2xl p-3.5 shadow-md border border-[#D5EADB] text-slate-800 space-y-2">
+              {/* Comparison Item 1: Grocery / Oil */}
+              <div className="flex items-center justify-between p-2 bg-[#F8FAF9] hover:bg-[#F2F7F4] rounded-xl border border-[#E3ECE7] transition-colors">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-2xs">
+                    <img src="/categories/oils-spices.jpg" alt="Oil" className="w-full h-full object-contain rounded" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-black text-[#17221D] truncate">വെളിച്ചെണ്ണ 1L</div>
+                    <div className="text-[10px] text-[#66756E] truncate">Al-Iqwan • 1.2 km</div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="text-xs font-black text-[#0B8F68] font-sans">₹145</div>
+                  <div className="text-[9px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-1.5 py-0.2 rounded font-sans">₹10 ലാഭം</div>
+                </div>
+              </div>
+
+              {/* Comparison Item 2: Staples / Rice */}
+              <div className="flex items-center justify-between p-2 bg-[#F8FAF9] hover:bg-[#F2F7F4] rounded-xl border border-[#E3ECE7] transition-colors">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-2xs">
+                    <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded" />
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-black text-[#17221D] truncate">മട്ട അരി 5kg</div>
+                    <div className="text-[10px] text-[#66756E] truncate">Malabar Store • 0.8 km</div>
+                  </div>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="text-xs font-black text-[#0B8F68] font-sans">₹225</div>
+                  <div className="text-[9px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-1.5 py-0.2 rounded font-sans">₹15 ലാഭം</div>
+                </div>
+              </div>
+
+              {/* Category Ribbon */}
+              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-bold text-[#4B6358] overflow-hidden">
+                <span className="flex items-center gap-1 min-w-0">
+                  <img src="/categories/grocery.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
+                  <span className="truncate">ഗ്രോസറി</span>
+                </span>
+                <span className="flex items-center gap-1 min-w-0">
+                  <img src="/categories/dairy.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
+                  <span className="truncate">പാൽ</span>
+                </span>
+                <span className="flex items-center gap-1 min-w-0">
+                  <img src="/categories/grains.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
+                  <span className="truncate">ധാന്യം</span>
+                </span>
+                <span className="flex items-center gap-1 min-w-0">
+                  <img src="/categories/vegetables.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
+                  <span className="truncate">പച്ചക്കറി</span>
+                </span>
+                <span className="flex items-center gap-1 min-w-0">
+                  <img src="/categories/oils-spices.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
+                  <span className="truncate">മസാല</span>
+                </span>
+              </div>
             </div>
           </div>
 
