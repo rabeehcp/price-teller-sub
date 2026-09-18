@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Location, User } from '../types';
 import { loginUserApi, registerMerchantApi } from '../services/api';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
 import {
   Store,
   User as UserIcon,
@@ -135,17 +136,10 @@ export const OpeningPage: React.FC<OpeningPageProps> = ({
       <header className="w-full bg-white/90 backdrop-blur-md border-b border-[#e2e7dd] px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-brand-100 border border-brand-200 flex items-center justify-center text-xl shadow-xs">
-              🛒
-            </div>
-            <div>
-              <span className="text-2xl font-black tracking-tight text-slate-900">
-                Ente<span className="text-brand-600">Bazaar</span>
-              </span>
-              <span className="ml-2 text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full uppercase tracking-wider hidden sm:inline-block">
-                Grocery Intelligence Platform
-              </span>
-            </div>
+            <EnteBazaarLogo size="md" withTagline={true} />
+            <span className="ml-1 text-[10px] font-bold bg-brand-50 text-brand-700 border border-brand-200 px-2 py-0.5 rounded-full uppercase tracking-wider hidden sm:inline-block">
+              Grocery Intelligence Platform
+            </span>
           </div>
 
           <button

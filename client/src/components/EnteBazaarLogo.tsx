@@ -33,14 +33,14 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
     return (
       <div
         onClick={onClick}
-        className={`relative inline-block rounded-2xl md:rounded-3xl overflow-hidden shadow-lg border border-emerald-900/20 select-none ${
+        className={`relative inline-flex items-center justify-center rounded-full overflow-hidden shadow-md border border-slate-200 bg-white select-none p-1 ${
           fullSizes[size] || fullSizes.md
         } ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95 transition-transform' : ''} ${className}`}
       >
         <img
           src="/logo.png"
           alt={alt}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
     );
@@ -48,11 +48,11 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
 
   // Sizing configurations for horizontal & icon
   const iconSizes = {
-    xs: 'w-6 h-6 rounded-md',
-    sm: 'w-8 h-8 rounded-lg',
-    md: 'w-9 h-9 sm:w-10 sm:h-10 rounded-xl',
-    lg: 'w-11 h-11 sm:w-12 sm:h-12 rounded-xl',
-    xl: 'w-14 h-14 sm:w-16 sm:h-16 rounded-2xl',
+    xs: 'w-6 h-6',
+    sm: 'w-8 h-8',
+    md: 'w-9 h-9 sm:w-10 sm:h-10',
+    lg: 'w-11 h-11 sm:w-12 sm:h-12',
+    xl: 'w-14 h-14 sm:w-16 sm:h-16',
   };
 
   const textSizes = {
@@ -69,7 +69,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
     return (
       <div
         onClick={onClick}
-        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs select-none transition-transform hover:scale-105 active:scale-95 border border-emerald-800/15 ${
+        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs select-none transition-transform hover:scale-105 active:scale-95 rounded-full border border-slate-200/80 bg-white p-0.5 ${
           iconSizes[size] || iconSizes.md
         } ${onClick ? 'cursor-pointer' : ''} ${className}`}
         title="EnteBazaar"
@@ -77,7 +77,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
         <img
           src="/logo.png"
           alt={alt}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
     );
@@ -90,16 +90,16 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
         onClick ? 'cursor-pointer active:scale-98' : ''
       } ${className}`}
     >
-      {/* Official Emblem Mark */}
+      {/* Official Circular Balance Scale Emblem Mark */}
       <div
-        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs border border-emerald-800/15 group-hover:scale-105 transition-transform ${
+        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs rounded-full border border-slate-200/80 bg-white p-0.5 group-hover:scale-105 transition-transform ${
           iconSizes[size] || iconSizes.md
         }`}
       >
         <img
           src="/logo.png"
           alt={alt}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-contain"
         />
       </div>
 

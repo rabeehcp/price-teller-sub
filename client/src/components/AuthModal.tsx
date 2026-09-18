@@ -7,6 +7,7 @@ import {
   registerConsumerApi,
 } from '../services/api';
 import { renderGoogleSignInButton } from '../services/googleAuth';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
 import {
   Store,
   User as UserIcon,
@@ -235,14 +236,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="w-9 h-9 rounded-xl bg-brand-800 text-brand-300 flex items-center justify-center text-lg shadow-xs">
-                🛒
-              </div>
-              <span className="text-xl font-black tracking-tight text-white">
-                Ente<span className="text-brand-400">Bazaar</span>
-              </span>
-            </div>
+            <EnteBazaarLogo size="md" theme="dark" withTagline={true} />
 
             <div className="pt-6 space-y-2">
               <span className="text-xs font-bold text-brand-300 uppercase tracking-wider font-malayalam">

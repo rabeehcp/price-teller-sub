@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { User } from '../types';
 import { loginUserApi } from '../services/api';
 import { ShieldCheck, ShieldAlert, Lock, User as UserIcon, Eye, EyeOff, ArrowLeft, KeyRound, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface AdminLoginPageProps {
   onLoginSuccess: (user: User) => void;
@@ -56,12 +57,9 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
       {/* Top Bar */}
       <header className="w-full px-6 py-4 flex items-center justify-between border-b border-amber-500/15 bg-slate-950/60 backdrop-blur-md relative z-10">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center font-black text-lg shadow-md">
-            🛡️
-          </div>
-          <div>
+          <EnteBazaarLogo size="md" theme="dark" />
+          <div className="border-l border-slate-700 pl-3">
             <div className="flex items-center gap-2">
-              <span className="text-lg font-black tracking-tight text-white">EnteBazaar</span>
               <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30">
                 Operations
               </span>
