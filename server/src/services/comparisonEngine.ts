@@ -130,6 +130,28 @@ export async function compareBasket(
 
   const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
+  if (shops.length === 0) {
+    return {
+      itemCount: items.length,
+      totalQuantity,
+      bestShopName: '',
+      bestTotal: 0,
+      averageMarketTotal: 0,
+      maxSavings: 0,
+      shops: [],
+      splitOptimization: {
+        isWorthSplitting: false,
+        combinedTotal: 0,
+        singleBestTotal: 0,
+        additionalSavings: 0,
+        savingsPercentage: 0,
+        stores: [],
+        tipMessage: 'ഈ പ്രദേശത്ത് കടകൾ രജിസ്റ്റർ ചെയ്തിട്ടില്ല.',
+      },
+      itemizedMatrix: [],
+    };
+  }
+
   // Compute itemized lowest prices across in-stock stores for reference
   const itemLowestPrice = new Map<string, number>();
   items.forEach((item) => {

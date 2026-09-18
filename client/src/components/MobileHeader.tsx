@@ -29,7 +29,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     : 'R';
 
   return (
-    <header className="md:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
+    <header className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
       <div className="flex items-center justify-between gap-2">
         {/* Left: EnteBazaar Brand Logo */}
         <EnteBazaarLogo size="sm" />

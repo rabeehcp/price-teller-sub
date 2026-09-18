@@ -185,7 +185,7 @@ export const StoresListView: React.FC<StoresListViewProps> = ({
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
           {filteredShops.map((shop) => {
             const productCount = getProductCountForShop(shop.name);
             return (

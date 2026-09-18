@@ -27,6 +27,7 @@ interface MobileCompareViewProps {
   basketItems: BasketItem[];
   comparison?: FullComparisonResponse | null;
   currentLocation?: Location | null;
+  onOpenLocationModal?: () => void;
   onBack?: () => void;
   onGoToSearch?: () => void;
   onOpenShopDetails?: (shopName: string) => void;
@@ -39,6 +40,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
   basketItems,
   comparison,
   currentLocation,
+  onOpenLocationModal,
   onBack,
   onGoToSearch,
   onOpenShopDetails,
@@ -146,6 +148,30 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                 <div className="text-[10px] text-slate-600">കടകൾ തിരിച്ച് വാങ്ങി പരമാവധി ലാഭിക്കാം</div>
               </div>
             </div>
+          </div>
+        ) : (!comparison || shops.length === 0) ? (
+          <div className="bg-white rounded-2xl p-6 text-center shadow-xs border border-slate-100 space-y-4 font-malayalam">
+            <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto text-3xl">
+              🏪
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-base font-black text-slate-800">
+                {currentLocation?.name || 'ഈ പ്രദേശത്ത്'} കടകൾ ലഭ്യമല്ല
+              </h3>
+              <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+                വില താരതമ്യം ചെയ്യാൻ നിലവിൽ കടകൾ രജിസ്റ്റർ ചെയ്തിട്ടുള്ള പ്രദേശം തിരഞ്ഞെടുക്കൂ.
+              </p>
+            </div>
+            {onOpenLocationModal && (
+              <button
+                type="button"
+                onClick={onOpenLocationModal}
+                className="w-full py-2.5 px-4 bg-[#0B8F68] text-white rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-xs hover:bg-[#097353] transition-colors cursor-pointer active:scale-98"
+              >
+                <MapPin className="w-4 h-4" />
+                <span>📍 പ്രദേശം മാറ്റുക (Change Location)</span>
+              </button>
+            )}
           </div>
         ) : (
           <>

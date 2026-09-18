@@ -745,7 +745,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
       {/* 1. DESKTOP LEFT SIDEBAR (Matching Ash Black Theme) */}
-      <aside className="w-64 bg-[#141816] text-white shrink-0 hidden md:flex flex-col justify-between p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
+      <aside className="w-56 xl:w-64 bg-[#141816] text-white shrink-0 hidden lg:flex flex-col justify-between p-3.5 xl:p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
         <div>
           {/* Official Brand Logo */}
           <div className="px-2 py-2 mb-3">
@@ -895,7 +895,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       </aside>
 
       {/* 2. MAIN ADMIN WORKSPACE */}
-      <div className="flex-1 flex flex-col min-w-0 md:ml-64">
+      <div className="flex-1 flex flex-col min-w-0 lg:ml-56 xl:ml-64">
         {/* Top Header Bar matching Image 2 */}
         <header className="bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] px-3 sm:px-6 py-2.5 sm:py-3 sticky top-0 z-20 flex items-center justify-between gap-2 sm:gap-4 shadow-2xs">
           {/* Left: Back / Menu & Search Bar */}
@@ -915,7 +915,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="md:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer shrink-0"
+              className="lg:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer shrink-0"
               title="Open Menu"
             >
               <Menu className="w-4 h-4" />

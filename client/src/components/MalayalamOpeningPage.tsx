@@ -145,7 +145,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       price: 28,
       priceUnit: 'kg',
       emoji: '🍅',
-      image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137805.jpg',
+      image: '/categories/vegetables.jpg',
     },
     {
       id: 'onion',
@@ -154,6 +154,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       price: 35,
       priceUnit: 'kg',
       emoji: '🧅',
+      image: '/categories/vegetables.jpg',
     },
     {
       id: 'potato',
@@ -162,6 +163,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       price: 32,
       priceUnit: 'kg',
       emoji: '🥔',
+      image: '/categories/vegetables.jpg',
     },
     {
       id: 'milk',
@@ -170,6 +172,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       price: 56,
       priceUnit: 'ലി',
       emoji: '🥛',
+      image: '/categories/dairy.jpg',
     },
     {
       id: 'oil',
@@ -177,57 +180,66 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       unit: 'Kera',
       price: 150,
       priceUnit: 'ലി',
-      emoji: '🫗',
+      emoji: '🥥',
+      image: '/categories/oils-spices.jpg',
     },
   ];
 
-  // 8 Categories matching reference exactly
+  // 8 Categories matching reference exactly with realistic high-resolution images
   const categories = [
     {
       id: 'vegetables',
       label: 'പച്ചക്കറികൾ',
+      image: '/categories/vegetables.jpg',
       emoji: '🥬',
       bgColor: 'bg-[#E8F6ED]',
     },
     {
       id: 'fruits',
       label: 'പഴങ്ങൾ',
+      image: '/categories/fruits.jpg',
       emoji: '🍎',
       bgColor: 'bg-[#FEF1E6]',
     },
     {
       id: 'rice-grains',
       label: 'അരി & ധാന്യങ്ങൾ',
+      image: '/categories/grains.jpg',
       emoji: '🌾',
       bgColor: 'bg-[#F9EFE3]',
     },
     {
       id: 'dairy',
       label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
+      image: '/categories/dairy.jpg',
       emoji: '🥛',
       bgColor: 'bg-[#EBF4FC]',
     },
     {
       id: 'oils-spices',
       label: 'എണ്ണ & മസാലകൾ',
+      image: '/categories/oils-spices.jpg',
       emoji: '🫗',
       bgColor: 'bg-[#FFF9E6]',
     },
     {
       id: 'beverages',
       label: 'പാനീയങ്ങൾ',
+      image: '/categories/beverages.jpg',
       emoji: '🧃',
       bgColor: 'bg-[#E9F6F8]',
     },
     {
       id: 'bakery-breakfast',
       label: 'ബേക്കറി & സ്നാക്സ്',
+      image: '/categories/bakery.jpg',
       emoji: '🍪',
       bgColor: 'bg-[#FDF2E7]',
     },
     {
       id: 'cleaning-household',
       label: 'വീട്ടുപകരണങ്ങൾ',
+      image: '/categories/cleaning.jpg',
       emoji: '🧹',
       bgColor: 'bg-[#F2EFFB]',
     },
@@ -246,21 +258,6 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             withTagline={true}
             onClick={onEnterAsConsumer}
           />
-
-          {/* Desktop Search Bar */}
-          <form
-            onSubmit={handleSearchSubmit}
-            className="hidden md:flex flex-1 max-w-xl lg:max-w-2xl xl:max-w-3xl items-center bg-[#E5EFE9] hover:bg-[#DDEAE2] focus-within:bg-white focus-within:ring-2 focus-within:ring-[#0D4A36]/30 border border-[#D5E5DC] rounded-full px-4 lg:px-5 py-2 lg:py-2.5 transition-all"
-          >
-            <Search className="w-4 h-4 lg:w-4.5 lg:h-4.5 text-[#6B8579] shrink-0 mr-2.5" />
-            <input
-              type="text"
-              value={searchInput}
-              onChange={(e) => setSearchInput(e.target.value)}
-              placeholder="ഉദ്ദേശിക്കുന്ന സാധനങ്ങൾ ടൈപ്പ് ചെയ്യുക... (ഉദാ: തക്കാളി, പാൽ, അരി)"
-              className="w-full bg-transparent text-xs lg:text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
-            />
-          </form>
 
           {/* Right Actions */}
           <div className="flex items-center gap-2 sm:gap-3 lg:gap-4 shrink-0">
@@ -366,7 +363,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
           <div className="hidden md:grid md:grid-cols-12 gap-4 lg:gap-8 xl:gap-10 items-center min-h-0">
 
             {/* Left Column: Heading, Subtitle, Embedded Search Box & Popular Quick Tags */}
-            <div className="md:col-span-5 lg:col-span-5 xl:col-span-5 space-y-3 lg:space-y-4 xl:space-y-5">
+            <div className="md:col-span-7 lg:col-span-5 xl:col-span-5 space-y-3 lg:space-y-4 xl:space-y-5">
               <h1 className="text-2xl lg:text-[36px] xl:text-[44px] font-black text-[#0B3D2D] leading-[1.18] font-malayalam tracking-tight m-0">
                 ഓരോ ആവശ്യത്തിനും<br />
                 <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
@@ -425,7 +422,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             </div>
 
             {/* Center Column: Seamless 3D Market Stall & Essentials Hero Illustration */}
-            <div className="md:col-span-4 lg:col-span-4 xl:col-span-4 flex items-center justify-center relative">
+            <div className="md:col-span-5 lg:col-span-4 xl:col-span-4 flex items-center justify-center relative">
               <div className="relative group w-full flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
@@ -436,7 +433,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             </div>
 
             {/* Right Column: Floating "ഇന്നത്തെ വിലകൾ" (Today's Prices) Card */}
-            <div className="hidden md:flex md:col-span-3 lg:col-span-3 xl:col-span-3 justify-end">
+            <div className="hidden lg:flex lg:col-span-3 xl:col-span-3 justify-end">
               <div className="w-full max-w-[270px] lg:max-w-[310px] xl:max-w-[340px] bg-white/95 backdrop-blur-md rounded-2xl lg:rounded-3xl p-3 lg:p-4 xl:p-4.5 shadow-lg border border-white/80 font-malayalam space-y-1.5 lg:space-y-2">
 
                 {/* Card Header with Location Dropdown */}
@@ -682,9 +679,13 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 <div
                   key={item.id}
                   onClick={onEnterAsConsumer}
-                  className="bg-white/95 text-[#0D4A36] text-xs font-bold px-3 py-1.5 rounded-full border border-white shadow-2xs shrink-0 flex items-center gap-1.5 cursor-pointer active:scale-95"
+                  className="bg-white/95 text-[#0D4A36] text-xs font-bold px-2.5 py-1 rounded-full border border-[#BBD8C8] shadow-2xs shrink-0 flex items-center gap-1.5 cursor-pointer active:scale-95"
                 >
-                  <span>{item.emoji}</span>
+                  {item.image ? (
+                    <img src={item.image} alt={item.name} className="w-4 h-4 object-contain rounded-md shrink-0" />
+                  ) : (
+                    <span>{item.emoji}</span>
+                  )}
                   <span>{item.name}</span>
                   <span className="font-sans font-black text-emerald-800">₹{item.price}</span>
                 </div>
@@ -719,9 +720,14 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 className="bg-white hover:bg-[#F9FCFA] border border-[#E3ECE7] hover:border-[#0D4A36]/30 rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex flex-col items-center justify-center text-center transition-all cursor-pointer group shadow-2xs hover:shadow-md hover:-translate-y-0.5 active:scale-95 w-full"
               >
                 <div
-                  className={`w-11 h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 lg:w-15 lg:h-15 xl:w-16 xl:h-16 rounded-2xl ${cat.bgColor} flex items-center justify-center text-xl sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-1.5 lg:mb-2 transition-transform group-hover:scale-110 shadow-2xs`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-18 lg:h-18 rounded-2xl ${cat.bgColor} flex items-center justify-center mb-1.5 lg:mb-2 transition-transform group-hover:scale-110 shadow-2xs overflow-hidden p-1 sm:p-1.5`}
                 >
-                  <span>{cat.emoji}</span>
+                  <img
+                    src={cat.image}
+                    alt={cat.label}
+                    className="w-full h-full object-contain rounded-xl drop-shadow-2xs"
+                    loading="lazy"
+                  />
                 </div>
                 <span className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-bold text-[#17221D] leading-tight group-hover:text-[#0D4A36] line-clamp-2 w-full text-center">
                   {cat.label}

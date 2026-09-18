@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Location } from '../types';
-import { Search, Bell, Heart, ChevronDown, User as UserIcon, LogOut, Store, Shield, X, MapPin } from 'lucide-react';
+import { Search, Bell, Heart, ChevronDown, User as UserIcon, LogOut, Store, Shield, X, MapPin, ShoppingBag } from 'lucide-react';
 
 interface DesktopHeaderProps {
   searchQuery: string;
@@ -14,6 +14,10 @@ interface DesktopHeaderProps {
   onOpenProfile: () => void;
   onSelectRole: (role: 'shopper' | 'merchant' | 'admin') => void;
   onLogout: () => void;
+  basketCount?: number;
+  basketSubtotal?: number;
+  isRightSidebarOpen?: boolean;
+  onToggleRightSidebar?: () => void;
 }
 
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
@@ -28,14 +32,18 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onOpenProfile,
   onSelectRole,
   onLogout,
+  basketCount = 0,
+  basketSubtotal = 0,
+  isRightSidebarOpen = false,
+  onToggleRightSidebar,
 }) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const avatarLetter = authUser?.name ? authUser.name.charAt(0).toUpperCase() : 'R';
   const locationName = currentLocation?.name || 'Areekode';
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-6 py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
-      <div className="flex items-center justify-between gap-4 w-full max-w-[1720px] mx-auto">
+    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-6 py-2.5 sm:py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
+      <div className="flex items-center justify-between gap-2.5 sm:gap-4 w-full max-w-[1720px] mx-auto">
         
         {/* Left: Location Selector Pill in Header */}
         {onOpenLocationModal && (
@@ -46,13 +54,13 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             title="സ്ഥലം മാറ്റുക (Change Location Hub)"
           >
             <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" />
-            <span className="truncate max-w-[120px]">{locationName}</span>
+            <span className="truncate max-w-[80px] sm:max-w-[120px] xl:max-w-[160px]">{locationName}</span>
             <ChevronDown className="w-3 h-3 text-[#66756E]" />
           </button>
         )}
 
         {/* Middle: Integrated Search Bar (Matching Image 1) */}
-        <div className="flex-1 max-w-2xl">
+        <div className="flex-1 max-w-xl xl:max-w-2xl">
           <div className="relative flex items-center bg-[#F5F8F6] border border-[#E3ECE7] rounded-full py-2 px-4 shadow-2xs focus-within:bg-white focus-within:border-[#0B8F68] transition-all">
             <Search className="w-4 h-4 text-[#8A9992] shrink-0 mr-2.5" />
             <input
@@ -74,13 +82,39 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           </div>
         </div>
 
-        {/* Right Controls: Bell, Heart, Profile Dropdown */}
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Right Controls: Cart Pill, Bell, Heart, Profile Dropdown */}
+        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           
+          {/* Quick-Commerce Cart & Comparison Trigger */}
+          {onToggleRightSidebar && (
+            <button
+              type="button"
+              onClick={onToggleRightSidebar}
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer font-malayalam shadow-2xs ${
+                isRightSidebarOpen
+                  ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-xs'
+                  : 'bg-[#F5F8F6] hover:bg-[#E8F8F0] border-[#E3ECE7] hover:border-[#10A978]/40 text-[#17221D]'
+              }`}
+              title={isRightSidebarOpen ? 'കാർട്ട് പാനൽ മറയ്ക്കുക (Hide Cart)' : 'കാർട്ട് & താരതമ്യം കാണുക (View Cart & Compare)'}
+            >
+              <ShoppingBag className={`w-3.5 h-3.5 ${isRightSidebarOpen ? 'text-[#34D399]' : 'text-[#0B8F68]'}`} />
+              <span className="text-xs font-bold hidden md:inline">കാർട്ട്</span>
+              {basketCount > 0 ? (
+                <span className={`text-[11px] font-black font-sans px-2 py-0.2 rounded-full ${
+                  isRightSidebarOpen ? 'bg-[#10A978] text-white' : 'bg-[#063B2A] text-white'
+                }`}>
+                  {basketCount} • ₹{basketSubtotal}
+                </span>
+              ) : (
+                <span className="text-[10px] text-slate-400 font-sans font-bold">0</span>
+              )}
+            </button>
+          )}
+
           {/* Notification Bell */}
           <button
             type="button"
-            className="relative p-2.5 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+            className="relative p-2 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
             aria-label="Notifications"
           >
             <Bell className="w-4 h-4 text-[#2D3E35]" />

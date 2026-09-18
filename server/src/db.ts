@@ -642,7 +642,7 @@ const newShop: Shop = {
                         nutritional_note AS "nutritionalNote", prices, stock_status AS "stockStatus", 
                         last_updated AS "lastUpdated" 
                  FROM products 
-                 WHERE 1=1`;
+                 WHERE image IS NOT NULL AND TRIM(image) <> ''`;
       const queryParams: any[] = [];
 
       if (params?.category && params.category !== 'all') {
@@ -680,11 +680,6 @@ const newShop: Shop = {
 
       let shops = await this.getShops(params?.locationId, params?.includeUnverifiedShops);
       let allowedShopNames = new Set(shops.map((s) => s.name));
-      // Fallback: If the selected location has no local shops registered yet, fallback to all verified shops
-      if (allowedShopNames.size === 0) {
-        shops = await this.getShops(undefined, params?.includeUnverifiedShops);
-        allowedShopNames = new Set(shops.map((s) => s.name));
-      }
 
       result = result.map((p) => {
         let filteredPrices: Record<string, number> = {};
@@ -713,7 +708,7 @@ const newShop: Shop = {
         };
       });
 
-      if (params?.locationId && params.locationId !== 'all' && !params?.includeMaster) {
+      if (!params?.includeMaster) {
         result = result.filter((p) => Object.keys(p.prices).length > 0);
       }
 

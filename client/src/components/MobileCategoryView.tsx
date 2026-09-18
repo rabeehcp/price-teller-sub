@@ -401,7 +401,7 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
                   }`}
                 >
                   {/* Product Thumbnail on Left */}
-                  <div className="w-16 h-16 rounded-xl bg-[#F8FAF7] border border-[#E8ECE3] p-1.5 shrink-0 flex items-center justify-center overflow-hidden relative">
+                  <div className="w-16 h-16 rounded-xl bg-white border border-[#E3ECE7] p-1.5 shrink-0 flex items-center justify-center overflow-hidden relative shadow-2xs">
                     <ProductImage
                       productId={p.id}
                       image={p.image}

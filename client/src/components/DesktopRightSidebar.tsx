@@ -23,6 +23,7 @@ import {
   Swords,
   Layers,
   ArrowRight,
+  X,
 } from 'lucide-react';
 
 interface DesktopRightSidebarProps {
@@ -43,6 +44,7 @@ interface DesktopRightSidebarProps {
   onOpenStoreDuel?: () => void;
   onOpenChat?: (shopName: string) => void;
   onPreBookBasket?: (shopName?: string) => void;
+  onClose?: () => void;
 }
 
 export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
@@ -63,6 +65,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
   onOpenStoreDuel,
   onOpenChat,
   onPreBookBasket,
+  onClose,
 }) => {
   const [activeRightTab, setActiveRightTab] = useState<'cart' | 'compare'>('cart');
   const [comparisonSubTab, setComparisonSubTab] = useState<'single' | 'split'>('single');
@@ -94,46 +97,59 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
   }
 
   return (
-    <aside className="w-[380px] shrink-0 space-y-4 font-sans select-none sticky top-20 max-h-[calc(100vh-90px)] overflow-y-auto no-scrollbar pb-6">
-      {/* 0. TOP TAB SWITCHER (Cart vs Live Price Comparison) */}
-      <div className="bg-white border border-[#E3ECE7] rounded-2xl p-1.5 shadow-2xs grid grid-cols-2 gap-1 font-malayalam">
-        <button
-          type="button"
-          onClick={() => setActiveRightTab('cart')}
-          className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            activeRightTab === 'cart'
-              ? 'bg-[#063B2A] text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-          }`}
-        >
-          <ShoppingBag className="w-3.5 h-3.5" />
-          <span>എന്റെ കാർട്ട്</span>
-          {totalBasketCount > 0 && (
-            <span
-              className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold ${
-                activeRightTab === 'cart' ? 'bg-[#10A978] text-white' : 'bg-emerald-100 text-emerald-800'
-              }`}
-            >
-              {totalBasketCount}
-            </span>
-          )}
-        </button>
+    <aside className="w-[280px] xl:w-[310px] 2xl:w-[350px] shrink-0 space-y-3 xl:space-y-4 font-sans select-none sticky top-16 xl:top-20 max-h-[calc(100vh-80px)] overflow-y-auto no-scrollbar pb-6 animate-in fade-in slide-in-from-right-2 duration-150">
+      {/* 0. TOP TAB SWITCHER (Cart vs Live Price Comparison) & CLOSE BUTTON */}
+      <div className="bg-white border border-[#E3ECE7] rounded-2xl p-1.5 shadow-2xs flex items-center gap-1 font-malayalam">
+        <div className="grid grid-cols-2 gap-1 flex-1">
+          <button
+            type="button"
+            onClick={() => setActiveRightTab('cart')}
+            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              activeRightTab === 'cart'
+                ? 'bg-[#063B2A] text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span className="truncate">കാർട്ട്</span>
+            {totalBasketCount > 0 && (
+              <span
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold ${
+                  activeRightTab === 'cart' ? 'bg-[#10A978] text-white' : 'bg-emerald-100 text-emerald-800'
+                }`}
+              >
+                {totalBasketCount}
+              </span>
+            )}
+          </button>
 
-        <button
-          type="button"
-          onClick={() => setActiveRightTab('compare')}
-          className={`py-2 px-3 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-2 cursor-pointer ${
-            activeRightTab === 'compare'
-              ? 'bg-[#063B2A] text-white shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-          }`}
-        >
-          <Compass className="w-3.5 h-3.5" />
-          <span>വില താരതമ്യം</span>
-          {hasItems && (
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-          )}
-        </button>
+          <button
+            type="button"
+            onClick={() => setActiveRightTab('compare')}
+            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+              activeRightTab === 'compare'
+                ? 'bg-[#063B2A] text-white shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+            }`}
+          >
+            <Compass className="w-3.5 h-3.5" />
+            <span className="truncate">താരതമ്യം</span>
+            {hasItems && (
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+            )}
+          </button>
+        </div>
+
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="p-2 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer shrink-0"
+            title="സൈഡ്‌ബാർ മറയ്ക്കുക (Hide panel to expand view)"
+          >
+            <X className="w-4 h-4" />
+          </button>
+        )}
       </div>
 
       {/* VIEW 1: MY CART VIEW */}
@@ -372,7 +388,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           </h3>
 
           {/* Sub-Tabs: Single Store vs Split Optimizer */}
-          {hasItems && (
+          {hasItems && sortedShops.length > 0 && (
             <div className="space-y-2">
               <div className="grid grid-cols-2 gap-1 bg-[#F5F8F6] p-1 rounded-xl text-xs font-bold border border-[#E3ECE7]">
                 <button
@@ -463,6 +479,16 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
             <div className="py-6 space-y-3">
               <div className="h-28 bg-slate-100 animate-pulse rounded-2xl" />
               <div className="h-24 bg-slate-100 animate-pulse rounded-2xl" />
+            </div>
+          ) : sortedShops.length === 0 ? (
+            <div className="text-center text-slate-500 py-8 px-4 border border-dashed border-gray-200 rounded-2xl bg-[#F5F8F6] space-y-2 font-malayalam">
+              <div className="text-3xl mb-1">🏪</div>
+              <b className="block text-sm text-slate-800">
+                {currentLocation ? `${currentLocation.name}-ൽ` : 'ഈ പ്രദേശത്ത്'} കടകൾ ലഭ്യമല്ല
+              </b>
+              <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+                വില താരതമ്യം ചെയ്യാൻ നിലവിൽ കടകൾ രജിസ്റ്റർ ചെയ്തിട്ടുള്ള പ്രദേശം തിരഞ്ഞെടുക്കൂ.
+              </p>
             </div>
           ) : comparisonSubTab === 'single' ? (
             /* Single Store Cards matching User Screenshot */
@@ -632,7 +658,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           )}
 
           {/* Bottom Advanced Compare Shortcuts */}
-          {hasItems && (
+          {hasItems && sortedShops.length > 0 && (
             <div className="pt-2 border-t border-gray-100 flex items-center gap-2 font-malayalam">
               {onOpenStoreDuel && (
                 <button
