@@ -37,6 +37,7 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
         <div className={`px-1 py-2 mb-3 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
           <EnteBazaarLogo
             size={isCollapsed ? 'sm' : 'md'}
+            variant={isCollapsed ? 'icon' : 'horizontal'}
             theme="dark"
             withTagline={!isCollapsed}
             onClick={() => onSelectTab('home')}

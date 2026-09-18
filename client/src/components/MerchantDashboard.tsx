@@ -631,7 +631,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
         expiresInMinutes: Number(dealDuration),
         tag: dealTag,
       });
-      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on EnteBazaar!`);
+      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on PeediyaCart!`);
       setTimeout(() => setDealSuccessMsg(''), 3000);
     } catch (err) {
       console.error(err);
@@ -1205,7 +1205,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           <div className="p-3 bg-[#1D2220] border border-[#2F3733] rounded-2xl flex items-center gap-2.5">
             <span className="text-xl">🌱</span>
             <div className="text-[10px] text-[#A2B1A9] leading-tight font-medium">
-              Grow Your Business With EnteBazaar
+              Grow Your Business With PeediyaCart
             </div>
           </div>
 

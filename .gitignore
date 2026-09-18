@@ -18,3 +18,5 @@ yarn-error.log*
 *.timestamp-*.mjs
 server/client/
 *.zip
+dev-dist/
+**/dev-dist/

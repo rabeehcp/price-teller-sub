@@ -21,6 +21,7 @@ import {
   TrendingDown,
   Store,
   ChevronRight,
+  Phone,
 } from 'lucide-react';
 
 interface MobileCompareViewProps {
@@ -312,11 +313,22 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                               {shop.shopName}
                             </b>
                           </div>
-                          {isBest && (
-                            <span className="text-[9px] font-black bg-[#0B8F68] text-white px-2 py-0.5 rounded-full uppercase shadow-2xs shrink-0 font-malayalam">
-                              ഏറ്റവും കുറഞ്ഞ വില
-                            </span>
-                          )}
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            {shop.phone && (
+                              <a
+                                href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                                className="p-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[#0B8F68] border border-emerald-200/80 transition-all active:scale-95"
+                                title={`${shop.shopName} വിളിക്കുക`}
+                              >
+                                <Phone className="w-3.5 h-3.5" />
+                              </a>
+                            )}
+                            {isBest && (
+                              <span className="text-[9px] font-black bg-[#0B8F68] text-white px-2 py-0.5 rounded-full uppercase shadow-2xs font-malayalam">
+                                ഏറ്റവും കുറഞ്ഞ വില
+                              </span>
+                            )}
+                          </div>
                         </div>
 
                         {/* Total Price & Distance */}
@@ -376,20 +388,31 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                           )}
                         </div>
 
-                        {/* Action Buttons: കട കാണുക, ചാറ്റ്, പ്രീ-ബുക്ക് */}
-                        <div className="grid grid-cols-3 gap-1.5 font-malayalam pt-1 border-t border-slate-100">
+                        {/* Action Buttons: കട കാണുക, വിളിക്കുക, ചാറ്റ്, പ്രീ-ബുക്ക് */}
+                        <div className={`grid ${shop.phone ? 'grid-cols-4' : 'grid-cols-3'} gap-1 font-malayalam pt-1 border-t border-slate-100`}>
                           <button
                             type="button"
                             onClick={() => onOpenShopDetails && onOpenShopDetails(shop.shopName)}
-                            className="py-2 px-1 rounded-xl font-bold text-[11px] bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                            className="py-2 px-1 rounded-xl font-bold text-[10.5px] bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-all cursor-pointer active:scale-95"
                           >
-                            <span>കട കാണുക</span>
+                            <span>കട</span>
                           </button>
+
+                          {shop.phone && (
+                            <a
+                              href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                              className="py-2 px-1 bg-emerald-50 hover:bg-emerald-100 text-[#064E3B] border border-emerald-200/80 rounded-xl font-bold text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95"
+                              title={`${shop.shopName} ഫോൺ വിളിക്കുക`}
+                            >
+                              <Phone className="w-3 h-3 text-[#0B8F68]" />
+                              <span>വിളിക്കുക</span>
+                            </a>
+                          )}
 
                           <button
                             type="button"
                             onClick={() => onOpenChat && onOpenChat(shop.shopName)}
-                            className="py-2 px-1 bg-[#E8F5EE] hover:bg-[#D5EADB] text-[#063B2A] border border-[#C3EEDC] rounded-xl font-bold text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer active:scale-95"
+                            className="py-2 px-1 bg-[#E8F5EE] hover:bg-[#D5EADB] text-[#063B2A] border border-[#C3EEDC] rounded-xl font-bold text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95"
                           >
                             <MessageCircle className="w-3 h-3 text-[#0B8F68]" />
                             <span>ചാറ്റ്</span>
@@ -398,7 +421,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
                           <button
                             type="button"
                             onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
-                            className={`py-2 px-1 rounded-xl font-black text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer active:scale-95 ${
+                            className={`py-2 px-1 rounded-xl font-black text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95 ${
                               isBest
                                 ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white shadow-2xs'
                                 : 'bg-[#063B2A] hover:bg-[#0B8F68] text-white'

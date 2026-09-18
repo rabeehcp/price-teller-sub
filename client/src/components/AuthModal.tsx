@@ -230,38 +230,45 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200 font-sans">
       <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-surface-border overflow-hidden grid grid-cols-1 md:grid-cols-12 max-h-[92dvh]">
         
-        {/* Left Visual Brand Column (Inspired by reference board) */}
-        <div className="hidden md:flex md:col-span-5 bg-gradient-to-br from-brand-950 via-brand-900 to-forest-900 text-white p-8 flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+        {/* Left Visual Brand Column (Clean White Background for PeediyaCart Logo) */}
+        <div className="hidden md:flex md:col-span-5 bg-gradient-to-b from-white via-[#F9FCFA] to-[#F1F7F4] border-r border-[#E3ECE7] text-slate-800 p-8 flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#0B8F68]/5 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 space-y-4">
-            <EnteBazaarLogo size="md" theme="dark" withTagline={true} />
+            <EnteBazaarLogo size="md" theme="light" withTagline={true} />
 
             <div className="pt-6 space-y-2">
-              <span className="text-xs font-bold text-brand-300 uppercase tracking-wider font-malayalam">
-                സ്വാഗതം
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#C3EEDC] px-3 py-1 rounded-full font-malayalam">
+                <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
+                <span>സ്വാഗതം</span>
               </span>
-              <h2 className="text-2xl font-black leading-snug font-malayalam text-white">
-                നിങ്ങളുടെ EnteBazaar അക്കൗണ്ടിലേക്ക് സ്വാഗതം
+              <h2 className="text-2xl font-black leading-snug font-malayalam text-[#17221D]">
+                നിങ്ങളുടെ PeediyaCart അക്കൗണ്ടിലേക്ക് സ്വാഗതം
               </h2>
-              <p className="text-xs text-brand-100/80 font-malayalam leading-relaxed">
+              <p className="text-xs sm:text-[13px] text-[#556960] font-malayalam leading-relaxed font-normal">
                 കേരളത്തിലെ സൂപ്പർമാർക്കറ്റുകളിലെ കൃത്യമായ വില വിവരങ്ങളും ഓഫറുകളും ഇപ്പോൾ നിങ്ങളുടെ വിരൽത്തുമ്പിൽ.
               </p>
             </div>
           </div>
 
-          <div className="relative z-10 space-y-2 pt-6 border-t border-brand-800/60 text-xs font-bold text-brand-200">
-            <div className="flex items-center gap-2 font-malayalam">
-              <CheckCircle2 className="w-4 h-4 text-brand-400 shrink-0" />
+          <div className="relative z-10 space-y-2.5 pt-6 border-t border-[#E3ECE7] text-xs font-bold text-[#2A3F35]">
+            <div className="flex items-center gap-2.5 font-malayalam">
+              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              </div>
               <span>സുരക്ഷിതമായ അക്കൗണ്ട്</span>
             </div>
-            <div className="flex items-center gap-2 font-malayalam">
-              <CheckCircle2 className="w-4 h-4 text-brand-400 shrink-0" />
+            <div className="flex items-center gap-2.5 font-malayalam">
+              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              </div>
               <span>സേവ് ചെയ്ത ഷോപ്പിംഗ് ലിസ്റ്റുകൾ</span>
             </div>
-            <div className="flex items-center gap-2 font-malayalam">
-              <CheckCircle2 className="w-4 h-4 text-brand-400 shrink-0" />
+            <div className="flex items-center gap-2.5 font-malayalam">
+              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              </div>
               <span>തത്സമയ വില വിവരങ്ങൾ</span>
             </div>
           </div>

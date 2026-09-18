@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Location } from '../types';
-import { Search, Bell, Heart, ChevronDown, User as UserIcon, LogOut, Store, Shield, X, MapPin, ShoppingBag } from 'lucide-react';
+import { Search, Bell, Heart, ChevronDown, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag } from 'lucide-react';
 
 interface DesktopHeaderProps {
   searchQuery: string;
@@ -207,22 +207,6 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                   >
                     <Store className="w-3.5 h-3.5 text-[#0B8F68]" />
                     <span>വ്യാപാരി പാനൽ (Merchant)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsProfileDropdownOpen(false);
-                      if (authUser?.role === 'admin') {
-                        onSelectRole('admin');
-                      } else {
-                        onOpenAuthModal('admin-login');
-                      }
-                    }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#063B2A] hover:bg-[#E8F5EE] transition-colors text-left cursor-pointer font-malayalam"
-                  >
-                    <Shield className="w-3.5 h-3.5 text-[#0B8F68]" />
-                    <span>അഡ്മിൻ പാനൽ (Admin)</span>
                   </button>
 
                   {authUser && (

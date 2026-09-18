@@ -35,7 +35,6 @@ import { AddProductModal } from './components/AddProductModal';
 import { AdminPanel } from './components/AdminPanel';
 import { AdminLoginPage } from './components/AdminLoginPage';
 import { AuthModal } from './components/AuthModal';
-import { OpeningPage } from './components/OpeningPage';
 import { MalayalamOpeningPage } from './components/MalayalamOpeningPage';
 import { ConsumerDashboardModal } from './components/ConsumerDashboardModal';
 import { SaveBasketModal } from './components/SaveBasketModal';
@@ -154,13 +153,10 @@ export const App: React.FC = () => {
   // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
   const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
 
-  // App View State ('welcome' | 'portal' | 'consumer' | 'merchant' | 'admin')
-  const [appView, setAppView] = useState<'welcome' | 'portal' | 'consumer' | 'merchant' | 'admin'>(() => {
+  // App View State ('welcome' | 'consumer' | 'merchant' | 'admin')
+  const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin'>(() => {
     if (isExplicitAdminRoute()) {
       return 'admin';
-    }
-    if (isExplicitMerchantRoute()) {
-      return 'portal';
     }
     if (isExplicitConsumerRoute()) {
       return 'consumer';
@@ -170,6 +166,16 @@ export const App: React.FC = () => {
 
   // 3-Role Persona State ('shopper' | 'merchant' | 'admin')
   const [currentRole, setCurrentRole] = useState<'shopper' | 'merchant' | 'admin'>('shopper');
+
+  // Auth Modal State
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
+    return !getAuthToken() && isExplicitMerchantRoute();
+  });
+  const [authModalMode, setAuthModalMode] = useState<
+    'consumer-login' | 'consumer-register' | 'merchant-login' | 'merchant-register' | 'gateway'
+  >(() => {
+    return !getAuthToken() && isExplicitMerchantRoute() ? 'merchant-login' : 'consumer-login';
+  });
 
   // Verify Session with Backend on Initial Mount
   useEffect(() => {
@@ -186,7 +192,10 @@ export const App: React.FC = () => {
         if (isExplicitAdminRoute()) {
           setAppView('admin');
         } else if (isExplicitMerchantRoute()) {
-          setAppView('portal');
+          window.history.replaceState({}, '', '/');
+          setAppView('welcome');
+          setAuthModalMode('merchant-login');
+          setIsAuthModalOpen(true);
         } else if (isExplicitConsumerRoute()) {
           setAppView('welcome');
         } else {
@@ -245,7 +254,10 @@ export const App: React.FC = () => {
         if (isExplicitAdminRoute()) {
           setAppView('admin');
         } else if (isExplicitMerchantRoute()) {
-          setAppView('portal');
+          window.history.replaceState({}, '', '/');
+          setAppView('welcome');
+          setAuthModalMode('merchant-login');
+          setIsAuthModalOpen(true);
         } else {
           setAppView('welcome');
         }
@@ -256,12 +268,6 @@ export const App: React.FC = () => {
 
     verifySessionOnMount();
   }, []);
-
-  // Auth Modal State
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
-  const [authModalMode, setAuthModalMode] = useState<
-    'consumer-login' | 'consumer-register' | 'merchant-login' | 'merchant-register' | 'gateway'
-  >('consumer-login');
 
   // Listen to browser forward/back popstate & pathname changes with strict authorization
   useEffect(() => {
@@ -277,7 +283,10 @@ export const App: React.FC = () => {
         }
       } else if (wantsMerchant) {
         if (!authUser) {
-          setAppView('portal');
+          window.history.replaceState({}, '', '/');
+          setAppView('welcome');
+          setAuthModalMode('merchant-login');
+          setIsAuthModalOpen(true);
         } else if (authUser.role === 'merchant' || authUser.role === 'admin') {
           setAppView('merchant');
           setCurrentRole(authUser.role === 'admin' ? 'admin' : 'merchant');
@@ -1147,7 +1156,7 @@ export const App: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying EnteBazaar Session...</span>
+            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PeediyaCart Session...</span>
           </div>
           <p className="text-xs text-gray-500 font-medium">Validating credentials with secure server authority</p>
         </div>
@@ -1256,8 +1265,7 @@ export const App: React.FC = () => {
               setAppView('merchant');
               setCurrentRole(authUser.role === 'admin' ? 'admin' : 'merchant');
             } else {
-              window.history.pushState({}, '', '/portal');
-              setAppView('portal');
+              handleOpenAuthModal('merchant-login');
             }
           }}
           onOpenShopCatalogue={handleOpenShopCatalogue}
@@ -1294,35 +1302,12 @@ export const App: React.FC = () => {
     );
   }
 
-  // 3. MERCHANT PORTAL ENTRANCE FOR UNAUTHENTICATED OR VISITING MERCHANTS
-  if (appView === 'portal' || (!authUser && isExplicitMerchantRoute())) {
-    return (
-      <>
-        <OpeningPage
-          locations={locations}
-          onOpenConsumerLogin={() => handleOpenAuthModal('consumer-login')}
-          onLoginSuccess={handleLoginSuccess}
-          onBackToWelcome={() => {
-            window.history.pushState({}, '', '/');
-            setAppView('welcome');
-          }}
-        />
-        <AuthModal
-          isOpen={isAuthModalOpen}
-          onClose={() => setIsAuthModalOpen(false)}
-          initialMode={authModalMode}
-          onLoginSuccess={handleLoginSuccess}
-          locations={locations}
-        />
-      </>
-    );
-  }
-
-  // 4. MERCHANT DASHBOARD (Strictly when appView is 'merchant' AND user is verified merchant/admin)
+  // 3. MERCHANT DASHBOARD (Strictly when appView is 'merchant' AND user is verified merchant/admin)
   if (appView === 'merchant') {
     if (!authUser || (authUser.role !== 'merchant' && authUser.role !== 'admin')) {
-      window.history.replaceState({}, '', '/portal');
-      setAppView('portal');
+      window.history.replaceState({}, '', '/');
+      setAppView('welcome');
+      handleOpenAuthModal('merchant-login');
       return null;
     }
 
@@ -1924,8 +1909,8 @@ export const App: React.FC = () => {
               <div className="w-6 h-6 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center text-xs">
                 🛒
               </div>
-              <span className="font-bold text-slate-dark">EnteBazaar</span>
-              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — EnteBazaar”</span>
+              <span className="font-bold text-slate-dark">PeediyaCart</span>
+              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PeediyaCart”</span>
             </div>
             <div className="flex items-center gap-3 text-[11px] font-medium text-slate-muted">
               <span>📍 Serving Kerala Supermarkets</span>
@@ -1947,7 +1932,7 @@ export const App: React.FC = () => {
 
       {/* Floating Bottom Basket Bar for Mobile & Tablet */}
       {basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare' && (
-        <div className="lg:hidden fixed bottom-16 left-3.5 right-3.5 sm:left-auto sm:right-6 sm:w-[420px] z-30 bg-gradient-to-r from-[#04281C] via-[#063B2A] to-[#084D37] text-white rounded-2xl p-2.5 sm:p-3 shadow-[0_12px_28px_rgba(4,40,28,0.38)] flex items-center justify-between animate-in slide-in-from-bottom duration-200 border border-[#10A978]/35 font-malayalam backdrop-blur-md">
+        <div className="lg:hidden fixed bottom-[64px] sm:bottom-[70px] left-3.5 right-3.5 sm:left-auto sm:right-6 sm:w-[420px] z-30 bg-gradient-to-r from-[#04281C] via-[#063B2A] to-[#084D37] text-white rounded-2xl p-2.5 sm:p-3 shadow-[0_12px_28px_rgba(4,40,28,0.38)] flex items-center justify-between animate-in slide-in-from-bottom duration-200 border border-[#10A978]/35 font-malayalam backdrop-blur-md">
           {comparison?.shops && comparison.shops.length > 0 && comparison.bestTotal > 0 ? (
             <>
               <div
@@ -2226,6 +2211,7 @@ export const App: React.FC = () => {
           isOpen={isConsumerPreBookingsOpen}
           onClose={() => setIsConsumerPreBookingsOpen(false)}
           authUser={authUser}
+          shops={shops}
           onOpenChat={(shopName) => handleOpenChat(shopName)}
         />
       )}
@@ -2340,8 +2326,8 @@ export const App: React.FC = () => {
         <div
           className={`lg:hidden fixed right-3.5 sm:right-6 z-30 transition-all duration-300 ${
             basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare'
-              ? 'bottom-36'
-              : 'bottom-20'
+              ? 'bottom-[140px]'
+              : 'bottom-[66px]'
           }`}
         >
           <button

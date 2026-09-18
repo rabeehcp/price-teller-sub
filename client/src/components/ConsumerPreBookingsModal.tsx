@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PreBooking, User, PreBookingStatus } from '../types';
+import { PreBooking, User, PreBookingStatus, Shop } from '../types';
 import { fetchPreBookingsApi, updatePreBookingStatusApi } from '../services/api';
 import { formatChatDateTime } from './ConsumerChatModal';
 import { ProductImage } from './ProductImage';
@@ -24,6 +24,7 @@ interface ConsumerPreBookingsModalProps {
   isOpen: boolean;
   onClose: () => void;
   authUser: User | null;
+  shops?: Shop[];
   onOpenChat?: (shopName: string) => void;
 }
 
@@ -31,6 +32,7 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
   isOpen,
   onClose,
   authUser,
+  shops = [],
   onOpenChat,
 }) => {
   if (!isOpen) return null;
@@ -210,6 +212,10 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
             filteredBookings.map((booking) => {
               const isExpanded = expandedBookingId === booking.id;
               const formattedDate = formatChatDateTime(booking.createdAt);
+              const storeObj = shops.find(
+                (s) => s.id === booking.shopId || s.name.toLowerCase() === booking.shopName.toLowerCase()
+              );
+              const shopPhone = storeObj?.phone;
 
               return (
                 <div
@@ -223,8 +229,19 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
                         🏪
                       </div>
                       <div className="min-w-0">
-                        <div className="font-extrabold text-xs sm:text-sm text-slate-dark truncate">
-                          {booking.shopName}
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-extrabold text-xs sm:text-sm text-slate-dark truncate">
+                            {booking.shopName}
+                          </span>
+                          {shopPhone && (
+                            <a
+                              href={`tel:${shopPhone.replace(/[^0-9+]/g, '')}`}
+                              className="p-1 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[#0B8F68] border border-emerald-200/80 transition-all shrink-0 active:scale-95"
+                              title={`${booking.shopName} വിളിക്കുക (${shopPhone})`}
+                            >
+                              <Phone className="w-3 h-3" />
+                            </a>
+                          )}
                         </div>
                         <div className="text-[10px] sm:text-[11px] text-gray-400 flex items-center gap-1 mt-0.5 flex-wrap">
                           <span>Ref: {booking.id.slice(0, 8)}...</span>
@@ -259,40 +276,39 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
                       <span className="text-gray-400 text-[10px] uppercase font-bold block">
                         Pickup Window
                       </span>
-                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs truncate block">
-                        {booking.pickupTime || 'Within 1 hour'}
+                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs">
+                        {booking.pickupTime || 'Today'}
                       </span>
                     </div>
                   </div>
 
-                  {/* Merchant Note / Status Message */}
-                  {booking.merchantNote && (
-                    <div className="bg-brand-50 border border-brand-200 rounded-xl p-2.5 text-xs text-brand-900 flex items-start gap-2">
-                      <Sparkles className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
-                      <div>
-                        <b className="font-bold">Store Message: </b>
-                        <span>{booking.merchantNote}</span>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Customer Notes */}
+                  {/* Order Notes / Instructions if any */}
                   {booking.notes && (
-                    <div className="text-[11px] text-gray-500 bg-gray-50 border border-gray-100 rounded-lg p-2">
-                      <b>Your Note:</b> {booking.notes}
+                    <div className="text-xs bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-slate-600">
+                      <b className="text-[10px] uppercase text-gray-400 block mb-0.5">Your Note</b>
+                      <span>{booking.notes}</span>
                     </div>
                   )}
 
-                  {/* Item Breakdown (Collapsible) */}
-                  <div>
+                  {booking.merchantNote && (
+                    <div className="text-xs bg-amber-50 border border-amber-200 rounded-xl p-2.5 text-amber-900">
+                      <b className="text-[10px] uppercase text-amber-700 block mb-0.5">Note from Merchant</b>
+                      <span>{booking.merchantNote}</span>
+                    </div>
+                  )}
+
+                  {/* Expandable Items List */}
+                  <div className="pt-1">
                     <button
                       type="button"
                       onClick={() =>
                         setExpandedBookingId(isExpanded ? null : booking.id)
                       }
-                      className="text-[11px] font-bold text-gray-500 hover:text-brand-800 flex items-center gap-1 cursor-pointer active:scale-95"
+                      className="text-xs font-bold text-brand-700 hover:text-brand-800 flex items-center gap-1 cursor-pointer"
                     >
-                      <span>{isExpanded ? 'Hide Items' : 'View Itemized Snapshot'}</span>
+                      <span>
+                        {isExpanded ? 'Hide' : 'View'} {booking.itemCount} Reserved Items
+                      </span>
                       {isExpanded ? (
                         <ChevronUp className="w-3.5 h-3.5" />
                       ) : (
@@ -329,19 +345,32 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
                   </div>
 
                   {/* Action Bar */}
-                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2">
-                    {onOpenChat && (
-                      <button
-                        onClick={() => {
-                          onClose();
-                          onOpenChat(booking.shopName);
-                        }}
-                        className="px-3 py-1.5 bg-brand-50 hover:bg-brand-100 border border-brand-200 text-brand-800 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
-                      >
-                        <MessageCircle className="w-3.5 h-3.5 text-brand-600" />
-                        <span>Chat with Store</span>
-                      </button>
-                    )}
+                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-1.5 flex-wrap">
+                      {shopPhone && (
+                        <a
+                          href={`tel:${shopPhone.replace(/[^0-9+]/g, '')}`}
+                          className="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-[#064E3B] text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
+                          title={`${booking.shopName} കടയിലേക്ക് വിളിക്കുക (${shopPhone})`}
+                        >
+                          <Phone className="w-3.5 h-3.5 text-[#0B8F68]" />
+                          <span>വിളിക്കുക</span>
+                        </a>
+                      )}
+
+                      {onOpenChat && (
+                        <button
+                          onClick={() => {
+                            onClose();
+                            onOpenChat(booking.shopName);
+                          }}
+                          className="px-3 py-1.5 bg-brand-50 hover:bg-brand-100 border border-brand-200 text-brand-800 text-xs font-bold rounded-xl flex items-center gap-1.5 transition-colors cursor-pointer active:scale-95"
+                        >
+                          <MessageCircle className="w-3.5 h-3.5 text-brand-600" />
+                          <span>Chat with Store</span>
+                        </button>
+                      )}
+                    </div>
 
                     {booking.status === 'pending' && (
                       <button

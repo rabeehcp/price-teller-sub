@@ -86,6 +86,7 @@ export interface ShopComparisonResult {
   rating: number;
   reviewCount: number;
   shopType: string;
+  phone?: string;
   color: string;
   total: number;
   availableTotal?: number;

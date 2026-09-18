@@ -813,7 +813,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
       <footer className="w-full bg-white border-t border-[#E3ECE7] py-2 md:py-3.5 px-3 md:px-6 lg:px-10 xl:px-12 text-center text-[9px] md:text-xs lg:text-sm text-[#66756E] font-malayalam shrink-0 overflow-hidden">
         <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-2">
           <div className="flex items-center gap-1.5 truncate">
-            <span className="font-bold text-[#17221D] font-sans">EnteBazaar Kerala</span>
+            <span className="font-bold text-[#17221D] font-sans">PeediyaCart Kerala</span>
             <span>·</span>
             <span className="truncate">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
           </div>

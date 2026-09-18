@@ -27,6 +27,7 @@ export interface ShopComparisonResult {
   rating: number;
   reviewCount: number;
   shopType: string;
+  phone?: string;
   color: string;
   total: number;
   availableTotal: number;
@@ -238,6 +239,7 @@ export async function compareBasket(
       rating: shop.rating,
       reviewCount: shop.reviewCount,
       shopType: shop.shopType,
+      phone: shop.phone,
       color: shop.color,
       total,
       availableTotal,

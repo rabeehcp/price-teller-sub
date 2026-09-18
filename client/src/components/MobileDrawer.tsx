@@ -585,7 +585,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             <button
               onClick={() => {
-                alert('EnteBazaar സഹായം: കസ്റ്റമർ സപ്പോർട്ടിനായി support@entebazaar.in ബന്ധപ്പെടുക.');
+                alert('PeediyaCart സഹായം: കസ്റ്റമർ സപ്പോർട്ടിനായി support@peediyacart.in ബന്ധപ്പെടുക.');
                 onClose();
               }}
               className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"

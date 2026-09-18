@@ -81,11 +81,23 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
             <span>Open: <b>{shop.openingHours}</b></span>
           </div>
 
-          <div className="flex items-center gap-2.5">
-            <Phone className="w-4 h-4 text-brand-600 shrink-0" />
-            <a href={`tel:${shop.phone}`} className="text-brand-700 font-bold hover:underline">
-              {shop.phone}
-            </a>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <Phone className="w-4 h-4 text-brand-600 shrink-0" />
+              <a href={`tel:${shop.phone ? shop.phone.replace(/[^0-9+]/g, '') : ''}`} className="text-brand-700 font-bold hover:underline">
+                {shop.phone || 'No phone listed'}
+              </a>
+            </div>
+            {shop.phone && (
+              <a
+                href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                className="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#064E3B] border border-emerald-200 rounded-lg text-xs font-bold flex items-center gap-1 transition-all active:scale-95 cursor-pointer font-malayalam"
+                title={`${shop.name} ഫോൺ വിളിക്കുക`}
+              >
+                <Phone className="w-3 h-3 text-[#0B8F68]" />
+                <span>വിളിക്കുക</span>
+              </a>
+            )}
           </div>
         </div>
 
@@ -129,12 +141,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                           🔴 Out of Stock
                         </span>
                       ) : (
-                        <>
-                          <span className="text-slate-dark">₹{item.lineTotal}</span>
-                          {item.isLowestForThisItem && (
-                            <span className="text-[10px] text-emerald-600 ml-1 font-semibold">★ lowest</span>
-                          )}
-                        </>
+                        <span className="text-brand-700">₹{item.lineTotal}</span>
                       )}
                     </div>
                   </div>
@@ -145,7 +152,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
         )}
 
         {/* Actions */}
-        <div className="space-y-2">
+        <div className="space-y-2 font-malayalam">
           {onOpenShopCatalogue && (
             <button
               onClick={() => {
@@ -159,13 +166,24 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
             </button>
           )}
 
-          <div className="grid grid-cols-2 gap-2">
+          <div className={`grid ${shop.phone ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}>
+            {shop.phone && (
+              <a
+                href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                className="py-2.5 px-2 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95"
+                title={`${shop.name} ഫോൺ വിളിക്കുക`}
+              >
+                <Phone className="w-3.5 h-3.5" />
+                <span>വിളിക്കുക</span>
+              </a>
+            )}
+
             <button
               onClick={handleDirections}
-              className="py-2.5 px-4 bg-surface-subtle hover:bg-gray-200 text-slate-dark rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+              className="py-2.5 px-2 bg-surface-subtle hover:bg-gray-200 text-slate-dark rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Navigation className="w-4 h-4 text-brand-600" />
-              <span>വഴി കാണുക (Maps)</span>
+              <Navigation className="w-3.5 h-3.5 text-brand-600" />
+              <span>വഴി കാണുക</span>
             </button>
 
             {onOpenChat && (
@@ -174,10 +192,10 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
                   onClose();
                   onOpenChat(shop.name);
                 }}
-                className="py-2.5 px-4 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
+                className="py-2.5 px-2 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs"
               >
-                <MessageCircle className="w-4 h-4 text-brand-600" />
-                <span>ചാറ്റ് ചെയ്യുക</span>
+                <MessageCircle className="w-3.5 h-3.5 text-brand-600" />
+                <span>ചാറ്റ്</span>
               </button>
             )}
           </div>

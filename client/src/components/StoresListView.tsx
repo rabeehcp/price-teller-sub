@@ -249,6 +249,24 @@ export const StoresListView: React.FC<StoresListViewProps> = ({
                       <Clock className="w-3.5 h-3.5 text-[#66756E]" />
                       <span>7:00 AM – 10:00 PM</span>
                     </div>
+
+                    {shop.phone && (
+                      <div className="flex items-center justify-between col-span-2 pt-1.5 border-t border-[#E3ECE7]">
+                        <div className="flex items-center gap-1.5">
+                          <Phone className="w-3.5 h-3.5 text-[#0B8F68]" />
+                          <span className="text-[#66756E]">ഫോൺ:</span>
+                          <a href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`} className="text-[#0B8F68] font-bold hover:underline">
+                            {shop.phone}
+                          </a>
+                        </div>
+                        <a
+                          href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                          className="text-[10px] px-2 py-0.5 rounded-md bg-emerald-50 text-[#064E3B] border border-emerald-200/80 font-bold hover:bg-emerald-100"
+                        >
+                          വിളിക്കുക →
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -262,13 +280,24 @@ export const StoresListView: React.FC<StoresListViewProps> = ({
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
 
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className={`grid ${shop.phone ? 'grid-cols-3' : 'grid-cols-2'} gap-2`}>
+                    {shop.phone && (
+                      <a
+                        href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                        className="py-2 bg-emerald-50 hover:bg-emerald-100 active:scale-98 text-[#064E3B] border border-emerald-200/80 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer shadow-2xs"
+                        title={`${shop.name} ഫോൺ വിളിക്കുക`}
+                      >
+                        <Phone className="w-3.5 h-3.5 text-[#0B8F68]" />
+                        <span>വിളിക്കുക</span>
+                      </a>
+                    )}
+
                     <button
                       onClick={() => onOpenChat(shop.name)}
                       className="py-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 active:scale-98 text-[#17221D] border border-[#E3ECE7] rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <MessageCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
-                      <span>ചാറ്റ് ചെയ്യുക</span>
+                      <span>ചാറ്റ്</span>
                     </button>
 
                     <button
@@ -276,7 +305,7 @@ export const StoresListView: React.FC<StoresListViewProps> = ({
                       className="py-2 bg-[#DDF5EA] hover:bg-[#DDF5EA]/80 active:scale-98 text-[#063B2A] border border-[#0B8F68]/30 rounded-xl text-[11px] font-bold transition-all flex items-center justify-center gap-1 cursor-pointer"
                     >
                       <CalendarCheck className="w-3.5 h-3.5 text-[#0B8F68]" />
-                      <span>പ്രീ-ബുക്കിംഗ്</span>
+                      <span>പ്രീ-ബുക്ക്</span>
                     </button>
                   </div>
                 </div>

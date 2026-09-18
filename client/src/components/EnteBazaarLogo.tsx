@@ -16,37 +16,21 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
   variant = 'horizontal',
   theme = 'light',
   withTagline = false,
-  withMalayalam = false,
   className = '',
   onClick,
-  alt = 'EnteBazaar',
+  alt = 'PeediyaCart',
 }) => {
-  // If variant === 'full', display the complete official emblem card
-  if (variant === 'full') {
-    const fullSizes = {
-      xs: 'w-16 h-16',
-      sm: 'w-24 h-24',
-      md: 'w-32 h-32 sm:w-36 sm:h-36',
-      lg: 'w-44 h-44 sm:w-48 sm:h-48',
-      xl: 'w-56 h-56 sm:w-64 sm:h-64',
-    };
-    return (
-      <div
-        onClick={onClick}
-        className={`relative inline-flex items-center justify-center rounded-full overflow-hidden shadow-md border border-slate-200 bg-white select-none p-1 ${
-          fullSizes[size] || fullSizes.md
-        } ${onClick ? 'cursor-pointer hover:scale-105 active:scale-95 transition-transform' : ''} ${className}`}
-      >
-        <img
-          src="/logo.png"
-          alt={alt}
-          className="w-full h-full object-contain"
-        />
-      </div>
-    );
-  }
+  const isDark = theme === 'dark';
 
-  // Sizing configurations for horizontal & icon
+  // Sizing configurations for logo image heights
+  const logoHeights = {
+    xs: 'h-5 sm:h-6',
+    sm: 'h-6 sm:h-7',
+    md: 'h-7 sm:h-8 md:h-9',
+    lg: 'h-9 sm:h-11 md:h-12',
+    xl: 'h-12 sm:h-14 md:h-16',
+  };
+
   const iconSizes = {
     xs: 'w-6 h-6',
     sm: 'w-8 h-8',
@@ -55,27 +39,18 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
     xl: 'w-14 h-14 sm:w-16 sm:h-16',
   };
 
-  const textSizes = {
-    xs: 'text-xs',
-    sm: 'text-sm sm:text-base',
-    md: 'text-base sm:text-lg',
-    lg: 'text-lg sm:text-xl',
-    xl: 'text-xl sm:text-2xl',
-  };
-
-  const isDark = theme === 'dark';
-
+  // 1. Icon variant: circular emblem with logo icon
   if (variant === 'icon') {
     return (
       <div
         onClick={onClick}
-        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs select-none transition-transform hover:scale-105 active:scale-95 rounded-full border border-slate-200/80 bg-white p-0.5 ${
+        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-2xs select-none transition-transform hover:scale-105 active:scale-95 rounded-xl border border-slate-200/80 bg-white p-1 ${
           iconSizes[size] || iconSizes.md
         } ${onClick ? 'cursor-pointer' : ''} ${className}`}
-        title="EnteBazaar"
+        title="PeediyaCart"
       >
         <img
-          src="/logo.png"
+          src="/logo-icon.png"
           alt={alt}
           className="w-full h-full object-contain"
         />
@@ -83,47 +58,64 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
     );
   }
 
+  // 2. Full card variant
+  if (variant === 'full') {
+    const fullSizes = {
+      xs: 'w-24 py-1.5 px-2.5',
+      sm: 'w-32 py-2 px-3.5',
+      md: 'w-44 sm:w-52 py-2.5 px-4',
+      lg: 'w-56 sm:w-64 py-3 px-5',
+      xl: 'w-72 sm:w-80 py-4 px-6',
+    };
+    return (
+      <div
+        onClick={onClick}
+        className={`relative inline-flex items-center justify-center rounded-2xl overflow-hidden shadow-md border border-slate-200/90 bg-white select-none ${
+          fullSizes[size] || fullSizes.md
+        } ${onClick ? 'cursor-pointer hover:scale-102 active:scale-98 transition-transform' : ''} ${className}`}
+      >
+        <img
+          src="/peediyacart-logo.png"
+          alt={alt}
+          className="w-full h-auto object-contain"
+        />
+      </div>
+    );
+  }
+
+  // 3. Horizontal primary brand mark
   return (
     <div
       onClick={onClick}
-      className={`flex items-center gap-2 sm:gap-2.5 select-none transition-transform group ${
+      className={`inline-flex flex-col select-none transition-transform group ${
         onClick ? 'cursor-pointer active:scale-98' : ''
       } ${className}`}
     >
-      {/* Official Circular Balance Scale Emblem Mark */}
-      <div
-        className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-xs rounded-full border border-slate-200/80 bg-white p-0.5 group-hover:scale-105 transition-transform ${
-          iconSizes[size] || iconSizes.md
-        }`}
-      >
+      <div className={`inline-flex items-center ${
+        isDark ? 'bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-xl shadow-xs border border-white/20' : ''
+      }`}>
         <img
-          src="/logo.png"
+          src="/peediyacart-logo.png"
           alt={alt}
-          className="w-full h-full object-contain"
+          className={`w-auto object-contain transition-transform group-hover:scale-102 ${
+            logoHeights[size] || logoHeights.md
+          }`}
         />
       </div>
 
-      {/* Brand Typography */}
-      <div className="flex flex-col leading-tight min-w-0">
-        <div
-          className={`font-black tracking-tight flex items-center gap-0.5 font-sans leading-none ${
-            isDark ? 'text-white' : 'text-[#17221D]'
-          } ${textSizes[size] || textSizes.md}`}
+      {withTagline && (
+        <span
+          className={`text-[10px] sm:text-[11px] font-semibold tracking-normal mt-1 font-malayalam ${
+            isDark ? 'text-emerald-300' : 'text-[#0B8F68]'
+          }`}
         >
-          <span>Ente</span>
-          <span className="text-[#10A978]">Bazaar</span>
-        </div>
-
-        {withTagline && (
-          <span
-            className={`text-[8px] sm:text-[9px] lg:text-[10px] font-medium tracking-tight mt-0.5 leading-none ${
-              isDark ? 'text-[#8F9F97]' : 'text-[#66756E]'
-            }`}
-          >
-            Local Shops. Better Prices.
-          </span>
-        )}
-      </div>
+          നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്
+        </span>
+      )}
     </div>
   );
 };
+
+// Aliased export for convenience
+export const PeediyaCartLogo = EnteBazaarLogo;
+

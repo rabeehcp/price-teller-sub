@@ -271,7 +271,7 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
       const statusIcon = p.stockStatus === 'out_of_stock' ? '❌ Out of stock' : '✅ In Stock';
       text += `• ${p.emoji} ${p.name} (${u}) - ₹${pr} [${statusIcon}]\n`;
     });
-    text += `\n_Checked via EnteBazaar Smart Hyperlocal Portal_`;
+    text += `\n_Checked via PeediyaCart Smart Hyperlocal Portal_`;
 
     const url = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -420,15 +420,18 @@ export const ShopPriceCatalogueModal: React.FC<ShopPriceCatalogueModalProps> = (
           <div className="flex items-center gap-1.5 shrink-0 text-[11px]">
             {activeShop?.phone && (
               <a
-                href={`tel:${activeShop.phone}`}
-                className="hidden md:inline-flex items-center gap-1 text-brand-700 font-bold hover:underline"
+                href={`tel:${activeShop.phone.replace(/[^0-9+]/g, '')}`}
+                className="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#064E3B] border border-emerald-200 rounded-lg font-bold text-[11px] transition-colors cursor-pointer active:scale-95"
+                title={`${activeShop.name} വിളിക്കുക (${activeShop.phone})`}
               >
-                <Phone className="w-3 h-3" /> {activeShop.phone}
+                <Phone className="w-3 h-3 text-[#0B8F68]" />
+                <span className="hidden sm:inline">{activeShop.phone}</span>
+                <span className="sm:hidden font-malayalam">വിളിക്കുക</span>
               </a>
             )}
             <button
               onClick={handleDirections}
-              className="px-2 py-0.5 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-md font-bold text-[10px] inline-flex items-center gap-0.5 cursor-pointer"
+              className="px-2 py-1 bg-brand-50 hover:bg-brand-100 text-brand-800 border border-brand-200 rounded-lg font-bold text-[10px] inline-flex items-center gap-0.5 cursor-pointer"
             >
               <Navigation className="w-2.5 h-2.5" /> Map
             </button>

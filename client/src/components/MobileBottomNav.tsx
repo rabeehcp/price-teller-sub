@@ -47,7 +47,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   ];
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#EAEFF0] py-3 px-4 shadow-[0_-2px_16px_rgba(6,59,42,0.05)] flex items-center justify-around font-malayalam select-none">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-100/90 py-1.5 px-2 shadow-[0_-3px_16px_rgba(0,0,0,0.03)] flex items-center justify-around font-malayalam select-none backdrop-blur-md">
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -55,32 +55,34 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             key={item.id}
             type="button"
             onClick={() => onSelectTab(item.id)}
-            className={`flex flex-col items-center justify-center py-1 px-2.5 rounded-xl transition-all cursor-pointer relative ${
+            className={`flex flex-col items-center justify-center py-0.5 px-1.5 rounded-lg transition-all cursor-pointer relative ${
               isActive
-                ? 'text-[#063B2A] font-extrabold'
-                : 'text-[#8A9992] hover:text-[#2D3E35] font-medium'
+                ? 'text-[#064E3B]'
+                : 'text-slate-400 hover:text-slate-600'
             }`}
           >
             <div className="relative">
               <div
-                className={`p-1.5 rounded-xl transition-transform ${
-                  isActive ? 'scale-110 text-[#063B2A]' : 'text-[#8A9992]'
+                className={`p-1 rounded-lg transition-transform ${
+                  isActive ? 'scale-105 text-[#0B8F68]' : 'text-slate-400'
                 }`}
               >
-                {item.icon}
+                {React.cloneElement(item.icon as React.ReactElement, {
+                  className: 'w-[18px] h-[18px]',
+                })}
               </div>
 
               {/* Cart item badge */}
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -right-2 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center border border-white shadow-2xs font-sans">
+                <span className="absolute -top-1 -right-1.5 bg-[#E11D48] text-white text-[8.5px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-white shadow-2xs font-sans">
                   {item.badge > 99 ? '99+' : item.badge}
                 </span>
               )}
             </div>
 
             <span
-              className={`text-[10px] tracking-tight mt-1 leading-none ${
-                isActive ? 'text-[#063B2A] font-black' : 'text-[#8A9992]'
+              className={`text-[9.5px] tracking-tight mt-0.5 leading-none ${
+                isActive ? 'text-[#064E3B] font-black' : 'text-slate-400 font-bold'
               }`}
             >
               {item.label}

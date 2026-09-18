@@ -194,7 +194,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
       {/* Footer */}
       <footer className="w-full py-4 text-center text-xs text-gray-500 border-t border-slate-800/60 bg-slate-950/40">
-        <span>EnteBazaar Master Administrative System · Strict Authorization Enforced</span>
+        <span>PeediyaCart Master Administrative System · Strict Authorization Enforced</span>
       </footer>
     </div>
   );
