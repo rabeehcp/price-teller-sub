@@ -1,18 +1,19 @@
 import './utils/dns-fallback';
-import dotenv from 'dotenv';
-
-dotenv.config();
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
-dotenv.config({ path: path.resolve(__dirname, '../../server/.env') });
-
-
-import express from 'express';
-import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
-
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 import { apiRouter } from './routes/api';
 import { initDb } from './db/init';
+
+dotenv.config();
+if (typeof __dirname !== 'undefined') {
+  const rootEnv = path.resolve(__dirname, '../.env');
+  if (fs.existsSync(rootEnv)) dotenv.config({ path: rootEnv });
+  const serverEnv = path.resolve(__dirname, '../../server/.env');
+  if (fs.existsSync(serverEnv)) dotenv.config({ path: serverEnv });
+}
 
 const app = express();
 const PORT = parseInt(process.env.PORT || '5000', 10);
@@ -23,41 +24,58 @@ console.log('CORS FRONTEND_ORIGIN:', frontendOrigin);
 
 const isAllowedOrigin = (origin: string | undefined): boolean => {
   if (!origin) return true;
+  const lower = origin.toLowerCase().trim();
   if (
-    origin.startsWith('http://localhost') ||
-    origin.startsWith('http://127.0.0.1') ||
-    origin.endsWith('.vercel.app') ||
-    origin.endsWith('.azurestaticapps.net') ||
-    origin.includes('peediacart') ||
-    origin.includes('entebazaar') ||
-    origin.includes('priceteller')
+    lower.startsWith('http://localhost') ||
+    lower.startsWith('http://127.0.0.1') ||
+    lower.endsWith('.vercel.app') ||
+    lower.endsWith('.azurestaticapps.net') ||
+    lower.includes('azurestaticapps.net') ||
+    lower.includes('azurecontainerapps.io') ||
+    lower.includes('peediacart') ||
+    lower.includes('entebazaar') ||
+    lower.includes('priceteller')
   ) {
     return true;
   }
   if (frontendOrigin) {
     const list = frontendOrigin.split(',').map((s) => s.trim().toLowerCase());
-    if (list.includes('*') || list.includes(origin.toLowerCase())) {
+    if (list.includes('*') || list.includes(lower)) {
       return true;
     }
   }
-  return false;
+  return true;
 };
+
+// Explicit preflight middleware to guarantee OPTIONS requests always succeed with CORS headers
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin && isAllowedOrigin(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With, Accept, Origin, Cache-Control, Pragma');
+    res.setHeader('Access-Control-Max-Age', '86400');
+  }
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
+  next();
+});
 
 const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
     if (isAllowedOrigin(origin)) {
       return callback(null, true);
     }
-    // Allow fallback so API is accessible to authorized consumers
     return callback(null, true);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin', 'Cache-Control', 'Pragma'],
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
 
 // Keep payload limit modest; product images should be compressed client-side.
 app.use(express.json({ limit: '5mb' }));
@@ -78,6 +96,9 @@ let dbReady = false;
 
 // Gate API requests until database is ready
 app.use('/api', (req, res, next) => {
+  if (req.method === 'OPTIONS') {
+    return next();
+  }
   if (!dbReady) {
     return res.status(503).json({ success: false, error: 'Database is still initializing or reconnecting. Please retry.' });
   }
