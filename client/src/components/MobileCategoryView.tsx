@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Product, Category, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
+import { formatPerUnitLabel } from '../utils/unitFormatter';
 import { ArrowLeft, ShoppingBag, Search, Star, Plus, Minus, X } from 'lucide-react';
 
 interface MobileCategoryViewProps {
@@ -431,7 +432,7 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
                         ₹ {price}
                       </span>
                       <span className="text-[10px] text-[#8A9992] font-normal font-sans">
-                        /{p.defaultUnit || 'kg'}
+                        /{formatPerUnitLabel(p.defaultUnit)}
                       </span>
                     </div>
                     <div className="flex items-center gap-1 text-[11px] text-[#8A9992]">

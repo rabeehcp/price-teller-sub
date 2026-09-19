@@ -13,22 +13,32 @@ interface MobileProductDetailModalProps {
   onQuantityChange: (productId: string, delta: number) => void;
 }
 
-function getFallbackMultiplier(unit: string): number {
-  const u = unit.toLowerCase().trim();
-  if (u === '100 g') return 0.1;
-  if (u === '250 g') return 0.25;
-  if (u === '500 g') return 0.5;
-  if (u === '1 kg' || u === 'kg') return 1;
-  if (u === '2 kg') return 2;
-  if (u === '5 kg') return 5;
-  if (u === '1 bunch' || u === 'bunch') return 1;
-  if (u === '2 bunches') return 2;
-  if (u === '3 bunches') return 3;
-  if (u === '1 unit' || u === '1 pc' || u === 'pc') return 1;
-  if (u === '2 units' || u === '2 pcs') return 2;
-  if (u === '1 dozen' || u === '12 pc') return 12;
-  if (u === '500 ml') return 0.5;
-  if (u === '1 l' || u === '1 litre') return 1;
+function getProductMultiplier(product: Product, unit: string): number {
+  if (product.unitMultiplier && product.unitMultiplier[unit] !== undefined) {
+    return product.unitMultiplier[unit];
+  }
+  if (unit === product.defaultUnit) return 1;
+
+  const parseAmt = (u: string) => {
+    const m = (u || '').toLowerCase().match(/([\d.]+)\s*(kg|g|ml|l|pc|pcs|bunch|pack|box)/i);
+    if (!m) return null;
+    const val = parseFloat(m[1]);
+    const type = m[2].toLowerCase();
+    if (type === 'kg') return { type: 'weight', val: val * 1000 };
+    if (type === 'g') return { type: 'weight', val };
+    if (type === 'l') return { type: 'volume', val: val * 1000 };
+    if (type === 'ml') return { type: 'volume', val };
+    if (type === 'pc' || type === 'pcs') return { type: 'count', val };
+    if (type === 'bunch') return { type: 'bunch', val };
+    if (type === 'pack') return { type: 'pack', val };
+    return null;
+  };
+
+  const target = parseAmt(unit);
+  const base = parseAmt(product.defaultUnit || '1 kg');
+  if (target && base && target.type === base.type && base.val > 0) {
+    return target.val / base.val;
+  }
   return 1;
 }
 
@@ -38,10 +48,11 @@ function getProductAvailableUnits(product: Product): string[] {
   }
   const def = (product.defaultUnit || '').toLowerCase().trim();
   if (def.includes('bunch')) return ['1 bunch', '2 bunches', '3 bunches'];
-  if (def.includes('kg') || def === '1 kg' || def === 'kg') return ['250 g', '500 g', '1 kg', '2 kg'];
+  if (def.includes('kg') || def === '1 kg' || def === 'kg') return ['500 g', '1 kg', '2 kg'];
   if (def === '500 g') return ['250 g', '500 g', '1 kg'];
   if (def === '100 g') return ['100 g', '250 g', '500 g'];
-  if (def.includes('unit') || def.includes('pc')) return ['1 unit', '2 units'];
+  if (def.includes('pc')) return ['1 pc', '2 pcs', '3 pcs'];
+  if (def.includes('pack')) return ['1 pack', '2 packs'];
   if (def.includes('l') || def.includes('litre')) return ['500 ml', '1 L'];
   return [product.defaultUnit || '1 kg'];
 }
@@ -68,7 +79,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
 
   const priceValues = Object.values(product.prices || {});
   const basePrice = priceValues.length > 0 ? Math.min(...priceValues) : 30;
-  const multiplier = product.unitMultiplier?.[selectedUnit] ?? getFallbackMultiplier(selectedUnit);
+  const multiplier = getProductMultiplier(product, selectedUnit);
   const unitPrice = Math.round(basePrice * multiplier);
   const totalPrice = unitPrice * qty;
 
@@ -184,7 +195,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
               <div className="flex flex-wrap gap-2">
                 {availableUnits.map((u) => {
                   const isSelected = selectedUnit === u;
-                  const mult = product.unitMultiplier?.[u] ?? getFallbackMultiplier(u);
+                  const mult = getProductMultiplier(product, u);
                   const uPrice = Math.round(basePrice * mult);
                   return (
                     <button

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { User, ConsumerData, Product, ConsumerSavedList, Location, PreBooking, PreBookingStatus } from '../types';
 import { ProductImage } from './ProductImage';
 import { fetchPreBookingsApi, updatePreBookingStatusApi } from '../services/api';
+import { formatCartItemQuantity } from '../utils/unitFormatter';
 import { formatChatDateTime } from './ConsumerChatModal';
 import {
   User as UserIcon,
@@ -585,7 +586,7 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                               <div className="min-w-0">
                                 <div className="font-bold text-[#17221D] truncate">{item.productName}</div>
                                 <div className="text-[10px] text-[#66756E]">
-                                  {item.quantity} {item.unit}
+                                  {formatCartItemQuantity(item.quantity, item.unit)}
                                 </div>
                               </div>
                             </div>

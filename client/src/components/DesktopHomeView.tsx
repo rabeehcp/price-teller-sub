@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Product, Shop, Location, BasketItem, Category } from '../types';
 import { ProductImage } from './ProductImage';
 import { getMalayalamName } from '../utils/malayalamNames';
+import { formatPerUnitLabel } from '../utils/unitFormatter';
 import {
   Search,
   Star,
@@ -564,7 +565,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                       </span>
                       {price > 0 && (
                         <span className="text-[10px] text-slate-500 font-sans">
-                          /{product.defaultUnit || 'kg'}
+                          /{formatPerUnitLabel(product.defaultUnit)}
                         </span>
                       )}
                     </div>

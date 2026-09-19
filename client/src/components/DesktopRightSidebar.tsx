@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BasketItem, Shop, Location, FullComparisonResponse, ShopComparisonResult } from '../types';
+import { formatCartItemQuantity } from '../utils/unitFormatter';
 import { ProductImage } from './ProductImage';
 import {
   ShoppingBag,
@@ -228,7 +229,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                           {prod.name}
                         </h4>
                         <span className="text-[10px] text-[#8A9992] font-sans">
-                          {item.quantity} {unit} • ₹{itemTotal}
+                          {formatCartItemQuantity(item.quantity, unit)} • ₹{itemTotal}
                         </span>
                       </div>
 

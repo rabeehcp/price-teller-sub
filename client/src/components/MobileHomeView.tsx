@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Category, Product, Shop, Location, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
 import { getMalayalamName } from '../utils/malayalamNames';
+import { formatPerUnitLabel } from '../utils/unitFormatter';
 import {
   Search,
   X,
@@ -487,7 +488,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                               ₹{price}
                             </span>
                             <span className="text-[10px] text-slate-400 font-medium">
-                              /{product.defaultUnit || 'kg'}
+                              /{formatPerUnitLabel(product.defaultUnit)}
                             </span>
                           </div>
                         ) : (

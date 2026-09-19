@@ -128,8 +128,8 @@ export const NEW_MASTER_PRODUCTS: NewMasterProductDef[] = [
   { id: 'dairy-7-cheese', name: 'ചീസ്', categoryId: 'dairy', emoji: '🧀', englishNote: 'Processed Cheese Slices / Block', defaultUnit: '200 g', availableUnits: ['200 g', '500 g'], unitMultiplier: { '200 g': 1, '500 g': 2.5 }, badge: 'Melty Rich' },
   { id: 'dairy-8-cream', name: 'ക്രീം', categoryId: 'dairy', emoji: '🍶', englishNote: 'Fresh Dairy Cream', defaultUnit: '250 ml', availableUnits: ['250 ml', '500 ml'], unitMultiplier: { '250 ml': 1, '500 ml': 2 }, badge: 'Thick Cooking Cream' },
   { id: 'dairy-9-condensed-milk', name: 'കണ്ടൻസ്ഡ് മിൽക്ക്', categoryId: 'dairy', emoji: '🥫', englishNote: 'Sweetened Condensed Milk', defaultUnit: '400 g', availableUnits: ['400 g'], unitMultiplier: { '400 g': 1 }, badge: 'Dessert Special' },
-  { id: 'dairy-10-egg', name: 'മുട്ട', categoryId: 'dairy', emoji: '🥚', englishNote: 'Farm Fresh White Eggs', defaultUnit: '12 pcs', availableUnits: ['6 pcs', '12 pcs', '30 pcs'], unitMultiplier: { '6 pcs': 0.5, '12 pcs': 1, '30 pcs': 2.5 }, badge: 'Farm Daily' },
-  { id: 'dairy-11-chicken-egg', name: 'കോഴിമുട്ട', categoryId: 'dairy', emoji: '🥚', englishNote: 'Country / Naadan Chicken Eggs', defaultUnit: '12 pcs', availableUnits: ['6 pcs', '12 pcs'], unitMultiplier: { '6 pcs': 0.5, '12 pcs': 1 }, badge: 'Naadan Brown' },
+  { id: 'dairy-10-egg', name: 'മുട്ട', categoryId: 'dairy', emoji: '🥚', englishNote: 'Farm Fresh White Eggs', defaultUnit: '6 pcs', availableUnits: ['6 pcs', '12 pcs', '30 pcs'], unitMultiplier: { '6 pcs': 1, '12 pcs': 2, '30 pcs': 5 }, badge: 'Farm Daily' },
+  { id: 'dairy-11-chicken-egg', name: 'കോഴിമുട്ട', categoryId: 'dairy', emoji: '🥚', englishNote: 'Country / Naadan Chicken Eggs', defaultUnit: '6 pcs', availableUnits: ['6 pcs', '12 pcs'], unitMultiplier: { '6 pcs': 1, '12 pcs': 2 }, badge: 'Naadan Brown' },
   { id: 'dairy-12-quail-egg', name: 'കാടമുട്ട', categoryId: 'dairy', emoji: '🥚', englishNote: 'Quail Eggs / Kada Mutta', defaultUnit: '10 pcs', availableUnits: ['10 pcs', '20 pcs'], unitMultiplier: { '10 pcs': 1, '20 pcs': 2 }, badge: 'Nutrient Dense' },
 
   // --- 8. Sauces, Pickles & Condiments ---

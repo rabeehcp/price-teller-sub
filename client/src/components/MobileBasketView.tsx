@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BasketItem, FullComparisonResponse, Product } from '../types';
+import { formatPerUnitLabel, formatCartItemQuantity } from '../utils/unitFormatter';
 import { ProductImage } from './ProductImage';
 import { ArrowLeft, Trash2, Plus, Minus, Check, Tag, Scale, ShoppingBag, ChevronRight } from 'lucide-react';
 
@@ -162,9 +163,11 @@ export const MobileBasketView: React.FC<MobileBasketViewProps> = ({
                       <h3 className="text-sm font-extrabold text-[#17221D] font-malayalam truncate m-0">
                         {prod.name}
                       </h3>
-                      <span className="text-xs font-bold text-[#66756E] font-sans block">
-                        ₹ {unitPrice} <span className="text-[10px] text-[#8A9992] font-normal">/{unit}</span>
-                      </span>
+                      <div className="flex items-center gap-1.5 text-xs text-[#66756E] font-sans">
+                        <span className="font-bold text-[#17221D]">₹{unitPrice}</span>
+                        <span className="text-[10px] text-[#8A9992]">/{formatPerUnitLabel(unit)}</span>
+                        <span className="text-[10px] text-[#8A9992] ml-1">({formatCartItemQuantity(item.quantity, unit)})</span>
+                      </div>
 
                       {/* Stepper (Matching Screen 4) */}
                       <div className="flex items-center gap-2 pt-0.5">
