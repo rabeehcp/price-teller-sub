@@ -102,16 +102,6 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
           }`}
         />
       </div>
-
-      {withTagline && (
-        <span
-          className={`text-[10px] sm:text-[11px] font-semibold tracking-normal mt-1 font-malayalam ${
-            isDark ? 'text-emerald-300' : 'text-[#0B8F68]'
-          }`}
-        >
-          നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്
-        </span>
-      )}
     </div>
   );
 };

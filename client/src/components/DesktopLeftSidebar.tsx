@@ -39,7 +39,7 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
             size={isCollapsed ? 'sm' : 'md'}
             variant={isCollapsed ? 'icon' : 'horizontal'}
             theme="dark"
-            withTagline={!isCollapsed}
+            withTagline={false}
             onClick={() => onSelectTab('home')}
           />
         </div>
