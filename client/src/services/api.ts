@@ -451,7 +451,9 @@ export async function loginUserApi(credentials: {
 }
 
 export async function loginWithGoogleApi(payload: {
-  credential: string;
+  credential?: string;
+  idToken?: string;
+  accessToken?: string;
   expectedRole?: 'consumer' | 'merchant' | 'any';
 }) {
   const res = await fetch(`${API_BASE}/auth/google`, {

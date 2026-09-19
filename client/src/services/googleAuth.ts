@@ -195,3 +195,101 @@ export async function renderGoogleSignInButton(
     return false;
   }
 }
+
+export interface GoogleAuthPayload {
+  credential?: string;
+  accessToken?: string;
+}
+
+/**
+ * Top-level Google OAuth redirect flow (never blocked by browser popup blockers!)
+ */
+export function redirectToGoogleOAuth(clientId: string): void {
+  if (typeof window === 'undefined') return;
+  const redirectUri = window.location.origin;
+  sessionStorage.setItem('google_auth_pending', 'true');
+  const authUrl =
+    `https://accounts.google.com/o/oauth2/v2/auth?` +
+    `client_id=${encodeURIComponent(clientId)}&` +
+    `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+    `response_type=token&` +
+    `scope=${encodeURIComponent('openid email profile')}&` +
+    `include_granted_scopes=true&` +
+    `prompt=select_account`;
+  window.location.href = authUrl;
+}
+
+/**
+ * Trigger Google OAuth Sign-In directly via user click.
+ * Uses initTokenClient first (direct user gesture popup); falls back to OAuth redirect if blocked.
+ */
+export async function triggerGoogleSignIn(
+  onSuccess: (auth: GoogleAuthPayload) => void,
+  onError: (err: any) => void
+): Promise<void> {
+  const clientId = getGoogleClientId();
+  if (!clientId) {
+    onError(new Error('Google Client ID is not configured'));
+    return;
+  }
+
+  await loadGoogleScript();
+
+  if (typeof window !== 'undefined' && window.google?.accounts?.oauth2) {
+    try {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: 'openid email profile',
+        callback: (response) => {
+          if (response.error) {
+            console.error('Google OAuth error:', response);
+            onError(new Error(response.error_description || response.error));
+            return;
+          }
+          if (response.access_token) {
+            onSuccess({ accessToken: response.access_token });
+          }
+        },
+        error_callback: (err) => {
+          console.warn('Google popup blocked/failed, redirecting directly:', err);
+          redirectToGoogleOAuth(clientId);
+        },
+      });
+
+      // Synchronous user click trigger
+      client.requestAccessToken({ prompt: 'select_account' });
+      return;
+    } catch (err) {
+      console.warn('initTokenClient failed, redirecting:', err);
+    }
+  }
+
+  // Fallback: direct browser navigation
+  redirectToGoogleOAuth(clientId);
+}
+
+/**
+ * On page load, check if returning from Google OAuth redirect (#access_token=...)
+ */
+export function checkAndHandleGoogleOAuthRedirect(
+  onSuccess: (auth: GoogleAuthPayload) => void
+): boolean {
+  if (typeof window === 'undefined') return false;
+  const hash = window.location.hash;
+  if (!hash || !hash.includes('access_token=')) return false;
+
+  try {
+    const params = new URLSearchParams(hash.replace(/^#/, ''));
+    const accessToken = params.get('access_token');
+    if (accessToken) {
+      // Clear token hash from URL cleanly
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+      onSuccess({ accessToken });
+      return true;
+    }
+  } catch (err) {
+    console.error('Failed to parse Google OAuth redirect token:', err);
+  }
+  return false;
+}
+

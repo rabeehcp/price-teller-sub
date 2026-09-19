@@ -1009,17 +1009,48 @@ apiRouter.post('/auth/login', async (req: Request, res: Response) => {
   }
 });
 
-// 20b. Auth: Google Identity Services (GIS) Sign-In & Verification
+// 20b. Auth: Google Identity Services (GIS) & OAuth2 Sign-In & Verification
 apiRouter.post('/auth/google', async (req: Request, res: Response) => {
   try {
-    const { credential, idToken, role, expectedRole } = req.body;
+    const { credential, idToken, accessToken, role, expectedRole } = req.body;
     const token = credential || idToken;
-    if (!token) {
-      return res.status(400).json({ success: false, error: 'Google ID token credential is required' });
-    }
 
-    // Strictly verify token with Google Identity Services backend
-    const verifiedGoogleUser = await verifyGoogleIdToken(token);
+    let verifiedGoogleUser: {
+      googleId: string;
+      email: string;
+      name: string;
+      picture?: string;
+      givenName?: string;
+      familyName?: string;
+    };
+
+    if (accessToken && !token) {
+      // Validate Google access token directly with Google userinfo API
+      const googleRes = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+        headers: { Authorization: `Bearer ${accessToken.trim()}` },
+      });
+      if (!googleRes.ok) {
+        throw new Error(`Google userinfo validation failed with status ${googleRes.status}`);
+      }
+      const data: any = await googleRes.json();
+      if (!data.sub || !data.email) {
+        throw new Error('Google account verification failed: missing sub or email');
+      }
+      verifiedGoogleUser = {
+        googleId: data.sub,
+        email: data.email.toLowerCase().trim(),
+        name: data.name || data.email.split('@')[0],
+        picture: data.picture,
+        givenName: data.given_name,
+        familyName: data.family_name,
+      };
+    } else {
+      if (!token) {
+        return res.status(400).json({ success: false, error: 'Google ID token credential or access token is required' });
+      }
+      // Strictly verify token with Google Identity Services backend
+      verifiedGoogleUser = await verifyGoogleIdToken(token);
+    }
 
     // Locate or create user in database safely
     const targetRole = expectedRole || role || 'consumer';

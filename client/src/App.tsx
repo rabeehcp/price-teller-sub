@@ -20,7 +20,9 @@ import {
   fetchMerchantMasterCatalogApi,
   fetchMerchantShopApi,
   logoutUserApi,
+  loginWithGoogleApi,
 } from './services/api';
+import { checkAndHandleGoogleOAuthRedirect } from './services/googleAuth';
 import { findNearestLocation, requestBrowserGps, reverseGeocodeDetails, GpsDebugInfo } from './services/locationService';
 import { PriceHistoryModal } from './components/PriceHistoryModal';
 import { CrowdReportModal } from './components/CrowdReportModal';
@@ -984,6 +986,24 @@ export const App: React.FC = () => {
       });
     }
   };
+
+  // Listen for Google OAuth redirect callback (#access_token=...)
+  useEffect(() => {
+    checkAndHandleGoogleOAuthRedirect(async ({ accessToken }) => {
+      if (!accessToken) return;
+      try {
+        setIsVerifyingSession(true);
+        const res = await loginWithGoogleApi({ accessToken, expectedRole: 'consumer' });
+        if (res.user) {
+          handleLoginSuccess(res.user);
+        }
+      } catch (err) {
+        console.error('Failed to complete Google OAuth redirect login:', err);
+      } finally {
+        setIsVerifyingSession(false);
+      }
+    });
+  }, []);
 
   const handleLogout = () => {
     const token = authUser?.token || getAuthToken();
