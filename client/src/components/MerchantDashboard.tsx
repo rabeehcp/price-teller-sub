@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FlashDeal, Product, Shop, User, Conversation, ChatMessage, PreBooking, PreBookingStatus, SubscriptionStatusResponse } from '../types';
+import { FlashDeal, Product, Shop, User, Conversation, ChatMessage, PreBooking, PreBookingStatus, SubscriptionStatusResponse, DailySalesSummary, MerchantSale } from '../types';
 import { formatChatDateTime } from './ConsumerChatModal';
 import { ProductImage } from './ProductImage';
 import { MasterCatalogPickerModal } from './MasterCatalogPickerModal';
@@ -17,6 +17,8 @@ import {
   fetchPreBookingsApi,
   updatePreBookingStatusApi,
   fetchMerchantSubscriptionStatusApi,
+  fetchMerchantSalesApi,
+  fetchMerchantSalesSummaryApi,
 } from '../services/api';
 import {
   Store,
@@ -163,6 +165,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   const [rejectReason, setRejectReason] = useState<string>('Item temporarily out of stock');
   const [approveModalBooking, setApproveModalBooking] = useState<PreBooking | null>(null);
   const [approvalNote, setApprovalNote] = useState<string>('✅ Items reserved and ready for pickup!');
+
+  // Merchant Sales & POS Data (Real authentic data)
+  const [salesList, setSalesList] = useState<MerchantSale[]>([]);
+  const [todaySalesSummary, setTodaySalesSummary] = useState<DailySalesSummary | null>(null);
+  const [isLoadingSales, setIsLoadingSales] = useState<boolean>(false);
 
   // Master Catalog State
   const [allMasterProducts, setAllMasterProducts] = useState<Product[]>(products);
@@ -839,10 +846,30 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     }
   };
 
+  // Load real POS sales & daily summary for merchant
+  const loadMerchantSalesData = async (silent = false) => {
+    if (!authUser?.token) return;
+    if (!silent) setIsLoadingSales(true);
+    try {
+      const todayStr = new Date().toISOString().substring(0, 10);
+      const [summary, allSales] = await Promise.all([
+        fetchMerchantSalesSummaryApi(todayStr, authUser.token).catch(() => null),
+        fetchMerchantSalesApi(undefined, authUser.token).catch(() => []),
+      ]);
+      if (summary) setTodaySalesSummary(summary);
+      if (allSales) setSalesList(allSales);
+    } catch (err) {
+      console.error('Failed to load merchant sales analytics:', err);
+    } finally {
+      if (!silent) setIsLoadingSales(false);
+    }
+  };
+
   useEffect(() => {
     if (authUser?.token) {
       loadMerchantConversations();
       loadMerchantPreBookings();
+      loadMerchantSalesData();
     }
   }, [authUser?.token, selectedShopName]);
 
@@ -1337,6 +1364,9 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   selectedShopName={selectedShopName}
                   shops={shops}
                   products={products}
+                  preBookings={preBookings}
+                  todaySummary={todaySalesSummary}
+                  salesList={salesList}
                   onOpenDrawer={() => setIsMobileDrawerOpen(true)}
                   onBackToShopper={onBackToShopper}
                   onNavigateTab={(tab) => setMerchantTab(tab as any)}
