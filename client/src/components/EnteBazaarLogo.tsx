@@ -87,21 +87,17 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
   return (
     <div
       onClick={onClick}
-      className={`inline-flex flex-col select-none transition-transform group ${
+      className={`inline-flex items-center select-none transition-transform group ${
         onClick ? 'cursor-pointer active:scale-98' : ''
       } ${className}`}
     >
-      <div className={`inline-flex items-center ${
-        isDark ? 'bg-white/90 backdrop-blur-xs px-2.5 py-1 rounded-xl shadow-xs border border-white/20' : ''
-      }`}>
-        <img
-          src="/peediyacart-logo.png"
-          alt={alt}
-          className={`w-auto object-contain transition-transform group-hover:scale-102 ${
-            logoHeights[size] || logoHeights.md
-          }`}
-        />
-      </div>
+      <img
+        src="/peediyacart-logo.png"
+        alt={alt}
+        className={`w-auto object-contain transition-transform group-hover:scale-102 ${
+          isDark ? 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] brightness-[1.08]' : ''
+        } ${logoHeights[size] || logoHeights.md}`}
+      />
     </div>
   );
 };

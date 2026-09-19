@@ -105,16 +105,19 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         
         {/* Top Header */}
         <div className="p-5 border-b border-white/[0.08] bg-[#13171B]">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between h-9 mb-4">
             <EnteBazaarLogo
-              size="sm"
+              size="md"
               theme="dark"
+              className="h-8 flex items-center"
             />
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer"
+              className="w-8 h-8 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer border border-white/5 shrink-0"
+              title="Close Drawer"
+              aria-label="Close Drawer"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4.5 h-4.5" />
             </button>
           </div>
 
