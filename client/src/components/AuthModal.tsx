@@ -107,6 +107,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   }, [initialMode, isOpen]);
 
   const googleBtnRef = useRef<HTMLDivElement>(null);
+  const googleRegBtnRef = useRef<HTMLDivElement>(null);
 
   const handleGoogleCredentialSuccess = async (credential: string) => {
     setIsLoading(true);
@@ -128,9 +129,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   useEffect(() => {
-    if (isOpen && persona === 'consumer' && googleBtnRef.current) {
+    if (!isOpen || persona !== 'consumer') return;
+    const targetRef = subTab === 'register' ? googleRegBtnRef.current : googleBtnRef.current;
+    if (targetRef) {
       renderGoogleSignInButton(
-        googleBtnRef.current,
+        targetRef,
         handleGoogleCredentialSuccess,
         {
           theme: 'outline',
@@ -526,6 +529,14 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                     <span>അക്കൗണ്ട് സൃഷ്ടിക്കുക</span>
                   )}
                 </button>
+
+                <div className="pt-2">
+                  <div className="relative flex items-center justify-center mb-3">
+                    <div className="border-t border-surface-border w-full" />
+                    <span className="bg-white px-3 text-[11px] text-slate-muted font-bold">അല്ലെങ്കിൽ</span>
+                  </div>
+                  <div ref={googleRegBtnRef} className="flex justify-center w-full min-h-[40px]" />
+                </div>
               </form>
             )}
 

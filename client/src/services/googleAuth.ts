@@ -73,6 +73,14 @@ export function decodeGoogleJwt(token: string): GoogleUserPayload | null {
   }
 }
 
+// Helper to sanitize and extract clean Google OAuth Client ID
+export function sanitizeGoogleClientId(val?: string | null): string {
+  if (!val || typeof val !== 'string') return '';
+  const match = val.match(/(\d+-[a-z0-9_.-]+\.apps\.googleusercontent\.com)/i);
+  if (match) return match[1].trim();
+  return val.replace(/^[=\s]+|[=\s]+$/g, '').replace(/[\[\]\(\)'"]/g, '').trim();
+}
+
 // Check if real Google OAuth Client ID is configured
 export function isGoogleOAuthConfigured(): boolean {
   const id = getGoogleClientId();
@@ -87,17 +95,19 @@ export function isGoogleOAuthConfigured(): boolean {
 // Get Google Client ID from environment or saved localStorage
 export function getGoogleClientId(): string {
   if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('price_teller_google_client_id');
-    if (saved && saved.trim() && saved.includes('.apps.googleusercontent.com') && !saved.includes('priceteller.apps.googleusercontent.com')) {
-      return saved.trim();
+    const saved = sanitizeGoogleClientId(localStorage.getItem('price_teller_google_client_id'));
+    if (saved && saved.includes('.apps.googleusercontent.com') && !saved.includes('priceteller.apps.googleusercontent.com')) {
+      return saved;
     }
   }
   const rawEnvId = (import.meta as any).env?.VITE_GOOGLE_CLIENT_ID;
-  const envId = typeof rawEnvId === 'string'
-    ? rawEnvId.replace(/^VITE_GOOGLE_CLIENT_ID\s*=\s*/i, '').trim()
-    : rawEnvId;
-  if (envId && typeof envId === 'string' && envId.trim() && !envId.includes('priceteller.apps.googleusercontent.com')) {
-    return envId.trim();
+  const envId = sanitizeGoogleClientId(
+    typeof rawEnvId === 'string'
+      ? rawEnvId.replace(/^VITE_GOOGLE_CLIENT_ID\s*=\s*/i, '')
+      : rawEnvId
+  );
+  if (envId && envId.includes('.apps.googleusercontent.com') && !envId.includes('priceteller.apps.googleusercontent.com')) {
+    return envId;
   }
   return '234261379378-olh1p5e38f28molcqlc7l9kpskvrq7f2.apps.googleusercontent.com';
 }
@@ -105,7 +115,8 @@ export function getGoogleClientId(): string {
 // Save custom Google Client ID
 export function setCustomGoogleClientId(clientId: string): void {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('price_teller_google_client_id', clientId.trim());
+    const clean = sanitizeGoogleClientId(clientId);
+    localStorage.setItem('price_teller_google_client_id', clean);
   }
 }
 

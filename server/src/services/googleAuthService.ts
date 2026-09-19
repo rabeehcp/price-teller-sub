@@ -1,8 +1,19 @@
 import { OAuth2Client } from 'google-auth-library';
 
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '234261379378-olh1p5e38f28molcqlc7l9kpskvrq7f2.apps.googleusercontent.com';
+function sanitizeGoogleClientId(val?: string | null): string {
+  if (!val || typeof val !== 'string') return '';
+  const match = val.match(/(\d+-[a-z0-9_.-]+\.apps\.googleusercontent\.com)/i);
+  if (match) return match[1].trim();
+  return val.replace(/^[=\s]+|[=\s]+$/g, '').replace(/[\[\]\(\)'"]/g, '').trim();
+}
 
-const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+const DEFAULT_GOOGLE_CLIENT_ID = '234261379378-olh1p5e38f28molcqlc7l9kpskvrq7f2.apps.googleusercontent.com';
+
+export function getBackendGoogleClientId(): string {
+  const envId = sanitizeGoogleClientId(process.env.GOOGLE_CLIENT_ID || process.env.VITE_GOOGLE_CLIENT_ID);
+  return envId || DEFAULT_GOOGLE_CLIENT_ID;
+}
+
 
 export interface VerifiedGoogleUser {
   googleId: string;
@@ -27,9 +38,12 @@ export async function verifyGoogleIdToken(idToken: string): Promise<VerifiedGoog
     throw new Error('Google ID token is empty or malformed');
   }
 
+  const clientId = getBackendGoogleClientId();
+  const client = new OAuth2Client(clientId);
+
   const ticket = await client.verifyIdToken({
     idToken: cleanToken,
-    audience: GOOGLE_CLIENT_ID,
+    audience: clientId,
   });
 
   const payload = ticket.getPayload();

@@ -444,7 +444,6 @@ export const KERALA_MALAYALAM_TRANSLATIONS: Record<string, string> = {
   'Skei Vanilla Ice Cream Tub': 'വാനില ഐസ്ക്രീം ടബ്',
   'Skei Nut ButterScotch': 'ബട്ടർസ്കോച്ച് ഐസ്ക്രീം ടബ്',
   'Skei Cookies & Cream': 'കുക്കീസ് & ക്രീം ഐസ്ക്രീം',
-  'Nescafe Classic Coffee Powder Jar 24gm': 'നെസ്കഫെ ക്ലാസിക് കാപ്പിപ്പൊടി 24g',
   'Bru Instant Coffee - Super Strong 500 g': 'ബ്രൂ ഇൻസ്റ്റന്റ് കാപ്പിപ്പൊടി (സൂപ്പർ സ്ട്രോങ്ങ്) 500g',
   'Bru Cold Coffee 180ml': 'ബ്രൂ കോൾഡ് കോഫി 180ml',
   'Boost Milk shake 180ml': 'ബൂസ്റ്റ് മിൽക്ക് ഷേക്ക് 180ml',

@@ -41,10 +41,11 @@ const isLocalNetwork =
 const isVercel =
   typeof window !== 'undefined' &&
   (window.location.hostname.endsWith('.vercel.app') || window.location.hostname.includes('vercel'));
+const rawApiBase = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_BASE;
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ||
-  import.meta.env.VITE_API_BASE ||
-  (import.meta.env.DEV || isLocalNetwork || isVercel ? '/api' : REMOTE_API_BASE);
+  (import.meta.env.DEV || isLocalNetwork) && (!rawApiBase || rawApiBase.includes('azurecontainerapps.io'))
+    ? '/api'
+    : (rawApiBase || (isVercel ? '/api' : REMOTE_API_BASE));
 
 
 export function getAuthToken(): string | null {

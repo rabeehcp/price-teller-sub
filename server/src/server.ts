@@ -2,6 +2,9 @@ import './utils/dns-fallback';
 import dotenv from 'dotenv';
 
 dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../server/.env') });
+
 
 import express from 'express';
 import cors from 'cors';
