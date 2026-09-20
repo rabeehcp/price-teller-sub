@@ -265,11 +265,11 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <button
               type="button"
               onClick={onOpenMerchantPortal}
-              className="hidden lg:flex items-center gap-1.5 text-xs lg:text-sm font-bold text-[#4D6158] hover:text-[#0D4A36] hover:bg-white px-3 py-1.5 lg:py-2 rounded-full border border-transparent hover:border-[#D5E5DC] transition-all cursor-pointer font-malayalam"
-              title="വ്യാപാരികൾക്കായി"
+              className="flex items-center gap-1.5 text-xs lg:text-sm font-bold text-[#4D6158] hover:text-[#0D4A36] hover:bg-white px-2.5 sm:px-3 py-1 sm:py-1.5 lg:py-2 rounded-full border border-[#D5E5DC]/60 hover:border-[#D5E5DC] transition-all cursor-pointer font-malayalam shrink-0"
+              title="വ്യാപാരികൾക്കായി (Merchant Portal)"
             >
-              <Store className="w-4 h-4 text-[#6B8579]" />
-              <span>വ്യാപാരികൾക്കായി</span>
+              <Store className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#6B8579]" />
+              <span className="hidden xs:inline sm:inline">വ്യാപാരികൾക്കായി</span>
             </button>
 
             {/* Weighing scale / compare icon */}
@@ -311,13 +311,16 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <div className="flex items-center gap-1 sm:gap-2 shrink-0">
                 <button
                   type="button"
-                  onClick={onEnterAsConsumer}
+                  onClick={authUser.role === 'merchant' ? onOpenMerchantPortal : onEnterAsConsumer}
                   className="flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 lg:py-2.5 bg-[#0D4A36] hover:bg-[#073626] text-white text-[11px] sm:text-sm font-bold rounded-full transition-all cursor-pointer shadow-xs font-malayalam shrink-0"
+                  title={authUser.role === 'merchant' ? 'വ്യാപാരി ഡാഷ്‌ബോർഡ് തുറക്കുക' : 'കടകൾ കാണുക'}
                 >
                   <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-700 text-white flex items-center justify-center text-[9px] sm:text-[10px] font-black shrink-0">
                     {authUser.name ? authUser.name.charAt(0).toUpperCase() : '👤'}
                   </div>
-                  <span>കടകൾ</span>
+                  <span className="truncate max-w-[80px] sm:max-w-[120px]">
+                    {authUser.role === 'merchant' ? (authUser.shopName || 'ഡാഷ്‌ബോർഡ്') : 'കടകൾ'}
+                  </span>
                   <ArrowRight className="w-3 h-3 ml-0.5 shrink-0" />
                 </button>
 
@@ -326,7 +329,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                     type="button"
                     onClick={onLogout}
                     className="p-1 text-gray-400 hover:text-rose-600 rounded-full hover:bg-rose-50 transition-colors cursor-pointer shrink-0"
-                    title="ലോഗ് ഔട്ട്"
+                    title="ലോഗ് ഔട്ട് (Log Out)"
                   >
                     <LogOut className="w-3.5 h-3.5" />
                   </button>

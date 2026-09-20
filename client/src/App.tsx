@@ -148,8 +148,19 @@ const isExplicitConsumerRoute = (): boolean => {
 };
 
 export const App: React.FC = () => {
-  // Authentication State (Isolated to current tab/session via sessionStorage; validated with backend)
-  const [authUser, setAuthUser] = useState<User | null>(null);
+  // Authentication State (Persisted across sessions via localStorage & sessionStorage; validated with backend)
+  const [authUser, setAuthUser] = useState<User | null>(() => {
+    try {
+      const raw =
+        (typeof window !== 'undefined' && window.sessionStorage?.getItem('priceteller_auth_user')) ||
+        (typeof window !== 'undefined' && window.localStorage?.getItem('priceteller_auth_user'));
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed && (parsed.id || parsed.email) && parsed.role) return parsed;
+      }
+    } catch {}
+    return null;
+  });
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
   // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
@@ -160,14 +171,41 @@ export const App: React.FC = () => {
     if (isExplicitAdminRoute()) {
       return 'admin';
     }
+    if (isExplicitMerchantRoute()) {
+      return 'merchant';
+    }
     if (isExplicitConsumerRoute()) {
       return 'consumer';
     }
+    // If user has a remembered active account, restore their designated view directly without requiring another login:
+    try {
+      const raw =
+        (typeof window !== 'undefined' && window.sessionStorage?.getItem('priceteller_auth_user')) ||
+        (typeof window !== 'undefined' && window.localStorage?.getItem('priceteller_auth_user'));
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.role === 'merchant') return 'merchant';
+        if (parsed?.role === 'admin') return 'admin';
+        if (parsed?.role === 'consumer' || parsed?.role === 'shopper') return 'consumer';
+      }
+    } catch {}
     return 'welcome';
   });
 
   // 3-Role Persona State ('shopper' | 'merchant' | 'admin')
-  const [currentRole, setCurrentRole] = useState<'shopper' | 'merchant' | 'admin'>('shopper');
+  const [currentRole, setCurrentRole] = useState<'shopper' | 'merchant' | 'admin'>(() => {
+    try {
+      const raw =
+        (typeof window !== 'undefined' && window.sessionStorage?.getItem('priceteller_auth_user')) ||
+        (typeof window !== 'undefined' && window.localStorage?.getItem('priceteller_auth_user'));
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (parsed?.role === 'merchant') return 'merchant';
+        if (parsed?.role === 'admin') return 'admin';
+      }
+    } catch {}
+    return 'shopper';
+  });
 
   // Auth Modal State
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(() => {
@@ -182,12 +220,6 @@ export const App: React.FC = () => {
   // Verify Session with Backend on Initial Mount
   useEffect(() => {
     async function verifySessionOnMount() {
-      // Purge legacy cross-tab tokens from earlier versions
-      try {
-        localStorage.removeItem('priceteller_token');
-        localStorage.removeItem('priceteller_auth_user');
-      } catch {}
-
       const token = getAuthToken();
       if (!token) {
         setIsVerifyingSession(false);
@@ -211,7 +243,10 @@ export const App: React.FC = () => {
         if (user && user.role) {
           setAuthUser(user);
           try {
-            sessionStorage.setItem('priceteller_token', user.token || token);
+            const tokenToPersist = user.token || token;
+            localStorage.setItem('priceteller_token', tokenToPersist);
+            localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+            sessionStorage.setItem('priceteller_token', tokenToPersist);
             sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
           } catch {}
 
@@ -229,17 +264,25 @@ export const App: React.FC = () => {
               setAppView('merchant');
               setCurrentRole(user.role === 'admin' ? 'admin' : 'merchant');
             } else {
-              window.history.replaceState({}, '', '/');
-              setAppView('welcome');
+              window.history.replaceState({}, '', '/consumer');
+              setAppView('consumer');
               setCurrentRole('shopper');
             }
           } else if (wantsConsumer) {
             setAppView('consumer');
             setCurrentRole('shopper');
           } else {
-            // General or root route (e.g. localhost/): do NOT hijack into old screen! Always start at welcome!
-            setAppView('welcome');
-            setCurrentRole(user.role === 'admin' ? 'admin' : user.role === 'merchant' ? 'merchant' : 'shopper');
+            // When opening site with valid session: open user's view directly without login!
+            if (user.role === 'merchant') {
+              setAppView('merchant');
+              setCurrentRole('merchant');
+            } else if (user.role === 'admin') {
+              setAppView('admin');
+              setCurrentRole('admin');
+            } else {
+              setAppView('consumer');
+              setCurrentRole('shopper');
+            }
           }
         } else {
           throw new Error('Invalid user payload from /auth/me');
@@ -942,10 +985,11 @@ export const App: React.FC = () => {
   const handleLoginSuccess = (user: User) => {
     setAuthUser(user);
     try {
-      sessionStorage.setItem('priceteller_token', user.token || '');
+      const token = user.token || '';
+      localStorage.setItem('priceteller_token', token);
+      localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+      sessionStorage.setItem('priceteller_token', token);
       sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
-      localStorage.removeItem('priceteller_token');
-      localStorage.removeItem('priceteller_auth_user');
     } catch {}
     setIsAuthModalOpen(false);
     if (user.role === 'admin') {
@@ -1670,6 +1714,8 @@ export const App: React.FC = () => {
             {shopperTab === 'profile' && (
               <MobileProfileView
                 authUser={authUser}
+                currentLocation={currentLocation}
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
                 onLogout={handleLogout}
                 onBack={() => setShopperTab('home')}
@@ -1679,7 +1725,7 @@ export const App: React.FC = () => {
                     else setIsConsumerPreBookingsOpen(true);
                   } else if (tabId === 'chat') {
                     handleOpenChat();
-                  } else if (tabId === 'addresses' || tabId === 'payments') {
+                  } else if (tabId === 'lists') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
                     else setIsConsumerDashboardOpen(true);
                   }

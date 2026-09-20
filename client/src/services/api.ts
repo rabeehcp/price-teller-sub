@@ -50,24 +50,53 @@ const API_BASE =
 
 export function getAuthToken(): string | null {
   try {
-    // 1. Check isolated session storage for the current browser tab
-    const explicit = sessionStorage.getItem('priceteller_token');
-    if (explicit) return explicit;
-    const userStr = sessionStorage.getItem('priceteller_auth_user');
-    if (userStr) {
-      const u = JSON.parse(userStr);
-      if (u?.token) return u.token;
+    // 1. Check isolated session storage
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      const explicit = sessionStorage.getItem('priceteller_token');
+      if (explicit) return explicit;
+      const userStr = sessionStorage.getItem('priceteller_auth_user');
+      if (userStr) {
+        const u = JSON.parse(userStr);
+        if (u?.token) return u.token;
+      }
     }
 
-    // 2. Clean up legacy localStorage tokens to prevent persistent cross-tab/session leaks
+    // 2. Check persistent localStorage (ensures user remains logged in when reopening browser)
     if (typeof window !== 'undefined' && window.localStorage) {
-      if (localStorage.getItem('priceteller_token') || localStorage.getItem('priceteller_auth_user')) {
-        localStorage.removeItem('priceteller_token');
-        localStorage.removeItem('priceteller_auth_user');
+      const explicitLocal = localStorage.getItem('priceteller_token');
+      if (explicitLocal) return explicitLocal;
+      const localUserStr = localStorage.getItem('priceteller_auth_user');
+      if (localUserStr) {
+        const u = JSON.parse(localUserStr);
+        if (u?.token) return u.token;
       }
     }
   } catch {}
   return null;
+}
+
+export function setAuthSession(user: any): void {
+  try {
+    const token = user?.token || '';
+    if (token) {
+      localStorage.setItem('priceteller_token', token);
+      sessionStorage.setItem('priceteller_token', token);
+    }
+    if (user) {
+      const json = JSON.stringify(user);
+      localStorage.setItem('priceteller_auth_user', json);
+      sessionStorage.setItem('priceteller_auth_user', json);
+    }
+  } catch {}
+}
+
+export function clearAuthSession(): void {
+  try {
+    localStorage.removeItem('priceteller_token');
+    localStorage.removeItem('priceteller_auth_user');
+    sessionStorage.removeItem('priceteller_token');
+    sessionStorage.removeItem('priceteller_auth_user');
+  } catch {}
 }
 
 export function getAuthHeaders(extraHeaders: Record<string, string> = {}): Record<string, string> {

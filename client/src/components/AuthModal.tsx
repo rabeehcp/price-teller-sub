@@ -24,6 +24,7 @@ import {
   EyeOff,
   Sparkles,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
 } from 'lucide-react';
 
@@ -52,8 +53,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isGooglePending, setIsGooglePending] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // Form input refs for auto-focus on return to normal login
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const consumerEmailInputRef = useRef<HTMLInputElement>(null);
 
   // Consumer Registration Form State
   const [consumerName, setConsumerName] = useState('');
@@ -96,6 +102,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setPassword('');
     setError('');
     setSuccessMsg('');
+    setIsGooglePending(false);
 
     if (initialMode === 'merchant-login' || initialMode === 'merchant-register') {
       setPersona('merchant');
@@ -106,11 +113,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     }
   }, [initialMode, isOpen]);
 
+  // Window focus listener to detect if user closed the Google popup window
+  useEffect(() => {
+    const handleWindowFocus = () => {
+      // If user comes back to the tab and Google auth is pending, normal login remains accessible
+    };
+    window.addEventListener('focus', handleWindowFocus);
+    return () => window.removeEventListener('focus', handleWindowFocus);
+  }, [isGooglePending]);
+
   const googleBtnRef = useRef<HTMLDivElement>(null);
   const googleRegBtnRef = useRef<HTMLDivElement>(null);
 
   const handleGoogleCredentialSuccess = async (authData: { credential?: string; accessToken?: string }) => {
     setIsLoading(true);
+    setIsGooglePending(false);
     setError('');
     try {
       const res = await loginWithGoogleApi({
@@ -130,20 +147,35 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   const handleGoogleSignInClick = async () => {
-    setIsLoading(true);
+    setIsGooglePending(true);
     setError('');
     try {
       await triggerGoogleSignIn(
         (authData) => handleGoogleCredentialSuccess(authData),
         (err) => {
+          setIsGooglePending(false);
           setIsLoading(false);
           setError(err?.message || 'Google sign-in failed. Please allow popups in your browser.');
         }
       );
     } catch (err: any) {
+      setIsGooglePending(false);
       setIsLoading(false);
       setError(err?.message || 'Failed to start Google sign-in.');
     }
+  };
+
+  const handleCancelGoogleAndReturnToNormalLogin = () => {
+    setIsGooglePending(false);
+    setIsLoading(false);
+    setError('');
+    setTimeout(() => {
+      if (subTab === 'register') {
+        consumerEmailInputRef.current?.focus();
+      } else {
+        emailInputRef.current?.focus();
+      }
+    }, 60);
   };
 
   if (!isOpen) return null;
@@ -282,13 +314,33 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         {/* Right Form Column */}
         <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto max-h-[92dvh] relative">
           
-          {/* Close Button */}
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-subtle hover:bg-gray-200 text-slate-body flex items-center justify-center transition-colors cursor-pointer"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          {/* Top Bar: Back Action (when in Google sign-in) + Close Button */}
+          <div className="flex items-center justify-between gap-2 mb-3 min-h-[36px]">
+            {isGooglePending ? (
+              <button
+                type="button"
+                onClick={handleCancelGoogleAndReturnToNormalLogin}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all cursor-pointer font-malayalam shadow-2xs group"
+                title={subTab === 'register' ? 'സാധാരണ രജിസ്ട്രേഷനിലേക്ക് മടങ്ങുക' : 'സാധാരണ ലോഗിനിലേക്ക് മടങ്ങുക'}
+              >
+                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-emerald-700" />
+                <span>
+                  {subTab === 'register' ? '← സാധാരണ രജിസ്ട്രേഷൻ (Back)' : '← സാധാരണ ലോഗിൻ (Back to Normal Login)'}
+                </span>
+              </button>
+            ) : (
+              <div />
+            )}
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-8 h-8 rounded-full bg-surface-subtle hover:bg-gray-200 text-slate-body flex items-center justify-center transition-colors cursor-pointer ml-auto"
+              title="അടയ്ക്കുക (Close)"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
 
           <div>
             {/* Persona Switcher (Shopper vs Merchant) */}
@@ -376,6 +428,42 @@ export const AuthModal: React.FC<AuthModalProps> = ({
               </div>
             )}
 
+            {/* Google Sign-in In-Progress Alert Banner with Direct Back Option */}
+            {isGooglePending && (
+              <div className="p-3.5 bg-gradient-to-r from-emerald-50/90 via-teal-50/80 to-blue-50/90 border border-emerald-200 rounded-2xl mb-4 text-xs animate-in fade-in slide-in-from-top-2 duration-200 shadow-2xs">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-white shadow-xs border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
+                    <svg className="w-4 h-4 animate-spin text-emerald-600" viewBox="0 0 24 24" fill="none">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                    </svg>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="font-bold text-slate-900 font-malayalam flex items-center gap-1.5">
+                      <span>Google സൈൻ-ഇൻ വിൻഡോ തുറന്നിരിക്കുന്നു...</span>
+                    </div>
+                    <p className="text-[11px] text-slate-600 font-malayalam mt-0.5 leading-relaxed">
+                      Google അക്കൗണ്ട് തിരഞ്ഞെടുക്കുക. അല്ലെങ്കിൽ സാധാരണ പാസ്‌വേഡ് ഉപയോഗിച്ച് ലോഗിൻ ചെയ്യാൻ താഴെയുള്ള ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.
+                    </p>
+                    <div className="pt-2">
+                      <button
+                        type="button"
+                        onClick={handleCancelGoogleAndReturnToNormalLogin}
+                        className="px-3.5 py-1.5 bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 font-bold text-xs rounded-xl shadow-2xs inline-flex items-center gap-1.5 cursor-pointer font-malayalam transition-all active:scale-98"
+                      >
+                        <ArrowLeft className="w-3.5 h-3.5 text-emerald-700" />
+                        <span>
+                          {subTab === 'register'
+                            ? 'സാധാരണ രജിസ്ട്രേഷനിലേക്ക് മടങ്ങുക (Back to Sign Up)'
+                            : 'സാധാരണ ലോഗിനിലേക്ക് മടങ്ങുക (Back to Normal Login)'}
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Form: Consumer / Merchant Login */}
             {subTab === 'login' && (
               <form onSubmit={handleLoginSubmit} className="space-y-3.5">
@@ -386,6 +474,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <div className="relative">
                     <Mail className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                     <input
+                      ref={emailInputRef}
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -444,17 +533,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                     <button
                       type="button"
-                      onClick={handleGoogleSignInClick}
+                      onClick={isGooglePending ? handleCancelGoogleAndReturnToNormalLogin : handleGoogleSignInClick}
                       disabled={isLoading}
-                      className="w-full py-2.5 px-4 bg-white hover:bg-slate-50 border border-slate-300 active:scale-98 text-slate-700 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+                      className={`w-full py-2.5 px-4 border active:scale-98 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
+                        isGooglePending
+                          ? 'bg-amber-50 hover:bg-amber-100 border-amber-300 text-amber-900'
+                          : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'
+                      }`}
                     >
-                      <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                      </svg>
-                      <span>Google വഴി തുടരുക (Continue with Google)</span>
+                      {isGooglePending ? (
+                        <>
+                          <ArrowLeft className="w-4 h-4 text-amber-700" />
+                          <span>Google റദ്ദാക്കി സാധാരണ ലോഗിൻ ചെയ്യുക (Back to Normal Login)</span>
+                        </>
+                      ) : (
+                        <>
+                          <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                          </svg>
+                          <span>Google വഴി തുടരുക (Continue with Google)</span>
+                        </>
+                      )}
                     </button>
                   </div>
                 )}
@@ -484,6 +586,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   <div className="relative">
                     <Mail className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
                     <input
+                      ref={consumerEmailInputRef}
                       type="email"
                       value={consumerEmail}
                       onChange={(e) => setConsumerEmail(e.target.value)}
@@ -554,17 +657,30 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
                   <button
                     type="button"
-                    onClick={handleGoogleSignInClick}
+                    onClick={isGooglePending ? handleCancelGoogleAndReturnToNormalLogin : handleGoogleSignInClick}
                     disabled={isLoading}
-                    className="w-full py-2.5 px-4 bg-white hover:bg-slate-50 border border-slate-300 active:scale-98 text-slate-700 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer"
+                    className={`w-full py-2.5 px-4 border active:scale-98 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
+                      isGooglePending
+                        ? 'bg-amber-50 hover:bg-amber-100 border-amber-300 text-amber-900'
+                        : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'
+                    }`}
                   >
-                    <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
-                      <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
-                      <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
-                      <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
-                      <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
-                    </svg>
-                    <span>Google വഴി അക്കൗണ്ട് തുടങ്ങുക (Sign up with Google)</span>
+                    {isGooglePending ? (
+                      <>
+                        <ArrowLeft className="w-4 h-4 text-amber-700" />
+                        <span>Google റദ്ദാക്കി സാധാരണ രജിസ്ട്രേഷൻ ചെയ്യുക (Back to Normal Sign Up)</span>
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
+                          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
+                          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
+                          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
+                        </svg>
+                        <span>Google വഴി അക്കൗണ്ട് തുടങ്ങുക (Sign up with Google)</span>
+                      </>
+                    )}
                   </button>
                 </div>
               </form>

@@ -26,25 +26,25 @@ export function getOrCreateSessionId(): string {
 }
 
 /**
- * Loads the active basket for the CURRENT tab/session only.
- * Will NOT leak previous users' or other customers' items from localStorage.
+ * Loads the active basket for the current user.
+ * Reads from sessionStorage or persistent localStorage.
  */
 export function loadActiveBasket(): BasketItem[] {
   try {
-    // 1. First cleanup any legacy shared localStorage baskets from past versions
-    if (localStorage.getItem('priceteller_basket')) {
-      localStorage.removeItem('priceteller_basket');
-    }
-
-    const raw = sessionStorage.getItem(SESSION_BASKET_KEY);
+    const raw =
+      (typeof window !== 'undefined' && window.sessionStorage?.getItem(SESSION_BASKET_KEY)) ||
+      (typeof window !== 'undefined' && window.localStorage?.getItem(SESSION_BASKET_KEY));
     if (!raw) return [];
 
     const data: StoredSessionData = JSON.parse(raw);
     const now = Date.now();
 
-    // Check if session basket has expired
+    // Check if basket session has expired
     if (!data.updatedAt || now - data.updatedAt > SESSION_TTL_MS) {
-      sessionStorage.removeItem(SESSION_BASKET_KEY);
+      try {
+        sessionStorage.removeItem(SESSION_BASKET_KEY);
+        localStorage.removeItem(SESSION_BASKET_KEY);
+      } catch {}
       return [];
     }
 
@@ -56,7 +56,7 @@ export function loadActiveBasket(): BasketItem[] {
 }
 
 /**
- * Persists basket items safely to the isolated sessionStorage
+ * Persists basket items safely to both sessionStorage and localStorage
  */
 export function persistActiveBasket(items: BasketItem[]): void {
   try {
@@ -66,7 +66,11 @@ export function persistActiveBasket(items: BasketItem[]): void {
       updatedAt: Date.now(),
       items: items.slice(0, 50), // prevent runaway payload sizes
     };
-    sessionStorage.setItem(SESSION_BASKET_KEY, JSON.stringify(payload));
+    const json = JSON.stringify(payload);
+    if (typeof window !== 'undefined') {
+      if (window.sessionStorage) sessionStorage.setItem(SESSION_BASKET_KEY, json);
+      if (window.localStorage) localStorage.setItem(SESSION_BASKET_KEY, json);
+    }
   } catch (e) {
     console.warn('Could not persist session basket', e);
   }
@@ -77,11 +81,18 @@ export function persistActiveBasket(items: BasketItem[]): void {
  */
 export function clearActiveBasket(): void {
   try {
-    sessionStorage.removeItem(SESSION_BASKET_KEY);
-    localStorage.removeItem('priceteller_basket');
-    // Generate new fresh session ID
-    const newSid = `shopper_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
-    sessionStorage.setItem('priceteller_session_id', newSid);
+    if (typeof window !== 'undefined') {
+      if (window.sessionStorage) {
+        sessionStorage.removeItem(SESSION_BASKET_KEY);
+        // Generate new fresh session ID
+        const newSid = `shopper_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+        sessionStorage.setItem('priceteller_session_id', newSid);
+      }
+      if (window.localStorage) {
+        localStorage.removeItem(SESSION_BASKET_KEY);
+        localStorage.removeItem('priceteller_basket');
+      }
+    }
   } catch (e) {
     console.warn('Error clearing session basket', e);
   }
