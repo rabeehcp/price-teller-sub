@@ -231,7 +231,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
     },
     {
       id: 'bakery-breakfast',
-      label: 'ബേക്കറി & സ്നാക്സ്',
+      label: 'ബേക്കറി & സ്നാക്കുകൾ',
       image: '/categories/bakery.jpg',
       emoji: '🍪',
       bgColor: 'bg-[#FDF2E7]',
@@ -368,12 +368,12 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Left Column: Heading, Subtitle, Embedded Search Box & Popular Quick Tags */}
             <div className="md:col-span-7 lg:col-span-5 xl:col-span-5 space-y-3 lg:space-y-4 xl:space-y-5">
               <h1 className="text-2xl lg:text-[36px] xl:text-[44px] font-black text-[#0B3D2D] leading-[1.18] font-malayalam tracking-tight m-0">
-                ഓരോ ആവശ്യത്തിനും<br />
-                <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
+                ആവശ്യമായതെല്ലാം,<br />
+                <span className="text-[#063B2A]">മികച്ച വിലയിൽ കണ്ടെത്തൂ.</span>
               </h1>
 
               <p className="text-xs lg:text-sm xl:text-base text-[#405C4F] font-medium font-malayalam leading-relaxed max-w-lg m-0">
-                നിങ്ങളുടെ പ്രദേശത്തെ എല്ലാ കടകളുടെയും ഏറ്റവും മികച്ച വിലകൾ കണ്ടെത്തൂ. ചെറിയ ചിലവിൽ കൂടുതൽ നേടൂ.
+                നിങ്ങളുടെ സമീപത്തെ വിവിധ കടകളിലെ വിലകൾ ഒരിടത്ത് താരതമ്യം ചെയ്ത്, ആവശ്യമായ ഉൽപ്പന്നങ്ങൾ മികച്ച വിലയിൽ കണ്ടെത്തൂ.
               </p>
 
               {/* Embedded Search Input Pill */}
@@ -386,7 +386,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   type="text"
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
-                  placeholder="ഉദ്ദേശിക്കുന്ന സാധനങ്ങൾ ടൈപ്പ് ചെയ്യുക..."
+                  placeholder="ഉൽപ്പന്നത്തിന്റെ പേര് തിരയൂ..."
                   className="w-full bg-transparent text-xs lg:text-sm xl:text-base text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam"
                 />
                 <button
@@ -399,7 +399,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 
               {/* Quick Suggestion Pills */}
               <div className="flex items-center gap-1.5 lg:gap-2 flex-wrap font-malayalam pt-0.5">
-                <span className="text-[10px] lg:text-xs font-bold text-[#0D4A36]/70">ജനപ്രിയ സാധനങ്ങൾ:</span>
+                <span className="text-[10px] lg:text-xs font-bold text-[#0D4A36]/70">ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ:</span>
                 {[
                   { name: 'തക്കാളി', price: '₹28' },
                   { name: 'സവാള', price: '₹35' },
@@ -429,13 +429,13 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <div className="relative group w-full flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
-                  alt="Fresh Choices Better Prices - Daily Groceries & Essentials"
+                  alt="More Choices. Better Prices."
                   className="w-full max-h-[220px] md:max-h-[260px] lg:max-h-[320px] xl:max-h-[360px] object-contain drop-shadow-md select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
             </div>
 
-            {/* Right Column: Floating "ഇന്നത്തെ വിലകൾ" (Today's Prices) Card */}
+            {/* Right Column: Floating "ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ" (Popular Products) Card */}
             <div className="hidden lg:flex lg:col-span-3 xl:col-span-3 justify-end">
               <div className="w-full max-w-[270px] lg:max-w-[310px] xl:max-w-[340px] bg-white/95 backdrop-blur-md rounded-2xl lg:rounded-3xl p-3 lg:p-4 xl:p-4.5 shadow-lg border border-white/80 font-malayalam space-y-1.5 lg:space-y-2">
 
@@ -443,7 +443,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 <div className="flex items-center justify-between border-b border-[#F0F4F2] pb-1.5 relative">
                   <div>
                     <h3 className="text-xs lg:text-sm font-black text-[#17221D] m-0">
-                      ഇന്നത്തെ വിലകൾ
+                      ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ
                     </h3>
                     <span className="text-[9px] lg:text-[10px] text-emerald-700 font-semibold">തത്സമയ നിരക്കുകൾ</span>
                   </div>
@@ -633,11 +633,11 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <h1 className="text-2xl sm:text-3xl font-black text-[#0B3D2D] leading-[1.2] font-malayalam tracking-tight m-0">
-                  ഓരോ ആവശ്യത്തിനും<br />
-                  <span className="text-[#063B2A]">ഏറ്റവും നല്ല വില</span>
+                  ആവശ്യമായതെല്ലാം,<br />
+                  <span className="text-[#063B2A]">മികച്ച വിലയിൽ കണ്ടെത്തൂ.</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-[#405C4F] font-semibold font-malayalam leading-snug mt-1.5 m-0">
-                  നാടൻ കടകളിൽ നിന്ന് ഏറ്റവും കുറഞ്ഞ നിരക്ക്
+                  നിങ്ങളുടെ സമീപത്തെ വിവിധ കടകളിലെ വിലകൾ ഒരിടത്ത് താരതമ്യം ചെയ്ത്, ആവശ്യമായ ഉൽപ്പന്നങ്ങൾ മികച്ച വിലയിൽ കണ്ടെത്തൂ.
                 </p>
               </div>
 
@@ -645,7 +645,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <div className="w-[115px] sm:w-[140px] shrink-0 flex items-center justify-center">
                 <img
                   src="/hero-market.jpg"
-                  alt="Fresh Choices Better Prices"
+                  alt="More Choices. Better Prices."
                   className="w-full h-auto max-h-[95px] sm:max-h-[115px] object-contain drop-shadow-md pointer-events-none"
                 />
               </div>
@@ -661,7 +661,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="സാധനങ്ങൾ തിരയുക... (ഉദാ: തക്കാളി, പാൽ, അരി)"
+                placeholder="ഉൽപ്പന്നത്തിന്റെ പേര് തിരയൂ..."
                 className="w-full bg-transparent text-xs sm:text-sm text-[#17221D] placeholder-[#7F998D] outline-none font-malayalam py-1"
               />
               <button
@@ -676,7 +676,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Mobile Live Price Ticker Strip */}
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 font-malayalam">
               <span className="text-xs font-black text-[#0D4A36] bg-white/95 px-3 py-1.5 rounded-lg shrink-0 border border-[#BBD8C8] shadow-2xs">
-                ഇന്നത്തെ വില:
+                ജനപ്രിയ ഉൽപ്പന്നങ്ങൾ:
               </span>
               {todayPrices.map((item) => (
                 <div
@@ -743,14 +743,14 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         {/* 4. VALUE PROPOSITION / TRUST CARDS (Bottom 4 Cards) */}
         <section className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-2.5 md:gap-3 lg:gap-4 xl:gap-5 font-malayalam">
 
-          {/* Card 1: വില താരതമ്യം */}
+          {/* Card 1: വില താരതമ്യം ചെയ്യാം */}
           <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
             <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
               <TrendingDown className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">വില താരതമ്യം</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">മികച്ച നിരക്കുകൾ</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">വില താരതമ്യം ചെയ്യാം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">വിവിധ കടകളിലെ വിലകൾ എളുപ്പത്തിൽ താരതമ്യം ചെയ്യൂ</div>
             </div>
           </div>
 
@@ -761,29 +761,29 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             </div>
             <div className="min-w-0">
               <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">പ്രാദേശിക കടകൾ</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">സൂപ്പർമാർക്കറ്റുകൾ</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">നിങ്ങളുടെ സമീപത്തെ കടകളിൽ നിന്ന് കണ്ടെത്തൂ</div>
             </div>
           </div>
 
-          {/* Card 3: നേരിട്ട് മുൻകൂട്ടി ബുക്കിംഗ് */}
+          {/* Card 3: എളുപ്പത്തിൽ വാങ്ങാം */}
           <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
             <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
               <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">നേരിട്ട് ബുക്കിംഗ്</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">സ്റ്റോക്ക് ലഭ്യത</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">എളുപ്പത്തിൽ വാങ്ങാം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">ഇഷ്ടപ്പെട്ട കടയിൽ നിന്ന് നേരിട്ട് വാങ്ങൂ</div>
             </div>
           </div>
 
-          {/* Card 4: 100% സൗജന്യ സേവനം */}
+          {/* Card 4: പൂർണ്ണമായും സൗജന്യം */}
           <div className="bg-[#E8F3ED] hover:bg-[#DDECE4] border border-[#D5E5DC] rounded-xl md:rounded-2xl p-2 sm:p-2.5 md:p-3 lg:p-4 xl:p-4.5 flex items-center gap-2 sm:gap-2.5 md:gap-3 lg:gap-3.5 transition-all hover:shadow-2xs">
             <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 lg:w-11 lg:h-11 rounded-lg md:rounded-xl lg:rounded-2xl bg-white text-[#0D4A36] flex items-center justify-center shrink-0 shadow-2xs">
               <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[#0D4A36]" />
             </div>
             <div className="min-w-0">
-              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">100% സൗജന്യം</div>
-              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി</div>
+              <div className="text-[10px] sm:text-[11px] md:text-xs lg:text-sm font-black text-[#17221D] truncate">പൂർണ്ണമായും സൗജന്യം</div>
+              <div className="text-[8px] sm:text-[9px] md:text-[11px] lg:text-xs text-[#556960] font-medium truncate">ഉപഭോക്താക്കൾക്കായി അധിക ചാർജുകളില്ല</div>
             </div>
           </div>
 

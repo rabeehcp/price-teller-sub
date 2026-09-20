@@ -766,7 +766,7 @@ export const App: React.FC = () => {
     };
   }, [authUser?.role, authUser?.token]);
 
-  // Consumer product loading is separate from merchant/admin loading.
+  // Consumer product loading: fetches complete catalog for location once, enabling instant 0ms in-memory category switching
   useEffect(() => {
     if (authUser?.role === 'admin' || authUser?.role === 'merchant' || appView === 'merchant') return;
 
@@ -784,8 +784,7 @@ export const App: React.FC = () => {
           } catch {}
           [prods, shps, deals] = await Promise.all([
             fetchProducts({
-              category: selectedCategoryId,
-              search: searchQuery,
+              category: 'all',
               locationId: currentLocation.id,
               includeMaster: isMerchant,
             }),
@@ -795,8 +794,7 @@ export const App: React.FC = () => {
         } else {
           [prods, shps, deals] = await Promise.all([
             fetchProducts({
-              category: selectedCategoryId,
-              search: searchQuery,
+              category: 'all',
               includeMaster: isMerchant,
             }),
             fetchShops(),
@@ -817,33 +815,29 @@ export const App: React.FC = () => {
     return () => {
       cancelled = true;
     };
-  }, [selectedCategoryId, searchQuery, currentLocation, authUser?.role, appView]);
+  }, [currentLocation?.id, authUser?.role, appView]);
 
-  // Periodic background live sync for real-time stock & price updates on the consumer screen
+  // Periodic background live sync for real-time stock & price updates (runs every 45s without lag)
   useEffect(() => {
     const syncLiveCatalog = async () => {
       if (appView === 'consumer' || currentRole === 'shopper') {
         const latestProds = await fetchProducts({
-          category: selectedCategoryId,
-          search: searchQuery,
+          category: 'all',
           locationId: currentLocation?.id,
         });
-        if (Array.isArray(latestProds)) {
-          setProducts((prev) => {
-            const isDifferent = JSON.stringify(prev) !== JSON.stringify(latestProds);
-            return isDifferent ? latestProds : prev;
-          });
+        if (Array.isArray(latestProds) && latestProds.length > 0) {
+          setProducts(latestProds);
         }
       }
     };
 
-    const intervalId = setInterval(syncLiveCatalog, 3000);
+    const intervalId = setInterval(syncLiveCatalog, 45000);
     window.addEventListener('focus', syncLiveCatalog);
     return () => {
       clearInterval(intervalId);
       window.removeEventListener('focus', syncLiveCatalog);
     };
-  }, [appView, currentRole, selectedCategoryId, searchQuery, currentLocation]);
+  }, [appView, currentRole, currentLocation?.id]);
 
   // Trigger Comparison Engine on basket change
   const triggerComparison = useCallback(async (currentBasket: BasketItem[]) => {
@@ -1163,52 +1157,56 @@ export const App: React.FC = () => {
     });
   }, [categories, inStockProducts]);
 
-  // Filtered Products display (strictly items with real images and in-stock available products)
-  let displayedProducts = inStockProducts.filter((p) => p.image && p.image.trim().length > 0);
+  // Filtered Products display (memoized for instant 0ms category switching and smooth 60fps rendering)
+  const displayedProducts = useMemo(() => {
+    let prods = inStockProducts.filter((p) => p.image && p.image.trim().length > 0);
 
-  // 1. Strict Category Filtering: If a specific category is selected, display that category's items (with aliases)
-  if (selectedCategoryId && selectedCategoryId !== 'all') {
-    if (selectedCategoryId === 'organic') {
-      displayedProducts = displayedProducts.filter((p) => p.isOrganic || p.categoryId === 'organic');
-    } else {
-      const aliases: Record<string, string[]> = {
-        vegetables: ['vegetables', 'fruits-vegetables'],
-        fruits: ['fruits', 'fruits-vegetables'],
-        'rice-grains': ['rice-grains', 'staples', 'pulses-legumes'],
-        dairy: ['dairy'],
-        spices: ['spices', 'oils-spices', 'oils-sugar'],
-        'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
-        beverages: ['beverages', 'drinks', 'biscuits-snacks'],
-        'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks'],
-        'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
-        household: ['household', 'cleaning-household', 'storage-containers'],
-      };
-      const targetCats = aliases[selectedCategoryId] || [selectedCategoryId];
-      displayedProducts = displayedProducts.filter((p) => targetCats.includes(p.categoryId));
+    // 1. Strict Category Filtering: If a specific category is selected, display that category's items (with aliases)
+    if (selectedCategoryId && selectedCategoryId !== 'all') {
+      if (selectedCategoryId === 'organic') {
+        prods = prods.filter((p) => p.isOrganic || p.categoryId === 'organic');
+      } else {
+        const aliases: Record<string, string[]> = {
+          vegetables: ['vegetables', 'fruits-vegetables'],
+          fruits: ['fruits', 'fruits-vegetables'],
+          'rice-grains': ['rice-grains', 'staples', 'pulses-legumes'],
+          dairy: ['dairy'],
+          spices: ['spices', 'oils-spices', 'oils-sugar'],
+          'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
+          beverages: ['beverages', 'drinks', 'biscuits-snacks'],
+          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks'],
+          'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
+          household: ['household', 'cleaning-household', 'storage-containers'],
+        };
+        const targetCats = aliases[selectedCategoryId] || [selectedCategoryId];
+        prods = prods.filter((p) => targetCats.includes(p.categoryId));
+      }
     }
-  }
 
-  // 2. Search Query Filtering
-  if (searchQuery.trim()) {
-    const q = searchQuery.toLowerCase().trim();
-    displayedProducts = displayedProducts.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.categoryId.toLowerCase().includes(q) ||
-        (p.nutritionalNote && p.nutritionalNote.toLowerCase().includes(q)) ||
-        (p.badge && p.badge.toLowerCase().includes(q))
-    );
-  }
+    // 2. Search Query Filtering
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase().trim();
+      prods = prods.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.categoryId.toLowerCase().includes(q) ||
+          (p.nutritionalNote && p.nutritionalNote.toLowerCase().includes(q)) ||
+          (p.badge && p.badge.toLowerCase().includes(q))
+      );
+    }
 
-  // 3. Quick Filter Toggles
-  if (isOrganicOnly) {
-    displayedProducts = displayedProducts.filter((p) => p.isOrganic || p.categoryId === 'organic');
-  }
-  if (isUnder100Only) {
-    displayedProducts = displayedProducts.filter(
-      (p) => Math.min(...Object.values(p.prices)) <= 100
-    );
-  }
+    // 3. Quick Filter Toggles
+    if (isOrganicOnly) {
+      prods = prods.filter((p) => p.isOrganic || p.categoryId === 'organic');
+    }
+    if (isUnder100Only) {
+      prods = prods.filter(
+        (p) => Math.min(...Object.values(p.prices)) <= 100
+      );
+    }
+
+    return prods;
+  }, [inStockProducts, selectedCategoryId, searchQuery, isOrganicOnly, isUnder100Only]);
 
   // 0. VERIFYING SESSION: Secure loading state (no flash of protected content before server confirms)
   if (isVerifyingSession) {
@@ -1963,6 +1961,47 @@ export const App: React.FC = () => {
                 onOpenChat={(shopName) => handleOpenChat(shopName)}
                 onGoShopping={() => setShopperTab('home')}
               />
+            )}
+
+            {/* Desktop Full Cart Page */}
+            {shopperTab === 'cart' && (
+              <div className="max-w-3xl mx-auto py-4">
+                <MobileBasketView
+                  basketItems={basket}
+                  comparison={comparison}
+                  onBack={() => setShopperTab('home')}
+                  onGoToCompare={() => setShopperTab('compare')}
+                  onQuantityChange={handleQuantityChange}
+                  onUnitChange={handleUnitChange}
+                  onRemoveItem={handleRemoveItem}
+                  onClearBasket={handleClearBasket}
+                  onCheckout={() => {
+                    if (!authUser) {
+                      handleOpenAuthModal('consumer-login');
+                    } else {
+                      handleOpenPreBooking();
+                    }
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Desktop Full Price Comparison Page */}
+            {shopperTab === 'compare' && (
+              <div className="max-w-4xl mx-auto py-4">
+                <MobileCompareView
+                  basketItems={basket}
+                  comparison={comparison}
+                  currentLocation={currentLocation}
+                  onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                  onBack={() => setShopperTab('home')}
+                  onGoToSearch={() => setShopperTab('search')}
+                  onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
+                  onOpenChat={(shopName) => handleOpenChat(shopName)}
+                  onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
+                  onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
+                />
+              </div>
             )}
           </div>
 

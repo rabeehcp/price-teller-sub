@@ -68,7 +68,7 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
   });
 
   return (
-    <div className="md:hidden space-y-3.5 font-sans pb-32 animate-in fade-in duration-150">
+    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto space-y-3.5 font-sans pb-32 animate-in fade-in duration-150">
       
       {/* 1. Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#F0F4F2] sticky top-0 z-30 shadow-2xs">

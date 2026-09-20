@@ -111,7 +111,21 @@ export function getAuthHeaders(extraHeaders: Record<string, string> = {}): Recor
   return headers;
 }
 
-async function safeFetchJson<T = any>(url: string, options?: RequestInit): Promise<T | null> {
+const apiCache = new Map<string, { data: any; expiresAt: number }>();
+
+export function clearApiCache(): void {
+  apiCache.clear();
+}
+
+async function safeFetchJson<T = any>(url: string, options?: RequestInit, ttlMs = 0): Promise<T | null> {
+  const isGet = !options || !options.method || options.method === 'GET';
+  if (isGet && ttlMs > 0) {
+    const cached = apiCache.get(url);
+    if (cached && Date.now() < cached.expiresAt) {
+      return cached.data as T;
+    }
+  }
+
   try {
     const token = getAuthToken();
     const headers = {
@@ -126,7 +140,11 @@ async function safeFetchJson<T = any>(url: string, options?: RequestInit): Promi
     }
     const text = await res.text();
     if (!text || !text.trim()) return null;
-    return JSON.parse(text);
+    const parsed = JSON.parse(text);
+    if (isGet && ttlMs > 0 && parsed) {
+      apiCache.set(url, { data: parsed, expiresAt: Date.now() + ttlMs });
+    }
+    return parsed;
   } catch (err) {
     console.warn(`[API] Network error requesting ${url}:`, err);
     return null;
@@ -146,13 +164,13 @@ async function readJsonResponse(res: Response): Promise<any> {
 }
 
 export async function fetchLocations(): Promise<Location[]> {
-  const json = await safeFetchJson<{ success: boolean; data: Location[] }>(`${API_BASE}/locations`);
+  const json = await safeFetchJson<{ success: boolean; data: Location[] }>(`${API_BASE}/locations`, undefined, 120000);
   if (json?.success && Array.isArray(json.data) && json.data.length > 0) return json.data;
   return MALAPPURAM_LOCATIONS;
 }
 
 export async function fetchCategories(): Promise<Category[]> {
-  const json = await safeFetchJson<{ success: boolean; data: Category[] }>(`${API_BASE}/categories`);
+  const json = await safeFetchJson<{ success: boolean; data: Category[] }>(`${API_BASE}/categories`, undefined, 120000);
   if (json?.success && Array.isArray(json.data)) return json.data;
   return [
     { id: 'all', name: 'All Products', slug: 'all', icon: '✨', description: 'Explore full catalog across all grocery categories' },
@@ -183,7 +201,7 @@ export async function fetchShops(locationId?: string, includeUnverified?: boolea
   if (locationId) params.set('locationId', locationId);
   if (includeUnverified) params.set('includeUnverified', 'true');
   const query = params.toString() ? `?${params.toString()}` : '';
-  const json = await safeFetchJson<{ success: boolean; data: Shop[] }>(`${API_BASE}/shops${query}`);
+  const json = await safeFetchJson<{ success: boolean; data: Shop[] }>(`${API_BASE}/shops${query}`, undefined, 60000);
   if (json?.success && Array.isArray(json.data)) return json.data;
   return [];
 }
@@ -211,7 +229,9 @@ export async function fetchShopCatalogueApi(
   const query = params.toString() ? `?${params.toString()}` : '';
   const encodedId = encodeURIComponent(shopIdOrName);
   const json = await safeFetchJson<{ success: boolean; data: ShopCatalogueResponse }>(
-    `${API_BASE}/shops/${encodedId}/catalogue${query}`
+    `${API_BASE}/shops/${encodedId}/catalogue${query}`,
+    undefined,
+    30000
   );
   if (json?.success && json.data) return json.data;
   return null;
@@ -225,7 +245,11 @@ export async function fetchProducts(params?: { category?: string; search?: strin
   if (params?.includeUnverified) searchParams.set('includeUnverified', 'true');
   if (params?.includeMaster) searchParams.set('includeMaster', 'true');
 
-  const json = await safeFetchJson<{ success: boolean; data: Product[] }>(`${API_BASE}/products?${searchParams.toString()}`);
+  const json = await safeFetchJson<{ success: boolean; data: Product[] }>(
+    `${API_BASE}/products?${searchParams.toString()}`,
+    undefined,
+    45000
+  );
   if (json?.success && Array.isArray(json.data)) return json.data;
   return [];
 }
@@ -295,7 +319,7 @@ export async function fetchProductHistory(productId: string): Promise<PriceHisto
 
 export async function fetchFlashDeals(locationId?: string): Promise<FlashDeal[]> {
   const query = locationId && locationId !== 'all' ? `?locationId=${encodeURIComponent(locationId)}` : '';
-  const json = await safeFetchJson<{ success: boolean; data: FlashDeal[] }>(`${API_BASE}/deals${query}`);
+  const json = await safeFetchJson<{ success: boolean; data: FlashDeal[] }>(`${API_BASE}/deals${query}`, undefined, 60000);
   if (json?.success && Array.isArray(json.data)) return json.data;
   return [];
 }

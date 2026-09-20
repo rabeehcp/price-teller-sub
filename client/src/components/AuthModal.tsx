@@ -265,46 +265,56 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200 font-sans">
-      <div className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl border border-surface-border overflow-hidden grid grid-cols-1 md:grid-cols-12 max-h-[92dvh]">
+      <div className="relative w-full max-w-4xl bg-white rounded-[28px] shadow-2xl border border-slate-100 overflow-hidden grid grid-cols-1 md:grid-cols-12 max-h-[92dvh]">
         
-        {/* Left Visual Brand Column (Clean White Background for PeediyaCart Logo) */}
-        <div className="hidden md:flex md:col-span-5 bg-gradient-to-b from-white via-[#F9FCFA] to-[#F1F7F4] border-r border-[#E3ECE7] text-slate-800 p-8 flex-col justify-between relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-100/30 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#0B8F68]/5 rounded-full blur-3xl pointer-events-none" />
+        {/* Floating Close Button */}
+        <button
+          type="button"
+          onClick={onClose}
+          className="absolute top-4 right-4 sm:top-5 sm:right-5 z-30 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer shadow-2xs"
+          title="അടയ്ക്കുക (Close)"
+        >
+          <X className="w-4 h-4" />
+        </button>
 
-          <div className="relative z-10 space-y-4">
+        {/* Left Visual Brand Column */}
+        <div className="hidden md:flex md:col-span-5 bg-gradient-to-br from-[#F5FBF8] via-white to-[#EEF8F3] border-r border-[#E2EFE8] text-slate-800 p-8 flex-col justify-between relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-200/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 space-y-5">
             <EnteBazaarLogo size="md" theme="light" withTagline={true} />
 
-            <div className="pt-6 space-y-2">
-              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#C3EEDC] px-3 py-1 rounded-full font-malayalam">
-                <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
+            <div className="pt-4 space-y-2.5">
+              <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full font-malayalam">
+                <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
                 <span>സ്വാഗതം</span>
               </span>
-              <h2 className="text-2xl font-black leading-snug font-malayalam text-[#17221D]">
+              <h2 className="text-2xl font-black leading-snug font-malayalam text-slate-900">
                 നിങ്ങളുടെ PeediyaCart അക്കൗണ്ടിലേക്ക് സ്വാഗതം
               </h2>
-              <p className="text-xs sm:text-[13px] text-[#556960] font-malayalam leading-relaxed font-normal">
+              <p className="text-xs sm:text-[13px] text-slate-600 font-malayalam leading-relaxed font-normal">
                 കേരളത്തിലെ സൂപ്പർമാർക്കറ്റുകളിലെ കൃത്യമായ വില വിവരങ്ങളും ഓഫറുകളും ഇപ്പോൾ നിങ്ങളുടെ വിരൽത്തുമ്പിൽ.
               </p>
             </div>
           </div>
 
-          <div className="relative z-10 space-y-2.5 pt-6 border-t border-[#E3ECE7] text-xs font-bold text-[#2A3F35]">
+          <div className="relative z-10 space-y-3 pt-6 border-t border-emerald-100/80 text-xs font-bold text-slate-700">
             <div className="flex items-center gap-2.5 font-malayalam">
-              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <div className="w-5 h-5 rounded-full bg-emerald-100/70 border border-emerald-300/60 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
               </div>
               <span>സുരക്ഷിതമായ അക്കൗണ്ട്</span>
             </div>
             <div className="flex items-center gap-2.5 font-malayalam">
-              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <div className="w-5 h-5 rounded-full bg-emerald-100/70 border border-emerald-300/60 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
               </div>
               <span>സേവ് ചെയ്ത ഷോപ്പിംഗ് ലിസ്റ്റുകൾ</span>
             </div>
             <div className="flex items-center gap-2.5 font-malayalam">
-              <div className="w-5 h-5 rounded-full bg-[#E8F5EE] border border-[#C3EEDC] flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <div className="w-5 h-5 rounded-full bg-emerald-100/70 border border-emerald-300/60 flex items-center justify-center shrink-0">
+                <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
               </div>
               <span>തത്സമയ വില വിവരങ്ങൾ</span>
             </div>
@@ -312,125 +322,117 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Right Form Column */}
-        <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-between overflow-y-auto max-h-[92dvh] relative">
+        <div className="md:col-span-7 p-6 sm:p-8 flex flex-col justify-start overflow-y-auto max-h-[92dvh] relative">
           
-          {/* Top Bar: Back Action (when in Google sign-in) + Close Button */}
-          <div className="flex items-center justify-between gap-2 mb-3 min-h-[36px]">
-            {isGooglePending ? (
-              <button
-                type="button"
-                onClick={handleCancelGoogleAndReturnToNormalLogin}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all cursor-pointer font-malayalam shadow-2xs group"
-                title={subTab === 'register' ? 'സാധാരണ രജിസ്ട്രേഷനിലേക്ക് മടങ്ങുക' : 'സാധാരണ ലോഗിനിലേക്ക് മടങ്ങുക'}
-              >
-                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-emerald-700" />
-                <span>
-                  {subTab === 'register' ? '← സാധാരണ രജിസ്ട്രേഷൻ (Back)' : '← സാധാരണ ലോഗിൻ (Back to Normal Login)'}
-                </span>
-              </button>
-            ) : (
-              <div />
+          <div className="w-full pr-8 sm:pr-10 mb-2">
+            {/* Top Back Action (if Google sign-in is pending) */}
+            {isGooglePending && (
+              <div className="mb-3">
+                <button
+                  type="button"
+                  onClick={handleCancelGoogleAndReturnToNormalLogin}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all cursor-pointer font-malayalam shadow-2xs group"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-emerald-700" />
+                  <span>
+                    {subTab === 'register' ? '← സാധാരണ രജിസ്ട്രേഷൻ (Back)' : '← സാധാരണ ലോഗിൻ (Back)'}
+                  </span>
+                </button>
+              </div>
             )}
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="w-8 h-8 rounded-full bg-surface-subtle hover:bg-gray-200 text-slate-body flex items-center justify-center transition-colors cursor-pointer ml-auto"
-              title="അടയ്ക്കുക (Close)"
-            >
-              <X className="w-4 h-4" />
-            </button>
           </div>
 
-          <div>
-            {/* Persona Switcher (Shopper vs Merchant) */}
-            <div className="flex items-center bg-surface-subtle p-1 rounded-xl mb-5 max-w-xs gap-1 border border-surface-border">
+          <div className="w-full">
+            {/* Persona Switcher (Full width, balanced segmented control) */}
+            <div className="w-full grid grid-cols-2 p-1 bg-slate-100/90 rounded-2xl mb-4 border border-slate-200/70 shadow-2xs">
               <button
+                type="button"
                 onClick={() => {
                   setPersona('consumer');
                   setError('');
                   setEmail('');
                   setPassword('');
                 }}
-                className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer font-malayalam ${
+                className={`py-2 px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam ${
                   persona === 'consumer'
-                    ? 'bg-brand-600 text-white shadow-2xs'
-                    : 'text-slate-muted hover:text-slate-dark'
+                    ? 'bg-white text-emerald-700 shadow-sm border border-emerald-100'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-white/40'
                 }`}
               >
-                <UserIcon className="w-3.5 h-3.5" />
-                <span>ഉപഭോക്താവ്</span>
+                <UserIcon className="w-4 h-4 text-emerald-600" />
+                <span>ഉപഭോക്താവ് (Shopper)</span>
               </button>
 
               <button
+                type="button"
                 onClick={() => {
                   setPersona('merchant');
                   setError('');
                   setEmail('');
                   setPassword('');
                 }}
-                className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer font-malayalam ${
+                className={`py-2 px-3 rounded-xl text-xs sm:text-[13px] font-bold transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam ${
                   persona === 'merchant'
-                    ? 'bg-slate-900 text-white shadow-2xs'
-                    : 'text-slate-muted hover:text-slate-dark'
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'text-slate-500 hover:text-slate-800 hover:bg-white/40'
                 }`}
               >
-                <Store className="w-3.5 h-3.5" />
-                <span>വ്യാപാരി</span>
+                <Store className="w-4 h-4" />
+                <span>വ്യാപാരി (Merchant)</span>
               </button>
             </div>
 
-            {/* Sub-tab: Login vs Register */}
-            <div className="flex items-center justify-between pb-3 mb-4 border-b border-surface-border">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => {
-                    setSubTab('login');
-                    setError('');
-                  }}
-                  className={`text-sm font-black transition-all cursor-pointer font-malayalam relative pb-1 ${
-                    subTab === 'login'
-                      ? 'text-brand-700 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-600'
-                      : 'text-slate-muted hover:text-slate-dark'
-                  }`}
-                >
-                  ലോഗിൻ (Sign In)
-                </button>
+            {/* Sub-tab: Login vs Register (Balanced 50/50 tabs) */}
+            <div className="w-full flex items-center border-b border-slate-200 mb-5">
+              <button
+                type="button"
+                onClick={() => {
+                  setSubTab('login');
+                  setError('');
+                }}
+                className={`flex-1 pb-3 text-xs sm:text-[13px] font-bold transition-all cursor-pointer font-malayalam relative text-center ${
+                  subTab === 'login'
+                    ? 'text-emerald-700 font-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-emerald-600'
+                    : 'text-slate-400 hover:text-slate-700'
+                }`}
+              >
+                ലോഗിൻ (Sign In)
+              </button>
 
-                <button
-                  onClick={() => {
-                    setSubTab('register');
-                    setError('');
-                  }}
-                  className={`text-sm font-black transition-all cursor-pointer font-malayalam relative pb-1 ${
-                    subTab === 'register'
-                      ? 'text-brand-700 after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-brand-600'
-                      : 'text-slate-muted hover:text-slate-dark'
-                  }`}
-                >
-                  പുതിയ അക്കൗണ്ട് (Register)
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setSubTab('register');
+                  setError('');
+                }}
+                className={`flex-1 pb-3 text-xs sm:text-[13px] font-bold transition-all cursor-pointer font-malayalam relative text-center ${
+                  subTab === 'register'
+                    ? 'text-emerald-700 font-black after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-emerald-600'
+                    : 'text-slate-400 hover:text-slate-700'
+                }`}
+              >
+                പുതിയ അക്കൗണ്ട് (Register)
+              </button>
             </div>
 
             {/* Error / Success Alerts */}
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs font-bold rounded-xl mb-4 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl mb-4 flex items-center gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
                 <span className="flex-1">{error}</span>
               </div>
             )}
 
             {successMsg && (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-xl mb-4 flex items-center gap-2">
+              <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold rounded-xl mb-4 flex items-center gap-2.5">
                 <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
                 <span className="flex-1">{successMsg}</span>
               </div>
             )}
 
-            {/* Google Sign-in In-Progress Alert Banner with Direct Back Option */}
+            {/* Google Sign-in In-Progress Alert Banner */}
             {isGooglePending && (
-              <div className="p-3.5 bg-gradient-to-r from-emerald-50/90 via-teal-50/80 to-blue-50/90 border border-emerald-200 rounded-2xl mb-4 text-xs animate-in fade-in slide-in-from-top-2 duration-200 shadow-2xs">
+              <div className="p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50 to-blue-50 border border-emerald-200 rounded-2xl mb-4 text-xs shadow-2xs">
                 <div className="flex items-start gap-3">
                   <div className="w-8 h-8 rounded-xl bg-white shadow-xs border border-emerald-100 flex items-center justify-center shrink-0 mt-0.5">
                     <svg className="w-4 h-4 animate-spin text-emerald-600" viewBox="0 0 24 24" fill="none">
@@ -466,43 +468,44 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             {/* Form: Consumer / Merchant Login */}
             {subTab === 'login' && (
-              <form onSubmit={handleLoginSubmit} className="space-y-3.5">
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">
-                    Email Address *
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                    Email Address <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       ref={emailInputRef}
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="e.g. shopper@gmail.com"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-surface-border focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl text-xs text-slate-dark placeholder-gray-400 outline-none transition-all"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">
-                    Password *
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                    Password <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
-                    <Lock className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
+                    <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-10 pr-10 py-2.5 bg-white border border-surface-border focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl text-xs text-slate-dark placeholder-gray-400 outline-none transition-all"
+                      className="w-full pl-10 pr-10 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3 top-2.5 text-gray-400 hover:text-gray-600 cursor-pointer"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
+                      title={showPassword ? 'Hide password' : 'Show password'}
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -512,7 +515,11 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-brand-600 hover:bg-brand-700 active:scale-98 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2"
+                  className={`w-full py-3 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow-md active:scale-[0.99] disabled:opacity-50 flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2 ${
+                    persona === 'merchant'
+                      ? 'bg-slate-900 hover:bg-slate-800'
+                      : 'bg-emerald-600 hover:bg-emerald-700'
+                  }`}
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -525,26 +532,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 </button>
 
                 {persona === 'consumer' && (
-                  <div className="pt-2 space-y-2">
-                    <div className="relative flex items-center justify-center">
-                      <div className="border-t border-surface-border w-full" />
-                      <span className="bg-white px-3 text-[11px] text-slate-muted font-bold">അല്ലെങ്കിൽ</span>
+                  <div className="pt-2 space-y-3">
+                    <div className="relative flex items-center justify-center my-1">
+                      <div className="border-t border-slate-200 w-full" />
+                      <span className="bg-white px-3 text-[11px] text-slate-400 font-bold font-malayalam uppercase">അല്ലെങ്കിൽ</span>
                     </div>
 
                     <button
                       type="button"
                       onClick={isGooglePending ? handleCancelGoogleAndReturnToNormalLogin : handleGoogleSignInClick}
                       disabled={isLoading}
-                      className={`w-full py-2.5 px-4 border active:scale-98 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
+                      className={`w-full py-2.5 px-4 border active:scale-[0.99] text-xs sm:text-sm font-bold rounded-xl shadow-2xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
                         isGooglePending
                           ? 'bg-amber-50 hover:bg-amber-100 border-amber-300 text-amber-900'
-                          : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'
+                          : 'bg-white hover:bg-slate-50/80 border-slate-200 text-slate-700 hover:border-slate-300'
                       }`}
                     >
                       {isGooglePending ? (
                         <>
                           <ArrowLeft className="w-4 h-4 text-amber-700" />
-                          <span>Google റദ്ദാക്കി സാധാരണ ലോഗിൻ ചെയ്യുക (Back to Normal Login)</span>
+                          <span className="font-malayalam">Google റദ്ദാക്കി സാധാരണ ലോഗിൻ ചെയ്യുക</span>
                         </>
                       ) : (
                         <>
@@ -554,7 +561,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                             <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
                             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                           </svg>
-                          <span>Google വഴി തുടരുക (Continue with Google)</span>
+                          <span className="font-malayalam">Google വഴി തുടരുക</span>
+                          <span className="text-[11px] text-slate-400 font-normal hidden sm:inline">(Continue with Google)</span>
                         </>
                       )}
                     </button>
@@ -565,82 +573,104 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             {/* Form: Consumer Registration */}
             {persona === 'consumer' && subTab === 'register' && (
-              <form onSubmit={handleConsumerRegisterSubmit} className="space-y-3">
+              <form onSubmit={handleConsumerRegisterSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">പേര് (Full Name) *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-malayalam">
+                    പേര് (Full Name) <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
-                    <UserIcon className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
+                    <UserIcon className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       type="text"
                       value={consumerName}
                       onChange={(e) => setConsumerName(e.target.value)}
                       placeholder="e.g. Rahul Sharma"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
                       required
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">Email Address *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                    Email Address <span className="text-red-500">*</span>
+                  </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 absolute left-3.5 top-3 text-gray-400" />
+                    <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
                       ref={consumerEmailInputRef}
                       type="email"
                       value={consumerEmail}
                       onChange={(e) => setConsumerEmail(e.target.value)}
                       placeholder="e.g. rahul@gmail.com"
-                      className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Password *</label>
-                    <input
-                      type="password"
-                      value={consumerPassword}
-                      onChange={(e) => setConsumerPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
-                      required
-                    />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Password <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <input
+                        type="password"
+                        value={consumerPassword}
+                        onChange={(e) => setConsumerPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                        required
+                      />
+                    </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Phone (Optional)</label>
-                    <input
-                      type="tel"
-                      value={consumerPhone}
-                      onChange={(e) => setConsumerPhone(e.target.value)}
-                      placeholder="+91 98470..."
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
-                    />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Phone <span className="text-slate-400 font-normal">(Optional)</span>
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <input
+                        type="tel"
+                        value={consumerPhone}
+                        onChange={(e) => setConsumerPhone(e.target.value)}
+                        placeholder="+91 98470..."
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">പ്രദേശം (Primary Location Hub)</label>
-                  <select
-                    value={consumerLocationId}
-                    onChange={(e) => setConsumerLocationId(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none cursor-pointer"
-                  >
-                    {locations.map((loc) => (
-                      <option key={loc.id} value={loc.id}>
-                        📍 {loc.name} {loc.subArea ? `(${loc.subArea})` : ''}
-                      </option>
-                    ))}
-                  </select>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-malayalam">
+                    പ്രദേശം (Primary Location Hub) <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                    <select
+                      value={consumerLocationId}
+                      onChange={(e) => setConsumerLocationId(e.target.value)}
+                      className="w-full pl-10 pr-8 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 rounded-xl text-xs sm:text-sm text-slate-800 outline-none cursor-pointer transition-all shadow-2xs appearance-none"
+                    >
+                      {locations.map((loc) => (
+                        <option key={loc.id} value={loc.id}>
+                          {loc.name} {loc.subArea ? `(${loc.subArea})` : ''}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                      ▼
+                    </div>
+                  </div>
                 </div>
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-brand-600 hover:bg-brand-700 active:scale-98 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2"
+                  className="w-full py-3 bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2"
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
@@ -649,26 +679,26 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   )}
                 </button>
 
-                <div className="pt-2 space-y-2">
-                  <div className="relative flex items-center justify-center">
-                    <div className="border-t border-surface-border w-full" />
-                    <span className="bg-white px-3 text-[11px] text-slate-muted font-bold">അല്ലെങ്കിൽ</span>
+                <div className="pt-2 space-y-3">
+                  <div className="relative flex items-center justify-center my-1">
+                    <div className="border-t border-slate-200 w-full" />
+                    <span className="bg-white px-3 text-[11px] text-slate-400 font-bold font-malayalam uppercase">അല്ലെങ്കിൽ</span>
                   </div>
 
                   <button
                     type="button"
                     onClick={isGooglePending ? handleCancelGoogleAndReturnToNormalLogin : handleGoogleSignInClick}
                     disabled={isLoading}
-                    className={`w-full py-2.5 px-4 border active:scale-98 text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
+                    className={`w-full py-2.5 px-4 border active:scale-[0.99] text-xs sm:text-sm font-bold rounded-xl shadow-2xs flex items-center justify-center gap-2.5 transition-all cursor-pointer ${
                       isGooglePending
                         ? 'bg-amber-50 hover:bg-amber-100 border-amber-300 text-amber-900'
-                        : 'bg-white hover:bg-slate-50 border-slate-300 text-slate-700'
+                        : 'bg-white hover:bg-slate-50/80 border-slate-200 text-slate-700 hover:border-slate-300'
                     }`}
                   >
                     {isGooglePending ? (
                       <>
                         <ArrowLeft className="w-4 h-4 text-amber-700" />
-                        <span>Google റദ്ദാക്കി സാധാരണ രജിസ്ട്രേഷൻ ചെയ്യുക (Back to Normal Sign Up)</span>
+                        <span className="font-malayalam">Google റദ്ദാക്കി സാധാരണ രജിസ്ട്രേഷൻ ചെയ്യുക</span>
                       </>
                     ) : (
                       <>
@@ -678,7 +708,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                           <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" />
                           <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" />
                         </svg>
-                        <span>Google വഴി അക്കൗണ്ട് തുടങ്ങുക (Sign up with Google)</span>
+                        <span className="font-malayalam">Google വഴി അക്കൗണ്ട് തുടങ്ങുക</span>
+                        <span className="text-[11px] text-slate-400 font-normal hidden sm:inline">(Sign up with Google)</span>
                       </>
                     )}
                   </button>
@@ -688,74 +719,104 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
             {/* Form: Merchant Registration */}
             {persona === 'merchant' && subTab === 'register' && (
-              <form onSubmit={handleMerchantRegisterSubmit} className="space-y-3">
+              <form onSubmit={handleMerchantRegisterSubmit} className="space-y-3.5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">കടയുടെ പേര് (Store Name) *</label>
-                  <input
-                    type="text"
-                    value={regShopName}
-                    onChange={(e) => setRegShopName(e.target.value)}
-                    placeholder="e.g. Malabar Supermarket"
-                    className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
-                    required
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Email *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-malayalam">
+                    കടയുടെ പേര് (Store Name) <span className="text-red-500">*</span>
+                  </label>
+                  <div className="relative">
+                    <Store className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
                     <input
-                      type="email"
-                      value={regEmail}
-                      onChange={(e) => setRegEmail(e.target.value)}
-                      placeholder="store@gmail.com"
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Password *</label>
-                    <input
-                      type="password"
-                      value={regPassword}
-                      onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder="••••••••"
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
+                      type="text"
+                      value={regShopName}
+                      onChange={(e) => setRegShopName(e.target.value)}
+                      placeholder="e.g. Malabar Supermarket"
+                      className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
                       required
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Phone Number</label>
-                    <input
-                      type="tel"
-                      value={regPhone}
-                      onChange={(e) => setRegPhone(e.target.value)}
-                      placeholder="+91 98470..."
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none"
-                    />
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Email <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <input
+                        type="email"
+                        value={regEmail}
+                        onChange={(e) => setRegEmail(e.target.value)}
+                        placeholder="store@gmail.com"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                        required
+                      />
+                    </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-slate-dark mb-1">Location Hub</label>
-                    <select
-                      value={regLocationId}
-                      onChange={(e) => setRegLocationId(e.target.value)}
-                      className="w-full px-3 py-2.5 bg-white border border-surface-border focus:border-brand-500 rounded-xl text-xs text-slate-dark outline-none cursor-pointer"
-                    >
-                      {locations.map((loc) => (
-                        <option key={loc.id} value={loc.id}>
-                          {loc.name}
-                        </option>
-                      ))}
-                    </select>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Password <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <input
+                        type="password"
+                        value={regPassword}
+                        onChange={(e) => setRegPassword(e.target.value)}
+                        placeholder="••••••••"
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Phone Number <span className="text-slate-400 font-normal">(Optional)</span>
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <input
+                        type="tel"
+                        value={regPhone}
+                        onChange={(e) => setRegPhone(e.target.value)}
+                        placeholder="+91 98470..."
+                        className="w-full pl-10 pr-3.5 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 rounded-xl text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none transition-all shadow-2xs"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1.5 font-sans">
+                      Location Hub <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <MapPin className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
+                      <select
+                        value={regLocationId}
+                        onChange={(e) => setRegLocationId(e.target.value)}
+                        className="w-full pl-10 pr-8 py-2.5 bg-white hover:bg-slate-50/50 focus:bg-white border border-slate-200 focus:border-slate-900 focus:ring-4 focus:ring-slate-900/10 rounded-xl text-xs sm:text-sm text-slate-800 outline-none cursor-pointer transition-all shadow-2xs appearance-none"
+                      >
+                        {locations.map((loc) => (
+                          <option key={loc.id} value={loc.id}>
+                            {loc.name}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                        ▼
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-dark mb-1">വിൽപ്പന വിഭാഗങ്ങൾ (Categories)</label>
-                  <div className="grid grid-cols-3 gap-1.5 max-h-24 overflow-y-auto p-1 border border-surface-border rounded-xl">
+                  <label className="block text-xs font-bold text-slate-700 mb-1.5 font-malayalam">
+                    വിൽപ്പന വിഭാഗങ്ങൾ (Categories)
+                  </label>
+                  <div className="grid grid-cols-3 gap-2 p-2 bg-slate-50 border border-slate-200 rounded-2xl">
                     {AVAILABLE_PROVIDER_CATEGORIES.map((cat) => {
                       const isSelected = regCategories.includes(cat.id);
                       return (
@@ -763,13 +824,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                           key={cat.id}
                           type="button"
                           onClick={() => toggleRegCategory(cat.id)}
-                          className={`px-2 py-1 rounded-lg text-[10px] font-bold flex items-center gap-1 transition-all cursor-pointer ${
+                          className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 transition-all cursor-pointer border ${
                             isSelected
-                              ? 'bg-brand-600 text-white'
-                              : 'bg-surface-subtle text-slate-body hover:bg-gray-200'
+                              ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                              : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100/70'
                           }`}
                         >
-                          <span>{cat.icon}</span>
+                          <span className="text-sm">{cat.icon}</span>
                           <span className="truncate">{cat.label}</span>
                         </button>
                       );
@@ -780,7 +841,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full py-3 bg-slate-900 hover:bg-slate-800 active:scale-98 disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2"
+                  className="w-full py-3 bg-slate-900 hover:bg-slate-800 active:scale-[0.99] disabled:opacity-50 text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow-md flex items-center justify-center gap-2 transition-all cursor-pointer font-malayalam mt-2"
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

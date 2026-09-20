@@ -117,7 +117,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
     },
     {
       id: 'bakery-breakfast',
-      label: 'ബേക്കറി & സ്നാക്സ്',
+      label: 'ബേക്കറി & സ്നാക്കുകൾ',
       image: '/categories/bakery.jpg',
       bgColor: 'bg-[#FDF2E7]',
     },

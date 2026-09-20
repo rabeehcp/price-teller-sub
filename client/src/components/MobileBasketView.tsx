@@ -58,7 +58,7 @@ export const MobileBasketView: React.FC<MobileBasketViewProps> = ({
   };
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-36 animate-in fade-in duration-150">
+    <div className="w-full max-w-2xl lg:max-w-3xl mx-auto space-y-4 font-sans pb-36 animate-in fade-in duration-150">
       
       {/* 1. Header (Matching Screen 4) */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#F0F4F2] sticky top-0 z-30 shadow-2xs">

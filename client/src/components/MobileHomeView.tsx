@@ -82,7 +82,7 @@ const CATEGORY_CONFIG = [
   },
   {
     id: 'bakery-breakfast',
-    label: 'ബേക്കറി & സ്നാക്സ്',
+    label: 'ബേക്കറി & സ്നാക്കുകൾ',
     image: '/categories/bakery.jpg',
     bgColor: 'bg-[#FDF2E7]',
   },
@@ -555,8 +555,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             <TrendingDown className="w-4 h-4 text-[#063B2A]" />
           </div>
           <div>
-            <div className="text-[10px] font-black text-[#17221D]">വില താരതമ്യം</div>
-            <div className="text-[8px] text-[#556960]">മികച്ച നിരക്കുകൾ</div>
+            <div className="text-[10px] font-black text-[#17221D]">വില താരതമ്യം ചെയ്യാം</div>
+            <div className="text-[8px] text-[#556960]">വിവിധ കടകളിലെ വിലകൾ എളുപ്പത്തിൽ താരതമ്യം ചെയ്യൂ</div>
           </div>
         </div>
         <div className="bg-white border border-[#E3ECE7] rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
@@ -565,7 +565,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
           </div>
           <div>
             <div className="text-[10px] font-black text-[#17221D]">പ്രാദേശിക കടകൾ</div>
-            <div className="text-[8px] text-[#556960]">സൂപ്പർമാർക്കറ്റ്</div>
+            <div className="text-[8px] text-[#556960]">നിങ്ങളുടെ സമീപത്തെ കടകളിൽ നിന്ന് കണ്ടെത്തൂ</div>
           </div>
         </div>
         <div className="bg-white border border-[#E3ECE7] rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
@@ -573,8 +573,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             <ShieldCheck className="w-4 h-4 text-[#063B2A]" />
           </div>
           <div>
-            <div className="text-[10px] font-black text-[#17221D]">നേരിട്ട് ബുക്കിംഗ്</div>
-            <div className="text-[8px] text-[#556960]">സ്റ്റോക്ക് ലഭ്യത</div>
+            <div className="text-[10px] font-black text-[#17221D]">എളുപ്പത്തിൽ വാങ്ങാം</div>
+            <div className="text-[8px] text-[#556960]">ഇഷ്ടപ്പെട്ട കടയിൽ നിന്ന് നേരിട്ട് വാങ്ങൂ</div>
           </div>
         </div>
         <div className="bg-white border border-[#E3ECE7] rounded-2xl p-3 flex items-center gap-2.5 shadow-2xs">
@@ -582,8 +582,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             <Sparkles className="w-4 h-4 text-[#063B2A]" />
           </div>
           <div>
-            <div className="text-[10px] font-black text-[#17221D]">100% സൗജന്യം</div>
-            <div className="text-[8px] text-[#556960]">ഉപഭോക്താക്കൾ</div>
+            <div className="text-[10px] font-black text-[#17221D]">പൂർണ്ണമായും സൗജന്യം</div>
+            <div className="text-[8px] text-[#556960]">ഉപഭോക്താക്കൾക്കായി അധിക ചാർജുകളില്ല</div>
           </div>
         </div>
       </div>
