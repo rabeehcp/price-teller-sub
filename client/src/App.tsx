@@ -414,10 +414,10 @@ export const App: React.FC = () => {
   // Desktop Layout Responsiveness States
   const [isDesktopRightSidebarOpen, setIsDesktopRightSidebarOpen] = useState<boolean>(() => {
     if (typeof window !== 'undefined') {
-      // On wide screens (>= 1440px), keep open by default.
-      // On laptops / smaller screens (< 1440px), default closed unless basket already has items.
+      // On large desktop screens (>= 1360px), keep open if basket has items or screen is wide.
+      // On medium laptops / half-screens (< 1360px), default closed so center workspace has ample width.
       const initialBasket = loadActiveBasket();
-      return window.innerWidth >= 1440 || initialBasket.length > 0;
+      return window.innerWidth >= 1440 || (window.innerWidth >= 1360 && initialBasket.length > 0);
     }
     return true;
   });
@@ -428,10 +428,25 @@ export const App: React.FC = () => {
         const saved = localStorage.getItem('priceteller_left_sidebar_collapsed');
         if (saved !== null) return saved === 'true';
       } catch {}
-      return window.innerWidth >= 1024 && window.innerWidth < 1200;
+      return window.innerWidth >= 1024 && window.innerWidth < 1280;
     }
     return false;
   });
+
+  // Automatically adapt sidebars when screen is resized
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width < 1280) {
+        setIsLeftSidebarCollapsed(true);
+      }
+      if (width < 1200) {
+        setIsDesktopRightSidebarOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleToggleLeftSidebar = useCallback(() => {
     setIsLeftSidebarCollapsed((prev) => {

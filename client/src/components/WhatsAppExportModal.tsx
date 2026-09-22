@@ -46,7 +46,7 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
     if (comparison && comparison.maxSavings > 0) {
       msg += `✨ Saved ₹${Math.round(comparison.maxSavings)} comparing across ${comparison.shops.length} shops!\n`;
     }
-    msg += `\nShared via PeediyaCart · Smart Basket Comparison`;
+    msg += `\nShared via PeediyaCart · https://peediacart.vercel.app`;
     return msg;
   };
 

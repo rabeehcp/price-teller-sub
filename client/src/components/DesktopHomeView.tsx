@@ -227,24 +227,28 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. HERO BANNER: FRESH PEARL & MINT QUICK-COMMERCE WITH SIDE-BY-SIDE LIVE PREVIEW */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EDF7F2] via-[#F5FAF7] to-[#E3F2EB] shadow-xs border border-[#CDE5D9] p-5 sm:p-6 lg:p-7 min-h-0 text-[#17221D]">
+      {/* 1. HERO BANNER: FRESH PEARL & MINT QUICK-COMMERCE WITH ADAPTIVE LIVE PREVIEW */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EDF7F2] via-[#F5FAF7] to-[#E3F2EB] shadow-xs border border-[#CDE5D9] p-4 sm:p-6 lg:p-7 min-h-0 text-[#17221D]">
         
         {/* Background Subtle Ambient Glows */}
         <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#10A978]/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-8 left-8 w-64 h-64 bg-[#34D399]/10 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Side-by-Side Grid Layout: Zero Empty Void on any laptop/desktop */}
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_340px] xl:grid-cols-[1fr_360px] items-center gap-6">
+        {/* Side-by-Side Grid Layout: Adapts cleanly so headline is NEVER squashed */}
+        <div className={`relative z-10 grid grid-cols-1 ${
+          isRightSidebarOpen
+            ? '2xl:grid-cols-[1fr_360px]'
+            : 'xl:grid-cols-[1fr_360px]'
+        } items-center gap-6`}>
           
           {/* Left Content */}
-          <div className="space-y-3.5">
+          <div className="space-y-3.5 min-w-0">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 border border-[#BEE3CE] rounded-full text-[11px] font-extrabold text-[#0B8F68] shadow-2xs font-malayalam">
               <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
               <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലകൾ</span>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black text-[#063B2A] leading-tight font-malayalam tracking-tight m-0">
+            <h1 className="text-xl sm:text-2xl lg:text-[28px] xl:text-[32px] font-black text-[#063B2A] leading-tight font-malayalam tracking-tight m-0">
               നാട്ടിലെ കടകളിൽ നിന്ന്<br />
               <span className="text-[#0B8F68]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
             </h1>
@@ -255,23 +259,25 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
 
             {/* 4 Value Pillars: Crisp white glass pills */}
             <div className="flex items-center gap-2 text-xs font-bold text-[#143D2E] pt-1 font-malayalam flex-wrap">
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
                 <Store className="w-3.5 h-3.5 text-[#0B8F68]" /> പ്രാദേശിക കടകൾ
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
                 <TrendingDown className="w-3.5 h-3.5 text-[#0B8F68]" /> വില താരതമ്യം
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
                 <Tag className="w-3.5 h-3.5 text-[#0B8F68]" /> മികച്ച ലാഭം
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors">
+              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
                 <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" /> സമീപത്തുള്ള ഷോപ്പിംഗ്
               </span>
             </div>
           </div>
 
-          {/* Right Live Price Comparison Visual Card */}
-          <div className="w-full space-y-2 font-malayalam">
+          {/* Right Live Price Comparison Visual Card (Shown when adequate width is available) */}
+          <div className={`w-full space-y-2 font-malayalam ${
+            isRightSidebarOpen ? 'hidden 2xl:block' : 'hidden xl:block'
+          }`}>
             {/* Top Pill */}
             <div className="flex items-center justify-between bg-white border border-[#CDE5D9] px-3.5 py-1.5 rounded-2xl text-[11px] font-bold text-[#063B2A] shadow-xs">
               <span className="flex items-center gap-1.5">
@@ -365,7 +371,9 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
         </div>
 
         {/* Responsive Category Cards Grid (9 items starting with "എല്ലാം") */}
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-9 gap-2 sm:gap-2.5 xl:gap-3 font-malayalam">
+        <div className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 ${
+          isRightSidebarOpen ? 'xl:grid-cols-5 2xl:grid-cols-9' : 'xl:grid-cols-9'
+        } gap-2 sm:gap-2.5 xl:gap-3 font-malayalam`}>
           {desktopCategories.map((cat) => {
             const isSelected = selectedCategoryId === cat.id;
 

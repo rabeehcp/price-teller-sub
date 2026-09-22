@@ -67,7 +67,7 @@ The application automatically routes to the Azure backend via the Vercel API pro
 ### Step 5: Click Deploy!
 1. Click **Deploy**.
 2. Vercel will build and deploy the application in ~30 seconds.
-3. Your app will be live at `https://<your-project-name>.vercel.app`!
+3. Your app will be live at `https://peediacart.vercel.app`!
 
 ---
 
@@ -75,7 +75,7 @@ The application automatically routes to the Azure backend via the Vercel API pro
 
 If you prefer deploying directly from your terminal:
 
-1. In your project root (`c:\price-teller-sub`), run:
+1. In your project root (`price-teller-sub`), run:
    ```bash
    npx vercel
    ```
@@ -83,7 +83,7 @@ If you prefer deploying directly from your terminal:
    - **Set up and deploy?**: `y`
    - **Which scope?**: Choose your Vercel account or team
    - **Link to existing project?**: `N` (or `y` if already created)
-   - **What’s your project’s name?**: `priceteller` (or your preferred name)
+   - **What’s your project’s name?**: `peediacart`
    - **In which directory is your code located?**: `./` (or `./client`)
 3. To deploy to **Production**:
    ```bash
