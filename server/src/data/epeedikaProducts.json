@@ -21,8 +21,8 @@
     "source": "epeedikaonline",
     "originalId": "778",
     "prices": {
-      "Al-Iqwan": 62.5,
-      "Malabar supermarker": 62.5
+      "Al-Iqwan": 60,
+      "Malabar supermarker": 60
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -5263,37 +5263,6 @@
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Tholur Tamarind 250g ( Puli )"
-  },
-  {
-    "id": "epeedika-grocery-292",
-    "name": "തുവരപ്പരിപ്പ് 500g",
-    "categoryId": "pulses-legumes",
-    "emoji": "🫘",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/epeedika-grocery-292.jpg",
-    "defaultUnit": "500 g",
-    "availableUnits": [
-      "500 g"
-    ],
-    "unitMultiplier": {
-      "500 g": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "14% OFF",
-    "nutritionalNote": "Heart-healthy dietary legume packed with plant protein, minerals and fiber",
-    "mrp": 70,
-    "sellingPrice": 60,
-    "source": "epeedikaonline",
-    "originalId": "292",
-    "prices": {
-      "Al-Iqwan": 60,
-      "Malabar supermarker": 60
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Thuvaraparippu - Toor Dal 500gm"
   },
   {
     "id": "epeedika-grocery-18",

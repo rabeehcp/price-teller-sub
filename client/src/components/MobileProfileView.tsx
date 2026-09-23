@@ -113,7 +113,7 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
   };
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-28 animate-in fade-in duration-150">
+    <div className="w-full max-w-2xl sm:max-w-3xl mx-auto space-y-4 font-sans pb-28 animate-in fade-in duration-150">
       
       {/* 1. Dark Green Hero Header Card */}
       <div className="bg-gradient-to-b from-[#063B2A] via-[#084D37] to-[#063B2A] text-white pt-8 pb-10 px-6 rounded-b-[36px] text-center relative shadow-sm">

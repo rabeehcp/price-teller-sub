@@ -51,8 +51,8 @@
     "source": "pothysmart",
     "originalId": 4649834,
     "prices": {
-      "Al-Iqwan": 5,
-      "Malabar supermarker": 5
+      "Al-Iqwan": 6,
+      "Malabar supermarker": 6
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -82,45 +82,14 @@
     "source": "pothysmart",
     "originalId": 3136483,
     "prices": {
-      "Al-Iqwan": 5,
-      "Malabar supermarker": 5
+      "Al-Iqwan": 8,
+      "Malabar supermarker": 8
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Veg Coriander Leaves"
-  },
-  {
-    "id": "pothys-veg-3137728",
-    "name": "വാഴപ്പിണ്ടി",
-    "categoryId": "vegetables",
-    "emoji": "🥬",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137728.jpg",
-    "defaultUnit": "1 Piece",
-    "availableUnits": [
-      "1 Piece"
-    ],
-    "unitMultiplier": {
-      "1 Piece": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "93% OFF",
-    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
-    "mrp": 80,
-    "sellingPrice": 6,
-    "source": "pothysmart",
-    "originalId": 3137728,
-    "prices": {
-      "Al-Iqwan": 6,
-      "Malabar supermarker": 6
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Banana Stem"
   },
   {
     "id": "pothys-veg-3136926",
@@ -186,7 +155,7 @@
   },
   {
     "id": "pothys-veg-3137147",
-    "name": "വരി വഴുതനങ്ങ",
+    "name": "വഴുതനങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🍆",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137147.jpg",
@@ -206,8 +175,8 @@
     "source": "pothysmart",
     "originalId": 3137147,
     "prices": {
-      "Al-Iqwan": 7.5,
-      "Malabar supermarker": 7.5
+      "Al-Iqwan": 53,
+      "Malabar supermarker": 53
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -216,39 +185,8 @@
     "englishNote": "Veg Brinjal Vari"
   },
   {
-    "id": "pothys-veg-4649927",
-    "name": "മല്ലിയില",
-    "categoryId": "vegetables",
-    "emoji": "🌿",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136483.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "84% OFF",
-    "nutritionalNote": "Fresh aromatic greens loaded with iron, chlorophyll, folate and antioxidants",
-    "mrp": 50,
-    "sellingPrice": 8,
-    "source": "pothysmart",
-    "originalId": 4649927,
-    "prices": {
-      "Al-Iqwan": 8,
-      "Malabar supermarker": 8
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Coriander Leaf"
-  },
-  {
     "id": "pothys-veg-3137727",
-    "name": "വാഴക്കൂമ്പ് (കുടപ്പൻ)",
+    "name": "വാഴക്കൂമ്പ്",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137727.jpg",
@@ -310,7 +248,7 @@
   },
   {
     "id": "pothys-veg-3137264",
-    "name": "ഏത്തക്കായ (പച്ചക്കായ)",
+    "name": "ഏത്തക്കായ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137264.jpg",
@@ -372,7 +310,7 @@
   },
   {
     "id": "pothys-veg-3136479",
-    "name": "പച്ച ക്യാപ്സിക്കം",
+    "name": "ക്യാപ്സിക്കം",
     "categoryId": "vegetables",
     "emoji": "🫑",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136479.jpg",
@@ -392,45 +330,14 @@
     "source": "pothysmart",
     "originalId": 3136479,
     "prices": {
-      "Al-Iqwan": 40,
-      "Malabar supermarker": 40
+      "Al-Iqwan": 200,
+      "Malabar supermarker": 200
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Veg Capsicum Green"
-  },
-  {
-    "id": "pothys-veg-3137578",
-    "name": "നീളൻ വഴുതനങ്ങ",
-    "categoryId": "vegetables",
-    "emoji": "🍆",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137578.jpg",
-    "defaultUnit": "250 gm",
-    "availableUnits": [
-      "250 gm"
-    ],
-    "unitMultiplier": {
-      "250 gm": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "79% OFF",
-    "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
-    "mrp": 50,
-    "sellingPrice": 10.75,
-    "source": "pothysmart",
-    "originalId": 3137578,
-    "prices": {
-      "Al-Iqwan": 10.75,
-      "Malabar supermarker": 10.75
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Brinjal Ujala"
   },
   {
     "id": "pothys-veg-3194701",
@@ -619,7 +526,7 @@
   },
   {
     "id": "pothys-veg-3138916",
-    "name": "നാടൻ മത്തങ്ങ",
+    "name": "മത്തങ്ങ",
     "categoryId": "vegetables",
     "emoji": "🎃",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138916.jpg",
@@ -670,8 +577,8 @@
     "source": "pothysmart",
     "originalId": 3194520,
     "prices": {
-      "Al-Iqwan": 12.4,
-      "Malabar supermarker": 12.4
+      "Al-Iqwan": 124,
+      "Malabar supermarker": 124
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -763,8 +670,8 @@
     "source": "pothysmart",
     "originalId": 3196682,
     "prices": {
-      "Al-Iqwan": 13,
-      "Malabar supermarker": 13
+      "Al-Iqwan": 14,
+      "Malabar supermarker": 14
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -774,7 +681,7 @@
   },
   {
     "id": "pothys-veg-3194493",
-    "name": "സ്പ്രിംഗ് ഒനിയൻ (ഉള്ളിത്തണ്ട്)",
+    "name": "സ്പ്രിംഗ് ഒനിയൻ",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194493.jpg",
@@ -887,8 +794,8 @@
     "source": "pothysmart",
     "originalId": 3136537,
     "prices": {
-      "Al-Iqwan": 27,
-      "Malabar supermarker": 27
+      "Al-Iqwan": 670,
+      "Malabar supermarker": 670
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -955,37 +862,6 @@
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     }
-  },
-  {
-    "id": "pothys-veg-4650334",
-    "name": "പൊന്നങ്കണ്ണി ചീര",
-    "categoryId": "vegetables",
-    "emoji": "🥬",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650334.jpg",
-    "defaultUnit": "1 bunch",
-    "availableUnits": [
-      "1 bunch"
-    ],
-    "unitMultiplier": {
-      "1 bunch": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "86% OFF",
-    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
-    "mrp": 100,
-    "sellingPrice": 14,
-    "source": "pothysmart",
-    "originalId": 4650334,
-    "prices": {
-      "Al-Iqwan": 14,
-      "Malabar supermarker": 14
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Ponnakanni Keerai"
   },
   {
     "id": "pothys-veg-4650339",
@@ -1111,7 +987,7 @@
   },
   {
     "id": "pothys-veg-3137735",
-    "name": "നാടൻ പാവയ്ക്ക (കൈപ്പക്ക)",
+    "name": "പാവയ്ക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137735.jpg",
@@ -1131,8 +1007,8 @@
     "source": "pothysmart",
     "originalId": 3137735,
     "prices": {
-      "Al-Iqwan": 60,
-      "Malabar supermarker": 60
+      "Al-Iqwan": 33.5,
+      "Malabar supermarker": 33.5
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -1204,7 +1080,7 @@
   },
   {
     "id": "pothys-veg-3139162",
-    "name": "സ്വീറ്റ് കോൺ (മധുരച്ചോളം)",
+    "name": "സ്വീറ്റ് കോൺ",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139162.jpg",
@@ -1266,7 +1142,7 @@
   },
   {
     "id": "pothys-veg-3136514",
-    "name": "കോൾറാബി (Knol Khol)",
+    "name": "കോൾറാബി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3136514.jpg",
@@ -1297,7 +1173,7 @@
   },
   {
     "id": "pothys-veg-3137760",
-    "name": "കപ്പ (മരച്ചീനി)",
+    "name": "കപ്പ",
     "categoryId": "vegetables",
     "emoji": "🥔",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137760.jpg",
@@ -1348,8 +1224,8 @@
     "source": "pothysmart",
     "originalId": 3136548,
     "prices": {
-      "Al-Iqwan": 18.66,
-      "Malabar supermarker": 18.66
+      "Al-Iqwan": 36,
+      "Malabar supermarker": 36
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -1390,7 +1266,7 @@
   },
   {
     "id": "pothys-veg-3138596",
-    "name": "നാടൻ വെള്ളരിക്ക",
+    "name": "വെള്ളരിക്ക",
     "categoryId": "vegetables",
     "emoji": "🥒",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138596.jpg",
@@ -1410,8 +1286,8 @@
     "source": "pothysmart",
     "originalId": 3138596,
     "prices": {
-      "Al-Iqwan": 19,
-      "Malabar supermarker": 19
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -1441,8 +1317,8 @@
     "source": "pothysmart",
     "originalId": 3138804,
     "prices": {
-      "Al-Iqwan": 9.75,
-      "Malabar supermarker": 9.75
+      "Al-Iqwan": 93,
+      "Malabar supermarker": 93
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -1480,37 +1356,6 @@
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Veg Coccinia"
-  },
-  {
-    "id": "pothys-veg-3196628",
-    "name": "പടവലം (പോട്‌വൽ)",
-    "categoryId": "vegetables",
-    "emoji": "🥬",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196628.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "31% OFF",
-    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
-    "mrp": 134,
-    "sellingPrice": 92,
-    "source": "pothysmart",
-    "originalId": 3196628,
-    "prices": {
-      "Al-Iqwan": 92,
-      "Malabar supermarker": 92
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Parwal"
   },
   {
     "id": "pothys-veg-3136481",
@@ -1762,7 +1607,7 @@
   },
   {
     "id": "pothys-veg-3137805",
-    "name": "നാടൻ തക്കാളി",
+    "name": "തക്കാളി",
     "categoryId": "vegetables",
     "emoji": "🍅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137805.jpg",
@@ -1782,8 +1627,8 @@
     "source": "pothysmart",
     "originalId": 3137805,
     "prices": {
-      "Al-Iqwan": 14.5,
-      "Malabar supermarker": 14.5
+      "Al-Iqwan": 34,
+      "Malabar supermarker": 34
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -1855,7 +1700,7 @@
   },
   {
     "id": "pothys-veg-4213162",
-    "name": "സവാള (വലിയ ഉള്ളി)",
+    "name": "സവാള",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4213162.jpg",
@@ -1883,37 +1728,6 @@
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "VEG ONION KG"
-  },
-  {
-    "id": "pothys-veg-3138901",
-    "name": "പാവയ്ക്ക",
-    "categoryId": "vegetables",
-    "emoji": "🥒",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3138901.jpg",
-    "defaultUnit": "500 gm",
-    "availableUnits": [
-      "500 gm"
-    ],
-    "unitMultiplier": {
-      "500 gm": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "33% OFF",
-    "nutritionalNote": "High water content gourd that cools the body and supports gentle digestion",
-    "mrp": 50,
-    "sellingPrice": 33.5,
-    "source": "pothysmart",
-    "originalId": 3138901,
-    "prices": {
-      "Al-Iqwan": 33.5,
-      "Malabar supermarker": 33.5
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Bitter Gourd Hybrid"
   },
   {
     "id": "pothys-veg-3137702",
@@ -1947,39 +1761,8 @@
     "englishNote": "Veg Coconut Small"
   },
   {
-    "id": "pothys-veg-3137640",
-    "name": "ബാംഗ്ലൂർ തക്കാളി",
-    "categoryId": "vegetables",
-    "emoji": "🍅",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137640.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "83% OFF",
-    "nutritionalNote": "Rich in lycopene, Vitamin C and potassium for heart and skin vitality",
-    "mrp": 200,
-    "sellingPrice": 34,
-    "source": "pothysmart",
-    "originalId": 3137640,
-    "prices": {
-      "Al-Iqwan": 34,
-      "Malabar supermarker": 34
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Tomato Bangalore"
-  },
-  {
     "id": "pothys-veg-4649811",
-    "name": "ബേബി കോൺ തൊലി കളഞ്ഞത്",
+    "name": "ബേബി കോൺ",
     "categoryId": "vegetables",
     "emoji": "🌽",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649811.jpg",
@@ -1999,45 +1782,14 @@
     "source": "pothysmart",
     "originalId": 4649811,
     "prices": {
-      "Al-Iqwan": 36,
-      "Malabar supermarker": 36
+      "Al-Iqwan": 40,
+      "Malabar supermarker": 40
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Baby Corn Peeled"
-  },
-  {
-    "id": "pothys-veg-2918121",
-    "name": "ചെറിയ ഉരുളക്കിഴങ്ങ്",
-    "categoryId": "vegetables",
-    "emoji": "🥔",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918121.jpg",
-    "defaultUnit": "1 Pack",
-    "availableUnits": [
-      "1 Pack"
-    ],
-    "unitMultiplier": {
-      "1 Pack": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "54% OFF",
-    "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
-    "mrp": 79,
-    "sellingPrice": 36,
-    "source": "pothysmart",
-    "originalId": 2918121,
-    "prices": {
-      "Al-Iqwan": 36,
-      "Malabar supermarker": 36
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Baby Potato"
   },
   {
     "id": "pothys-veg-4650429",
@@ -2068,37 +1820,6 @@
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     }
-  },
-  {
-    "id": "pothys-veg-3139146",
-    "name": "ബേബി കോൺ 200g",
-    "categoryId": "vegetables",
-    "emoji": "🌽",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3139146.jpg",
-    "defaultUnit": "1 Pack",
-    "availableUnits": [
-      "1 Pack"
-    ],
-    "unitMultiplier": {
-      "1 Pack": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "26% OFF",
-    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
-    "mrp": 50,
-    "sellingPrice": 37,
-    "source": "pothysmart",
-    "originalId": 3139146,
-    "prices": {
-      "Al-Iqwan": 37,
-      "Malabar supermarker": 37
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Baby Corn  200gm"
   },
   {
     "id": "pothys-veg-3137816",
@@ -2132,68 +1853,6 @@
     "englishNote": "Veg Colocasia"
   },
   {
-    "id": "pothys-veg-2918120",
-    "name": "ബേബി കോൺ",
-    "categoryId": "vegetables",
-    "emoji": "🌽",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-2918120.jpg",
-    "defaultUnit": "1 Pack",
-    "availableUnits": [
-      "1 Pack"
-    ],
-    "unitMultiplier": {
-      "1 Pack": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "60% OFF",
-    "nutritionalNote": "Sweet, wholesome golden cob rich in lutein, zeaxanthin and dietary fiber",
-    "mrp": 100,
-    "sellingPrice": 40,
-    "source": "pothysmart",
-    "originalId": 2918120,
-    "prices": {
-      "Al-Iqwan": 40,
-      "Malabar supermarker": 40
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Baby Corn"
-  },
-  {
-    "id": "pothys-veg-3141500",
-    "name": "സാലഡ് വെള്ളരിക്ക",
-    "categoryId": "vegetables",
-    "emoji": "🥒",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3141500.jpg",
-    "defaultUnit": "500 gm",
-    "availableUnits": [
-      "500 gm"
-    ],
-    "unitMultiplier": {
-      "500 gm": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "84% OFF",
-    "nutritionalNote": "Ultra-hydrating, cooling vegetable with silica for skin elasticity and electrolyte balance",
-    "mrp": 250,
-    "sellingPrice": 40,
-    "source": "pothysmart",
-    "originalId": 3141500,
-    "prices": {
-      "Al-Iqwan": 40,
-      "Malabar supermarker": 40
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg French Cucumber"
-  },
-  {
     "id": "pothys-veg-3137652",
     "name": "ബീൻസ്",
     "categoryId": "vegetables",
@@ -2215,8 +1874,8 @@
     "source": "pothysmart",
     "originalId": 3137652,
     "prices": {
-      "Al-Iqwan": 20.75,
-      "Malabar supermarker": 20.75
+      "Al-Iqwan": 200,
+      "Malabar supermarker": 200
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -2339,8 +1998,8 @@
     "source": "pothysmart",
     "originalId": 3197112,
     "prices": {
-      "Al-Iqwan": 50,
-      "Malabar supermarker": 50
+      "Al-Iqwan": 125,
+      "Malabar supermarker": 125
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -2349,70 +2008,8 @@
     "englishNote": "Mudavattu Kilangu"
   },
   {
-    "id": "pothys-veg-3194456",
-    "name": "ബട്ടർ ബീൻസ്",
-    "categoryId": "vegetables",
-    "emoji": "🫛",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194456.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "60% OFF",
-    "nutritionalNote": "Crisp legume rich in plant-based protein, dietary fiber and folates",
-    "mrp": 500,
-    "sellingPrice": 200,
-    "source": "pothysmart",
-    "originalId": 3194456,
-    "prices": {
-      "Al-Iqwan": 200,
-      "Malabar supermarker": 200
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Veg Butter Beans"
-  },
-  {
-    "id": "pothys-veg-4649879",
-    "name": "ഉരുണ്ട വഴുതനങ്ങ",
-    "categoryId": "vegetables",
-    "emoji": "🍆",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649879.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "74% OFF",
-    "nutritionalNote": "Plump antioxidant-rich vegetable with nasunin to protect cell membranes",
-    "mrp": 200,
-    "sellingPrice": 53,
-    "source": "pothysmart",
-    "originalId": 4649879,
-    "prices": {
-      "Al-Iqwan": 53,
-      "Malabar supermarker": 53
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Brinjal Round Suphol"
-  },
-  {
     "id": "pothys-veg-3137808",
-    "name": "ചെറിയ ഉള്ളി (സാമ്പാർ ഉള്ളി)",
+    "name": "ചെറിയ ഉള്ളി",
     "categoryId": "vegetables",
     "emoji": "🧅",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137808.jpg",
@@ -2474,7 +2071,7 @@
   },
   {
     "id": "pothys-veg-3137155",
-    "name": "കൂൺ (Mushroom)",
+    "name": "കൂൺ",
     "categoryId": "vegetables",
     "emoji": "🍄",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3137155.jpg",
@@ -2494,8 +2091,8 @@
     "source": "pothysmart",
     "originalId": 3137155,
     "prices": {
-      "Al-Iqwan": 60,
-      "Malabar supermarker": 60
+      "Al-Iqwan": 530,
+      "Malabar supermarker": 530
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
@@ -2505,7 +2102,7 @@
   },
   {
     "id": "pothys-veg-4649937",
-    "name": "നാടൻ വൻപയർ (പയർ)",
+    "name": "വൻപയർ",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649937.jpg",
@@ -2648,45 +2245,14 @@
     "source": "pothysmart",
     "originalId": 3194447,
     "prices": {
-      "Al-Iqwan": 87.5,
-      "Malabar supermarker": 87.5
+      "Al-Iqwan": 175,
+      "Malabar supermarker": 175
     },
     "stockStatus": {
       "Al-Iqwan": "in_stock",
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Mahali Kizhangu"
-  },
-  {
-    "id": "pothys-veg-4649816",
-    "name": "ബജ്ജി മുളക്",
-    "categoryId": "vegetables",
-    "emoji": "🫑",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649816.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "20% OFF",
-    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
-    "mrp": 116,
-    "sellingPrice": 93,
-    "source": "pothysmart",
-    "originalId": 4649816,
-    "prices": {
-      "Al-Iqwan": 93,
-      "Malabar supermarker": 93
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Bajji Capsicum"
   },
   {
     "id": "pothys-veg-3136516",
@@ -2874,70 +2440,8 @@
     "englishNote": "Veg Parsley"
   },
   {
-    "id": "pothys-veg-4650203",
-    "name": "മാങ്ങാ ഇഞ്ചി",
-    "categoryId": "vegetables",
-    "emoji": "🫚",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650203.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "38% OFF",
-    "nutritionalNote": "Natural digestive aid and anti-inflammatory rhizome with gingerols",
-    "mrp": 200,
-    "sellingPrice": 124,
-    "source": "pothysmart",
-    "originalId": 4650203,
-    "prices": {
-      "Al-Iqwan": 124,
-      "Malabar supermarker": 124
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Mango Ginger"
-  },
-  {
-    "id": "pothys-veg-4650240",
-    "name": "മുടവത്തു കാൽ കിഴങ്ങ്",
-    "categoryId": "vegetables",
-    "emoji": "🥬",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650240.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "22% OFF",
-    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
-    "mrp": 160,
-    "sellingPrice": 125,
-    "source": "pothysmart",
-    "originalId": 4650240,
-    "prices": {
-      "Al-Iqwan": 125,
-      "Malabar supermarker": 125
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Mudavattukal Kilangu"
-  },
-  {
     "id": "pothys-veg-3194576",
-    "name": "മഞ്ഞ സൂക്കിനി",
+    "name": "സൂക്കിനി",
     "categoryId": "vegetables",
     "emoji": "🥬",
     "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3194576.jpg",
@@ -3029,37 +2533,6 @@
     "englishNote": "Soya Beans"
   },
   {
-    "id": "pothys-veg-3196638",
-    "name": "മാഹളി കിഴങ്ങ്",
-    "categoryId": "vegetables",
-    "emoji": "🥔",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-3196638.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "42% OFF",
-    "nutritionalNote": "Essential kitchen staple rich in complex carbs, potassium and Vitamin C",
-    "mrp": 300,
-    "sellingPrice": 175,
-    "source": "pothysmart",
-    "originalId": 3196638,
-    "prices": {
-      "Al-Iqwan": 175,
-      "Malabar supermarker": 175
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Mahali Potato"
-  },
-  {
     "id": "pothys-veg-3137202",
     "name": "നെല്ലിക്ക",
     "categoryId": "vegetables",
@@ -3089,37 +2562,6 @@
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Veg Gooseberry Amla"
-  },
-  {
-    "id": "pothys-veg-4649885",
-    "name": "ചുവന്ന ക്യാപ്സിക്കം",
-    "categoryId": "vegetables",
-    "emoji": "🫑",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4649885.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "60% OFF",
-    "nutritionalNote": "Crisp vegetable with extraordinarily high Vitamin C, Vitamin A and antioxidants",
-    "mrp": 500,
-    "sellingPrice": 200,
-    "source": "pothysmart",
-    "originalId": 4649885,
-    "prices": {
-      "Al-Iqwan": 200,
-      "Malabar supermarker": 200
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Capsicum Red"
   },
   {
     "id": "pothys-veg-3194457",
@@ -3182,67 +2624,5 @@
       "Malabar supermarker": "in_stock"
     },
     "englishNote": "Veg Leeks"
-  },
-  {
-    "id": "pothys-veg-4650244",
-    "name": "കൂൺ",
-    "categoryId": "vegetables",
-    "emoji": "🍄",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650244.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "47% OFF",
-    "nutritionalNote": "Savory edible fungi loaded with Vitamin D, selenium and immune-modulating beta-glucans",
-    "mrp": 1000,
-    "sellingPrice": 530,
-    "source": "pothysmart",
-    "originalId": 4650244,
-    "prices": {
-      "Al-Iqwan": 530,
-      "Malabar supermarker": 530
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Mushrooms"
-  },
-  {
-    "id": "pothys-veg-4650306",
-    "name": "പടവലം (പോട്‌വൽ)",
-    "categoryId": "vegetables",
-    "emoji": "🥬",
-    "image": "https://ik.imagekit.io/rcparkd3663/priceteller-catalog/pothys-veg-4650306.jpg",
-    "defaultUnit": "1 Kg",
-    "availableUnits": [
-      "1 Kg"
-    ],
-    "unitMultiplier": {
-      "1 Kg": 1
-    },
-    "isOrganic": false,
-    "isSeasonal": false,
-    "badge": "33% OFF",
-    "nutritionalNote": "Fresh farm-harvested vegetable packed with natural vitamins and minerals",
-    "mrp": 1000,
-    "sellingPrice": 670,
-    "source": "pothysmart",
-    "originalId": 4650306,
-    "prices": {
-      "Al-Iqwan": 670,
-      "Malabar supermarker": 670
-    },
-    "stockStatus": {
-      "Al-Iqwan": "in_stock",
-      "Malabar supermarker": "in_stock"
-    },
-    "englishNote": "Paraval"
   }
 ]

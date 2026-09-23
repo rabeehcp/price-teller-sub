@@ -283,7 +283,7 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
   const categoryDisplayName = category.name || (category.id === 'vegetables' ? 'പച്ചക്കറികൾ' : category.id === 'fruits' ? 'പഴങ്ങൾ' : 'ഉൽപ്പന്നങ്ങൾ');
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-36 animate-in fade-in duration-150">
+    <div className="w-full max-w-2xl sm:max-w-3xl lg:max-w-5xl mx-auto space-y-4 font-sans pb-36 animate-in fade-in duration-150">
       {/* 1. Header (Matching Screen 2) */}
       <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#F0F4F2] sticky top-0 z-30 shadow-2xs">
         <button
@@ -379,7 +379,7 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
             </button>
           </div>
         ) : (
-          <div className="space-y-2.5 pt-1">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
             {filteredProducts.map((p) => {
               const basketItem = basket.find((b) => b.productId === p.id || (b as any).product?.id === p.id);
               const qty = basketItem ? basketItem.quantity : 0;

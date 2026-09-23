@@ -39,7 +39,7 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
   const pendingReports = reports.filter((r) => r.status === 'pending');
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-24 animate-in fade-in duration-150">
+    <div className="w-full max-w-3xl mx-auto space-y-4 font-sans pb-24 animate-in fade-in duration-150">
       
       {/* 1. TOP HEADER */}
       <div className="flex items-center justify-between px-1 py-1">

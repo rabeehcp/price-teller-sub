@@ -2018,6 +2018,29 @@ export const App: React.FC = () => {
                 />
               </div>
             )}
+
+            {/* Desktop Full Search / Category Page */}
+            {shopperTab === 'search' && (
+              <div className="max-w-5xl mx-auto py-4">
+                <MobileCategoryView
+                  category={{
+                    id: 'all',
+                    name: 'തിരയുക (Search Catalog)',
+                    slug: 'search',
+                    icon: '🔍',
+                    description: '',
+                    itemCount: products.length,
+                  }}
+                  products={products}
+                  basket={basket}
+                  onBack={() => setShopperTab('home')}
+                  onOpenCart={() => setShopperTab('cart')}
+                  onSelectProduct={(p) => setSelectedMobileProduct(p)}
+                  onAddToBasket={handleAddToBasket}
+                  onQuantityChange={handleQuantityChange}
+                />
+              </div>
+            )}
           </div>
 
         </main>

@@ -117,7 +117,7 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
   const maxDailyAmount = Math.max(...dailyBuckets.map((b) => b.amount), 0);
 
   return (
-    <div className="md:hidden space-y-4 font-sans pb-24 animate-in fade-in duration-150">
+    <div className="w-full max-w-3xl mx-auto space-y-4 font-sans pb-24 animate-in fade-in duration-150">
       {/* 1. TOP HEADER */}
       <div className="flex items-center justify-between px-1 py-1">
         <div className="flex items-center gap-2">
