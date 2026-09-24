@@ -88,9 +88,11 @@ export default {
         }
       },
       fontFamily: {
-        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-        malayalam: ['"Anek Malayalam"', '"Noto Sans Malayalam"', '"Manjari"', 'sans-serif'],
-        'malayalam-heading': ['"Manjari"', '"Anek Malayalam"', '"Noto Sans Malayalam"', 'sans-serif'],
+        sans: ['"Inter"', '"Noto Sans Malayalam"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        malayalam: ['"Inter"', '"Noto Sans Malayalam"', 'sans-serif'],
+        'malayalam-heading': ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
+        ui: ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
+        heading: ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
       },
       boxShadow: {
         '2xs': '0 1px 2px rgba(6, 59, 42, 0.03)',

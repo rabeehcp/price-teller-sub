@@ -197,52 +197,32 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       </div>
 
       {/* 2. HERO BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white p-4 sm:p-5 shadow-md min-h-[155px] flex items-center justify-between">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#042B1E] via-[#063B2A] to-[#0A543C] text-white p-4 sm:p-5 shadow-md min-h-[155px] flex items-center justify-between">
         {/* Decorative glows */}
-        <div className="absolute top-0 right-1/3 w-32 h-32 bg-[#10A978]/20 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-4 left-0 w-24 h-24 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
+        <div className="absolute top-0 right-1/4 w-36 h-36 bg-[#10A978]/20 rounded-full blur-2xl pointer-events-none" />
+        <div className="absolute -bottom-4 left-0 w-28 h-28 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
 
         {/* Left Content */}
-        <div className="relative z-10 max-w-[62%] space-y-2">
-          <h2 className="text-base sm:text-lg font-black text-white leading-tight font-malayalam m-0">
-            നാട്ടിലെ കടകളിൽ നിന്ന്<br />
-            <span className="text-[#7FFFC4]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
+        <div className="relative z-10 max-w-[58%] space-y-1 sm:space-y-1.5">
+          <h2 className="text-[15px] sm:text-base font-bold text-white leading-snug font-malayalam-heading m-0 tracking-tight">
+            അടുത്ത കടയിലേക്ക്<br />
+            പോകുന്നതിന് മുമ്പ്...
           </h2>
-          <p className="text-[10px] sm:text-[11px] text-[#C0EDD9] font-medium leading-snug font-malayalam m-0">
-            അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് നിങ്ങൾക്ക് അനുയോജ്യമായ വില കണ്ടെത്തൂ.
+          <div className="text-[14px] sm:text-[15px] font-extrabold text-[#7FFFC4] leading-tight font-malayalam-heading">
+            PediaCart-ൽ വില നോക്കൂ.
+          </div>
+          <p className="text-[10.5px] sm:text-[11px] text-[#C0EDD9] font-normal leading-snug font-malayalam m-0 pt-0.5">
+            സമീപത്തെ കടകളിലെ വിലകൾ താരതമ്യം ചെയ്യാം.
           </p>
         </div>
 
-        {/* Right Glassmorphic Multi-Category Price Comparison Visual Card */}
-        <div className="relative z-10 w-[130px] sm:w-[150px] shrink-0 font-malayalam">
-          <div className="bg-white/15 backdrop-blur-md border border-white/25 rounded-2xl p-2 sm:p-2.5 text-white shadow-xl space-y-1.5">
-            {/* Header Badge */}
-            <div className="flex items-center justify-between border-b border-white/20 pb-1">
-              <span className="text-[9px] font-bold flex items-center gap-1">
-                🏪 കടകൾ
-              </span>
-              <span className="text-[8px] font-black bg-[#34D399] text-[#063B2A] px-1.5 py-0.5 rounded-full uppercase">
-                താരതമ്യം 📊
-              </span>
-            </div>
-
-            {/* Live Product Comparisons */}
-            <div className="space-y-1">
-              <div className="flex items-center justify-between text-[9px] bg-black/25 px-1.5 py-1 rounded-lg">
-                <span className="truncate">🫗 വെളിച്ചെണ്ണ</span>
-                <span className="font-extrabold text-[#7FFFC4] shrink-0 font-sans">₹150</span>
-              </div>
-              <div className="flex items-center justify-between text-[9px] bg-black/25 px-1.5 py-1 rounded-lg">
-                <span className="truncate">🌾 മട്ട അരി</span>
-                <span className="font-extrabold text-[#7FFFC4] shrink-0 font-sans">₹44</span>
-              </div>
-            </div>
-
-            {/* Savings Callout Pill */}
-            <div className="bg-gradient-to-r from-[#34D399] to-[#6EE7B7] text-[#063B2A] text-[9px] font-black text-center py-0.5 rounded-lg shadow-xs">
-              💰 ₹15 വരെ ലാഭം!
-            </div>
-          </div>
+        {/* Right 3D Visual Artwork */}
+        <div className="relative z-10 w-[125px] sm:w-[145px] h-[115px] sm:h-[130px] shrink-0 flex items-center justify-center">
+          <img
+            src="/banner-phone-groceries.jpg"
+            alt="PediaCart വില താരതമ്യം"
+            className="w-full h-full object-cover rounded-2xl drop-shadow-2xl shadow-emerald-950/40 border border-white/10"
+          />
         </div>
 
         {/* Pagination dots */}
@@ -300,8 +280,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
                 className={`shrink-0 w-[74px] sm:w-[82px] flex flex-col items-center justify-between p-2 rounded-2xl transition-all cursor-pointer text-center group border ${isSelected
-                    ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-xs ring-1 ring-[#0B8F68]/25'
-                    : 'bg-white border-[#E3ECE7] hover:border-[#0B8F68]/40 shadow-2xs'
+                  ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-xs ring-1 ring-[#0B8F68]/25'
+                  : 'bg-white border-[#E3ECE7] hover:border-[#0B8F68]/40 shadow-2xs'
                   }`}
               >
                 <div
@@ -469,12 +449,12 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
 
                   {/* Info: Name, Price, and Action Button */}
                   <div className="space-y-1.5 pt-1">
-                    <div className="flex items-start justify-between gap-1 min-h-[28px]">
-                      <h3 className="text-xs sm:text-[13px] font-bold text-[#17221D] font-malayalam leading-tight line-clamp-2 m-0 group-hover:text-[#0B8F68] transition-colors">
+                    <div className="flex items-start justify-between gap-1 min-h-[38px]">
+                      <h3 className="text-[13px] sm:text-sm font-bold text-[#17221D] font-malayalam leading-snug line-clamp-2 m-0 group-hover:text-[#0B8F68] transition-colors">
                         {getMalayalamName(product.name)}
                       </h3>
                       {isOutOfStock && (
-                        <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
+                        <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.5 rounded font-mono">
                           തീർന്നു
                         </span>
                       )}
@@ -487,7 +467,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                             <span className="text-sm sm:text-base font-black text-[#17221D] font-sans tracking-tight">
                               ₹{price}
                             </span>
-                            <span className="text-[10px] text-slate-400 font-medium">
+                            <span className="text-[10px] text-slate-400 font-medium font-sans">
                               /{formatPerUnitLabel(product.defaultUnit)}
                             </span>
                           </div>
