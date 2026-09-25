@@ -465,45 +465,31 @@ export function getMalayalamName(name: string): string {
   if (!name) return '';
   const trimmed = name.trim();
   
-  // Check if it's already in Malayalam script (Unicode range for Malayalam: 0D00–0D7F)
+  // 1. Check if it's already in Malayalam script (Unicode range for Malayalam: 0D00–0D7F)
   if (/[\u0D00-\u0D7F]/.test(trimmed)) {
     return trimmed;
   }
 
   const lower = trimmed.toLowerCase();
 
-  // 1. Direct exact dictionary match
+  // 2. Direct exact dictionary match
   if (MALAYALAM_PRODUCT_NAMES[lower]) {
     return MALAYALAM_PRODUCT_NAMES[lower];
   }
 
-  // 2. Clean common grocery catalog prefixes (Veg, Fresh, Country, Pure, etc.)
-  const cleanPrefix = lower
-    .replace(/^veg\s+/i, '')
-    .replace(/^fresh\s+/i, '')
-    .replace(/^crisp\s+/i, '')
+  // 3. Clean common produce catalog prefixes & weight suffixes (e.g. 'Veg Tomato 1kg', 'Fresh Onion (500g)', 'Country Potato / kg')
+  const cleanProduce = lower
+    .replace(/^(veg|fresh|crisp|local|country|pure|raw|organic|imported)\s+/i, '')
+    .replace(/\s*[\(\[]?(?:1\s*kg|2\s*kg|5\s*kg|500\s*g|250\s*g|100\s*g|kg|gm|g|ml|l|ltr|pcs|pc|bunch|pack|box|packet)[\)\]]?$/i, '')
+    .replace(/\s*\/\s*(?:kg|g|pc|packet|ltr|l|bunch)$/i, '')
     .trim();
 
-  if (MALAYALAM_PRODUCT_NAMES[cleanPrefix]) {
-    return MALAYALAM_PRODUCT_NAMES[cleanPrefix];
+  if (cleanProduce && MALAYALAM_PRODUCT_NAMES[cleanProduce]) {
+    return MALAYALAM_PRODUCT_NAMES[cleanProduce];
   }
 
-  // 3. Check compound phrases first (e.g. 'tomato sauce' matches before 'tomato')
-  for (const key of SORTED_KEYS) {
-    if (lower.includes(key)) {
-      // Safety check: if key is a raw single produce (like 'tomato' or 'banana')
-      // but the product title contains a modifier word (like 'sauce', 'chips', 'pickle', 'powder'),
-      // do NOT misclassify it as raw vegetable/fruit unless that modifier is part of the key!
-      const isRawSingleProduce = ['tomato', 'banana', 'chilli', 'onion', 'mango', 'orange', 'grape', 'strawberry', 'coconut', 'garlic', 'ginger'].includes(key);
-      if (isRawSingleProduce) {
-        const hasModifier = MODIFIER_WORDS.some((mod) => lower.includes(mod) && !key.includes(mod));
-        if (hasModifier) {
-          continue;
-        }
-      }
-      return MALAYALAM_PRODUCT_NAMES[key];
-    }
-  }
-
+  // 4. For branded, packaged, or non-dictionary products (e.g., Lays, Bingo, Pringles, Parle's, Sunsilk, etc.),
+  // preserve the original product name accurately instead of corrupting it with substring matches.
   return trimmed;
 }
+

@@ -113,7 +113,7 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
         className="relative z-10 w-full sm:max-w-md h-full sm:h-auto sm:max-h-[90vh] bg-white sm:rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-200 border border-slate-100"
       >
         {/* 1. TOP HERO IMAGE WITH FLOATING CONTROLS */}
-        <div className="relative w-full h-52 bg-[#F8FAF7] border-b border-[#E8ECE3] flex items-center justify-center p-4 shrink-0 overflow-hidden">
+        <div className="relative w-full h-52 bg-white border-b border-slate-100 flex items-center justify-center p-4 shrink-0 overflow-hidden">
           {/* Close Button */}
           <button
             type="button"
@@ -140,14 +140,14 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
           )}
 
           {/* Main Product Hero Image */}
-          <div className="w-36 h-36 flex items-center justify-center p-2 relative">
+          <div className="w-36 h-36 flex items-center justify-center p-2 relative bg-white">
             <ProductImage
               productId={product.id}
               image={product.image}
               emoji={product.emoji}
               alt={product.name}
               className="w-full h-full"
-              imgClassName="max-h-full max-w-full object-contain"
+              imgClassName="max-h-full max-w-full object-contain mix-blend-multiply"
               fallbackEmojiClassName="text-6xl"
               isOutOfStock={isOutOfStock}
               stampSize="md"

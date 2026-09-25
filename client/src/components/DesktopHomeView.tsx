@@ -227,105 +227,108 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-6 font-sans">
       
-      {/* 1. HERO BANNER: FRESH PEARL & MINT QUICK-COMMERCE WITH ADAPTIVE LIVE PREVIEW */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#EDF7F2] via-[#F5FAF7] to-[#E3F2EB] shadow-xs border border-[#CDE5D9] p-4 sm:p-6 lg:p-7 min-h-0 text-[#17221D]">
+      {/* 1. HERO BANNER: MODERN QUICK-COMMERCE WITH HARMONIOUS GRADIENTS & LIVE RATES PREVIEW */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-white via-[#F4FAF6] to-[#E6F5ED] shadow-sm border border-[#CFE7DC] p-5 sm:p-7 lg:p-8 min-h-0 text-[#17221D]">
         
-        {/* Background Subtle Ambient Glows */}
-        <div className="absolute top-0 right-1/4 w-80 h-80 bg-[#10A978]/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-8 left-8 w-64 h-64 bg-[#34D399]/10 rounded-full blur-2xl pointer-events-none" />
+        {/* Background Ambient Lighting */}
+        <div className="absolute top-0 right-1/3 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-10 left-10 w-72 h-72 bg-teal-300/10 rounded-full blur-2xl pointer-events-none" />
 
-        {/* Side-by-Side Grid Layout: Adapts cleanly so headline is NEVER squashed */}
+        {/* Side-by-Side Adaptive Grid */}
         <div className={`relative z-10 grid grid-cols-1 ${
           isRightSidebarOpen
-            ? '2xl:grid-cols-[1fr_360px]'
-            : 'xl:grid-cols-[1fr_360px]'
-        } items-center gap-6`}>
+            ? '2xl:grid-cols-[1.1fr_360px]'
+            : 'xl:grid-cols-[1.15fr_370px]'
+        } items-center gap-7`}>
           
-          {/* Left Content */}
-          <div className="space-y-3.5 min-w-0">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-white/90 border border-[#BEE3CE] rounded-full text-[11px] font-extrabold text-[#0B8F68] shadow-2xs font-malayalam">
-              <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
-              <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലകൾ</span>
+          {/* Left Content Column */}
+          <div className="space-y-4 min-w-0">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-white/95 border border-[#BDE2CE] rounded-full text-xs font-black text-[#0B8F68] shadow-xs font-malayalam">
+              <Sparkles className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
+              <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലനിലവാരം</span>
             </div>
 
-            <h1 className="text-xl sm:text-2xl lg:text-[28px] xl:text-[32px] font-black text-[#063B2A] leading-tight font-malayalam tracking-tight m-0">
-              നാട്ടിലെ കടകളിൽ നിന്ന്<br />
-              <span className="text-[#0B8F68]">നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ</span>
+            <h1 className="text-2xl sm:text-3xl lg:text-[32px] xl:text-[34px] font-black text-[#063B2A] leading-[1.25] font-padmanabha tracking-tight m-0">
+              നാട്ടിലെ കടകളിൽ നിന്ന്{' '}
+              <span className="bg-gradient-to-r from-[#0B8F68] to-[#10A978] bg-clip-text text-transparent">
+                നിങ്ങളുടെ ആവശ്യങ്ങൾ മികച്ച വിലയിൽ
+              </span>
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#465F53] font-medium leading-relaxed font-malayalam m-0 max-w-xl">
-              അടുത്തുള്ള കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
+            <p className="text-xs sm:text-sm text-[#486054] font-medium leading-relaxed font-malayalam m-0 max-w-xl">
+              നിങ്ങളുടെ അടുത്തുള്ള മികച്ച സ്റ്റോറുകളിലെ വിലകൾ തത്സമയം താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
             </p>
 
-            {/* 4 Value Pillars: Crisp white glass pills */}
-            <div className="flex items-center gap-2 text-xs font-bold text-[#143D2E] pt-1 font-malayalam flex-wrap">
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
+            {/* 4 Value Pillars: Clean interactive badges */}
+            <div className="flex items-center gap-2.5 text-xs font-bold text-[#143D2E] pt-1.5 font-malayalam flex-wrap">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#D2EADA] px-3.5 py-1.5 rounded-full shadow-xs hover:border-[#0B8F68] hover:text-[#0B8F68] transition-all cursor-default shrink-0">
                 <Store className="w-3.5 h-3.5 text-[#0B8F68]" /> പ്രാദേശിക കടകൾ
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#D2EADA] px-3.5 py-1.5 rounded-full shadow-xs hover:border-[#0B8F68] hover:text-[#0B8F68] transition-all cursor-default shrink-0">
                 <TrendingDown className="w-3.5 h-3.5 text-[#0B8F68]" /> വില താരതമ്യം
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#D2EADA] px-3.5 py-1.5 rounded-full shadow-xs hover:border-[#0B8F68] hover:text-[#0B8F68] transition-all cursor-default shrink-0">
                 <Tag className="w-3.5 h-3.5 text-[#0B8F68]" /> മികച്ച ലാഭം
               </span>
-              <span className="flex items-center gap-1.5 bg-white border border-[#D5EADB] px-3 py-1.5 rounded-full shadow-2xs hover:border-[#0B8F68]/40 transition-colors shrink-0 whitespace-nowrap">
+              <span className="flex items-center gap-1.5 bg-white/95 border border-[#D2EADA] px-3.5 py-1.5 rounded-full shadow-xs hover:border-[#0B8F68] hover:text-[#0B8F68] transition-all cursor-default shrink-0">
                 <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" /> സമീപത്തുള്ള ഷോപ്പിംഗ്
               </span>
             </div>
           </div>
 
-          {/* Right Live Price Comparison Visual Card (Shown when adequate width is available) */}
-          <div className={`w-full space-y-2 font-malayalam ${
+          {/* Right Live Price Comparison Widget */}
+          <div className={`w-full space-y-2.5 font-sans ${
             isRightSidebarOpen ? 'hidden 2xl:block' : 'hidden xl:block'
           }`}>
-            {/* Top Pill */}
-            <div className="flex items-center justify-between bg-white border border-[#CDE5D9] px-3.5 py-1.5 rounded-2xl text-[11px] font-bold text-[#063B2A] shadow-xs">
-              <span className="flex items-center gap-1.5">
-                <Store className="w-3.5 h-3.5 text-[#0B8F68]" /> സമീപത്തെ കടകളുടെ തത്സമയ നിരക്ക്
+            {/* Top Header Pill */}
+            <div className="flex items-center justify-between bg-white border border-[#CFE7DC] px-4 py-2 rounded-2xl text-xs font-bold text-[#063B2A] shadow-xs">
+              <span className="flex items-center gap-2 font-malayalam">
+                <Store className="w-4 h-4 text-[#0B8F68]" /> സമീപത്തെ കടകളിലെ നിരക്ക്
               </span>
-              <span className="bg-[#0B8F68] text-white text-[9px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider">
-                ലഭ്യം
+              <span className="inline-flex items-center gap-1 bg-[#E8F5EE] border border-[#BDE2CE] text-[#0B8F68] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-wider font-sans">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#10A978] animate-pulse" />
+                Live
               </span>
             </div>
 
             {/* Comparison Cards Stack */}
-            <div className="bg-white rounded-2xl p-3.5 shadow-md border border-[#D5EADB] text-slate-800 space-y-2">
-              {/* Comparison Item 1: Grocery / Oil */}
-              <div className="flex items-center justify-between p-2 bg-[#F8FAF9] hover:bg-[#F2F7F4] rounded-xl border border-[#E3ECE7] transition-colors">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-2xs">
-                    <img src="/categories/oils-spices.jpg" alt="Oil" className="w-full h-full object-contain rounded" />
+            <div className="bg-white rounded-2xl p-4 shadow-sm border border-[#CFE7DC] space-y-2.5">
+              {/* Item 1 */}
+              <div className="flex items-center justify-between p-2.5 bg-[#F8FAF9] hover:bg-[#F2F8F5] rounded-xl border border-[#E3ECE7] transition-all">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-xs">
+                    <img src="/categories/oils-spices.jpg" alt="Oil" className="w-full h-full object-contain rounded-lg mix-blend-multiply" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-black text-[#17221D] truncate">വെളിച്ചെണ്ണ 1L</div>
-                    <div className="text-[10px] text-[#66756E] truncate">Al-Iqwan • 1.2 km</div>
+                    <div className="text-xs font-black text-[#17221D] truncate font-malayalam">വെളിച്ചെണ്ണ 1L</div>
+                    <div className="text-[10px] text-[#66756E] truncate font-sans">Al-Iqwan • 1.2 km</div>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-xs font-black text-[#0B8F68] font-sans">₹145</div>
-                  <div className="text-[9px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-1.5 py-0.2 rounded font-sans">₹10 ലാഭം</div>
+                  <div className="text-sm font-black text-[#0B8F68] font-sans">₹145</div>
+                  <div className="text-[9.5px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-2 py-0.2 rounded-full font-sans">₹10 ലാഭം</div>
                 </div>
               </div>
 
-              {/* Comparison Item 2: Staples / Rice */}
-              <div className="flex items-center justify-between p-2 bg-[#F8FAF9] hover:bg-[#F2F7F4] rounded-xl border border-[#E3ECE7] transition-colors">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-2xs">
-                    <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded" />
+              {/* Item 2 */}
+              <div className="flex items-center justify-between p-2.5 bg-[#F8FAF9] hover:bg-[#F2F8F5] rounded-xl border border-[#E3ECE7] transition-all">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center p-1 border border-[#E3ECE7] shrink-0 shadow-xs">
+                    <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded-lg mix-blend-multiply" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-xs font-black text-[#17221D] truncate">മട്ട അരി 5kg</div>
-                    <div className="text-[10px] text-[#66756E] truncate">Malabar Store • 0.8 km</div>
+                    <div className="text-xs font-black text-[#17221D] truncate font-malayalam">മട്ട അരി 5kg</div>
+                    <div className="text-[10px] text-[#66756E] truncate font-sans">Malabar Store • 0.8 km</div>
                   </div>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-xs font-black text-[#0B8F68] font-sans">₹225</div>
-                  <div className="text-[9px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-1.5 py-0.2 rounded font-sans">₹15 ലാഭം</div>
+                  <div className="text-sm font-black text-[#0B8F68] font-sans">₹225</div>
+                  <div className="text-[9.5px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#BBE5CE] px-2 py-0.2 rounded-full font-sans">₹15 ലാഭം</div>
                 </div>
               </div>
 
-              {/* Category Ribbon */}
-              <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-bold text-[#4B6358] overflow-hidden">
+              {/* Category Quick Tags */}
+              <div className="pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-bold text-[#4B6358] overflow-hidden font-malayalam">
                 <span className="flex items-center gap-1 min-w-0">
                   <img src="/categories/grocery.jpg" alt="" className="w-3.5 h-3.5 object-contain rounded shrink-0" />
                   <span className="truncate">ഗ്രോസറി</span>

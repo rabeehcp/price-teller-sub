@@ -79,7 +79,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         try {
           const rev = await reverseGeocode(lat, lng);
           if (rev) placeName = rev;
-        } catch {}
+        } catch { }
 
         const newCoords = { lat, lng, name: placeName };
         onCustomerCoordsChanged?.(newCoords);
@@ -367,7 +367,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 
             {/* Left Column: Heading, Subtitle, Embedded Search Box & Popular Quick Tags */}
             <div className="md:col-span-7 lg:col-span-5 xl:col-span-5 space-y-3 lg:space-y-4 xl:space-y-5">
-              <h1 className="text-2xl lg:text-[36px] xl:text-[44px] font-black text-[#0B3D2D] leading-[1.18] font-malayalam tracking-tight m-0">
+              <h1 className="text-2xl lg:text-[36px] xl:text-[44px] font-black text-[#0B3D2D] leading-[1.18] font-padmanabha tracking-tight m-0">
                 ആവശ്യമായതെല്ലാം,<br />
                 <span className="text-[#063B2A]">മികച്ച വിലയിൽ കണ്ടെത്തൂ.</span>
               </h1>
@@ -515,11 +515,10 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                                   setIsLocationDropdownOpen(false);
                                   setLocationSearchQuery('');
                                 }}
-                                className={`px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 transition-colors cursor-pointer ${
-                                  isSelected
+                                className={`px-2 py-0.5 rounded-md text-[10px] font-bold shrink-0 transition-colors cursor-pointer ${isSelected
                                     ? 'bg-[#0D4A36] text-white'
                                     : 'bg-[#E8F5EE] text-[#0D4A36] hover:bg-[#D4EEDE]'
-                                }`}
+                                  }`}
                               >
                                 {loc.name}
                               </button>
@@ -551,8 +550,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                                     setLocationSearchQuery('');
                                   }}
                                   className={`w-full text-left px-2 py-1.5 rounded-lg text-xs font-bold transition-colors cursor-pointer flex items-center justify-between ${isSelected
-                                      ? 'bg-[#E8F5EE] text-[#0D4A36]'
-                                      : 'text-[#17221D] hover:bg-gray-50'
+                                    ? 'bg-[#E8F5EE] text-[#0D4A36]'
+                                    : 'text-[#17221D] hover:bg-gray-50'
                                     }`}
                                 >
                                   <div className="min-w-0 pr-1">
@@ -632,7 +631,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Top row: Left Headline & Subtitle + Right 3D Illustration */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex-1 min-w-0">
-                <h1 className="text-2xl sm:text-3xl font-black text-[#0B3D2D] leading-[1.2] font-malayalam tracking-tight m-0">
+                <h1 className="text-2xl sm:text-3xl font-black text-[#0B3D2D] leading-[1.2] font-padmanabha tracking-tight m-0">
                   ആവശ്യമായതെല്ലാം,<br />
                   <span className="text-[#063B2A]">മികച്ച വിലയിൽ കണ്ടെത്തൂ.</span>
                 </h1>

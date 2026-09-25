@@ -96,7 +96,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onError={handleImageError}
-        className={`max-w-full max-h-full transition-all duration-200 ${imgClassName} ${
+        className={`max-w-full max-h-full transition-all duration-200 mix-blend-multiply ${imgClassName} ${
           isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''
         }`}
       />

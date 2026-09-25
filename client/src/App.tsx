@@ -1538,8 +1538,8 @@ export const App: React.FC = () => {
       />
 
       {/* 2. MAIN APPLICATION WORKSPACE */}
-      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-200 ${
-        isLeftSidebarCollapsed ? 'lg:ml-16' : 'lg:ml-52 xl:ml-56 2xl:ml-64'
+      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-300 ${
+        isLeftSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-60 xl:ml-64 2xl:ml-72'
       }`}>
         
         {/* Mobile Header matching Screen 1 */}

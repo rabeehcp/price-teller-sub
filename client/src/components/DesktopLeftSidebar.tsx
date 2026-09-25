@@ -1,6 +1,6 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { Home, Store, MapPin, ShoppingBag, User as UserIcon, LogOut, ArrowRight, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Store, MapPin, ShoppingBag, User as UserIcon, ChevronLeft, ChevronRight, Sparkles, Navigation } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface DesktopLeftSidebarProps {
@@ -14,13 +14,51 @@ interface DesktopLeftSidebarProps {
   onToggleCollapse?: () => void;
 }
 
+interface NavItemConfig {
+  id: string;
+  malayalam: string;
+  english: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const NAV_ITEMS: NavItemConfig[] = [
+  {
+    id: 'home',
+    malayalam: 'ഹോം',
+    english: 'Home',
+    icon: Home,
+  },
+  {
+    id: 'shops',
+    malayalam: 'സമീപത്തെ കടകൾ',
+    english: 'Nearby Shops',
+    icon: Store,
+  },
+  {
+    id: 'map',
+    malayalam: 'മാപ്പ് എക്സ്പ്ലോറർ',
+    english: 'Live Map',
+    icon: MapPin,
+  },
+  {
+    id: 'orders',
+    malayalam: 'ഓർഡറുകൾ',
+    english: 'My Orders',
+    icon: ShoppingBag,
+  },
+  {
+    id: 'profile',
+    malayalam: 'പ്രൊഫൈൽ',
+    english: 'My Account',
+    icon: UserIcon,
+  },
+];
+
 export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
   currentTab,
   onSelectTab,
   currentLocation,
   onOpenLocationModal,
-  authUser,
-  onOpenAuthModal,
   isCollapsed = false,
   onToggleCollapse,
 }) => {
@@ -29,12 +67,16 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
   return (
     <aside
       className={`${
-        isCollapsed ? 'w-16 p-2' : 'w-52 xl:w-56 2xl:w-64 p-3 xl:p-4'
-      } bg-[#141816] text-white shrink-0 hidden lg:flex flex-col justify-between border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto transition-all duration-200`}
+        isCollapsed ? 'w-20 p-3' : 'w-60 xl:w-64 2xl:w-72 p-4'
+      } bg-[#0A130F] text-white shrink-0 hidden lg:flex flex-col justify-between border-r border-[#1B2922] shadow-2xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto transition-all duration-300`}
     >
+      {/* Top Header & Brand Area */}
       <div>
-        {/* Official Brand Logo */}
-        <div className={`px-1 py-2 mb-3 flex items-center ${isCollapsed ? 'justify-center' : 'justify-between'}`}>
+        <div
+          className={`flex items-center pb-4 mb-3 border-b border-[#17251E] ${
+            isCollapsed ? 'justify-center' : 'justify-between px-1'
+          }`}
+        >
           <EnteBazaarLogo
             size={isCollapsed ? 'sm' : 'md'}
             variant={isCollapsed ? 'icon' : 'horizontal'}
@@ -44,124 +86,106 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
           />
         </div>
 
-        {/* Navigation Menu matching Image 1 */}
-        <nav className="space-y-1.5 font-malayalam">
-          <button
-            onClick={() => onSelectTab('home')}
-            title="ഹോം (Home)"
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3.5 py-2.5'
-            } rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              currentTab === 'home'
-                ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-            }`}
-          >
-            <Home className="w-4 h-4 text-emerald-400 shrink-0" />
-            {!isCollapsed && <span>ഹോം (Home)</span>}
-          </button>
+        {/* Navigation Menu */}
+        <nav className="space-y-1.5 font-sans">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon;
+            const isActive = currentTab === item.id;
 
-          <button
-            onClick={() => onSelectTab('shops')}
-            title="സമീപത്തെ കടകൾ (Shops)"
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3.5 py-2.5'
-            } rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              currentTab === 'shops'
-                ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-            }`}
-          >
-            <Store className="w-4 h-4 text-emerald-400 shrink-0" />
-            {!isCollapsed && <span>സമീപത്തെ കടകൾ (Shops)</span>}
-          </button>
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onSelectTab(item.id)}
+                title={`${item.malayalam} (${item.english})`}
+                className={`w-full flex items-center transition-all duration-200 cursor-pointer text-left rounded-2xl ${
+                  isCollapsed
+                    ? 'justify-center p-3'
+                    : 'gap-3.5 px-3 py-2.5'
+                } ${
+                  isActive
+                    ? 'bg-gradient-to-r from-[#0B8F68] to-[#087353] text-white shadow-lg shadow-emerald-950/50 border border-emerald-500/40'
+                    : 'text-[#9AA8A1] hover:text-white hover:bg-[#14201A] border border-transparent hover:border-[#1E3128]/60'
+                }`}
+              >
+                {/* Icon Badge */}
+                <div
+                  className={`w-9 h-9 rounded-xl flex items-center justify-center shrink-0 transition-all ${
+                    isActive
+                      ? 'bg-white/20 text-white shadow-xs'
+                      : 'bg-[#121E18] text-[#71867D] group-hover:text-emerald-400 group-hover:bg-[#1A2A22]'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-emerald-400'}`} />
+                </div>
 
-          <button
-            onClick={() => onSelectTab('map')}
-            title="മാപ്പ് (Nearby Map)"
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3.5 py-2.5'
-            } rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              currentTab === 'map'
-                ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-            }`}
-          >
-            <MapPin className="w-4 h-4 text-emerald-400 shrink-0" />
-            {!isCollapsed && <span>മാപ്പ് (Nearby Map)</span>}
-          </button>
+                {/* Text Content */}
+                {!isCollapsed && (
+                  <div className="min-w-0 flex-1 flex flex-col justify-center">
+                    <span
+                      className={`text-[13px] leading-snug tracking-tight font-malayalam truncate ${
+                        isActive ? 'font-black text-white' : 'font-bold text-[#D3DFD9]'
+                      }`}
+                    >
+                      {item.malayalam}
+                    </span>
+                    <span
+                      className={`text-[10px] leading-tight font-medium font-sans truncate ${
+                        isActive ? 'text-emerald-100/90' : 'text-[#6E8278]'
+                      }`}
+                    >
+                      {item.english}
+                    </span>
+                  </div>
+                )}
 
-          <button
-            onClick={() => onSelectTab('orders')}
-            title="ഓർഡറുകൾ (Orders)"
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3.5 py-2.5'
-            } rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              currentTab === 'orders'
-                ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-            }`}
-          >
-            <ShoppingBag className="w-4 h-4 text-emerald-400 shrink-0" />
-            {!isCollapsed && <span>ഓർഡറുകൾ (Orders)</span>}
-          </button>
-
-          <button
-            onClick={() => onSelectTab('profile')}
-            title="പ്രൊഫൈൽ (Profile)"
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center px-2 py-2.5' : 'gap-3 px-3.5 py-2.5'
-            } rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-              currentTab === 'profile'
-                ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-            }`}
-          >
-            <UserIcon className="w-4 h-4 text-emerald-400 shrink-0" />
-            {!isCollapsed && <span>പ്രൊഫൈൽ (Profile)</span>}
-          </button>
+                {/* Active Dot Indicator */}
+                {!isCollapsed && isActive && (
+                  <div className="w-1.5 h-1.5 rounded-full bg-white shadow-xs shrink-0 mr-1" />
+                )}
+              </button>
+            );
+          })}
         </nav>
       </div>
 
-      {/* Bottom Area: Location Selector Pill & Collapse Toggle */}
-      <div className="space-y-2 pt-3 border-t border-[#242A27]">
-        {/* Location Selector */}
+      {/* Bottom Area: Location Hub Card, Collapse Toggle & Brand Promise */}
+      <div className="space-y-2.5 pt-3 border-t border-[#17251E]">
+        {/* Location Selector Card */}
         {isCollapsed ? (
           <button
             type="button"
             onClick={onOpenLocationModal}
-            className="w-full flex items-center justify-center p-2.5 bg-[#1D2220] hover:bg-[#242A27] border border-[#2F3733] rounded-xl text-white cursor-pointer transition-all"
-            title={`ലോക്കേഷൻ: ${locationName} (ക്ലിക്ക് ചെയ്ത് മാറ്റുക)`}
+            className="w-full flex items-center justify-center p-3 bg-[#121E18] hover:bg-[#182821] border border-[#1E3027] hover:border-emerald-500/40 rounded-2xl text-white cursor-pointer transition-all shadow-xs"
+            title={`ഡെലിവറി ഹബ്ബ്: ${locationName} (മാറ്റാൻ ക്ലിക്ക് ചെയ്യുക)`}
           >
             <MapPin className="w-4 h-4 text-emerald-400" />
           </button>
         ) : (
           <div
             onClick={onOpenLocationModal}
-            className="p-2.5 xl:p-3 bg-[#1D2220] hover:bg-[#242A27] border border-[#2F3733] rounded-2xl flex items-center justify-between gap-2 cursor-pointer transition-all group"
-            title="സ്ഥലം മാറ്റുക (Change Location)"
+            className="p-3 bg-[#121E18] hover:bg-[#172620] border border-[#1E3027] hover:border-emerald-500/40 rounded-2xl transition-all cursor-pointer shadow-xs group"
+            title="ഡെലിവറി സ്ഥലം മാറ്റുക"
           >
-            <div className="flex items-center gap-2 min-w-0">
-              <div className="w-7 h-7 rounded-lg bg-[#10A978] text-[#141816] flex items-center justify-center shrink-0">
-                <MapPin className="w-3.5 h-3.5 text-[#141816]" />
-              </div>
-              <div className="min-w-0">
-                <div className="text-[10px] text-[#8F9F97] uppercase tracking-wider font-bold">ലോക്കേഷൻ</div>
-                <div className="text-xs font-black text-white truncate font-malayalam">
-                  {locationName}
+            <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center shrink-0">
+                  <Navigation className="w-3.5 h-3.5 text-emerald-400" />
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[9.5px] uppercase font-bold text-[#71867D] tracking-wider block">
+                    ഡെലിവറി ഹബ്ബ്
+                  </span>
+                  <span className="text-xs font-black text-white truncate block font-sans">
+                    {locationName}
+                  </span>
                 </div>
               </div>
+
+              <span className="px-2 py-1 bg-[#1A2C23] group-hover:bg-[#0B8F68] text-[#9AA8A1] group-hover:text-white border border-[#273F32] group-hover:border-emerald-500/50 rounded-lg text-[10px] font-bold font-malayalam transition-all shrink-0">
+                മാറ്റുക
+              </span>
             </div>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                onOpenLocationModal();
-              }}
-              className="px-2 py-1 bg-[#10A978] hover:bg-[#0B8F68] text-[#141816] hover:text-white rounded-lg text-[10px] font-black font-malayalam transition-all cursor-pointer shrink-0"
-            >
-              മാറ്റുക
-            </button>
           </div>
         )}
 
@@ -171,11 +195,11 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
             type="button"
             onClick={onToggleCollapse}
             className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center p-2' : 'justify-between px-3 py-1.5'
-            } rounded-xl bg-[#181E1B] hover:bg-[#222A26] text-[#8F9F97] hover:text-white transition-all cursor-pointer font-malayalam border border-[#27322D]`}
-            title={isCollapsed ? 'വികസിപ്പിക്കുക (Expand sidebar)' : 'സൈഡ്‌ബാർ ചുരുക്കുക (Collapse sidebar)'}
+              isCollapsed ? 'justify-center p-2.5' : 'justify-between px-3.5 py-2'
+            } rounded-xl bg-[#0E1813] hover:bg-[#15231C] text-[#71867D] hover:text-white transition-all cursor-pointer font-malayalam border border-[#1B2C23]`}
+            title={isCollapsed ? 'സൈഡ്‌ബാർ വികസിപ്പിക്കുക' : 'സൈഡ്‌ബാർ ചുരുക്കുക'}
           >
-            {!isCollapsed && <span className="text-[11px] font-semibold">ചുരുക്കുക</span>}
+            {!isCollapsed && <span className="text-[11px] font-semibold">ചുരുക്കുക (Collapse)</span>}
             {isCollapsed ? (
               <ChevronRight className="w-4 h-4 text-emerald-400" />
             ) : (
@@ -184,11 +208,12 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = ({
           </button>
         )}
 
-        {/* Brand Promise Footer matching Image 1 */}
+        {/* Clean Brand Guarantee Tagline */}
         {!isCollapsed && (
-          <div className="px-2 py-1.5 bg-black/25 rounded-xl text-center border border-[#242A27]/50">
-            <div className="text-[10px] font-bold text-[#A2B1A9] font-malayalam leading-tight">
-              നാടിന്റെ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ കൈകളിൽ
+          <div className="px-2.5 py-2 bg-[#08100C] rounded-xl text-center border border-[#15231B]">
+            <div className="text-[10px] font-bold text-[#7A9084] font-malayalam leading-tight flex items-center justify-center gap-1.5">
+              <span>🌱</span>
+              <span>നാടിന്റെ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ കൈകളിൽ</span>
             </div>
           </div>
         )}

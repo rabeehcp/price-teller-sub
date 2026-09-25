@@ -88,11 +88,14 @@ export default {
         }
       },
       fontFamily: {
+        padmanabha: ['"FML-Padmanabha"', '"Noto Sans Malayalam"', 'sans-serif'],
         sans: ['"Inter"', '"Noto Sans Malayalam"', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         malayalam: ['"Inter"', '"Noto Sans Malayalam"', 'sans-serif'],
-        'malayalam-heading': ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
-        ui: ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
-        heading: ['"Inter"', '"Anek Malayalam"', 'sans-serif'],
+        'malayalam-heading': ['"Inter"', '"Anek Malayalam"', '"Noto Sans Malayalam"', 'sans-serif'],
+        ui: ['"Inter"', '"Noto Sans Malayalam"', 'sans-serif'],
+        heading: ['"Inter"', '"Anek Malayalam"', '"Noto Sans Malayalam"', 'sans-serif'],
+        price: ['"Inter"', 'sans-serif'],
+        num: ['"Inter"', 'sans-serif'],
       },
       boxShadow: {
         '2xs': '0 1px 2px rgba(6, 59, 42, 0.03)',
