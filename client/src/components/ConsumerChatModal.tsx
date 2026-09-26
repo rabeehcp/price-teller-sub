@@ -99,6 +99,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
 
   // Voice State
   const [isListening, setIsListening] = useState(false);
+  const [isVoiceRecordingActive, setIsVoiceRecordingActive] = useState(false);
   const [voiceLanguage, setVoiceLanguage] = useState<'ml-IN' | 'en-IN'>('ml-IN');
   const [voiceError, setVoiceError] = useState<string | null>(null);
   const [speakingMsgId, setSpeakingMsgId] = useState<string | null>(null);
@@ -804,77 +805,86 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
           )}
 
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                  e.preventDefault();
-                  handleSendMessage();
-                }
-              }}
-              placeholder={
-                isListening
-                  ? voiceLanguage === 'ml-IN'
-                    ? 'സംസാരിക്കൂ... വാക്കുകൾ ഇവിടെ വരും'
-                    : 'Listening... speak now'
-                  : `Ask ${selectedShopName} in Malayalam or English...`
-              }
-              className={`flex-1 bg-gray-50 border ${
-                isListening
-                  ? 'border-emerald-500 ring-2 ring-emerald-100 bg-white'
-                  : 'border-gray-300 focus:border-brand-500 focus:bg-white'
-              } rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-dark outline-none transition-all`}
-              disabled={isSending}
-            />
+            {/* Sibling Text Input & Dictation Mic (Hidden when Voice Note Recorder is active) */}
+            {!isVoiceRecordingActive && (
+              <>
+                <input
+                  type="text"
+                  value={inputText}
+                  onChange={(e) => setInputText(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }
+                  }}
+                  placeholder={
+                    isListening
+                      ? voiceLanguage === 'ml-IN'
+                        ? 'സംസാരിക്കൂ... വാക്കുകൾ ഇവിടെ വരും'
+                        : 'Listening... speak now'
+                      : `Ask ${selectedShopName} in Malayalam or English...`
+                  }
+                  className={`flex-1 bg-gray-50 border ${
+                    isListening
+                      ? 'border-emerald-500 ring-2 ring-emerald-100 bg-white'
+                      : 'border-gray-300 focus:border-brand-500 focus:bg-white'
+                  } rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-dark outline-none transition-all`}
+                  disabled={isSending}
+                />
 
-            {/* Voice Dictation (Speech to text) */}
-            <button
-              type="button"
-              onClick={toggleListening}
-              className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 min-w-[42px] min-h-[42px] ${
-                isListening
-                  ? 'bg-red-600 text-white shadow-md shadow-red-200 ring-4 ring-red-100 animate-pulse'
-                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 hover:border-emerald-300 active:scale-95'
-              }`}
-              title={
-                isListening
-                  ? 'മൈക്ക് നിർത്തുക (Stop Voice)'
-                  : `വോയ്സ് ടൈപ്പിംഗ് (${voiceLanguage === 'ml-IN' ? 'മലയാളം' : 'English'})`
-              }
-            >
-              {isListening ? (
-                <MicOff className="w-4 h-4" />
-              ) : (
-                <Mic className="w-4 h-4" />
-              )}
-            </button>
+                {/* Voice Dictation (Speech to text) */}
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 min-w-[42px] min-h-[42px] ${
+                    isListening
+                      ? 'bg-red-600 text-white shadow-md shadow-red-200 ring-4 ring-red-100 animate-pulse'
+                      : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 hover:border-emerald-300 active:scale-95'
+                  }`}
+                  title={
+                    isListening
+                      ? 'മൈക്ക് നിർത്തുക (Stop Voice)'
+                      : `വോയ്സ് ടൈപ്പിംഗ് (${voiceLanguage === 'ml-IN' ? 'മലയാളം' : 'English'})`
+                  }
+                >
+                  {isListening ? (
+                    <MicOff className="w-4 h-4" />
+                  ) : (
+                    <Mic className="w-4 h-4" />
+                  )}
+                </button>
+              </>
+            )}
 
-            {/* Voice Note Audio Recording */}
+            {/* Persistent Voice Note Audio Recorder (expands to full width when active) */}
             <VoiceMessageRecorder
               onSendVoice={async (audioUrl, duration) => {
                 await handleSendMessage('', undefined, audioUrl, duration);
               }}
+              onActiveChange={setIsVoiceRecordingActive}
               disabled={isSending}
               theme="consumer"
             />
 
-            {/* Send Button */}
-            <button
-              onClick={() => handleSendMessage()}
-              disabled={!inputText.trim() || isSending}
-              className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white p-2.5 sm:px-5 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0 min-w-[42px] min-h-[42px] active:scale-95"
-            >
-              {isSending ? (
-                <RefreshCw className="w-4 h-4 animate-spin" />
-              ) : (
-                <>
-                  <Send className="w-4 h-4" />
-                  <span className="hidden sm:inline">Send</span>
-                </>
-              )}
-            </button>
+            {/* Sibling Send Button (Hidden when Voice Note Recorder is active) */}
+            {!isVoiceRecordingActive && (
+              <button
+                type="button"
+                onClick={() => handleSendMessage()}
+                disabled={!inputText.trim() || isSending}
+                className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white p-2.5 sm:px-5 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0 min-w-[42px] min-h-[42px] active:scale-95"
+              >
+                {isSending ? (
+                  <RefreshCw className="w-4 h-4 animate-spin" />
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" />
+                    <span className="hidden sm:inline">Send</span>
+                  </>
+                )}
+              </button>
+            )}
           </div>
         </div>
       </div>

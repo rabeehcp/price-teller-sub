@@ -194,6 +194,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   }, [selectedConversation?.id]);
   const [conversationMessages, setConversationMessages] = useState<ChatMessage[]>([]);
   const [replyText, setReplyText] = useState('');
+  const [isMerchantVoiceActive, setIsMerchantVoiceActive] = useState(false);
   const [isSendingReply, setIsSendingReply] = useState(false);
   const [isLoadingMessages, setIsLoadingMessages] = useState(false);
   const merchantChatEndRef = useRef<HTMLDivElement>(null);
@@ -3677,44 +3678,52 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                     {/* Reply Input Bar */}
                     <div className="p-3 bg-white border-t border-gray-200 flex items-center gap-2 shrink-0">
-                      <input
-                        type="text"
-                        value={replyText}
-                        onChange={(e) => setReplyText(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            handleSendMerchantReply();
-                          }
-                        }}
-                        placeholder={`Reply to ${selectedConversation.consumerName || 'Shopper'}...`}
-                        className="flex-1 bg-gray-50 border border-gray-300 focus:border-brand-500 focus:bg-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-dark outline-none transition-all"
-                        disabled={isSendingReply}
-                      />
+                      {/* Sibling Text Reply Input (Hidden when Voice Recording is active) */}
+                      {!isMerchantVoiceActive && (
+                        <input
+                          type="text"
+                          value={replyText}
+                          onChange={(e) => setReplyText(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                              e.preventDefault();
+                              handleSendMerchantReply();
+                            }
+                          }}
+                          placeholder={`Reply to ${selectedConversation.consumerName || 'Shopper'}...`}
+                          className="flex-1 bg-gray-50 border border-gray-300 focus:border-brand-500 focus:bg-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-dark outline-none transition-all"
+                          disabled={isSendingReply}
+                        />
+                      )}
 
-                      {/* Voice Note Recording for Merchant */}
+                      {/* Persistent Voice Note Recording for Merchant */}
                       <VoiceMessageRecorder
                         onSendVoice={async (audioUrl, duration) => {
                           await handleSendMerchantReply('', undefined, audioUrl, duration);
                         }}
+                        onActiveChange={setIsMerchantVoiceActive}
                         disabled={isSendingReply}
                         theme="merchant"
                       />
 
-                      <button
-                        onClick={() => handleSendMerchantReply()}
-                        disabled={!replyText.trim() || isSendingReply}
-                        className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0"
-                      >
-                        {isSendingReply ? (
-                          <RefreshCw className="w-4 h-4 animate-spin" />
-                        ) : (
-                          <>
-                            <Send className="w-3.5 h-3.5" />
-                            <span>Reply</span>
-                          </>
-                        )}
-                      </button>
+                      {/* Sibling Send Reply Button (Hidden when Voice Recording is active) */}
+                      {!isMerchantVoiceActive && (
+                        <button
+                          type="button"
+                          onClick={() => handleSendMerchantReply()}
+                          disabled={!replyText.trim() || isSendingReply}
+                          className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white px-4 py-2.5 rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0"
+                        >
+                          {isSendingReply ? (
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <>
+                              <Send className="w-3.5 h-3.5" />
+                              <span>Reply</span>
+                            </>
+                          )}
+                        </button>
+                      )}
                     </div>
                   </>
                 ) : (

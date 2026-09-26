@@ -15,7 +15,7 @@ interface ProductImageProps {
   stampSize?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 }
 
-function resolveProductImageSrc(image?: string): string | null {
+function resolveProductImageSrc(image?: string, productId?: string, alt?: string): string | null {
   if (!image || !image.trim()) return null;
   let trimmed = image.trim();
   // Filter out any legacy local relative /products/ paths that do not exist on the server
@@ -33,12 +33,26 @@ function resolveProductImageSrc(image?: string): string | null {
     return trimmed;
   }
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    // If it's already an ImageKit CDN URL, return directly for maximum speed and zero proxy latency
+    if (trimmed.includes('ik.imagekit.io')) {
+      return trimmed;
+    }
     return getProxiedImageUrl(trimmed);
   }
+
+  // Safeguard: Never show banana fallback image for products that are not bananas
+  if (trimmed.includes('test-banana-green')) {
+    const text = `${productId || ''} ${alt || ''}`.toLowerCase();
+    const isBanana = text.includes('banana') || text.includes('വാഴ') || text.includes('പഴം') || text.includes('നേന്ത്ര') || text.includes('റോബസ്റ്റ') || text.includes('chips');
+    if (!isBanana) {
+      return null;
+    }
+  }
+
   return trimmed;
 }
 
-export const ProductImage: React.FC<ProductImageProps> = ({
+export const ProductImage: React.FC<ProductImageProps> = React.memo(({
   productId,
   image,
   emoji = '📦',
@@ -50,30 +64,16 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   isOutOfStock = false,
   stampSize,
 }) => {
-  const [currentSrc, setCurrentSrc] = useState<string | null>(null);
   const [hasError, setHasError] = useState(false);
 
-  // Re-resolve source whenever image prop changes
-  useEffect(() => {
-    setHasError(false);
-    let initial = resolveProductImageSrc(image);
+  // Compute image URL synchronously during render (avoids thousands of useEffect hook triggers)
+  const currentSrc = React.useMemo(() => {
+    return resolveProductImageSrc(image, productId, alt);
+  }, [image, productId, alt]);
 
-    // Safeguard: Never show banana fallback image for products that are not bananas
-    if (initial && initial.includes('test-banana-green')) {
-      const text = `${productId || ''} ${alt || ''}`.toLowerCase();
-      const isBanana = text.includes('banana') || text.includes('വാഴ') || text.includes('പഴം') || text.includes('നേന്ത്ര') || text.includes('റോബസ്റ്റ') || text.includes('chips');
-      if (!isBanana) {
-        initial = null;
-      }
-    }
-
-    setCurrentSrc(initial);
-  }, [image, alt, productId]);
-
-  const handleImageError = () => {
-    // If proxied image still fails (e.g. broken or invalid remote link), fallback cleanly to emoji
+  const handleImageError = React.useCallback(() => {
     setHasError(true);
-  };
+  }, []);
 
   if (!currentSrc || hasError) {
     return (
@@ -96,15 +96,14 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onError={handleImageError}
-        className={`max-w-full max-h-full transition-all duration-200 mix-blend-multiply ${imgClassName} ${isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''
-          }`}
+        className={`max-w-full max-h-full transition-all duration-200 mix-blend-multiply ${imgClassName} ${isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''}`}
       />
       {isOutOfStock && (
         <OutOfStockStamp isOverlay size={stampSize || 'sm'} />
       )}
     </div>
   );
-};
+});
 
 
 

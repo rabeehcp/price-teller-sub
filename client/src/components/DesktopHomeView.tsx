@@ -47,6 +47,169 @@ interface DesktopHomeViewProps {
   isRightSidebarOpen?: boolean;
 }
 
+interface DesktopProductCardProps {
+  product: Product;
+  isFav: boolean;
+  qty: number;
+  shopInfo?: Shop;
+  lowestShopName: string;
+  onToggleFavorite: (product: Product) => void;
+  onSelectProductForDetail: (product: Product) => void;
+  onQuantityChange: (productId: string, delta: number) => void;
+  onAddToBasket: (product: Product, unit?: string) => void;
+}
+
+const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
+  product,
+  isFav,
+  qty,
+  shopInfo,
+  lowestShopName,
+  onToggleFavorite,
+  onSelectProductForDetail,
+  onQuantityChange,
+  onAddToBasket,
+}) => {
+  const priceValues = Object.values(product.prices || {}).filter((p) => typeof p === 'number' && p > 0);
+  const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
+
+  const isOutOfStock = Boolean(
+    product.stockStatus &&
+    Object.values(product.stockStatus).length > 0 &&
+    Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
+  );
+
+  return (
+    <div
+      onClick={() => onSelectProductForDetail(product)}
+      className={`bg-white border rounded-2xl p-3 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative ${
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7] hover:border-[#0B8F68]/40'
+      }`}
+    >
+      {/* Top: Distance / Shop Pill & Wishlist Button */}
+      <div className="flex items-center justify-between gap-1 mb-1">
+        <span className="text-[10px] font-bold text-[#063B2A] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[130px] font-malayalam">
+          {shopInfo?.name || lowestShopName}
+        </span>
+
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(product);
+          }}
+          className="text-slate-400 hover:text-[#E11D48] p-1 rounded-full hover:bg-slate-50 transition-colors cursor-pointer"
+          title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
+        >
+          <Heart
+            className={`w-3.5 h-3.5 transition-colors ${
+              isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-400'
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Product Thumbnail */}
+      <div className="w-full h-28 flex items-center justify-center p-2 my-1 relative">
+        <ProductImage
+          productId={product.id}
+          image={product.image}
+          emoji={product.emoji}
+          alt={getMalayalamName(product.name)}
+          className="w-full h-full"
+          imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+          fallbackEmojiClassName="text-4xl"
+          isOutOfStock={isOutOfStock}
+          stampSize="sm"
+        />
+      </div>
+
+      {/* Middle Info: Name, Price, Rating */}
+      <div className="space-y-1 pt-1">
+        <div className="flex items-center gap-1">
+          <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
+            {getMalayalamName(product.name)}
+          </h3>
+          {isOutOfStock && (
+            <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
+              OUT
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-baseline gap-1">
+          <span className="text-sm font-black text-[#17221D] font-sans">
+            {price > 0 ? `₹${price}` : 'ലഭ്യമല്ല'}
+          </span>
+          {price > 0 && (
+            <span className="text-[10px] text-slate-500 font-sans whitespace-nowrap">
+              /{formatPerUnitLabel(product.defaultUnit)}
+            </span>
+          )}
+        </div>
+
+        {/* Star Rating & Reviews */}
+        <div className="flex items-center gap-1 text-[10px] text-slate-500 font-sans">
+          <div className="flex items-center text-amber-500">
+            <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+            <span className="font-bold ml-0.5">4.5</span>
+          </div>
+          <span>(120)</span>
+        </div>
+
+        {/* Shop Location */}
+        <div className="flex items-center gap-1 text-[10px] text-[#8F9F97] font-malayalam pt-0.5 truncate">
+          <span className="font-bold text-[#4D6158] truncate">
+            {lowestShopName}
+          </span>
+          <span>•</span>
+          <span>1.2 km</span>
+        </div>
+      </div>
+
+      {/* Bottom: Add to Basket / Stepper or Out of Stock State */}
+      <div className="pt-2.5" onClick={(e) => e.stopPropagation()}>
+        {isOutOfStock || price <= 0 ? (
+          <button
+            type="button"
+            disabled
+            className="w-full py-1.5 px-3 bg-slate-100 border border-slate-200 text-slate-400 text-[11px] font-black rounded-xl select-none flex items-center justify-center gap-1 font-malayalam cursor-not-allowed"
+          >
+            <span>{isOutOfStock ? '🚫 സ്റ്റോക്കില്ല' : '🚫 ലഭ്യമല്ല'}</span>
+          </button>
+        ) : qty > 0 ? (
+          <div className="flex items-center justify-between bg-[#063B2A] text-white rounded-xl p-1 shadow-xs">
+            <button
+              type="button"
+              onClick={() => onQuantityChange(product.id, -1)}
+              className="w-6 h-6 flex items-center justify-center hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+            >
+              <Minus className="w-3 h-3" />
+            </button>
+            <span className="text-xs font-black font-sans">{qty}</span>
+            <button
+              type="button"
+              onClick={() => onQuantityChange(product.id, 1)}
+              className="w-6 h-6 flex items-center justify-center hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
+            >
+              <Plus className="w-3 h-3" />
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onAddToBasket(product, product.defaultUnit)}
+            className="w-full py-1.5 px-3 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-95 text-white text-[11px] font-black rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 font-malayalam cursor-pointer"
+          >
+            <ShoppingBag className="w-3.5 h-3.5" />
+            <span>കാർട്ടിൽ ചേർക്കുക</span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+});
+
 export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   products,
   shops,
@@ -129,6 +292,21 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
     },
   ];
 
+  // Pre-calculated priority rank helper for 60fps instant sorting
+  const getProductRank = (name: string): number => {
+    const lower = name.toLowerCase();
+    const priorityNames = [
+      'തക്കാളി', 'tomato', 'സവാള', 'onion', 'ഉരുളക്കിഴങ്ങ്', 'potato',
+      'പച്ചമുളക്', 'green chilli', 'ഇഞ്ചി', 'ginger', 'വെളുത്തുള്ളി', 'garlic',
+      'വാഴപ്പഴം', 'banana', 'ആപ്പിൾ', 'apple', 'ഓറഞ്ച്', 'orange', 'മുന്തിരി', 'grapes',
+      'തേങ്ങ', 'coconut', 'കാരറ്റ്', 'carrot', 'പാൽ', 'milk', 'വെളിച്ചെണ്ണ', 'oil', 'അരി', 'rice'
+    ];
+    for (let i = 0; i < priorityNames.length; i++) {
+      if (lower.includes(priorityNames[i])) return i;
+    }
+    return 999;
+  };
+
   // Displayed products with robust category alias matching and Kerala market priority
   const displayedProducts = useMemo(() => {
     let filtered = products;
@@ -158,32 +336,52 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       filtered = products.filter((p) => targetCats.includes(p.categoryId));
     }
 
-    // Natural Kerala market priority: daily fresh groceries first (tomatoes, onions, potatoes, banana, milk, etc.)
-    const priorityNames = [
-      'തക്കാളി', 'tomato', 'സവാള', 'onion', 'ഉരുളക്കിഴങ്ങ്', 'potato',
-      'പച്ചമുളക്', 'green chilli', 'ഇഞ്ചി', 'ginger', 'വെളുത്തുള്ളി', 'garlic',
-      'വാഴപ്പഴം', 'banana', 'ആപ്പിൾ', 'apple', 'ഓറഞ്ച്', 'orange', 'മുന്തിരി', 'grapes',
-      'തേങ്ങ', 'coconut', 'കാരറ്റ്', 'carrot', 'പാൽ', 'milk', 'വെളിച്ചെണ്ണ', 'oil', 'അരി', 'rice'
-    ];
-
     return [...filtered].sort((a, b) => {
       const aName = a.name.toLowerCase();
       const bName = b.name.toLowerCase();
 
-      // Ensure packaged junk snacks don't precede fresh daily groceries/vegetables
+      // Ensure packaged snacks don't precede fresh groceries
       const aIsSnack = aName.includes('sauce') || aName.includes('ketchup') || aName.includes('chips') || aName.includes('tangles') || aName.includes('mad angles');
       const bIsSnack = bName.includes('sauce') || bName.includes('ketchup') || bName.includes('chips') || bName.includes('tangles') || bName.includes('mad angles');
       if (aIsSnack && !bIsSnack) return 1;
       if (!aIsSnack && bIsSnack) return -1;
 
-      const aIndex = priorityNames.findIndex((n) => aName.includes(n));
-      const bIndex = priorityNames.findIndex((n) => bName.includes(n));
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
+      const aRank = getProductRank(aName);
+      const bRank = getProductRank(bName);
+      if (aRank !== bRank) return aRank - bRank;
       return aName.localeCompare(bName);
     });
   }, [products, searchQuery, selectedCategoryId]);
+
+  // Progressive batch rendering to keep DOM lightweight and navigation instantaneous
+  const [visibleCount, setVisibleCount] = useState<number>(36);
+
+  React.useEffect(() => {
+    setVisibleCount(36);
+  }, [searchQuery, selectedCategoryId]);
+
+  const visibleProducts = useMemo(() => {
+    return displayedProducts.slice(0, visibleCount);
+  }, [displayedProducts, visibleCount]);
+
+  // Fast O(1) quantity & favorite lookups
+  const basketQuantityMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const item of basket) {
+      map[item.productId] = item.quantity;
+    }
+    return map;
+  }, [basket]);
+
+  const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
+
+  const shopMap = useMemo(() => {
+    const map = new Map<string, Shop>();
+    for (const s of shops) {
+      map.set(s.name.toLowerCase(), s);
+    }
+    return map;
+  }, [shops]);
 
   // Special Offers data matching Image 1 (All powered by ImageKit CDN)
   const specialOffers = [
@@ -225,10 +423,10 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   const totalBasketCount = basket.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
-    <div className="space-y-6 font-sans">
+    <div className="space-y-4 md:space-y-4.5 lg:space-y-6 font-sans">
 
       {/* 1. HERO BANNER: KERALA MARKETPLACE WITH RESPONSIVE BACKGROUND ARTWORK */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#EEDBBE] shadow-xs border border-[#DFCEB7] p-4 sm:p-5 md:p-6 lg:p-7 min-h-[220px] sm:min-h-[250px] md:min-h-[270px] lg:min-h-[290px] text-[#2A241C] flex flex-col justify-center">
+      <div className="relative overflow-hidden rounded-3xl bg-[#EEDBBE] shadow-xs border border-[#DFCEB7] p-4 sm:p-4.5 md:p-5 lg:p-6 xl:p-7 min-h-[180px] sm:min-h-[200px] md:min-h-[220px] lg:min-h-[260px] text-[#2A241C] flex flex-col justify-center">
 
         {/* Responsive Multi-Breakpoint Background Artwork */}
         <picture className="absolute inset-0 w-full h-full pointer-events-none">
@@ -248,15 +446,15 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-[#2A180E]/25 via-transparent to-[#2A180E]/20 pointer-events-none" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent pointer-events-none" />
 
-        {/* Side-by-Side Adaptive Grid */}
-        <div className={`relative z-10 grid grid-cols-1 ${
+        {/* Side-by-Side Adaptive Grid / Centered on Tablet & Smaller Screens */}
+        <div className={`relative z-10 w-full grid grid-cols-1 ${
           isRightSidebarOpen
             ? 'xl:grid-cols-[1.15fr_310px] 2xl:grid-cols-[1.25fr_340px]'
             : 'lg:grid-cols-[1.15fr_310px] xl:grid-cols-[1.2fr_330px] 2xl:grid-cols-[1.3fr_350px]'
-        } items-center gap-5`}>
+        } items-center justify-center gap-5`}>
 
           {/* Left Content Column: Solid Clean Warm Card */}
-          <div className="bg-[#DED8CF] rounded-3xl p-5 sm:p-6 shadow-sm border border-[#CEBEAC] space-y-3.5 min-w-0 max-w-xl lg:max-w-none transition-all">
+          <div className="bg-[#DED8CF] rounded-3xl p-5 sm:p-6 shadow-sm border border-[#CEBEAC] space-y-3.5 min-w-0 max-w-xl lg:max-w-none mx-auto lg:mx-0 transition-all">
             <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#D0C5B4]/60 border border-[#BEB09C] rounded-full text-xs font-bold text-[#7C3A20] shadow-2xs font-malayalam">
               <Sparkles className="w-3.5 h-3.5 text-[#BC681D] shrink-0" />
               <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലനിലവാരം</span>
@@ -488,154 +686,43 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 </button>
               </div>
             ) : (
-              displayedProducts.map((product) => {
-                const isFav = favorites.includes(product.id);
-                const priceValues = Object.values(product.prices || {}).filter(p => typeof p === 'number' && p > 0);
-                const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
-                const basketItem = basket.find((b) => b.productId === product.id);
-                const qty = basketItem ? basketItem.quantity : 0;
-
+              visibleProducts.map((product) => {
+                const isFav = favoriteSet.has(product.id);
+                const qty = basketQuantityMap[product.id] || 0;
                 const cheapestShopEntry = Object.entries(product.prices || {}).sort((a, b) => a[1] - b[1])[0];
                 const lowestShopName = cheapestShopEntry ? cheapestShopEntry[0] : 'കുടുംബശ്രീ സ്റ്റാൾ';
-                const shopInfo = shops.find((s) => s.name.toLowerCase() === lowestShopName.toLowerCase());
-
-                const isOutOfStock = Boolean(
-                  product.stockStatus &&
-                  Object.values(product.stockStatus).length > 0 &&
-                  Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
-                );
+                const shopInfo = shopMap.get(lowestShopName.toLowerCase());
 
                 return (
-                  <div
+                  <DesktopProductCard
                     key={product.id}
-                    onClick={() => onSelectProductForDetail(product)}
-                    className={`bg-white border rounded-2xl p-3 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative ${isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7] hover:border-[#0B8F68]/40'
-                      }`}
-                  >
-                    {/* Top: Distance / Shop Pill & Wishlist Button */}
-                    <div className="flex items-center justify-between gap-1 mb-1">
-                      <span className="text-[10px] font-bold text-[#063B2A] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[130px] font-malayalam">
-                        {shopInfo?.name || lowestShopName}
-                      </span>
-
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleFavorite(product);
-                        }}
-                        className="text-slate-400 hover:text-[#E11D48] p-1 rounded-full hover:bg-slate-50 transition-colors cursor-pointer"
-                        title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
-                      >
-                        <Heart
-                          className={`w-3.5 h-3.5 transition-colors ${isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-400'
-                            }`}
-                        />
-                      </button>
-                    </div>
-
-                    {/* Product Thumbnail */}
-                    <div className="w-full h-28 flex items-center justify-center p-2 my-1 relative">
-                      <ProductImage
-                        productId={product.id}
-                        image={product.image}
-                        emoji={product.emoji}
-                        alt={getMalayalamName(product.name)}
-                        className="w-full h-full"
-                        imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
-                        fallbackEmojiClassName="text-4xl"
-                        isOutOfStock={isOutOfStock}
-                        stampSize="sm"
-                      />
-                    </div>
-
-                    {/* Middle Info: Name, Price, Rating */}
-                    <div className="space-y-1 pt-1">
-                      <div className="flex items-center gap-1">
-                        <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
-                          {getMalayalamName(product.name)}
-                        </h3>
-                        {isOutOfStock && (
-                          <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
-                            OUT
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-sm font-black text-[#17221D] font-sans">
-                          {price > 0 ? `₹${price}` : 'ലഭ്യമല്ല'}
-                        </span>
-                        {price > 0 && (
-                          <span className="text-[10px] text-slate-500 font-sans">
-                            /{formatPerUnitLabel(product.defaultUnit)}
-                          </span>
-                        )}
-                      </div>
-
-                      {/* Star Rating & Reviews */}
-                      <div className="flex items-center gap-1 text-[10px] text-slate-500 font-sans">
-                        <div className="flex items-center text-amber-500">
-                          <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
-                          <span className="font-bold ml-0.5">4.5</span>
-                        </div>
-                        <span>(120)</span>
-                      </div>
-
-                      {/* Shop Location */}
-                      <div className="flex items-center gap-1 text-[10px] text-[#8F9F97] font-malayalam pt-0.5 truncate">
-                        <span className="font-bold text-[#4D6158] truncate">
-                          {lowestShopName}
-                        </span>
-                        <span>•</span>
-                        <span>1.2 km</span>
-                      </div>
-                    </div>
-
-                    {/* Bottom: Add to Basket / Stepper or Out of Stock State */}
-                    <div className="pt-2.5" onClick={(e) => e.stopPropagation()}>
-                      {isOutOfStock || price <= 0 ? (
-                        <button
-                          type="button"
-                          disabled
-                          className="w-full py-1.5 px-3 bg-slate-100 border border-slate-200 text-slate-400 text-[11px] font-black rounded-xl select-none flex items-center justify-center gap-1 font-malayalam cursor-not-allowed"
-                        >
-                          <span>{isOutOfStock ? '🚫 സ്റ്റോക്കില്ല' : '🚫 ലഭ്യമല്ല'}</span>
-                        </button>
-                      ) : qty > 0 ? (
-                        <div className="flex items-center justify-between bg-[#063B2A] text-white rounded-xl p-1 shadow-xs">
-                          <button
-                            type="button"
-                            onClick={() => onQuantityChange(product.id, -1)}
-                            className="w-6 h-6 flex items-center justify-center hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Minus className="w-3 h-3" />
-                          </button>
-                          <span className="text-xs font-black font-sans">{qty}</span>
-                          <button
-                            type="button"
-                            onClick={() => onQuantityChange(product.id, 1)}
-                            className="w-6 h-6 flex items-center justify-center hover:bg-white/20 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Plus className="w-3 h-3" />
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => onAddToBasket(product, product.defaultUnit)}
-                          className="w-full py-1.5 px-3 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-95 text-white text-[11px] font-black rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 font-malayalam cursor-pointer"
-                        >
-                          <ShoppingBag className="w-3.5 h-3.5" />
-                          <span>കാർട്ടിൽ ചേർക്കുക</span>
-                        </button>
-                      )}
-                    </div>
-
-                  </div>
+                    product={product}
+                    isFav={isFav}
+                    qty={qty}
+                    shopInfo={shopInfo}
+                    lowestShopName={lowestShopName}
+                    onToggleFavorite={onToggleFavorite}
+                    onSelectProductForDetail={onSelectProductForDetail}
+                    onQuantityChange={onQuantityChange}
+                    onAddToBasket={onAddToBasket}
+                  />
                 );
               })
             )}
+          </div>
+        )}
+
+        {/* Progressive Load More trigger */}
+        {displayedProducts.length > visibleCount && (
+          <div className="flex justify-center pt-4 pb-2">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + 36)}
+              className="px-6 py-2.5 bg-white hover:bg-[#E8F5EE] border border-[#0B8F68]/30 hover:border-[#0B8F68] text-[#063B2A] font-extrabold text-xs rounded-2xl shadow-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 font-malayalam"
+            >
+              <span>കൂടുതൽ ഉൽപ്പന്നങ്ങൾ കാണുക ({displayedProducts.length - visibleCount} ബാക്കി)</span>
+              <ChevronRight className="w-4 h-4 text-[#0B8F68]" />
+            </button>
           </div>
         )}
       </section>

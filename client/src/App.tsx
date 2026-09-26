@@ -1621,7 +1621,7 @@ export const App: React.FC = () => {
                 />
               ) : (
                 <MobileHomeView
-                  products={displayedProducts}
+                  products={inStockProducts}
                   shops={verifiedShops.length > 0 ? verifiedShops : shops}
                   categories={categoriesWithCounts}
                   currentLocation={currentLocation}
@@ -1832,7 +1832,7 @@ export const App: React.FC = () => {
               <div className="flex gap-4 xl:gap-5 items-start">
                 <div className="flex-1 min-w-0">
                   <DesktopHomeView
-                    products={displayedProducts}
+                    products={inStockProducts}
                     shops={verifiedShops.length > 0 ? verifiedShops : shops}
                     categories={categoriesWithCounts}
                     currentLocation={currentLocation}

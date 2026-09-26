@@ -102,6 +102,160 @@ const TODAY_PRICES = [
   { name: 'എണ്ണ', image: '/categories/oils-spices.jpg', emoji: '🥥', price: 150, unit: 'ലി' },
 ];
 
+interface MobileProductCardProps {
+  product: Product;
+  isFav: boolean;
+  qty: number;
+  lowestShopName: string;
+  shopInfo?: Shop;
+  onToggleFavorite: (product: Product) => void;
+  onSelectProductForDetail: (product: Product) => void;
+  onQuantityChange: (productId: string, delta: number) => void;
+  onAddToBasket: (product: Product, unit?: string) => void;
+}
+
+const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
+  product,
+  isFav,
+  qty,
+  lowestShopName,
+  shopInfo,
+  onToggleFavorite,
+  onSelectProductForDetail,
+  onQuantityChange,
+  onAddToBasket,
+}) => {
+  const priceValues = Object.values(product.prices || {}).filter(p => typeof p === 'number' && p > 0);
+  const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
+
+  const isOutOfStock = Boolean(
+    product.stockStatus &&
+    Object.values(product.stockStatus).length > 0 &&
+    Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
+  );
+
+  return (
+    <div
+      onClick={() => onSelectProductForDetail(product)}
+      className={`bg-white border rounded-2xl p-3 sm:p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(11,143,104,0.12)] hover:border-[#0B8F68]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7]'
+      }`}
+    >
+      {/* Top: Shop Pill & Favorite Wishlist Button */}
+      <div className="flex items-center justify-between gap-1 mb-1">
+        <span className="text-[9.5px] font-bold text-[#063B2A] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[110px] font-malayalam flex items-center gap-1">
+          <span className="truncate">{shopInfo?.name || lowestShopName}</span>
+        </span>
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggleFavorite(product);
+          }}
+          className="text-slate-400 hover:text-[#E11D48] p-1 rounded-full hover:bg-slate-50 transition-colors cursor-pointer"
+          title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
+        >
+          <Heart
+            className={`w-3.5 h-3.5 transition-colors ${
+              isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300'
+            }`}
+          />
+        </button>
+      </div>
+
+      {/* Product Thumbnail */}
+      <div className="w-full h-28 sm:h-32 flex items-center justify-center p-1.5 relative">
+        <ProductImage
+          productId={product.id}
+          image={product.image}
+          emoji={product.emoji}
+          alt={getMalayalamName(product.name)}
+          className="w-full h-full"
+          imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
+          fallbackEmojiClassName="text-3xl"
+          isOutOfStock={isOutOfStock}
+          stampSize="xs"
+        />
+      </div>
+
+      {/* Info: Name, Price, and Action Button */}
+      <div className="space-y-1.5 pt-1">
+        <div className="flex items-start justify-between gap-1 min-h-[34px] sm:min-h-[36px]">
+          <h3 className="text-xs sm:text-[13px] font-bold text-[#17221D] font-malayalam leading-tight line-clamp-2 m-0 group-hover:text-[#0B8F68] transition-colors">
+            {getMalayalamName(product.name)}
+          </h3>
+          {isOutOfStock && (
+            <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.5 rounded font-mono">
+              തീർന്നു
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-end justify-between pt-1 gap-1">
+          <div className="min-w-0 flex-1">
+            {price > 0 ? (
+              <div className="flex items-baseline gap-1 flex-wrap">
+                <span className="text-sm sm:text-base font-black text-[#17221D] font-sans tracking-tight leading-none">
+                  ₹{price}
+                </span>
+                <span className="text-[10px] text-slate-400 font-medium font-sans whitespace-nowrap leading-none">
+                  /{formatPerUnitLabel(product.defaultUnit)}
+                </span>
+              </div>
+            ) : (
+              <span className="text-[10px] text-slate-400 font-malayalam leading-none">വില ലഭ്യമല്ല</span>
+            )}
+          </div>
+
+          <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+            {isOutOfStock ? (
+              <span className="text-[9px] font-bold font-malayalam text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">
+                തീർന്നു
+              </span>
+            ) : qty > 0 ? (
+              <div className="flex items-center bg-[#063B2A] text-white rounded-xl px-1.5 py-0.5 gap-1 shadow-xs">
+                <button
+                  type="button"
+                  onClick={() => onQuantityChange(product.id, -1)}
+                  className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
+                  aria-label="കുറയ്ക്കുക"
+                >
+                  <Minus className="w-2.5 h-2.5" />
+                </button>
+                <span className="px-1 text-xs font-black font-sans min-w-[14px] text-center">
+                  {qty}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => onQuantityChange(product.id, 1)}
+                  className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
+                  aria-label="കൂട്ടുക"
+                >
+                  <Plus className="w-2.5 h-2.5" />
+                </button>
+              </div>
+            ) : price <= 0 ? (
+              <span className="text-[9px] font-bold font-malayalam text-[#8A9992] bg-slate-100 px-2 py-0.5 rounded-lg select-none">
+                ലഭ്യമല്ല
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => onAddToBasket(product, product.defaultUnit)}
+                className="px-2.5 py-1 bg-[#E8F5EE] hover:bg-[#0B8F68] text-[#063B2A] hover:text-white border border-[#C3EEDC] hover:border-[#0B8F68] text-[11px] font-black rounded-xl shadow-2xs transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                aria-label="ചേർക്കുക"
+              >
+                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                <span>ചേർക്കുക</span>
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
 export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   products,
   shops,
@@ -122,6 +276,17 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   onViewAllCategories,
   onViewAllProducts,
 }) => {
+  const getProductRank = (name: string): number => {
+    const lower = name.toLowerCase();
+    const priorityNames = [
+      'തക്കാളി', 'സവാള', 'ഉരുളക്കിഴങ്ങ്', 'പച്ചമുളക്', 'വാഴപ്പഴം', 'നേന്ത്രപ്പഴം', 'കാരറ്റ്', 'പാൽ', 'വെളിച്ചെണ്ണ', 'അരി',
+      'tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'
+    ];
+    for (let i = 0; i < priorityNames.length; i++) {
+      if (lower.includes(priorityNames[i])) return i;
+    }
+    return 999;
+  };
 
   // Filter products by selected category or search query
   const popularProducts = useMemo(() => {
@@ -147,19 +312,43 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       filtered = products.filter((p) => targetCats.includes(p.categoryId));
     }
 
-    const priorityNames = [
-      'തക്കാളി', 'സവാള', 'ഉരുളക്കിഴങ്ങ്', 'പച്ചമുളക്', 'വാഴപ്പഴം', 'നേന്ത്രപ്പഴം', 'കാരറ്റ്', 'പാൽ', 'വെളിച്ചെണ്ണ', 'അരി',
-      'tomato', 'banana', 'onion', 'carrot', 'brinjal', 'beans', 'cabbage', 'chilli', 'potato', 'milk', 'rice'
-    ];
     return [...filtered].sort((a, b) => {
-      const aIndex = priorityNames.findIndex((n) => a.name.toLowerCase().includes(n));
-      const bIndex = priorityNames.findIndex((n) => b.name.toLowerCase().includes(n));
-      if (aIndex !== -1 && bIndex !== -1) return aIndex - bIndex;
-      if (aIndex !== -1) return -1;
-      if (bIndex !== -1) return 1;
-      return 0;
+      const aRank = getProductRank(a.name);
+      const bRank = getProductRank(b.name);
+      if (aRank !== bRank) return aRank - bRank;
+      return a.name.localeCompare(b.name);
     });
   }, [products, searchQuery, selectedCategoryId]);
+
+  // Progressive batch rendering
+  const [visibleCount, setVisibleCount] = useState<number>(24);
+
+  React.useEffect(() => {
+    setVisibleCount(24);
+  }, [searchQuery, selectedCategoryId]);
+
+  const visiblePopularProducts = useMemo(() => {
+    return popularProducts.slice(0, visibleCount);
+  }, [popularProducts, visibleCount]);
+
+  // O(1) Lookups
+  const basketQuantityMap = useMemo(() => {
+    const map: Record<string, number> = {};
+    for (const item of basket) {
+      map[item.productId] = item.quantity;
+    }
+    return map;
+  }, [basket]);
+
+  const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
+
+  const shopMap = useMemo(() => {
+    const map = new Map<string, Shop>();
+    for (const s of shops) {
+      map.set(s.name.toLowerCase(), s);
+    }
+    return map;
+  }, [shops]);
 
   const currentCategoryObj = categories.find((c) => c.id === selectedCategoryId);
 
@@ -197,7 +386,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       </div>
 
       {/* 2. HERO BANNER: KERALA MARKETPLACE RESPONSIVE BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#EEDBBE] shadow-xs border border-[#DFCEB7] p-3.5 sm:p-5 md:p-6 min-h-[165px] sm:min-h-[185px] md:min-h-[210px] text-[#2A241C] flex items-center justify-start md:justify-center">
+      <div className="relative overflow-hidden rounded-3xl bg-[#EEDBBE] shadow-xs border border-[#DFCEB7] p-3 sm:p-4.5 md:p-6 min-h-[165px] sm:min-h-[185px] md:min-h-[210px] text-[#2A241C] flex items-center justify-center">
         {/* Responsive Kerala Village Market & Fresh Produce Background */}
         <picture className="absolute inset-0 w-full h-full pointer-events-none">
           <source media="(min-width: 768px)" srcSet="/hero-warm-market-blend.jpg" />
@@ -205,7 +394,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
           <img
             src="/hero-warm-market-blend.jpg"
             alt="Kerala Village Market Background"
-            className="w-full h-full object-cover object-[80%_center] md:object-center filter contrast-[1.03] brightness-[0.98]"
+            className="w-full h-full object-cover object-center filter contrast-[1.03] brightness-[0.98]"
             loading="eager"
             decoding="async"
           />
@@ -214,9 +403,9 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         {/* Ambient Gradient Overlay for Contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#2A180E]/30 via-[#2A180E]/15 to-[#2A180E]/25 pointer-events-none" />
 
-        {/* Solid Content Card (Centered on Tabs / iPads) */}
-        <div className="relative z-10 w-full max-w-[75%] sm:max-w-[70%] md:max-w-[480px] lg:max-w-[520px] md:mx-auto bg-[#DED8CF]/95 rounded-2xl md:rounded-3xl p-3.5 sm:p-4 md:p-5 border border-[#CEBEAC] shadow-xs space-y-1.5 md:space-y-2.5 md:text-center transition-all">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#D0C5B4]/60 border border-[#BEB09C] rounded-full text-[9px] sm:text-[10px] font-bold text-[#7C3A20] font-malayalam md:mx-auto">
+        {/* Solid Content Card (Centered in justify-center) */}
+        <div className="relative z-10 w-full max-w-[90%] sm:max-w-[80%] md:max-w-[480px] lg:max-w-[520px] mx-auto bg-[#DED8CF]/95 rounded-2xl md:rounded-3xl p-3.5 sm:p-4 md:p-5 border border-[#CEBEAC] shadow-xs space-y-1.5 md:space-y-2.5 text-center transition-all">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#D0C5B4]/60 border border-[#BEB09C] rounded-full text-[9px] sm:text-[10px] font-bold text-[#7C3A20] font-malayalam mx-auto">
             <Sparkles className="w-3 h-3 text-[#BC681D] shrink-0" />
             <span>തത്സമയ വിലനിലവാരം</span>
           </div>
@@ -225,11 +414,11 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             ഗ്രാമത്തിലെ കടകളിൽ നിന്നും മികച്ച വില കണ്ടെത്തൂ.
           </h2>
 
-          <p className="text-[9.5px] sm:text-[11px] md:text-xs text-[#4A3F33] font-medium leading-snug font-malayalam m-0 line-clamp-2 md:max-w-md md:mx-auto">
+          <p className="text-[9.5px] sm:text-[11px] md:text-xs text-[#4A3F33] font-medium leading-snug font-malayalam m-0 line-clamp-2 max-w-md mx-auto">
             സമീപത്തെ മികച്ച കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
           </p>
 
-          <div className="pt-0.5 flex md:justify-center">
+          <div className="pt-0.5 flex justify-center">
             <button
               type="button"
               onClick={() => {
@@ -237,7 +426,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
                 else if (onViewAllProducts) onViewAllProducts();
               }}
-              className="inline-flex items-center gap-1 px-3.5 py-1.5 md:px-5 md:py-2 rounded-full bg-[#BC681D] hover:bg-[#A85814] active:scale-95 text-white font-extrabold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam"
+              className="inline-flex items-center gap-1 px-3.5 py-1.5 md:px-5 md:py-2 rounded-full bg-[#BC681D] hover:bg-[#A85814] active:scale-95 text-white font-extrabold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam mx-auto"
             >
               <span>വിലകൾ കാണാം 🛡️</span>
             </button>
@@ -396,146 +585,45 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5 sm:gap-3.5">
-            {popularProducts.map((product) => {
-              const isFav = favorites.includes(product.id);
-              const priceValues = Object.values(product.prices || {}).filter(p => typeof p === 'number' && p > 0);
-              const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
-              const basketItem = basket.find((b) => b.productId === product.id);
-              const qty = basketItem ? basketItem.quantity : 0;
-
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
+            {visiblePopularProducts.map((product) => {
+              const isFav = favoriteSet.has(product.id);
+              const qty = basketQuantityMap[product.id] || 0;
               const cheapestShopEntry = Object.entries(product.prices || {})
                 .filter(([_, p]) => typeof p === 'number' && p > 0)
                 .sort((a, b) => a[1] - b[1])[0];
               const lowestShopName = cheapestShopEntry ? cheapestShopEntry[0] : (shops[0]?.name || 'കട ലഭ്യമല്ല');
-              const shopInfo = shops.find((s) => s.name.toLowerCase() === lowestShopName.toLowerCase());
-
-              const isOutOfStock = Boolean(
-                product.stockStatus &&
-                Object.values(product.stockStatus).length > 0 &&
-                Object.values(product.stockStatus).every((s) => s === 'out_of_stock')
-              );
+              const shopInfo = shopMap.get(lowestShopName.toLowerCase());
 
               return (
-                <div
+                <MobileProductCard
                   key={product.id}
-                  onClick={() => onSelectProductForDetail(product)}
-                  className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-[0_2px_8px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(11,143,104,0.12)] hover:border-[#0B8F68]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7]'
-                    }`}
-                >
-                  {/* Top: Shop Pill & Favorite Wishlist Button */}
-                  <div className="flex items-center justify-between gap-1 mb-1">
-                    <span className="text-[9.5px] font-bold text-[#063B2A] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[110px] font-malayalam flex items-center gap-1">
-                      <span className="truncate">{shopInfo?.name || lowestShopName}</span>
-                    </span>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onToggleFavorite(product);
-                      }}
-                      className="text-slate-400 hover:text-[#E11D48] p-1 rounded-full hover:bg-slate-50 transition-colors cursor-pointer"
-                      title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
-                    >
-                      <Heart
-                        className={`w-3.5 h-3.5 transition-colors ${isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300'
-                          }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* Product Thumbnail */}
-                  <div className="w-full h-28 sm:h-32 flex items-center justify-center py-3 my-1 relative">
-                    <ProductImage
-                      productId={product.id}
-                      image={product.image}
-                      emoji={product.emoji}
-                      alt={getMalayalamName(product.name)}
-                      className="w-full h-full"
-                      imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
-                      fallbackEmojiClassName="text-3xl"
-                      isOutOfStock={isOutOfStock}
-                      stampSize="xs"
-                    />
-                  </div>
-
-                  {/* Info: Name, Price, and Action Button */}
-                  <div className="space-y-1.5 pt-1">
-                    <div className="flex items-start justify-between gap-1 min-h-[38px]">
-                      <h3 className="text-[13px] sm:text-sm font-bold text-[#17221D] font-malayalam leading-snug line-clamp-2 m-0 group-hover:text-[#0B8F68] transition-colors">
-                        {getMalayalamName(product.name)}
-                      </h3>
-                      {isOutOfStock && (
-                        <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.5 rounded font-mono">
-                          തീർന്നു
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center justify-between pt-0.5">
-                      <div>
-                        {price > 0 ? (
-                          <div className="flex items-baseline gap-0.5">
-                            <span className="text-sm sm:text-base font-black text-[#17221D] font-sans tracking-tight">
-                              ₹{price}
-                            </span>
-                            <span className="text-[10px] text-slate-400 font-medium font-sans">
-                              /{formatPerUnitLabel(product.defaultUnit)}
-                            </span>
-                          </div>
-                        ) : (
-                          <span className="text-[10px] text-slate-400 font-malayalam">വില ലഭ്യമല്ല</span>
-                        )}
-                      </div>
-
-                      <div onClick={(e) => e.stopPropagation()}>
-                        {isOutOfStock ? (
-                          <span className="text-[9px] font-bold font-malayalam text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">
-                            തീർന്നു
-                          </span>
-                        ) : qty > 0 ? (
-                          <div className="flex items-center bg-[#063B2A] text-white rounded-xl px-1.5 py-0.5 gap-1 shadow-xs">
-                            <button
-                              type="button"
-                              onClick={() => onQuantityChange(product.id, -1)}
-                              className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all"
-                              aria-label="കുറയ്ക്കുക"
-                            >
-                              <Minus className="w-2.5 h-2.5" />
-                            </button>
-                            <span className="px-1 text-[11px] font-black font-sans min-w-[14px] text-center">
-                              {qty}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => onQuantityChange(product.id, 1)}
-                              className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all"
-                              aria-label="കൂട്ടുക"
-                            >
-                              <Plus className="w-2.5 h-2.5" />
-                            </button>
-                          </div>
-                        ) : price <= 0 ? (
-                          <span className="text-[9px] font-bold font-malayalam text-[#8A9992] bg-slate-100 px-2 py-0.5 rounded-lg select-none">
-                            ലഭ്യമല്ല
-                          </span>
-                        ) : (
-                          <button
-                            type="button"
-                            onClick={() => onAddToBasket(product, product.defaultUnit)}
-                            className="px-2.5 py-1 bg-[#E8F5EE] hover:bg-[#0B8F68] text-[#063B2A] hover:text-white border border-[#C3EEDC] hover:border-[#0B8F68] text-[11px] font-black rounded-xl shadow-2xs transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer"
-                            aria-label="ചേർക്കുക"
-                          >
-                            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                            <span>ചേർക്കുക</span>
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  product={product}
+                  isFav={isFav}
+                  qty={qty}
+                  lowestShopName={lowestShopName}
+                  shopInfo={shopInfo}
+                  onToggleFavorite={onToggleFavorite}
+                  onSelectProductForDetail={onSelectProductForDetail}
+                  onQuantityChange={onQuantityChange}
+                  onAddToBasket={onAddToBasket}
+                />
               );
             })}
+          </div>
+        )}
+
+        {/* Progressive Load More */}
+        {popularProducts.length > visibleCount && (
+          <div className="flex justify-center pt-3 pb-1">
+            <button
+              type="button"
+              onClick={() => setVisibleCount((prev) => prev + 24)}
+              className="px-5 py-2 bg-white hover:bg-[#E8F5EE] border border-[#0B8F68]/30 hover:border-[#0B8F68] text-[#063B2A] font-bold text-xs rounded-full shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 font-malayalam"
+            >
+              <span>കൂടുതൽ കാണുക ({popularProducts.length - visibleCount} ബാക്കി)</span>
+              <ChevronRight className="w-3.5 h-3.5 text-[#0B8F68]" />
+            </button>
           </div>
         )}
       </div>

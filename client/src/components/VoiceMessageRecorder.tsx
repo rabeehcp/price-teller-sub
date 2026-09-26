@@ -6,6 +6,7 @@ interface VoiceMessageRecorderProps {
   disabled?: boolean;
   buttonClassName?: string;
   theme?: 'consumer' | 'merchant';
+  onActiveChange?: (isActive: boolean) => void;
 }
 
 export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
@@ -13,6 +14,7 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
   disabled = false,
   buttonClassName = '',
   theme = 'consumer',
+  onActiveChange,
 }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
@@ -31,6 +33,10 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
 
   // Maximum recording time: 2 minutes
   const MAX_RECORDING_TIME = 120;
+
+  useEffect(() => {
+    onActiveChange?.(Boolean(isRecording || audioBlob));
+  }, [isRecording, audioBlob, onActiveChange]);
 
   useEffect(() => {
     return () => {
@@ -237,22 +243,22 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
     );
   }
 
-  // 2. Active Recording State Toolbar
+  // 2. Active Recording State Toolbar (Takes full width, clear Stop / Cancel buttons)
   if (isRecording) {
     return (
-      <div className="flex-1 flex items-center justify-between gap-2 bg-red-50 border border-red-200 rounded-xl sm:rounded-2xl px-3 py-2 animate-in fade-in duration-150">
-        <div className="flex items-center gap-2.5 min-w-0">
-          <span className="relative flex h-3 w-3 shrink-0">
+      <div className="w-full flex-1 flex items-center justify-between gap-2 sm:gap-3 bg-red-50 border border-red-200 rounded-xl sm:rounded-2xl px-3 py-2 sm:py-2.5 animate-in fade-in duration-150 min-h-[46px]">
+        <div className="flex items-center gap-2 sm:gap-2.5 min-w-0 flex-1">
+          <span className="relative flex h-3.5 w-3.5 shrink-0">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-red-600"></span>
           </span>
 
-          <span className="font-mono font-bold text-red-700 text-xs sm:text-sm">
+          <span className="font-mono font-black text-red-700 text-xs sm:text-sm shrink-0">
             {formatTimer(recordingTime)}
           </span>
 
           {/* Animated sound wave bars */}
-          <div className="hidden sm:flex items-center gap-1 h-4">
+          <div className="hidden xs:flex items-center gap-1 h-4 shrink-0">
             {[40, 80, 50, 100, 60, 90, 70, 30].map((h, i) => (
               <div
                 key={i}
@@ -265,31 +271,32 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
             ))}
           </div>
 
-          <span className="text-[11px] text-red-600 font-medium font-malayalam truncate">
+          <span className="text-[11px] text-red-600 font-bold font-malayalam truncate hidden sm:inline">
             റെക്കോർഡിംഗ് നടക്കുന്നു...
           </span>
         </div>
 
-        <div className="flex items-center gap-1.5 shrink-0">
-          {/* Discard Button */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Discard / Cancel Button */}
           <button
             type="button"
             onClick={cancelRecording}
-            className="p-2 rounded-xl text-gray-500 hover:text-red-600 hover:bg-red-100 transition-colors cursor-pointer"
+            className="flex items-center gap-1 px-2 sm:px-2.5 py-1.5 rounded-xl text-gray-500 hover:text-red-600 hover:bg-red-100 transition-colors cursor-pointer text-xs font-bold"
             title="റദ്ദാക്കുക (Discard recording)"
           >
-            <Trash2 className="w-4 h-4" />
+            <Trash2 className="w-4 h-4 text-red-500" />
+            <span className="hidden md:inline font-malayalam">റദ്ദാക്കുക</span>
           </button>
 
-          {/* Stop & Preview Button */}
+          {/* Stop & Finish Recording Button */}
           <button
             type="button"
             onClick={stopRecording}
-            className="flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white px-2.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95"
-            title="റെക്കോർഡിംഗ് നിർത്തുക"
+            className="flex items-center gap-1.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-black transition-all cursor-pointer shadow-sm active:scale-95 shrink-0"
+            title="റെക്കോർഡിംഗ് പൂർത്തിയാക്കുക (Stop & Finish)"
           >
             <Square className="w-3.5 h-3.5 fill-current" />
-            <span className="hidden sm:inline">Done</span>
+            <span>നിർത്തുക (Done)</span>
           </button>
         </div>
       </div>
@@ -298,12 +305,12 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
 
   // 3. Audio Preview State before sending
   return (
-    <div className="flex-1 flex items-center justify-between gap-2 bg-emerald-50 border border-emerald-300/90 rounded-xl sm:rounded-2xl px-3 py-1.5 animate-in fade-in duration-150">
-      <div className="flex items-center gap-2.5 min-w-0">
+    <div className="w-full flex-1 flex items-center justify-between gap-2 sm:gap-3 bg-emerald-50 border border-emerald-300/90 rounded-xl sm:rounded-2xl px-3 py-2 animate-in fade-in duration-150 min-h-[46px]">
+      <div className="flex items-center gap-2.5 min-w-0 flex-1">
         <button
           type="button"
           onClick={togglePreviewPlay}
-          className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center hover:bg-emerald-800 transition-colors cursor-pointer shrink-0 shadow-xs"
+          className="w-8 h-8 rounded-full bg-emerald-700 text-white flex items-center justify-center hover:bg-emerald-800 transition-colors cursor-pointer shrink-0 shadow-xs active:scale-95"
           title={isPreviewPlaying ? 'Pause preview' : 'Play recorded voice'}
         >
           {isPreviewPlaying ? (
@@ -314,16 +321,16 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
         </button>
 
         <div className="flex flex-col min-w-0">
-          <span className="text-[11px] font-bold text-emerald-950 font-malayalam truncate">
-            🎙️ വോയ്സ് നോട്ട് റെഡി ({formatTimer(recordingTime)})
+          <span className="text-xs font-black text-emerald-950 font-malayalam truncate">
+            🎙️ വോയ്സ് റെഡി ({formatTimer(recordingTime)})
           </span>
-          <span className="text-[10px] text-emerald-700 font-medium">
+          <span className="text-[10px] text-emerald-700 font-medium truncate">
             കേട്ടുനോക്കി അയക്കാം
           </span>
         </div>
       </div>
 
-      <div className="flex items-center gap-1.5 shrink-0">
+      <div className="flex items-center gap-2 shrink-0">
         <button
           type="button"
           onClick={cancelRecording}
@@ -338,7 +345,7 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
           type="button"
           onClick={handleSend}
           disabled={isSending}
-          className="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-50"
+          className="flex items-center gap-1.5 bg-emerald-700 hover:bg-emerald-800 text-white px-3.5 py-1.5 sm:py-2 rounded-xl text-xs font-black transition-all cursor-pointer shadow-xs active:scale-95 disabled:opacity-50 shrink-0"
           title="വോയ്സ് മെസ്സേജ് അയക്കുക (Send Voice Note)"
         >
           {isSending ? (
@@ -346,7 +353,7 @@ export const VoiceMessageRecorder: React.FC<VoiceMessageRecorderProps> = ({
           ) : (
             <>
               <Send className="w-3.5 h-3.5" />
-              <span>Send</span>
+              <span>അയക്കുക</span>
             </>
           )}
         </button>
