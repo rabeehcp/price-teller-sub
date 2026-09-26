@@ -307,6 +307,8 @@ export interface MerchantSubscription {
   merchantId: string;
   shopId?: string;
   planId: string;
+  clientId?: string;
+  clientCode?: string;
   status: 'PENDING' | 'ACTIVE' | 'EXPIRED' | 'CANCELLED';
   startsAt: string;
   expiresAt: string;
@@ -327,6 +329,9 @@ export interface SubscriptionPayment {
   subscriptionId?: string;
   merchantId: string;
   planId: string;
+  clientId?: string;
+  clientCode?: string;
+  commissionPaise?: number;
   amountPaise: number;
   currency: string;
   provider: string;
@@ -350,6 +355,40 @@ export interface AuditLog {
   entityType: string;
   entityId: string;
   metadata?: any;
+  createdAt: string;
+}
+
+export interface ClientPartner {
+  id: string;
+  clientCode: string;
+  name: string;
+  phone: string;
+  upiId: string;
+  commissionRatePercent: number;
+  minShopsThreshold?: number;
+  isPayoutEligible?: boolean;
+  area?: string;
+  status: 'active' | 'inactive';
+  notes?: string;
+  totalShopsCount: number;
+  totalEarningsPaise: number;
+  totalPaidPaise: number;
+  pendingPayoutPaise?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ClientPayout {
+  id: string;
+  clientId: string;
+  clientName?: string;
+  clientCode?: string;
+  amountPaise: number;
+  paymentMethod: string;
+  upiRefId?: string;
+  paidToUpi: string;
+  notes?: string;
+  status: string;
   createdAt: string;
 }
 
@@ -3098,6 +3137,365 @@ const now = new Date().toISOString();
         totalRevenuePaise: Number(revenueRes.rows[0]?.total || 0),
         monthlyRecurringPaise: Math.round(Number(mrrRes.rows[0]?.mrr || 0)),
       };
+  }
+
+  // -------------------------------------------------------------
+  // CLIENT PARTNERS & FIELD ONBOARDING AGENTS
+  // -------------------------------------------------------------
+
+  public async getAllClientPartners(): Promise<ClientPartner[]> {
+    const res = await query(
+      `SELECT id, client_code as "clientCode", name, phone, upi_id as "upiId",
+              commission_rate_percent as "commissionRatePercent",
+              min_shops_threshold as "minShopsThreshold",
+              area, status, notes,
+              total_shops_count as "totalShopsCount",
+              total_earnings_paise as "totalEarningsPaise",
+              total_paid_paise as "totalPaidPaise",
+              created_at as "createdAt", updated_at as "updatedAt"
+       FROM client_partners
+       ORDER BY created_at DESC`
+    );
+
+    return res.rows.map((r: any) => {
+      const earnings = Number(r.totalEarningsPaise || 0);
+      const paid = Number(r.totalPaidPaise || 0);
+      const minShops = Number(r.minShopsThreshold || 50);
+      const shopsCount = Number(r.totalShopsCount || 0);
+      return {
+        ...r,
+        commissionRatePercent: Number(r.commissionRatePercent || 50),
+        minShopsThreshold: minShops,
+        totalShopsCount: shopsCount,
+        totalEarningsPaise: earnings,
+        totalPaidPaise: paid,
+        pendingPayoutPaise: Math.max(0, earnings - paid),
+        isPayoutEligible: shopsCount >= minShops,
+      };
+    });
+  }
+
+  public async getClientPartnerById(id: string): Promise<ClientPartner | null> {
+    const res = await query(
+      `SELECT id, client_code as "clientCode", name, phone, upi_id as "upiId",
+              commission_rate_percent as "commissionRatePercent",
+              min_shops_threshold as "minShopsThreshold",
+              area, status, notes,
+              total_shops_count as "totalShopsCount",
+              total_earnings_paise as "totalEarningsPaise",
+              total_paid_paise as "totalPaidPaise",
+              created_at as "createdAt", updated_at as "updatedAt"
+       FROM client_partners WHERE id = $1`,
+      [id]
+    );
+    if (res.rows.length === 0) return null;
+    const r = res.rows[0];
+    const earnings = Number(r.totalEarningsPaise || 0);
+    const paid = Number(r.totalPaidPaise || 0);
+    const minShops = Number(r.minShopsThreshold || 50);
+    const shopsCount = Number(r.totalShopsCount || 0);
+    return {
+      ...r,
+      commissionRatePercent: Number(r.commissionRatePercent || 50),
+      minShopsThreshold: minShops,
+      totalShopsCount: shopsCount,
+      totalEarningsPaise: earnings,
+      totalPaidPaise: paid,
+      pendingPayoutPaise: Math.max(0, earnings - paid),
+      isPayoutEligible: shopsCount >= minShops,
+    };
+  }
+
+  public async getClientPartnerByCode(clientCode: string): Promise<ClientPartner | null> {
+    const cleanCode = clientCode.trim();
+    const res = await query(
+      `SELECT id, client_code as "clientCode", name, phone, upi_id as "upiId",
+              commission_rate_percent as "commissionRatePercent",
+              min_shops_threshold as "minShopsThreshold",
+              area, status, notes,
+              total_shops_count as "totalShopsCount",
+              total_earnings_paise as "totalEarningsPaise",
+              total_paid_paise as "totalPaidPaise",
+              created_at as "createdAt", updated_at as "updatedAt"
+       FROM client_partners WHERE LOWER(client_code) = LOWER($1) OR phone = $1`,
+      [cleanCode]
+    );
+    if (res.rows.length === 0) return null;
+    const r = res.rows[0];
+    const earnings = Number(r.totalEarningsPaise || 0);
+    const paid = Number(r.totalPaidPaise || 0);
+    const minShops = Number(r.minShopsThreshold || 50);
+    const shopsCount = Number(r.totalShopsCount || 0);
+    return {
+      ...r,
+      commissionRatePercent: Number(r.commissionRatePercent || 50),
+      minShopsThreshold: minShops,
+      totalShopsCount: shopsCount,
+      totalEarningsPaise: earnings,
+      totalPaidPaise: paid,
+      pendingPayoutPaise: Math.max(0, earnings - paid),
+      isPayoutEligible: shopsCount >= minShops,
+    };
+  }
+
+  public async createClientPartner(data: {
+    clientCode?: string;
+    name: string;
+    phone: string;
+    upiId: string;
+    commissionRatePercent?: number;
+    minShopsThreshold?: number;
+    area?: string;
+    status?: 'active' | 'inactive';
+    notes?: string;
+  }): Promise<ClientPartner> {
+    const id = `client-${Date.now()}`;
+    const code = (data.clientCode && data.clientCode.trim().toUpperCase()) || `CL-${Math.floor(100 + Math.random() * 900)}`;
+    const now = new Date().toISOString();
+    const minShops = Number(data.minShopsThreshold) || 50;
+
+    const newPartner: ClientPartner = {
+      id,
+      clientCode: code,
+      name: data.name.trim(),
+      phone: data.phone.trim(),
+      upiId: data.upiId.trim(),
+      commissionRatePercent: Number(data.commissionRatePercent) || 50.0,
+      minShopsThreshold: minShops,
+      isPayoutEligible: false,
+      area: data.area?.trim() || '',
+      status: data.status || 'active',
+      notes: data.notes?.trim() || '',
+      totalShopsCount: 0,
+      totalEarningsPaise: 0,
+      totalPaidPaise: 0,
+      pendingPayoutPaise: 0,
+      createdAt: now,
+      updatedAt: now,
+    };
+
+    await query(
+      `INSERT INTO client_partners (id, client_code, name, phone, upi_id, commission_rate_percent, min_shops_threshold, area, status, notes, total_shops_count, total_earnings_paise, total_paid_paise, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+      [
+        newPartner.id,
+        newPartner.clientCode,
+        newPartner.name,
+        newPartner.phone,
+        newPartner.upiId,
+        newPartner.commissionRatePercent,
+        newPartner.minShopsThreshold,
+        newPartner.area,
+        newPartner.status,
+        newPartner.notes,
+        newPartner.totalShopsCount,
+        newPartner.totalEarningsPaise,
+        newPartner.totalPaidPaise,
+        newPartner.createdAt,
+        newPartner.updatedAt,
+      ]
+    );
+
+    return newPartner;
+  }
+
+  public async updateClientPartner(id: string, updates: Partial<ClientPartner>): Promise<ClientPartner | null> {
+    const existing = await this.getClientPartnerById(id);
+    if (!existing) return null;
+
+    const merged = {
+      ...existing,
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+
+    await query(
+      `UPDATE client_partners
+       SET name = $1, phone = $2, upi_id = $3, commission_rate_percent = $4,
+           min_shops_threshold = $5, area = $6, status = $7, notes = $8, updated_at = $9
+       WHERE id = $10`,
+      [
+        merged.name,
+        merged.phone,
+        merged.upiId,
+        merged.commissionRatePercent,
+        merged.minShopsThreshold ?? 50,
+        merged.area,
+        merged.status,
+        merged.notes,
+        merged.updatedAt,
+        id,
+      ]
+    );
+
+    return this.getClientPartnerById(id);
+  }
+
+  public async deleteClientPartner(id: string): Promise<boolean> {
+    const res = await query(`DELETE FROM client_partners WHERE id = $1`, [id]);
+    return (res.rowCount ?? 0) > 0;
+  }
+
+  public async recordClientPayout(data: {
+    clientId: string;
+    amountPaise: number;
+    paymentMethod?: string;
+    upiRefId?: string;
+    paidToUpi?: string;
+    notes?: string;
+  }): Promise<ClientPayout> {
+    const client = await this.getClientPartnerById(data.clientId);
+    if (!client) throw new Error('Client partner not found');
+
+    const payoutId = `PAYOUT-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const now = new Date().toISOString();
+    const paidToUpi = data.paidToUpi?.trim() || client.upiId;
+
+    await query(
+      `INSERT INTO client_payouts (id, client_id, amount_paise, payment_method, upi_ref_id, paid_to_upi, notes, status, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [
+        payoutId,
+        client.id,
+        data.amountPaise,
+        data.paymentMethod || 'upi',
+        data.upiRefId?.trim() || null,
+        paidToUpi,
+        data.notes?.trim() || null,
+        'COMPLETED',
+        now,
+      ]
+    );
+
+    // Update total_paid_paise
+    await query(
+      `UPDATE client_partners
+       SET total_paid_paise = total_paid_paise + $1, updated_at = NOW()
+       WHERE id = $2`,
+      [data.amountPaise, client.id]
+    );
+
+    return {
+      id: payoutId,
+      clientId: client.id,
+      clientName: client.name,
+      clientCode: client.clientCode,
+      amountPaise: data.amountPaise,
+      paymentMethod: data.paymentMethod || 'upi',
+      upiRefId: data.upiRefId,
+      paidToUpi,
+      notes: data.notes,
+      status: 'COMPLETED',
+      createdAt: now,
+    };
+  }
+
+  public async getClientPayouts(clientId?: string): Promise<ClientPayout[]> {
+    let q = `
+      SELECT p.id, p.client_id as "clientId", p.amount_paise as "amountPaise",
+             p.payment_method as "paymentMethod", p.upi_ref_id as "upiRefId",
+             p.paid_to_upi as "paidToUpi", p.notes, p.status, p.created_at as "createdAt",
+             cp.name as "clientName", cp.client_code as "clientCode"
+      FROM client_payouts p
+      JOIN client_partners cp ON cp.id = p.client_id
+    `;
+    const params: any[] = [];
+    if (clientId) {
+      q += ` WHERE p.client_id = $1`;
+      params.push(clientId);
+    }
+    q += ` ORDER BY p.created_at DESC`;
+
+    const res = await query(q, params);
+    return res.rows.map((r: any) => ({
+      ...r,
+      amountPaise: Number(r.amountPaise),
+    }));
+  }
+
+  public async getClientOnboardedShops(clientCodeOrId: string) {
+    const res = await query(
+      `SELECT sp.id as "paymentId", sp.merchant_id as "merchantId", sp.amount_paise as "amountPaise",
+              sp.commission_paise as "commissionPaise", sp.created_at as "subscribedAt",
+              u.name as "merchantName", u.shop_name as "shopName", u.email as "merchantEmail", u.phone as "merchantPhone",
+              plan.name as "planName", sp.status as "paymentStatus"
+       FROM subscription_payments sp
+       JOIN users u ON u.id = sp.merchant_id
+       LEFT JOIN subscription_plans plan ON plan.id = sp.plan_id
+       WHERE LOWER(sp.client_code) = LOWER($1) OR sp.client_id = $1
+       ORDER BY sp.created_at DESC`,
+      [clientCodeOrId.trim()]
+    );
+    return res.rows.map((r: any) => ({
+      ...r,
+      amountPaise: Number(r.amountPaise),
+      commissionPaise: Number(r.commissionPaise || 0),
+    }));
+  }
+
+  public async attributeSubscriptionPaymentToClient(params: {
+    paymentId: string;
+    subscriptionId?: string;
+    clientCode: string;
+    merchantId: string;
+  }): Promise<{ client: ClientPartner; commissionPaise: number } | null> {
+    const { paymentId, subscriptionId, clientCode, merchantId } = params;
+    if (!clientCode || !clientCode.trim()) return null;
+
+    const client = await this.getClientPartnerByCode(clientCode.trim());
+    if (!client) return null;
+
+    // Get payment amount
+    const payRes = await query(
+      `SELECT amount_paise as "amountPaise" FROM subscription_payments WHERE id = $1 OR provider_order_id = $1`,
+      [paymentId]
+    );
+    const amountPaise = Number(payRes.rows[0]?.amountPaise || 0);
+    const commissionPaise = Math.round(amountPaise * (Number(client.commissionRatePercent) / 100));
+
+    // Update payment record
+    await query(
+      `UPDATE subscription_payments
+       SET client_id = $1, client_code = $2, commission_paise = $3
+       WHERE id = $4 OR provider_order_id = $4`,
+      [client.id, client.clientCode, commissionPaise, paymentId]
+    );
+
+    // Update subscription record if provided
+    if (subscriptionId) {
+      await query(
+        `UPDATE merchant_subscriptions
+         SET client_id = $1, client_code = $2
+         WHERE id = $3`,
+        [client.id, client.clientCode, subscriptionId]
+      );
+    }
+
+    // Check if this merchant was already counted for this client
+    const prevSubs = await query(
+      `SELECT COUNT(*) as count FROM subscription_payments
+       WHERE client_id = $1 AND merchant_id = $2 AND id != $3 AND provider_order_id != $3`,
+      [client.id, merchantId, paymentId]
+    );
+    const isNewShop = Number(prevSubs.rows[0]?.count || 0) === 0;
+
+    // Update client partner totals
+    await query(
+      `UPDATE client_partners
+       SET total_earnings_paise = total_earnings_paise + $1,
+           total_shops_count = total_shops_count + $2,
+           updated_at = NOW()
+       WHERE id = $3`,
+      [commissionPaise, isNewShop ? 1 : 0, client.id]
+    );
+
+    // Also associate user
+    await query(
+      `UPDATE users SET referred_by_client_code = $1 WHERE id = $2 AND (referred_by_client_code IS NULL OR referred_by_client_code = '')`,
+      [client.clientCode, merchantId]
+    );
+
+    return { client, commissionPaise };
   }
 }
 

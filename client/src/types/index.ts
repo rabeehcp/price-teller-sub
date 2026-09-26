@@ -505,6 +505,10 @@ export interface SubscriptionCheckoutOrder {
   planName?: string;
   upiString: string;
   upiQrUrl: string;
+  upiId?: string;
+  payeeName?: string;
+  upiCardUrl?: string;
+  upiPosterUrl?: string;
 }
 
 export interface SubscriptionStats {
@@ -512,6 +516,63 @@ export interface SubscriptionStats {
   expiredCount: number;
   totalRevenuePaise: number;
   monthlyRecurringPaise: number;
+}
+
+export interface ClientPartner {
+  id: string;
+  clientCode: string;
+  name: string;
+  phone: string;
+  upiId: string;
+  commissionRatePercent: number;
+  minShopsThreshold?: number;
+  isPayoutEligible?: boolean;
+  area?: string;
+  status: 'active' | 'inactive';
+  notes?: string;
+  totalShopsCount: number;
+  totalEarningsPaise: number;
+  totalPaidPaise: number;
+  pendingPayoutPaise?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ClientPayout {
+  id: string;
+  clientId: string;
+  clientName?: string;
+  clientCode?: string;
+  amountPaise: number;
+  paymentMethod: string;
+  upiRefId?: string;
+  paidToUpi: string;
+  notes?: string;
+  status: string;
+  createdAt: string;
+}
+
+export interface ClientSummaryMetrics {
+  totalClients: number;
+  totalActiveClients: number;
+  totalShopsOnboarded: number;
+  totalEarningsPaise: number;
+  totalPaidPaise: number;
+  pendingPayoutPaise: number;
+}
+
+export interface ClientOnboardedShop {
+  paymentId: string;
+  merchantId: string;
+  merchantName?: string;
+  shopName?: string;
+  merchantEmail?: string;
+  merchantPhone?: string;
+  planName?: string;
+  amountPaise: number;
+  commissionPaise: number;
+  paymentStatus: string;
+  subscribedAt: string;
 }
 
 export interface AuditLog {
@@ -524,7 +585,3 @@ export interface AuditLog {
   metadata?: any;
   createdAt: string;
 }
-
-
-
-

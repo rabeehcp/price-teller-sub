@@ -29,6 +29,7 @@ export interface VerifyPaymentParams {
   paymentId?: string;
   signature?: string;
   upiRefId?: string;
+  clientCode?: string;
   actorRole?: string;
 }
 
@@ -113,10 +114,12 @@ export class SubscriptionService {
       provider: 'upi_simulator',
     });
 
-    // UPI deep-link style payload for demo QR
-    const upiPayload = `upi://pay?pa=priceteller@upi&pn=PriceTeller&am=${(
-      plan.pricePaise / 100
-    ).toFixed(2)}&cu=INR&tn=PriceTeller%20${encodeURIComponent(plan.name)}`;
+    // Real UPI deep-link payment URL configured for receiving subscription payments
+    const payeeVpa = process.env.UPI_PAYEE_VPA || '8075950428@fam';
+    const payeeName = process.env.UPI_PAYEE_NAME || 'shoucky';
+    const amountInr = (plan.pricePaise / 100).toFixed(2);
+    const txnNote = encodeURIComponent(`PriceTeller ${plan.name}`);
+    const upiString = `upi://pay?pa=${encodeURIComponent(payeeVpa)}&pn=${encodeURIComponent(payeeName)}&am=${amountInr}&cu=INR&tn=${txnNote}`;
 
     return {
       orderId: payment.providerOrderId || payment.id,
@@ -139,19 +142,21 @@ export class SubscriptionService {
       },
       durationDays: plan.durationDays,
       idempotencyKey: key,
-      upiPayload,
+      upiPayload: upiString,
+      upiString: upiString,
+      upiQrUrl: process.env.UPI_QR_URL || '/payment-qr-clean.png',
+      upiCardUrl: process.env.UPI_CARD_URL || '/payment-qr-card.png',
+      upiPosterUrl: process.env.UPI_POSTER_URL || '/payment-qr.jpg',
+      upiId: payeeVpa,
+      payeeName: payeeName,
       status: payment.status,
       message:
-        'Demo mode: complete payment via UPI and submit the UPI reference / orderId to activate.',
+        `Scan QR code or pay to ${payeeVpa} (${payeeName}) and submit the 12-digit UPI UTR reference to activate.`,
     };
   }
 
-  /**
-   * Verifies a demo payment and activates the subscription.
-   * Accepts any non-empty upiRefId or paymentId in development.
-   */
   async verifyPaymentAndActivate(params: VerifyPaymentParams) {
-    const { merchantId, orderId, paymentId, upiRefId, actorRole } = params;
+    const { merchantId, orderId, paymentId, upiRefId, clientCode, actorRole } = params;
 
     if (!orderId && !paymentId) {
       throw new Error('orderId or paymentId is required');
@@ -221,6 +226,21 @@ export class SubscriptionService {
       durationDays: plan.durationDays,
     });
 
+    // Attribute to onboarding client partner if clientCode provided
+    let attributedClient = null;
+    if (clientCode && String(clientCode).trim()) {
+      try {
+        attributedClient = await db.attributeSubscriptionPaymentToClient({
+          paymentId: pending?.id || orderId,
+          subscriptionId: subscription.id,
+          clientCode: String(clientCode).trim(),
+          merchantId,
+        });
+      } catch (clientErr) {
+        console.warn('Could not attribute subscription to client partner:', clientErr);
+      }
+    }
+
     try {
       await db.logAuditAction({
         actorId: merchantId,
@@ -233,6 +253,8 @@ export class SubscriptionService {
           orderId,
           paymentId,
           upiRefId,
+          clientCode: attributedClient?.client?.clientCode || clientCode || null,
+          commissionPaise: attributedClient?.commissionPaise || null,
           mode: 'demo',
         },
       });
@@ -249,9 +271,16 @@ export class SubscriptionService {
     return {
       activated: true,
       subscription,
-      plan,
       daysRemaining,
-      message: 'Subscription activated successfully (demo payment flow).',
+      clientPartner: attributedClient
+        ? {
+            code: attributedClient.client.clientCode,
+            name: attributedClient.client.name,
+            commissionPaise: attributedClient.commissionPaise,
+          }
+        : null,
+      plan,
+      message: 'Subscription activated successfully.',
     };
   }
 

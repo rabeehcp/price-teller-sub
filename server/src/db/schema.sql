@@ -294,3 +294,41 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_actor_id ON audit_logs(actor_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_entity ON audit_logs(entity_type, entity_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at);
+
+-- Client Partners / Field Onboarding Agents Table
+CREATE TABLE IF NOT EXISTS client_partners (
+  id VARCHAR(100) PRIMARY KEY,
+  client_code VARCHAR(50) UNIQUE NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  upi_id VARCHAR(100) NOT NULL,
+  commission_rate_percent NUMERIC(5, 2) NOT NULL DEFAULT 50.0,
+  min_shops_threshold INT NOT NULL DEFAULT 50,
+  area VARCHAR(255),
+  status VARCHAR(50) NOT NULL DEFAULT 'active',
+  notes TEXT,
+  total_shops_count INT NOT NULL DEFAULT 0,
+  total_earnings_paise BIGINT NOT NULL DEFAULT 0,
+  total_paid_paise BIGINT NOT NULL DEFAULT 0,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Client Payouts Table
+CREATE TABLE IF NOT EXISTS client_payouts (
+  id VARCHAR(100) PRIMARY KEY,
+  client_id VARCHAR(100) NOT NULL REFERENCES client_partners(id) ON DELETE CASCADE,
+  amount_paise INT NOT NULL CHECK (amount_paise > 0),
+  payment_method VARCHAR(50) NOT NULL DEFAULT 'upi',
+  upi_ref_id VARCHAR(100),
+  paid_to_upi VARCHAR(100),
+  notes TEXT,
+  status VARCHAR(50) NOT NULL DEFAULT 'COMPLETED',
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_client_partners_code ON client_partners(client_code);
+CREATE INDEX IF NOT EXISTS idx_client_partners_phone ON client_partners(phone);
+CREATE INDEX IF NOT EXISTS idx_client_partners_status ON client_partners(status);
+CREATE INDEX IF NOT EXISTS idx_client_payouts_client_id ON client_payouts(client_id);
+

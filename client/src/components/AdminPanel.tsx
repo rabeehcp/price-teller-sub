@@ -11,6 +11,10 @@ import {
   SubscriptionPayment,
   SubscriptionStats,
   AuditLog,
+  ClientPartner,
+  ClientPayout,
+  ClientSummaryMetrics,
+  ClientOnboardedShop,
 } from '../types';
 import { ProductImage } from './ProductImage';
 import { EditProductModal } from './EditProductModal';
@@ -33,6 +37,12 @@ import {
   fetchAdminSubscriptionPaymentsApi,
   fetchAdminSubscriptionStatsApi,
   fetchAdminAuditLogsApi,
+  fetchClientsApi,
+  createClientApi,
+  updateClientApi,
+  deleteClientApi,
+  recordClientPayoutApi,
+  fetchClientOnboardedShopsApi,
 } from '../services/api';
 import {
   ShieldCheck,
@@ -78,12 +88,18 @@ import {
   Settings,
   ShoppingBag,
   Menu,
+  Wallet,
+  Copy,
+  CheckCheck,
+  ExternalLink,
+  Briefcase,
 } from 'lucide-react';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileAdminView } from './MobileAdminView';
 import { MobileDrawer } from './MobileDrawer';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 import { DesktopAdminOverview } from './DesktopAdminOverview';
+import { ClientManagementTab } from './ClientManagementTab';
 
 export const MASTER_CATALOG_CATEGORIES: { id: string; name: string; icon: string; description: string }[] = [
   { id: 'all', name: 'All Master Items', icon: '✨', description: 'Browse and manage all platform master products' },
@@ -135,7 +151,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onLogout,
   authUser,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'stores' | 'catalog' | 'locations' | 'moderation' | 'subscriptions'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'stores' | 'catalog' | 'locations' | 'moderation' | 'subscriptions' | 'clients'>('overview');
   const [stats, setStats] = useState<any>(null);
   const [catalogSearch, setCatalogSearch] = useState('');
   const [catalogCategoryFilter, setCatalogCategoryFilter] = useState<string>('all');
@@ -853,6 +869,23 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </button>
 
             <button
+              onClick={() => setActiveTab('clients')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
+                activeTab === 'clients'
+                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
+                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <Briefcase className="w-4 h-4 text-emerald-400" />
+                <span>Field Clients</span>
+              </div>
+              <span className="bg-[#202623] text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
+                Partners
+              </span>
+            </button>
+
+            <button
               onClick={() => setActiveTab('locations')}
               className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
                 activeTab === 'locations'
@@ -1027,6 +1060,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             }`}
           >
             💳 സബ്സ്ക്രിപ്ഷൻ
+          </button>
+          <button
+            onClick={() => setActiveTab('clients')}
+            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
+              activeTab === 'clients' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
+            }`}
+          >
+            🤝 ഫീൽഡ് ക്ലയന്റ്സ്
           </button>
         </div>
 
@@ -2632,6 +2673,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
           </div>
         </div>
+      )}
+
+      {/* 7. FIELD CLIENTS / ONBOARDING PARTNERS MANAGEMENT */}
+      {activeTab === 'clients' && (
+        <ClientManagementTab token={authUser?.token} />
       )}
 
       {/* Extend Subscription Modal */}

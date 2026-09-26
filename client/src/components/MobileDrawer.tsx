@@ -24,6 +24,7 @@ import {
   CreditCard,
   Layers,
   ArrowLeft,
+  Briefcase,
 } from 'lucide-react';
 import { User } from '../types';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
@@ -407,6 +408,20 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
             >
               <CreditCard className={`w-4 h-4 shrink-0 ${adminTab === 'subscriptions' ? 'text-white' : 'text-slate-400'}`} />
               <span>സബ്‌സ്‌ക്രിപ്ഷനുകൾ (Subscriptions)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                if (onSelectAdminTab) onSelectAdminTab('clients');
+                onClose();
+              }}
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'clients'
+                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
+                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
+                }`}
+            >
+              <Briefcase className={`w-4 h-4 shrink-0 ${adminTab === 'clients' ? 'text-white' : 'text-slate-400'}`} />
+              <span>ഫീൽഡ് ക്ലയന്റ്സ് (Field Clients / Agents)</span>
             </button>
 
             <button

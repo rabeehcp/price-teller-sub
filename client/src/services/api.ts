@@ -25,6 +25,10 @@ import {
   SubscriptionCheckoutOrder,
   SubscriptionStats,
   AuditLog,
+  ClientPartner,
+  ClientPayout,
+  ClientSummaryMetrics,
+  ClientOnboardedShop,
 } from '../types';
 import { MALAPPURAM_LOCATIONS } from '../data/malappuramLocations';
 
@@ -1102,9 +1106,10 @@ export async function verifySubscriptionPaymentApi(
     paymentId?: string;
     signature?: string;
     upiRefId?: string;
+    clientCode?: string;
   },
   token?: string
-): Promise<{ success: boolean; subscription: MerchantSubscription; daysRemaining?: number }> {
+): Promise<{ success: boolean; subscription: MerchantSubscription; daysRemaining?: number; clientPartner?: any }> {
   const res = await fetch(`${API_BASE}/subscription/verify-payment`, {
     method: 'POST',
     headers: {
@@ -1224,11 +1229,165 @@ export async function fetchAdminAuditLogsApi(limit = 100, token?: string): Promi
   return [];
 }
 
+// -----------------------------------------------------------------------------
+// CLIENT PARTNERS & FIELD ONBOARDING AGENTS (COMMISSION & TRACKING)
+// -----------------------------------------------------------------------------
 
+export async function fetchClientsApi(
+  token?: string
+): Promise<{ clients: ClientPartner[]; summary: ClientSummaryMetrics }> {
+  const json = await safeFetchJson<{ success: boolean; data: { clients: ClientPartner[]; summary: ClientSummaryMetrics } }>(
+    `${API_BASE}/clients`,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }
+  );
+  if (json?.success && json.data) {
+    return json.data;
+  }
+  return {
+    clients: [],
+    summary: {
+      totalClients: 0,
+      totalActiveClients: 0,
+      totalShopsOnboarded: 0,
+      totalEarningsPaise: 0,
+      totalPaidPaise: 0,
+      pendingPayoutPaise: 0,
+    },
+  };
+}
 
+export async function createClientApi(
+  data: {
+    clientCode?: string;
+    name: string;
+    phone: string;
+    upiId: string;
+    commissionRatePercent?: number;
+    area?: string;
+    notes?: string;
+  },
+  token?: string
+): Promise<ClientPartner> {
+  const res = await fetch(`${API_BASE}/clients`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json();
+  if (json.success) return json.data;
+  throw new Error(json.error || 'Failed to create client partner');
+}
 
+export async function updateClientApi(
+  id: string,
+  updates: Partial<ClientPartner>,
+  token?: string
+): Promise<ClientPartner> {
+  const res = await fetch(`${API_BASE}/clients/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(updates),
+  });
+  const json = await res.json();
+  if (json.success) return json.data;
+  throw new Error(json.error || 'Failed to update client partner');
+}
 
+export async function deleteClientApi(id: string, token?: string): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/clients/${id}`, {
+    method: 'DELETE',
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
+  });
+  const json = await res.json();
+  return !!json.success;
+}
 
+export async function recordClientPayoutApi(
+  clientId: string,
+  data: {
+    amountPaise: number;
+    paymentMethod?: string;
+    upiRefId?: string;
+    paidToUpi?: string;
+    notes?: string;
+  },
+  token?: string
+): Promise<ClientPayout> {
+  const res = await fetch(`${API_BASE}/clients/${clientId}/payout`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+    body: JSON.stringify(data),
+  });
+  const json = await res.json();
+  if (json.success) return json.data;
+  throw new Error(json.error || 'Failed to record payout');
+}
+
+export async function fetchClientPayoutsApi(token?: string): Promise<ClientPayout[]> {
+  const json = await safeFetchJson<{ success: boolean; data: ClientPayout[] }>(
+    `${API_BASE}/clients/payouts/all`,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }
+  );
+  if (json?.success && Array.isArray(json.data)) return json.data;
+  return [];
+}
+
+export async function fetchClientOnboardedShopsApi(
+  clientId: string,
+  token?: string
+): Promise<ClientOnboardedShop[]> {
+  const json = await safeFetchJson<{ success: boolean; data: ClientOnboardedShop[] }>(
+    `${API_BASE}/clients/${clientId}/shops`,
+    {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+    }
+  );
+  if (json?.success && Array.isArray(json.data)) return json.data;
+  return [];
+}
+
+export async function lookupClientByCodeApi(
+  code: string
+): Promise<{ id: string; clientCode: string; name: string; area?: string; status: string } | null> {
+  if (!code || !code.trim()) return null;
+  const json = await safeFetchJson<{
+    success: boolean;
+    data: { id: string; clientCode: string; name: string; area?: string; status: string };
+  }>(`${API_BASE}/clients/lookup/${encodeURIComponent(code.trim())}`);
+  if (json?.success && json.data) return json.data;
+  return null;
+}
+
+export async function fetchClientPortalDataApi(codeOrPhone: string): Promise<{
+  partner: ClientPartner;
+  onboardedShops: ClientOnboardedShop[];
+  payouts: ClientPayout[];
+} | null> {
+  if (!codeOrPhone || !codeOrPhone.trim()) return null;
+  const json = await safeFetchJson<{
+    success: boolean;
+    data: {
+      partner: ClientPartner;
+      onboardedShops: ClientOnboardedShop[];
+      payouts: ClientPayout[];
+    };
+  }>(`${API_BASE}/clients/portal/${encodeURIComponent(codeOrPhone.trim())}`);
+  if (json?.success && json.data) return json.data;
+  return null;
+}
 export async function logoutUserApi(token?: string): Promise<boolean> {
   try {
     const res = await fetch(`${API_BASE}/auth/logout`, {

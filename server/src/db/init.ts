@@ -49,6 +49,64 @@ export async function initDb(): Promise<boolean> {
       await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;`);
       await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS lng DOUBLE PRECISION;`);
       await client.query(`ALTER TABLE locations ADD COLUMN IF NOT EXISTS radius_km DOUBLE PRECISION NOT NULL DEFAULT 15.0;`);
+      await client.query(`ALTER TABLE merchant_subscriptions ADD COLUMN IF NOT EXISTS client_id VARCHAR(100);`);
+      await client.query(`ALTER TABLE merchant_subscriptions ADD COLUMN IF NOT EXISTS client_code VARCHAR(50);`);
+      await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS client_id VARCHAR(100);`);
+      await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS client_code VARCHAR(50);`);
+      await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS commission_paise INT DEFAULT 0;`);
+      await client.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS referred_by_client_code VARCHAR(50);`);
+
+      // Ensure client_partners and client_payouts tables exist
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS client_partners (
+          id VARCHAR(100) PRIMARY KEY,
+          client_code VARCHAR(50) UNIQUE NOT NULL,
+          name VARCHAR(255) NOT NULL,
+          phone VARCHAR(50) NOT NULL,
+          upi_id VARCHAR(100) NOT NULL,
+          commission_rate_percent NUMERIC(5, 2) NOT NULL DEFAULT 50.0,
+          min_shops_threshold INT NOT NULL DEFAULT 50,
+          area VARCHAR(255),
+          status VARCHAR(50) NOT NULL DEFAULT 'active',
+          notes TEXT,
+          total_shops_count INT NOT NULL DEFAULT 0,
+          total_earnings_paise BIGINT NOT NULL DEFAULT 0,
+          total_paid_paise BIGINT NOT NULL DEFAULT 0,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+          updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+      `);
+
+      // Migration for existing tables: add min_shops_threshold and update default commission to 50%
+      await client.query(`
+        ALTER TABLE client_partners ADD COLUMN IF NOT EXISTS min_shops_threshold INT NOT NULL DEFAULT 50;
+        ALTER TABLE client_partners ALTER COLUMN commission_rate_percent SET DEFAULT 50.0;
+        UPDATE client_partners SET commission_rate_percent = 50.0 WHERE commission_rate_percent = 20.0;
+      `);
+
+      await client.query(`
+        CREATE TABLE IF NOT EXISTS client_payouts (
+          id VARCHAR(100) PRIMARY KEY,
+          client_id VARCHAR(100) NOT NULL REFERENCES client_partners(id) ON DELETE CASCADE,
+          amount_paise INT NOT NULL CHECK (amount_paise > 0),
+          payment_method VARCHAR(50) NOT NULL DEFAULT 'upi',
+          upi_ref_id VARCHAR(100),
+          paid_to_upi VARCHAR(100),
+          notes TEXT,
+          status VARCHAR(50) NOT NULL DEFAULT 'COMPLETED',
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+      `);
+
+      // Seed initial client partners with 50% commission and 50 shops milestone
+      await client.query(`
+        INSERT INTO client_partners (id, client_code, name, phone, upi_id, commission_rate_percent, min_shops_threshold, area, status, notes)
+        VALUES 
+          ('client-1', 'CL-101', 'Shoucky (Partner Lead)', '+91 80759 50428', '8075950428@fam', 50.0, 50, 'Tirur & Malappuram Commercial Belt', 'active', 'Founding field onboarding partner (50% commission on ₹119 plan)'),
+          ('client-2', 'CL-102', 'Rahul K (Field Agent)', '+91 98470 12345', 'rahul.k@upi', 50.0, 50, 'Kottakkal & Tanur Region', 'active', 'Local retail onboarding promoter (50% commission on ₹119 plan)')
+        ON CONFLICT (client_code) DO UPDATE SET commission_rate_percent = 50.0, min_shops_threshold = 50;
+      `);
+
       await client.query(`CREATE INDEX IF NOT EXISTS idx_messages_client_msg_id ON messages(conversation_id, client_msg_id);`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(conversation_id, is_read);`);
       await client.query(`
@@ -80,10 +138,13 @@ export async function initDb(): Promise<boolean> {
         ]
       );
 
-      // Ensure merchant subscription plans exist
+      // Ensure merchant subscription plans exist (including the ₹119 official merchant partner plan)
       await client.query(
         `INSERT INTO subscription_plans (id, name, duration_days, price_paise, currency, description, features, badge, is_active)
          VALUES 
+          ('plan-starter-119', 'Merchant Partner Plan', 30, 11900, 'INR', 'Official introductory merchant access plan (₹119/Month). Each shop onboarding credits 50% commission to partner.', 
+           '["Unlimited Live Price Updates", "Full Hyperlocal Catalog Sync", "Direct Customer Orders & Pre-Bookings", "POS Billing & Daily Sales Analytics", "Direct WhatsApp & Instant In-App Chat"]'::jsonb, 
+           '₹119 Official Plan', true),
           ('plan-monthly', 'Monthly Pro Plan', 30, 49900, 'INR', 'Full access to Store Partner Merchant Suite for 1 month.', 
            '["Unlimited Live Price Updates", "Full Hyperlocal Catalog Sync", "Direct Customer Orders & Pre-Bookings", "POS Billing & Daily Sales Analytics", "Direct WhatsApp & Instant In-App Chat"]'::jsonb, 
            'Flexible', true),
@@ -93,7 +154,7 @@ export async function initDb(): Promise<boolean> {
           ('plan-year', '1-Year Annual Partner Plan', 365, 449900, 'INR', 'Ultimate store partnership with uninterrupted 1 full year access and premium merchant perks.', 
            '["Everything in 6-Month Plan", "Full 365 Days Limit Access", "Top Priority Ranking in Search & Recommendations", "Dedicated Priority Support", "Save ₹1,489 vs Monthly Billing"]'::jsonb, 
            'Save 25%', true)
-         ON CONFLICT (id) DO NOTHING;`
+         ON CONFLICT (id) DO UPDATE SET price_paise = EXCLUDED.price_paise, is_active = true;`
       );
 
       console.log('✅ PostgreSQL tables verified, subscription plans, and Super Admin account active.');
@@ -130,27 +191,26 @@ export async function initDb(): Promise<boolean> {
       );
     }
 
-    // Ensure all shops in PostgreSQL have an associated merchant login account
-    const shopsRes = await client.query('SELECT id, name, phone, location_id FROM shops');
-    for (const s of shopsRes.rows) {
-      const existingUser = await client.query(
-        'SELECT id FROM users WHERE shop_id = $1 OR email = $2',
-        [s.id, `${s.id}@gmail.com`]
+    // Ensure demo merchant account for Al-Iqwan exists
+    const iqwanShopRes = await client.query("SELECT id, name, phone, location_id FROM shops WHERE id = 'al-iqwan'");
+    if (iqwanShopRes.rows.length > 0) {
+      const s = iqwanShopRes.rows[0];
+      const existingIqwan = await client.query(
+        "SELECT id FROM users WHERE email = 'iqwan@gmail.com' OR shop_id = 'al-iqwan'"
       );
-      if (existingUser.rowCount === 0) {
+      if (existingIqwan.rowCount === 0) {
         const defaultHash = await hashSeedPassword('password123');
         await client.query(
           `INSERT INTO users (id, email, username, name, role, password, shop_id, shop_name, phone, location_id, created_at, token)
            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
            ON CONFLICT (email) DO UPDATE SET
-             username = EXCLUDED.username,
              shop_id = EXCLUDED.shop_id,
              shop_name = EXCLUDED.shop_name`,
           [
-            `usr-merchant-${s.id}`,
-            `${s.id}@gmail.com`,
-            s.id,
-            `${s.name} Manager`,
+            'usr-merchant-iqwan',
+            'iqwan@gmail.com',
+            'iqwan',
+            'Al-Iqwan Manager',
             'merchant',
             defaultHash,
             s.id,
@@ -158,10 +218,34 @@ export async function initDb(): Promise<boolean> {
             s.phone || null,
             s.location_id || null,
             new Date().toISOString(),
-            `tok-merchant-${s.id}`,
+            'tok-merchant-iqwan',
           ]
         );
       }
+    }
+
+    // Ensure demo consumer account for rabeehsp3663@gmail.com exists
+    const existingDemoConsumer = await client.query(
+      "SELECT id FROM users WHERE email = 'rabeehsp3663@gmail.com'"
+    );
+    if (existingDemoConsumer.rowCount === 0) {
+      const defaultHash = await hashSeedPassword('password123');
+      await client.query(
+        `INSERT INTO users (id, email, username, name, role, password, phone, created_at, token)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+         ON CONFLICT (email) DO NOTHING`,
+        [
+          'usr-consumer-demo',
+          'rabeehsp3663@gmail.com',
+          'rabeeh',
+          'Rabeeh CP',
+          'consumer',
+          defaultHash,
+          '+91 98470 12345',
+          new Date().toISOString(),
+          'tok-consumer-demo',
+        ]
+      );
     }
 
     console.log('🎉 PostgreSQL clean locations, categories, and Super Admin synced.');

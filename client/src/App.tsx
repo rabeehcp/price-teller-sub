@@ -44,6 +44,7 @@ import { ConsumerChatModal } from './components/ConsumerChatModal';
 import { PreBookingModal } from './components/PreBookingModal';
 import { ConsumerPreBookingsModal } from './components/ConsumerPreBookingsModal';
 import { MerchantSubscriptionPaywall } from './components/MerchantSubscriptionPaywall';
+import { PartnerPortal } from './components/PartnerPortal';
 import { NearbyShopsMapView } from './components/NearbyShopsMapView';
 import { StoresListView } from './components/StoresListView';
 import { MobileHeader } from './components/MobileHeader';
@@ -147,6 +148,31 @@ const isExplicitConsumerRoute = (): boolean => {
   }
 };
 
+const isExplicitPartnerRoute = (): boolean => {
+  try {
+    const pathname = (window.location.pathname || '').toLowerCase();
+    const search = (window.location.search || '').toLowerCase();
+    const hash = (window.location.hash || '').toLowerCase();
+    const params = new URLSearchParams(window.location.search);
+
+    return (
+      pathname === '/partner' ||
+      pathname.startsWith('/partner/') ||
+      pathname === '/client' ||
+      pathname.startsWith('/client/') ||
+      params.get('portal') === 'partner' ||
+      params.get('partner') === 'true' ||
+      search.includes('portal=partner') ||
+      search.includes('partner=true') ||
+      hash === '#partner' ||
+      hash.startsWith('#/partner') ||
+      hash === '#client'
+    );
+  } catch {
+    return false;
+  }
+};
+
 export const App: React.FC = () => {
   // Authentication State (Persisted across sessions via localStorage & sessionStorage; validated with backend)
   const [authUser, setAuthUser] = useState<User | null>(() => {
@@ -166,8 +192,11 @@ export const App: React.FC = () => {
   // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
   const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
 
-  // App View State ('welcome' | 'consumer' | 'merchant' | 'admin')
-  const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin'>(() => {
+  // App View State ('welcome' | 'consumer' | 'merchant' | 'admin' | 'partner')
+  const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin' | 'partner'>(() => {
+    if (isExplicitPartnerRoute()) {
+      return 'partner';
+    }
     if (isExplicitAdminRoute()) {
       return 'admin';
     }
@@ -1308,6 +1337,18 @@ export const App: React.FC = () => {
     );
   }
 
+  // 1.5 FIELD CLIENT / PARTNER PORTAL (Self-service partner performance & onboarding)
+  if (appView === 'partner' || isExplicitPartnerRoute()) {
+    return (
+      <PartnerPortal
+        onBackToApp={() => {
+          window.history.pushState({}, '', '/');
+          setAppView('welcome');
+        }}
+      />
+    );
+  }
+
   // 2. KERALA WELCOME LANDING PAGE (Default screen on localhost / root visit)
   if (appView === 'welcome') {
     return (
@@ -1344,6 +1385,10 @@ export const App: React.FC = () => {
             } else {
               handleOpenAuthModal('merchant-login');
             }
+          }}
+          onOpenPartnerPortal={() => {
+            window.history.pushState({}, '', '/partner');
+            setAppView('partner');
           }}
           onOpenShopCatalogue={handleOpenShopCatalogue}
           onLogout={handleLogout}

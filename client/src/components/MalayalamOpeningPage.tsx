@@ -28,6 +28,7 @@ interface MalayalamOpeningPageProps {
   onEnterAsConsumer: () => void;
   onOpenConsumerLogin?: () => void;
   onOpenMerchantPortal: () => void;
+  onOpenPartnerPortal?: () => void;
   onOpenShopCatalogue?: (shopName?: string) => void;
   authUser?: User | null;
   onLogout?: () => void;
@@ -43,6 +44,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
   onEnterAsConsumer,
   onOpenConsumerLogin,
   onOpenMerchantPortal,
+  onOpenPartnerPortal,
   onOpenShopCatalogue,
   authUser,
   onLogout,
@@ -271,6 +273,18 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <Store className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#6B8579]" />
               <span className="hidden xs:inline sm:inline">വ്യാപാരികൾക്കായി</span>
             </button>
+
+            {/* Field Partner / Client portal link */}
+            {onOpenPartnerPortal && (
+              <button
+                type="button"
+                onClick={onOpenPartnerPortal}
+                className="hidden sm:flex items-center gap-1.5 text-xs lg:text-sm font-bold text-[#4D6158] hover:text-[#0D4A36] hover:bg-white px-2.5 sm:px-3 py-1 sm:py-1.5 lg:py-2 rounded-full border border-[#D5E5DC]/60 hover:border-[#D5E5DC] transition-all cursor-pointer font-malayalam shrink-0"
+                title="ഫീൽഡ് പാർട്ണർ (Field Partner Portal)"
+              >
+                <span>🤝 പാർട്ണർ</span>
+              </button>
+            )}
 
             {/* Weighing scale / compare icon */}
             <button
@@ -819,8 +833,17 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             <span>·</span>
             <span className="truncate">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
           </div>
-          <div className="text-[8px] md:text-[11px] lg:text-xs shrink-0 text-[#0D4A36] font-bold">
-            📍 Kerala
+          <div className="flex items-center gap-3 text-[8px] md:text-[11px] lg:text-xs shrink-0 text-[#0D4A36] font-bold">
+            {onOpenPartnerPortal && (
+              <button
+                type="button"
+                onClick={onOpenPartnerPortal}
+                className="hover:underline cursor-pointer text-slate-500 hover:text-emerald-700"
+              >
+                🤝 പാർട്ണർ പോർട്ടൽ
+              </button>
+            )}
+            <span>📍 Kerala</span>
           </div>
         </div>
       </footer>

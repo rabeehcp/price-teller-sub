@@ -2138,7 +2138,7 @@ apiRouter.post('/subscription/checkout', authenticateToken, requireMerchant, asy
 apiRouter.post('/subscription/verify-payment', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const user = req.user;
-    const { orderId, paymentId, signature, upiRefId } = req.body;
+    const { orderId, paymentId, signature, upiRefId, clientCode } = req.body;
     if (!orderId) {
       return res.status(400).json({ success: false, error: 'orderId is required' });
     }
@@ -2149,6 +2149,7 @@ apiRouter.post('/subscription/verify-payment', authenticateToken, requireMerchan
       paymentId,
       signature,
       upiRefId,
+      clientCode,
       actorRole: user.role,
     });
 
@@ -2247,6 +2248,209 @@ apiRouter.get('/subscription/admin/audit-logs', authenticateToken, requireAdmin,
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
+// -------------------------------------------------------------------
+// CLIENT PARTNERS & FIELD ONBOARDING AGENTS (COMMISSION & TRACKING)
+// -------------------------------------------------------------------
+
+// Public / Merchant: Quick lookup of client code for referral verification
+apiRouter.get('/clients/lookup/:code', async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    if (!code || !code.trim()) {
+      return res.status(400).json({ success: false, error: 'Code is required' });
+    }
+    const client = await db.getClientPartnerByCode(code.trim());
+    if (!client) {
+      return res.status(404).json({ success: false, error: 'Client partner not found' });
+    }
+    res.json({
+      success: true,
+      data: {
+        id: client.id,
+        clientCode: client.clientCode,
+        name: client.name,
+        area: client.area,
+        status: client.status,
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Public / Partner Portal: Self-service partner dashboard
+apiRouter.get('/clients/portal/:codeOrPhone', async (req: Request, res: Response) => {
+  try {
+    const { codeOrPhone } = req.params;
+    if (!codeOrPhone || !codeOrPhone.trim()) {
+      return res.status(400).json({ success: false, error: 'Partner code or phone is required' });
+    }
+
+    const client = await db.getClientPartnerByCode(codeOrPhone.trim());
+    if (!client) {
+      return res.status(404).json({ success: false, error: 'No registered partner found with this code or phone' });
+    }
+
+    const onboardedShops = await db.getClientOnboardedShops(client.clientCode);
+    const payouts = await db.getClientPayouts(client.id);
+
+    res.json({
+      success: true,
+      data: {
+        partner: client,
+        onboardedShops,
+        payouts,
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Get all client partners + summary metrics
+apiRouter.get('/clients', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const clients = await db.getAllClientPartners();
+    
+    // Compute summary
+    const totalClients = clients.length;
+    const totalActiveClients = clients.filter((c) => c.status === 'active').length;
+    const totalShopsOnboarded = clients.reduce((sum, c) => sum + (c.totalShopsCount || 0), 0);
+    const totalEarningsPaise = clients.reduce((sum, c) => sum + (c.totalEarningsPaise || 0), 0);
+    const totalPaidPaise = clients.reduce((sum, c) => sum + (c.totalPaidPaise || 0), 0);
+    const pendingPayoutPaise = Math.max(0, totalEarningsPaise - totalPaidPaise);
+
+    res.json({
+      success: true,
+      data: {
+        clients,
+        summary: {
+          totalClients,
+          totalActiveClients,
+          totalShopsOnboarded,
+          totalEarningsPaise,
+          totalPaidPaise,
+          pendingPayoutPaise,
+        },
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Create new client partner
+apiRouter.post('/clients', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { name, phone, upiId, commissionRatePercent, minShopsThreshold, area, notes, clientCode } = req.body;
+    if (!name || !phone || !upiId) {
+      return res.status(400).json({ success: false, error: 'Name, phone, and upiId are required' });
+    }
+
+    // Check if clientCode already exists if provided
+    if (clientCode) {
+      const existing = await db.getClientPartnerByCode(clientCode);
+      if (existing) {
+        return res.status(400).json({ success: false, error: `Client code "${clientCode}" is already in use` });
+      }
+    }
+
+    const created = await db.createClientPartner({
+      name,
+      phone,
+      upiId,
+      commissionRatePercent: Number(commissionRatePercent) || 50.0,
+      minShopsThreshold: Number(minShopsThreshold) || 50,
+      area,
+      notes,
+      clientCode,
+    });
+
+    res.json({ success: true, data: created });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Update client partner
+apiRouter.put('/clients/:id', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body;
+
+    const updated = await db.updateClientPartner(id, updates);
+    if (!updated) {
+      return res.status(404).json({ success: false, error: 'Client partner not found' });
+    }
+
+    res.json({ success: true, data: updated });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Delete client partner
+apiRouter.delete('/clients/:id', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const ok = await db.deleteClientPartner(id);
+    res.json({ success: ok, message: ok ? 'Client partner deleted successfully' : 'Client partner not found' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Record payout to a client partner
+apiRouter.post('/clients/:id/payout', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { amountPaise, paymentMethod, upiRefId, paidToUpi, notes } = req.body;
+
+    if (!amountPaise || Number(amountPaise) <= 0) {
+      return res.status(400).json({ success: false, error: 'Valid positive amount is required' });
+    }
+
+    const payout = await db.recordClientPayout({
+      clientId: id,
+      amountPaise: Number(amountPaise),
+      paymentMethod,
+      upiRefId,
+      paidToUpi,
+      notes,
+    });
+
+    res.json({ success: true, data: payout });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Get all client payouts
+apiRouter.get('/clients/payouts/all', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const payouts = await db.getClientPayouts();
+    res.json({ success: true, data: payouts });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// Admin: Get shops onboarded by a client
+apiRouter.get('/clients/:id/shops', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const client = await db.getClientPartnerById(id);
+    if (!client) {
+      return res.status(404).json({ success: false, error: 'Client partner not found' });
+    }
+    const shops = await db.getClientOnboardedShops(client.clientCode);
+    res.json({ success: true, data: shops });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 
 
 
