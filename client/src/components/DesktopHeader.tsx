@@ -44,7 +44,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-6 py-2.5 sm:py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
       <div className="flex items-center justify-between gap-2.5 sm:gap-4 w-full max-w-[1720px] mx-auto">
-        
+
         {/* Left: Location Selector Pill in Header */}
         {onOpenLocationModal && (
           <button
@@ -84,25 +84,23 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
         {/* Right Controls: Cart Pill, Bell, Heart, Profile Dropdown */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-          
+
           {/* Quick-Commerce Cart & Comparison Trigger */}
           {onToggleRightSidebar && (
             <button
               type="button"
               onClick={onToggleRightSidebar}
-              className={`flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer font-malayalam shadow-2xs ${
-                isRightSidebarOpen
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer font-malayalam shadow-2xs ${isRightSidebarOpen
                   ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-xs'
                   : 'bg-[#F5F8F6] hover:bg-[#E8F8F0] border-[#E3ECE7] hover:border-[#10A978]/40 text-[#17221D]'
-              }`}
+                }`}
               title={isRightSidebarOpen ? 'കാർട്ട് പാനൽ മറയ്ക്കുക (Hide Cart)' : 'കാർട്ട് & താരതമ്യം കാണുക (View Cart & Compare)'}
             >
               <ShoppingBag className={`w-3.5 h-3.5 ${isRightSidebarOpen ? 'text-[#34D399]' : 'text-[#0B8F68]'}`} />
               <span className="text-xs font-bold hidden md:inline">കാർട്ട്</span>
               {basketCount > 0 ? (
-                <span className={`text-[11px] font-black font-sans px-2 py-0.2 rounded-full ${
-                  isRightSidebarOpen ? 'bg-[#10A978] text-white' : 'bg-[#063B2A] text-white'
-                }`}>
+                <span className={`text-[11px] font-black font-sans px-2 py-0.2 rounded-full ${isRightSidebarOpen ? 'bg-[#10A978] text-white' : 'bg-[#063B2A] text-white'
+                  }`}>
                   {basketCount} • ₹{basketSubtotal}
                 </span>
               ) : (

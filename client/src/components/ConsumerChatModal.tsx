@@ -23,7 +23,14 @@ import {
   Info,
   CheckCheck,
   Phone,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Languages,
 } from 'lucide-react';
+import { VoiceNotePlayer } from './VoiceNotePlayer';
+import { VoiceMessageRecorder } from './VoiceMessageRecorder';
 
 export const formatChatDateTime = (dateStr?: string | null): string => {
   if (!dateStr) return '';
@@ -89,6 +96,119 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [showBasketBreakdown, setShowBasketBreakdown] = useState(true);
+
+  // Voice State
+  const [isListening, setIsListening] = useState(false);
+  const [voiceLanguage, setVoiceLanguage] = useState<'ml-IN' | 'en-IN'>('ml-IN');
+  const [voiceError, setVoiceError] = useState<string | null>(null);
+  const [speakingMsgId, setSpeakingMsgId] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+
+  const isSpeechSupported = typeof window !== 'undefined' && (
+    'SpeechRecognition' in window || 'webkitSpeechRecognition' in window
+  );
+
+  // Toggle Voice Dictation
+  const toggleListening = () => {
+    if (!isSpeechSupported) {
+      alert('Voice input is not supported in this browser. Please use Chrome, Edge, or Safari.');
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = voiceLanguage;
+
+      recognition.onstart = () => {
+        setIsListening(true);
+        setVoiceError(null);
+      };
+
+      recognition.onresult = (event: any) => {
+        let currentTranscript = '';
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          currentTranscript += event.results[i][0].transcript;
+        }
+        if (currentTranscript.trim()) {
+          setInputText((prev) => {
+            const trimmed = prev.trim();
+            if (!trimmed) return currentTranscript.trim();
+            // Avoid duplicate words at the end
+            if (trimmed.endsWith(currentTranscript.trim())) return trimmed;
+            return `${trimmed} ${currentTranscript.trim()}`;
+          });
+        }
+      };
+
+      recognition.onerror = (event: any) => {
+        console.warn('Speech recognition warning:', event.error);
+        if (event.error === 'not-allowed') {
+          setVoiceError('Microphone permission denied. Please allow microphone access.');
+          setIsListening(false);
+        } else if (event.error !== 'no-speech') {
+          setIsListening(false);
+        }
+      };
+
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (err: any) {
+      console.error('Failed to start speech recognition:', err);
+      setVoiceError('Could not start voice recognition.');
+      setIsListening(false);
+    }
+  };
+
+  // Text-To-Speech for reading messages aloud
+  const handleSpeakMessage = (msgId: string, text: string) => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    if (speakingMsgId === msgId) {
+      window.speechSynthesis.cancel();
+      setSpeakingMsgId(null);
+      return;
+    }
+
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const preferredVoice = voices.find(
+      (v) => v.lang.includes('ml') || v.lang.includes('hi') || v.lang.includes('IN')
+    );
+    if (preferredVoice) {
+      utterance.voice = preferredVoice;
+    }
+    utterance.onend = () => setSpeakingMsgId(null);
+    utterance.onerror = () => setSpeakingMsgId(null);
+    setSpeakingMsgId(msgId);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Cleanup voice on unmount or modal close
+  useEffect(() => {
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.abort();
+      }
+      if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, []);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const currentShop = shops.find((s) => s.name === selectedShopName) || shops[0];
@@ -229,9 +349,15 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
   }, [messages, isSending]);
 
   // Send message handler with deduplication & retry support
-  const handleSendMessage = async (textToSend?: string, existingClientMsgId?: string) => {
+  // Send message handler with deduplication & retry & voice note support
+  const handleSendMessage = async (
+    textToSend?: string,
+    existingClientMsgId?: string,
+    audioUrl?: string,
+    audioDuration?: number
+  ) => {
     const text = (textToSend || inputText).trim();
-    if (!text) return;
+    if (!text && !audioUrl) return;
 
     if (!authUser) {
       if (onRequireAuth) onRequireAuth();
@@ -244,7 +370,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
     const tempId = `temp-${clientMsgId}`;
 
     if (!existingClientMsgId) {
-      setInputText('');
+      if (!audioUrl) setInputText('');
       // Optimistically add message
       const optimisticMsg: ChatMessage = {
         id: tempId,
@@ -252,7 +378,9 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
         senderId: authUser.id,
         senderRole: 'consumer',
         senderName: authUser.name || 'You',
-        text,
+        text: text || (audioUrl ? '🎙️ Voice Message' : ''),
+        audioUrl,
+        audioDuration,
         basketSnapshot,
         status: 'sending',
         clientMsgId,
@@ -276,12 +404,23 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
             shopId: currentShop?.id || 'custom',
             shopName: selectedShopName,
             basketSnapshot,
-            initialMessage: text,
+            initialMessage: text || (audioUrl ? '🎙️ Voice Message' : 'Hello'),
           },
           authUser.token
         );
         setActiveConversation(res.conversation);
-        if (res.initialMessage) {
+        if (audioUrl) {
+          const newMsg = await sendMessageApi(
+            res.conversation.id,
+            text || '🎙️ Voice Message',
+            authUser.token,
+            basketSnapshot,
+            clientMsgId,
+            audioUrl,
+            audioDuration
+          );
+          setMessages([newMsg]);
+        } else if (res.initialMessage) {
           setMessages([res.initialMessage]);
         }
         await loadConversations(res.conversation.id);
@@ -289,10 +428,12 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
         // Send message to existing conversation along with updated basket snapshot and clientMsgId
         const newMsg = await sendMessageApi(
           activeConversation.id,
-          text,
+          text || (audioUrl ? '🎙️ Voice Message' : ''),
           authUser.token,
           basketSnapshot,
-          clientMsgId
+          clientMsgId,
+          audioUrl,
+          audioDuration
         );
         setMessages((prev) =>
           prev.map((m) =>
@@ -496,7 +637,33 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                         : 'bg-white text-slate-dark border border-gray-200 rounded-tl-xs'
                     }`}
                   >
-                    <div>{msg.text}</div>
+                    {msg.audioUrl ? (
+                      <VoiceNotePlayer
+                        audioUrl={msg.audioUrl}
+                        duration={msg.audioDuration}
+                        isMe={isMe}
+                      />
+                    ) : (
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex-1">{msg.text}</div>
+                        <button
+                          type="button"
+                          onClick={() => handleSpeakMessage(msg.id, msg.text)}
+                          className={`p-1 rounded-full transition-colors cursor-pointer shrink-0 ${
+                            isMe
+                              ? 'text-white/70 hover:text-white hover:bg-white/20'
+                              : 'text-gray-400 hover:text-emerald-700 hover:bg-emerald-50'
+                          }`}
+                          title={speakingMsgId === msg.id ? 'നിർത്തുക (Stop voice)' : 'കേൾക്കുക (Listen message)'}
+                        >
+                          {speakingMsgId === msg.id ? (
+                            <VolumeX className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                          ) : (
+                            <Volume2 className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+                    )}
 
                     {msg.basketSnapshot && msg.basketSnapshot.items?.length > 0 && (
                       <div
@@ -575,7 +742,7 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
           ))}
         </div>
 
-        {/* Message Input Footer */}
+        {/* Message Input Footer with Voice Capability */}
         <div className="p-2.5 sm:p-4 bg-white border-t border-gray-200 flex flex-col gap-2 shrink-0">
           {basketSnapshot.itemCount > 0 && (
             <div className="flex items-center justify-between bg-brand-50/80 border border-brand-200/80 px-2.5 py-1 sm:py-1.5 rounded-xl text-[10px] sm:text-[11px] text-brand-900">
@@ -591,6 +758,51 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
             </div>
           )}
 
+          {/* Active Voice Listening Pill */}
+          {isListening && (
+            <div className="flex items-center justify-between bg-emerald-50 border border-emerald-300/80 rounded-xl px-3 py-1.5 text-xs text-emerald-950 animate-in fade-in duration-150">
+              <div className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600"></span>
+                </span>
+                <span className="font-bold font-malayalam text-[11px] sm:text-xs">
+                  {voiceLanguage === 'ml-IN' ? 'സംസാരിക്കൂ... (കേൾക്കുന്നുണ്ട്)' : 'Listening for your voice...'}
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    const nextLang = voiceLanguage === 'ml-IN' ? 'en-IN' : 'ml-IN';
+                    setVoiceLanguage(nextLang);
+                    if (recognitionRef.current) {
+                      recognitionRef.current.lang = nextLang;
+                    }
+                  }}
+                  className="flex items-center gap-1 text-[10px] font-bold bg-white border border-emerald-300 hover:bg-emerald-100 px-2 py-0.5 rounded-lg text-emerald-800 transition-colors cursor-pointer"
+                  title="ഭാഷ മാറ്റുക (Switch Voice Language)"
+                >
+                  <Languages className="w-3 h-3" />
+                  <span>{voiceLanguage === 'ml-IN' ? 'മലയാളം' : 'English'}</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={toggleListening}
+                  className="text-[10px] font-bold bg-red-100 text-red-700 hover:bg-red-200 border border-red-300 px-2 py-0.5 rounded-lg transition-colors cursor-pointer"
+                >
+                  നിർത്തുക
+                </button>
+              </div>
+            </div>
+          )}
+
+          {voiceError && (
+            <div className="text-[11px] text-red-600 bg-red-50 border border-red-200 px-2.5 py-1 rounded-lg">
+              {voiceError}
+            </div>
+          )}
+
           <div className="flex items-center gap-1.5 sm:gap-2">
             <input
               type="text"
@@ -602,15 +814,57 @@ export const ConsumerChatModal: React.FC<ConsumerChatModalProps> = ({
                   handleSendMessage();
                 }
               }}
-              placeholder={`Ask ${selectedShopName} about your basket...`}
-              className="flex-1 bg-gray-50 border border-gray-300 focus:border-brand-500 focus:bg-white rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-dark outline-none transition-all"
+              placeholder={
+                isListening
+                  ? voiceLanguage === 'ml-IN'
+                    ? 'സംസാരിക്കൂ... വാക്കുകൾ ഇവിടെ വരും'
+                    : 'Listening... speak now'
+                  : `Ask ${selectedShopName} in Malayalam or English...`
+              }
+              className={`flex-1 bg-gray-50 border ${
+                isListening
+                  ? 'border-emerald-500 ring-2 ring-emerald-100 bg-white'
+                  : 'border-gray-300 focus:border-brand-500 focus:bg-white'
+              } rounded-xl sm:rounded-2xl px-3.5 py-2.5 sm:py-3 text-xs sm:text-sm text-slate-dark outline-none transition-all`}
               disabled={isSending}
             />
 
+            {/* Voice Dictation (Speech to text) */}
+            <button
+              type="button"
+              onClick={toggleListening}
+              className={`p-2.5 sm:p-3 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center transition-all cursor-pointer shrink-0 min-w-[42px] min-h-[42px] ${
+                isListening
+                  ? 'bg-red-600 text-white shadow-md shadow-red-200 ring-4 ring-red-100 animate-pulse'
+                  : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 hover:border-emerald-300 active:scale-95'
+              }`}
+              title={
+                isListening
+                  ? 'മൈക്ക് നിർത്തുക (Stop Voice)'
+                  : `വോയ്സ് ടൈപ്പിംഗ് (${voiceLanguage === 'ml-IN' ? 'മലയാളം' : 'English'})`
+              }
+            >
+              {isListening ? (
+                <MicOff className="w-4 h-4" />
+              ) : (
+                <Mic className="w-4 h-4" />
+              )}
+            </button>
+
+            {/* Voice Note Audio Recording */}
+            <VoiceMessageRecorder
+              onSendVoice={async (audioUrl, duration) => {
+                await handleSendMessage('', undefined, audioUrl, duration);
+              }}
+              disabled={isSending}
+              theme="consumer"
+            />
+
+            {/* Send Button */}
             <button
               onClick={() => handleSendMessage()}
               disabled={!inputText.trim() || isSending}
-              className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white p-2.5 sm:px-5 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0 min-w-[42px] min-h-[42px]"
+              className="bg-brand-600 hover:bg-brand-700 disabled:bg-gray-300 text-white p-2.5 sm:px-5 rounded-xl sm:rounded-2xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:cursor-not-allowed shrink-0 min-w-[42px] min-h-[42px] active:scale-95"
             >
               {isSending ? (
                 <RefreshCw className="w-4 h-4 animate-spin" />

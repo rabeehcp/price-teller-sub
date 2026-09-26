@@ -4,6 +4,8 @@ import { formatChatDateTime } from './ConsumerChatModal';
 import { ProductImage } from './ProductImage';
 import { MasterCatalogPickerModal } from './MasterCatalogPickerModal';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
+import { VoiceNotePlayer } from './VoiceNotePlayer';
+import { VoiceMessageRecorder } from './VoiceMessageRecorder';
 import {
   createFlashDealApi,
   updateMerchantPricesApi,
@@ -186,6 +188,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   // Merchant Customer Chat State
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedConversation, setSelectedConversation] = useState<Conversation | null>(null);
+  const selectedConversationIdRef = useRef<string | null>(null);
+  useEffect(() => {
+    selectedConversationIdRef.current = selectedConversation?.id || null;
+  }, [selectedConversation?.id]);
   const [conversationMessages, setConversationMessages] = useState<ChatMessage[]>([]);
   const [replyText, setReplyText] = useState('');
   const [isSendingReply, setIsSendingReply] = useState(false);
@@ -727,7 +733,6 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
   // Load conversations for merchant's store
   const loadMerchantConversations = async () => {
-
     if (!authUser?.token) return;
     try {
       const all = await fetchConversationsApi(authUser.token);
@@ -739,14 +744,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       );
       setConversations(filtered);
       if (filtered.length > 0) {
-        if (!selectedConversation) {
-          setSelectedConversation(filtered[0]);
-        } else {
-          const updated = filtered.find((c) => c.id === selectedConversation.id);
-          if (updated) {
-            setSelectedConversation(updated);
+        setSelectedConversation((prev) => {
+          if (!prev) {
+            selectedConversationIdRef.current = filtered[0].id;
+            return filtered[0];
           }
-        }
+          const updated = filtered.find((c) => c.id === prev.id);
+          return updated || prev;
+        });
       }
     } catch (err) {
       console.error('Failed to load merchant conversations:', err);
@@ -754,10 +759,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   };
 
   const loadMessagesForConversation = async (convId: string, silent = false) => {
-    if (!authUser?.token) return;
+    if (!authUser?.token || !convId) return;
     if (!silent) setIsLoadingMessages(true);
     try {
       const res = await fetchConversationMessagesApi(convId, authUser.token);
+      // Strict guard: if user switched conversations while request was in flight, discard response!
+      if (selectedConversationIdRef.current && selectedConversationIdRef.current !== convId) {
+        return;
+      }
       if (res) {
         setConversationMessages((prev) => {
           const serverIds = new Set(res.messages.map((m) => m.id));
@@ -770,7 +779,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           );
           return [...res.messages, ...localPending];
         });
-        setSelectedConversation(res.conversation);
+        setSelectedConversation((prev) => {
+          if (prev && prev.id === convId) {
+            return res.conversation;
+          }
+          return prev;
+        });
         // Mark conversation as read
         markConversationReadApi(convId, authUser.token).catch(() => {});
         // Update local unread count for this conversation
@@ -887,20 +901,26 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     const interval = setInterval(() => {
       loadMerchantConversations();
       loadMerchantPreBookings(true);
-      if (selectedConversation?.id && merchantTab === 'chats') {
-        loadMessagesForConversation(selectedConversation.id, true);
+      const activeId = selectedConversationIdRef.current;
+      if (activeId && merchantTab === 'chats') {
+        loadMessagesForConversation(activeId, true);
       }
     }, 2500);
     return () => clearInterval(interval);
-  }, [authUser?.token, selectedConversation?.id, selectedShopName, merchantTab]);
+  }, [authUser?.token, selectedShopName, merchantTab]);
 
   useEffect(() => {
     merchantChatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [conversationMessages, isSendingReply]);
 
-  const handleSendMerchantReply = async (customText?: string, existingClientMsgId?: string) => {
+  const handleSendMerchantReply = async (
+    customText?: string,
+    existingClientMsgId?: string,
+    audioUrl?: string,
+    audioDuration?: number
+  ) => {
     const text = (customText || replyText).trim();
-    if (!text || !selectedConversation || !authUser?.token) return;
+    if ((!text && !audioUrl) || !selectedConversation || !authUser?.token) return;
 
     if (isSendingReply && !existingClientMsgId) return;
 
@@ -908,14 +928,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     const tempId = `temp-${clientMsgId}`;
 
     if (!existingClientMsgId) {
-      if (!customText) setReplyText('');
+      if (!customText && !audioUrl) setReplyText('');
       const optimisticMsg: ChatMessage = {
         id: tempId,
         conversationId: selectedConversation.id,
         senderId: authUser.id,
         senderRole: 'merchant',
         senderName: selectedShopName || authUser.name || 'Merchant',
-        text,
+        text: text || (audioUrl ? '🎙️ Voice Message' : ''),
+        audioUrl,
+        audioDuration,
         status: 'sending',
         clientMsgId,
         createdAt: new Date().toISOString(),
@@ -932,10 +954,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     try {
       const newMsg = await sendMessageApi(
         selectedConversation.id,
-        text,
+        text || (audioUrl ? '🎙️ Voice Message' : ''),
         authUser.token,
         undefined,
-        clientMsgId
+        clientMsgId,
+        audioUrl,
+        audioDuration
       );
       setConversationMessages((prev) =>
         prev.map((m) =>
@@ -946,7 +970,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       setConversations((prev) =>
         prev.map((c) =>
           c.id === selectedConversation.id
-            ? { ...c, lastMessage: text, lastMessageTime: new Date().toISOString() }
+            ? {
+                ...c,
+                lastMessage: text || (audioUrl ? '🎙️ Voice Message' : 'Voice note'),
+                lastMessageTime: new Date().toISOString(),
+              }
             : c
         )
       );
@@ -998,7 +1026,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     staples: ['staples', 'rice-grains', 'pulses-legumes'],
     'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
     household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
-    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'beverages'],
+    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'snacks'],
+    beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
   };
 
   // 1. Filter products eligible based on the shop's supported categories
@@ -3376,7 +3405,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     return (
                       <button
                         key={conv.id}
-                        onClick={() => setSelectedConversation(conv)}
+                        onClick={() => {
+                          selectedConversationIdRef.current = conv.id;
+                          setSelectedConversation(conv);
+                        }}
                         className={`w-full p-3.5 text-left transition-all cursor-pointer flex items-start gap-3 ${
                           isSelected
                             ? 'bg-brand-50/90 border-l-4 border-brand-600'
@@ -3543,7 +3575,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     : 'bg-white text-slate-dark border border-gray-200 rounded-tl-xs'
                                 }`}
                               >
-                                <div>{msg.text}</div>
+                                {msg.audioUrl ? (
+                                  <VoiceNotePlayer
+                                    audioUrl={msg.audioUrl}
+                                    duration={msg.audioDuration}
+                                    isMe={isMerchantSender}
+                                  />
+                                ) : (
+                                  <div>{msg.text}</div>
+                                )}
 
                                 {msg.basketSnapshot && msg.basketSnapshot.items?.length > 0 && (
                                   <div
@@ -3650,6 +3690,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         placeholder={`Reply to ${selectedConversation.consumerName || 'Shopper'}...`}
                         className="flex-1 bg-gray-50 border border-gray-300 focus:border-brand-500 focus:bg-white rounded-xl px-3.5 py-2.5 text-xs sm:text-sm text-slate-dark outline-none transition-all"
                         disabled={isSendingReply}
+                      />
+
+                      {/* Voice Note Recording for Merchant */}
+                      <VoiceMessageRecorder
+                        onSendVoice={async (audioUrl, duration) => {
+                          await handleSendMerchantReply('', undefined, audioUrl, duration);
+                        }}
+                        disabled={isSendingReply}
+                        theme="merchant"
                       />
 
                       <button

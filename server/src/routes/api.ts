@@ -1496,9 +1496,9 @@ apiRouter.post('/conversations/:id/messages', authenticateToken, async (req: Aut
     }
 
     const { id } = req.params;
-    const { text, basketSnapshot, clientMsgId } = req.body;
-    if (!text || !text.trim()) {
-      return res.status(400).json({ success: false, error: 'Message text cannot be empty' });
+    const { text, audioUrl, audioDuration, basketSnapshot, clientMsgId } = req.body;
+    if ((!text || !text.trim()) && !audioUrl) {
+      return res.status(400).json({ success: false, error: 'Message text or audio voice note is required' });
     }
 
     const conversation = await db.getConversationById(id);
@@ -1514,14 +1514,18 @@ apiRouter.post('/conversations/:id/messages', authenticateToken, async (req: Aut
       });
     }
 
+    const cleanText = text?.trim() || (audioUrl ? '🎙️ Voice Message' : '');
+
     const message = await db.addChatMessage(
       id,
       user.id,
       user.role,
       user.name,
-      text.trim(),
+      cleanText,
       basketSnapshot,
-      clientMsgId
+      clientMsgId,
+      audioUrl,
+      audioDuration
     );
     res.json({
       success: true,

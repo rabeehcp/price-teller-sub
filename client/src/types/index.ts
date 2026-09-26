@@ -296,6 +296,8 @@ export interface ChatMessage {
   senderRole: 'consumer' | 'merchant' | 'admin';
   senderName: string;
   text: string;
+  audioUrl?: string;
+  audioDuration?: number;
   basketSnapshot?: BasketSnapshot;
   createdAt: string;
   isRead?: boolean;

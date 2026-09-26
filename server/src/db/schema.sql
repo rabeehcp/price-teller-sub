@@ -152,6 +152,8 @@ CREATE TABLE IF NOT EXISTS messages (
 ALTER TABLE messages ADD COLUMN IF NOT EXISTS basket_snapshot JSONB;
 ALTER TABLE messages ADD COLUMN IF NOT EXISTS is_read BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE messages ADD COLUMN IF NOT EXISTS client_msg_id VARCHAR(100);
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS audio_url TEXT;
+ALTER TABLE messages ADD COLUMN IF NOT EXISTS audio_duration NUMERIC;
 CREATE INDEX IF NOT EXISTS idx_messages_client_msg_id ON messages(conversation_id, client_msg_id);
 -- Unique partial index prevents concurrent duplicate chat messages with the same client_msg_id
 CREATE UNIQUE INDEX IF NOT EXISTS uq_messages_conversation_client_msg

@@ -47,8 +47,11 @@ function matchesCategory(productCatId: string | undefined, selectedCatId: string
       p === 'pulses-legumes'
     );
   }
-  if (s === 'biscuits-snacks') {
-    return p === 'biscuits-snacks' || p === 'beverages' || p === 'bakery-breakfast' || p === 'snacks-beverages';
+  if (s === 'beverages') {
+    return p === 'beverages' || p === 'drinks' || p === 'tea-coffee' || p === 'juices';
+  }
+  if (s === 'biscuits-snacks' || s === 'bakery-breakfast') {
+    return p === 'biscuits-snacks' || p === 'bakery-breakfast' || p === 'snacks' || p === 'bread-bakery';
   }
   return p.includes(s) || s.includes(p);
 }

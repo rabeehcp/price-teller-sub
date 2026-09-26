@@ -57,7 +57,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
   useEffect(() => {
     setHasError(false);
     let initial = resolveProductImageSrc(image);
-    
+
     // Safeguard: Never show banana fallback image for products that are not bananas
     if (initial && initial.includes('test-banana-green')) {
       const text = `${productId || ''} ${alt || ''}`.toLowerCase();
@@ -66,7 +66,7 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         initial = null;
       }
     }
-    
+
     setCurrentSrc(initial);
   }, [image, alt, productId]);
 
@@ -96,9 +96,8 @@ export const ProductImage: React.FC<ProductImageProps> = ({
         referrerPolicy="no-referrer"
         crossOrigin="anonymous"
         onError={handleImageError}
-        className={`max-w-full max-h-full transition-all duration-200 mix-blend-multiply ${imgClassName} ${
-          isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''
-        }`}
+        className={`max-w-full max-h-full transition-all duration-200 mix-blend-multiply ${imgClassName} ${isOutOfStock ? 'opacity-55 grayscale-[30%]' : ''
+          }`}
       />
       {isOutOfStock && (
         <OutOfStockStamp isOverlay size={stampSize || 'sm'} />

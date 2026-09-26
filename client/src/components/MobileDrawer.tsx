@@ -38,7 +38,7 @@ interface MobileDrawerProps {
   basketCount?: number;
   pendingOrdersCount?: number;
   unreadChatsCount?: number;
-  
+
   // Shopper Navigation Props
   onNavigateTab?: (tab: 'home' | 'shops' | 'map' | 'favorites' | 'orders' | 'profile') => void;
   onOpenAuthModal?: (mode?: 'consumer-login' | 'consumer-register' | 'merchant-login' | 'merchant-register' | 'gateway') => void;
@@ -47,16 +47,16 @@ interface MobileDrawerProps {
   onOpenChat?: () => void;
   onOpenMerchantPortal?: () => void;
   onOpenAdminPortal?: () => void;
-  
+
   // Merchant Navigation Props
   merchantTab?: 'dashboard' | 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals';
   onSelectMerchantTab?: (tab: 'dashboard' | 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
   onOpenSubscriptionModal?: () => void;
-  
+
   // Admin Navigation Props
   adminTab?: string;
   onSelectAdminTab?: (tab: string) => void;
-  
+
   // General Props
   onBackToShopper?: () => void;
   onLogout: () => void;
@@ -101,10 +101,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       />
 
       {/* Drawer Panel */}
-      <div className="relative w-4/5 max-w-xs bg-[#181D22] text-white flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-300 font-sans h-full overflow-y-auto">
-        
+      <div className="relative w-4/5 max-w-xs bg-gradient-to-b from-[#081510] via-[#0B1A14] to-[#05100B] text-white flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-300 font-sans h-full overflow-y-auto border-r border-emerald-900/30">
+
         {/* Top Header */}
-        <div className="p-5 border-b border-white/[0.08] bg-[#13171B]">
+        <div className="p-5 border-b border-emerald-900/40 bg-[#06110C]/80 backdrop-blur-md">
           <div className="flex items-center justify-between h-9 mb-4">
             <EnteBazaarLogo
               size="md"
@@ -123,7 +123,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
           {authUser ? (
             <div className="flex items-center gap-3 pt-1">
-              <div className="w-12 h-12 rounded-2xl bg-[#0B8F68] text-white flex items-center justify-center text-lg font-black shrink-0 border border-white/20 shadow-md">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0D5B41] to-[#087353] text-white flex items-center justify-center text-lg font-black shrink-0 border border-emerald-400/30 shadow-md">
                 {isMerchant && authUser.shopName ? '🏪' : (authUser.name ? authUser.name.charAt(0).toUpperCase() : '👤')}
               </div>
               <div className="min-w-0 flex-1">
@@ -145,7 +145,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   onClose();
                   if (onOpenAuthModal) onOpenAuthModal('consumer-login');
                 }}
-                className="w-full py-2.5 px-4 bg-[#0B8F68] hover:bg-[#10A978] active:scale-95 text-white font-black text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 font-malayalam cursor-pointer"
+                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#0D5B41] via-[#0E6C4C] to-[#0A4A35] hover:brightness-110 active:scale-95 text-white font-black text-xs rounded-xl shadow-md border border-emerald-400/30 transition-all flex items-center justify-center gap-2 font-malayalam cursor-pointer"
               >
                 <UserIcon className="w-4 h-4" />
                 <span>ലോഗിൻ / സൈൻ അപ്പ് ചെയ്യുക</span>
@@ -169,11 +169,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('dashboard');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'dashboard'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'dashboard'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <LayoutGrid className={`w-4 h-4 shrink-0 ${merchantTab === 'dashboard' ? 'text-white' : 'text-slate-400'}`} />
               <span>ഡാഷ്‌ബോർഡ് (Dashboard)</span>
@@ -185,11 +184,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('billing');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'billing'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'billing'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Receipt className={`w-4 h-4 shrink-0 ${merchantTab === 'billing' ? 'text-white' : 'text-slate-400'}`} />
               <span>ബില്ലിംഗ് & POS</span>
@@ -201,11 +199,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('inventory');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'inventory'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'inventory'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Package className={`w-4 h-4 shrink-0 ${merchantTab === 'inventory' ? 'text-white' : 'text-slate-400'}`} />
               <span>ഉൽപ്പന്നങ്ങൾ (Products)</span>
@@ -217,11 +214,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('prebookings');
                 onClose();
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'prebookings'
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'prebookings'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3.5">
                 <CalendarCheck className={`w-4 h-4 shrink-0 ${merchantTab === 'prebookings' ? 'text-white' : 'text-slate-400'}`} />
@@ -240,11 +236,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('chats');
                 onClose();
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'chats'
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'chats'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <div className="flex items-center gap-3.5">
                 <MessageCircle className={`w-4 h-4 shrink-0 ${merchantTab === 'chats' ? 'text-white' : 'text-slate-400'}`} />
@@ -263,11 +258,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('deals');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'deals'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'deals'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Flame className="w-4 h-4 text-[#F4B740] shrink-0" />
               <span>ഫ്ലാഷ് ഡീലുകൾ (Flash Deals)</span>
@@ -279,11 +273,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('profile');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                merchantTab === 'profile'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'profile'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Store className={`w-4 h-4 shrink-0 ${merchantTab === 'profile' ? 'text-white' : 'text-slate-400'}`} />
               <span>സ്റ്റോർ പ്രൊഫൈൽ (Store Profile)</span>
@@ -351,11 +344,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('dashboard');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'dashboard'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'dashboard'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' ? 'text-white' : 'text-slate-400'}`} />
               <span>അഡ്മിൻ ഡാഷ്‌ബോർഡ് (Dashboard)</span>
@@ -366,11 +358,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('users');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'users'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'users'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Users className={`w-4 h-4 shrink-0 ${adminTab === 'users' ? 'text-white' : 'text-slate-400'}`} />
               <span>ഉപയോക്താക്കൾ (Users)</span>
@@ -381,11 +372,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('shops');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'shops'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'shops'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' ? 'text-white' : 'text-slate-400'}`} />
               <span>കടകൾ (Shops Directory)</span>
@@ -396,11 +386,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('products');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'products'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'products'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' ? 'text-white' : 'text-slate-400'}`} />
               <span>മാസ്റ്റർ ഉൽപ്പന്നങ്ങൾ (Products)</span>
@@ -411,11 +400,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('subscriptions');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'subscriptions'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'subscriptions'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <CreditCard className={`w-4 h-4 shrink-0 ${adminTab === 'subscriptions' ? 'text-white' : 'text-slate-400'}`} />
               <span>സബ്‌സ്‌ക്രിപ്ഷനുകൾ (Subscriptions)</span>
@@ -426,11 +414,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('audit');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${
-                adminTab === 'audit'
+              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'audit'
                   ? 'bg-[#0B8F68] text-white font-black shadow-xs'
                   : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-              }`}
+                }`}
             >
               <Layers className={`w-4 h-4 shrink-0 ${adminTab === 'audit' ? 'text-white' : 'text-slate-400'}`} />
               <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
@@ -521,8 +508,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
             >
               <div className="flex items-center gap-3.5">
-                 <Clock className="w-4 h-4 text-slate-400 shrink-0" />
-                 <span>ഓർഡറുകൾ (Orders)</span>
+                <Clock className="w-4 h-4 text-slate-400 shrink-0" />
+                <span>ഓർഡറുകൾ (Orders)</span>
               </div>
               {pendingOrdersCount > 0 && (
                 <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">

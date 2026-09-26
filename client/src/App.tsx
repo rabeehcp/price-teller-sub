@@ -158,7 +158,7 @@ export const App: React.FC = () => {
         const parsed = JSON.parse(raw);
         if (parsed && (parsed.id || parsed.email) && parsed.role) return parsed;
       }
-    } catch {}
+    } catch { }
     return null;
   });
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
@@ -188,7 +188,7 @@ export const App: React.FC = () => {
         if (parsed?.role === 'admin') return 'admin';
         if (parsed?.role === 'consumer' || parsed?.role === 'shopper') return 'consumer';
       }
-    } catch {}
+    } catch { }
     return 'welcome';
   });
 
@@ -203,7 +203,7 @@ export const App: React.FC = () => {
         if (parsed?.role === 'merchant') return 'merchant';
         if (parsed?.role === 'admin') return 'admin';
       }
-    } catch {}
+    } catch { }
     return 'shopper';
   });
 
@@ -248,7 +248,7 @@ export const App: React.FC = () => {
             localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
             sessionStorage.setItem('priceteller_token', tokenToPersist);
             sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
-          } catch {}
+          } catch { }
 
           const wantsAdmin = isExplicitAdminRoute();
           const wantsMerchant = isExplicitMerchantRoute();
@@ -294,7 +294,7 @@ export const App: React.FC = () => {
           sessionStorage.removeItem('priceteller_auth_user');
           localStorage.removeItem('priceteller_token');
           localStorage.removeItem('priceteller_auth_user');
-        } catch {}
+        } catch { }
         setAuthUser(null);
         if (isExplicitAdminRoute()) {
           setAppView('admin');
@@ -427,10 +427,10 @@ export const App: React.FC = () => {
       try {
         const saved = localStorage.getItem('priceteller_left_sidebar_collapsed');
         if (saved !== null) return saved === 'true';
-      } catch {}
-      return window.innerWidth >= 1024 && window.innerWidth < 1280;
+      } catch { }
+      return true; // Default to collapsed as requested
     }
-    return false;
+    return true;
   });
 
   // Automatically adapt sidebars when screen is resized
@@ -453,7 +453,7 @@ export const App: React.FC = () => {
       const next = !prev;
       try {
         localStorage.setItem('priceteller_left_sidebar_collapsed', String(next));
-      } catch {}
+      } catch { }
       return next;
     });
   }, []);
@@ -541,11 +541,11 @@ export const App: React.FC = () => {
                 const p = products.find((x) => x.id === b.productId);
                 return p
                   ? {
-                      productId: p.id,
-                      product: p,
-                      quantity: b.quantity,
-                      selectedUnit: b.selectedUnit || p.defaultUnit,
-                    }
+                    productId: p.id,
+                    product: p,
+                    quantity: b.quantity,
+                    selectedUnit: b.selectedUnit || p.defaultUnit,
+                  }
                   : null;
               })
               .filter(Boolean) as BasketItem[];
@@ -591,7 +591,7 @@ export const App: React.FC = () => {
           isActive: hasActive,
         });
       }
-    } catch {}
+    } catch { }
 
     fetchMerchantSubscriptionStatusApi(authUser.token)
       .then((res) => {
@@ -599,7 +599,7 @@ export const App: React.FC = () => {
         setMerchantSubStatus(res);
         try {
           localStorage.setItem(cacheKey, JSON.stringify(res));
-        } catch {}
+        } catch { }
       })
       .finally(() => setIsCheckingMerchantSubscription(false));
   }, [authUser?.token, authUser?.role, appView]);
@@ -617,7 +617,7 @@ export const App: React.FC = () => {
     try {
       localStorage.setItem('priceteller_consumer_location_id', loc.id);
       localStorage.setItem('priceteller_location_manually_selected', 'true');
-    } catch {}
+    } catch { }
   }, []);
 
   const [isDetectingGps, setIsDetectingGps] = useState<boolean>(false);
@@ -629,11 +629,11 @@ export const App: React.FC = () => {
     if (coords) {
       try {
         localStorage.setItem('priceteller_customer_coords', JSON.stringify(coords));
-      } catch {}
+      } catch { }
     } else {
       try {
         localStorage.removeItem('priceteller_customer_coords');
-      } catch {}
+      } catch { }
     }
   }, []);
 
@@ -644,7 +644,7 @@ export const App: React.FC = () => {
       async (coords) => {
         const lat = coords.lat;
         const lng = coords.lng;
-        
+
         const details = await reverseGeocodeDetails(lat, lng, coords.accuracy);
         setGpsDebugDetails(details);
 
@@ -720,7 +720,7 @@ export const App: React.FC = () => {
             hasExplicitSavedLoc = true;
           }
         }
-      } catch {}
+      } catch { }
 
       // 2. Or auth user preferred location
       if (!chosenLoc && authUser?.locationId) {
@@ -796,7 +796,7 @@ export const App: React.FC = () => {
         if (currentLocation?.id) {
           try {
             localStorage.setItem('priceteller_consumer_location_id', currentLocation.id);
-          } catch {}
+          } catch { }
           [prods, shps, deals] = await Promise.all([
             fetchProducts({
               category: 'all',
@@ -999,7 +999,7 @@ export const App: React.FC = () => {
       localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
       sessionStorage.setItem('priceteller_token', token);
       sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
-    } catch {}
+    } catch { }
     setIsAuthModalOpen(false);
     if (user.role === 'admin') {
       window.history.pushState({}, '', '/admin');
@@ -1023,11 +1023,11 @@ export const App: React.FC = () => {
                 const p = products.find((x) => x.id === b.productId);
                 return p
                   ? {
-                      productId: p.id,
-                      product: p,
-                      quantity: b.quantity,
-                      selectedUnit: b.selectedUnit || p.defaultUnit,
-                    }
+                    productId: p.id,
+                    product: p,
+                    quantity: b.quantity,
+                    selectedUnit: b.selectedUnit || p.defaultUnit,
+                  }
                   : null;
               })
               .filter(Boolean) as BasketItem[];
@@ -1070,7 +1070,7 @@ export const App: React.FC = () => {
       sessionStorage.removeItem('priceteller_auth_user');
       localStorage.removeItem('priceteller_token');
       localStorage.removeItem('priceteller_auth_user');
-    } catch {}
+    } catch { }
     window.history.pushState({}, '', '/');
     setAppView('welcome');
     setCurrentRole('shopper');
@@ -1133,11 +1133,11 @@ export const App: React.FC = () => {
         const p = products.find((x) => x.id === item.productId);
         return p
           ? {
-              productId: p.id,
-              product: p,
-              quantity: item.quantity,
-              selectedUnit: item.selectedUnit || p.defaultUnit,
-            }
+            productId: p.id,
+            product: p,
+            quantity: item.quantity,
+            selectedUnit: item.selectedUnit || p.defaultUnit,
+          }
           : null;
       })
       .filter(Boolean) as BasketItem[];
@@ -1188,8 +1188,8 @@ export const App: React.FC = () => {
           dairy: ['dairy'],
           spices: ['spices', 'oils-spices', 'oils-sugar'],
           'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
-          beverages: ['beverages', 'drinks', 'biscuits-snacks'],
-          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks'],
+          beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
+          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'snacks', 'bread-bakery'],
           'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
           household: ['household', 'cleaning-household', 'storage-containers'],
         };
@@ -1427,7 +1427,7 @@ export const App: React.FC = () => {
             setMerchantSubStatus(nextStatus);
             try {
               localStorage.setItem(`priceteller_subscription_status_${authUser.id}`, JSON.stringify(nextStatus));
-            } catch {}
+            } catch { }
           }}
           onLogout={handleLogout}
         />
@@ -1492,7 +1492,7 @@ export const App: React.FC = () => {
                   setMerchantSubStatus(nextStatus);
                   try {
                     localStorage.setItem(`priceteller_subscription_status_${authUser.id}`, JSON.stringify(nextStatus));
-                  } catch {}
+                  } catch { }
                   setIsMerchantUpgradeModalOpen(false);
                 }}
                 onLogout={() => {
@@ -1521,7 +1521,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex bg-white text-[#17221D] font-sans">
-      
+
       {/* 1. DESKTOP LEFT SIDEBAR (Matching Image 1 Reference) */}
       <DesktopLeftSidebar
         currentTab={shopperTab}
@@ -1538,10 +1538,9 @@ export const App: React.FC = () => {
       />
 
       {/* 2. MAIN APPLICATION WORKSPACE */}
-      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-300 ${
-        isLeftSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-60 xl:ml-64 2xl:ml-72'
-      }`}>
-        
+      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-300 ${isLeftSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-64 xl:ml-68'
+        }`}>
+
         {/* Mobile Header matching Screen 1 */}
         <MobileHeader
           currentLocation={currentLocation}
@@ -1591,7 +1590,7 @@ export const App: React.FC = () => {
           />
         </div>
 
-        <main className="flex-1 max-w-[1720px] w-full mx-auto px-3 sm:px-4 lg:px-5 xl:px-6 py-4 sm:py-5">
+        <main className="flex-1 w-full px-3 sm:px-4 lg:px-6 py-4 sm:py-5">
 
           {/* Flash Deals Ticker */}
           {showDealsBanner && (
@@ -2467,11 +2466,10 @@ export const App: React.FC = () => {
       {/* Dedicated Floating Quick Chat Button for Mobile & Tablet View */}
       {(appView === 'consumer' || appView === 'welcome') && !isChatModalOpen && (
         <div
-          className={`lg:hidden fixed right-3.5 sm:right-6 z-30 transition-all duration-300 ${
-            basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare'
-              ? 'bottom-[140px]'
-              : 'bottom-[66px]'
-          }`}
+          className={`lg:hidden fixed right-3.5 sm:right-6 z-30 transition-all duration-300 ${basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare'
+            ? 'bottom-[140px]'
+            : 'bottom-[66px]'
+            }`}
         >
           <button
             type="button"

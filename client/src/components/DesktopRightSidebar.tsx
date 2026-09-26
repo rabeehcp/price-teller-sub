@@ -106,19 +106,17 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           <button
             type="button"
             onClick={() => setActiveRightTab('cart')}
-            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              activeRightTab === 'cart'
+            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeRightTab === 'cart'
                 ? 'bg-[#063B2A] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span className="truncate">കാർട്ട്</span>
             {totalBasketCount > 0 && (
               <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold ${
-                  activeRightTab === 'cart' ? 'bg-[#10A978] text-white' : 'bg-emerald-100 text-emerald-800'
-                }`}
+                className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold ${activeRightTab === 'cart' ? 'bg-[#10A978] text-white' : 'bg-emerald-100 text-emerald-800'
+                  }`}
               >
                 {totalBasketCount}
               </span>
@@ -128,11 +126,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           <button
             type="button"
             onClick={() => setActiveRightTab('compare')}
-            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-              activeRightTab === 'compare'
+            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeRightTab === 'compare'
                 ? 'bg-[#063B2A] text-white shadow-xs'
                 : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-            }`}
+              }`}
           >
             <Compass className="w-3.5 h-3.5" />
             <span className="truncate">താരതമ്യം</span>
@@ -396,11 +393,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => setComparisonSubTab('single')}
-                  className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer font-malayalam ${
-                    comparisonSubTab === 'single'
+                  className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer font-malayalam ${comparisonSubTab === 'single'
                       ? 'bg-white text-slate-900 shadow-2xs font-black'
                       : 'text-slate-500 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   <Award className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
                   <span>ഒറ്റ കട (Single Store)</span>
@@ -408,11 +404,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                 <button
                   type="button"
                   onClick={() => setComparisonSubTab('split')}
-                  className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all relative cursor-pointer font-malayalam ${
-                    comparisonSubTab === 'split'
+                  className={`py-1.5 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all relative cursor-pointer font-malayalam ${comparisonSubTab === 'split'
                       ? 'bg-white text-slate-900 shadow-2xs font-black'
                       : 'text-slate-500 hover:text-slate-900'
-                  }`}
+                    }`}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                   <span>സ്പ്ലിറ്റ് ഒപ്റ്റിമൈസർ</span>
@@ -431,33 +426,30 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                   <button
                     type="button"
                     onClick={() => setSortBy('value')}
-                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                      sortBy === 'value'
+                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${sortBy === 'value'
                         ? 'bg-[#063B2A] text-white'
                         : 'bg-[#F5F8F6] hover:bg-slate-200 text-slate-700'
-                    }`}
+                      }`}
                   >
                     ⚡ സ്മാർട്ട് വാല്യു
                   </button>
                   <button
                     type="button"
                     onClick={() => setSortBy('price')}
-                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                      sortBy === 'price'
+                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${sortBy === 'price'
                         ? 'bg-[#063B2A] text-white'
                         : 'bg-[#F5F8F6] hover:bg-slate-200 text-slate-700'
-                    }`}
+                      }`}
                   >
                     വിലക്കുറവ്
                   </button>
                   <button
                     type="button"
                     onClick={() => setSortBy('distance')}
-                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                      sortBy === 'distance'
+                    className={`px-2 py-0.5 rounded-lg transition-colors cursor-pointer shrink-0 ${sortBy === 'distance'
                         ? 'bg-[#063B2A] text-white'
                         : 'bg-[#F5F8F6] hover:bg-slate-200 text-slate-700'
-                    }`}
+                      }`}
                   >
                     സമീപം
                   </button>
@@ -500,11 +492,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                 return (
                   <div
                     key={shop.shopId || shop.shopName}
-                    className={`rounded-2xl p-3.5 transition-all ${
-                      isBest
+                    className={`rounded-2xl p-3.5 transition-all ${isBest
                         ? 'border-2 border-[#0B8F68] bg-[#F4FAF6] shadow-2xs'
                         : 'border border-gray-200 bg-white hover:border-gray-300'
-                    }`}
+                      }`}
                   >
                     {/* Store Name & Best Badge */}
                     <div className="flex items-center justify-between gap-2">
@@ -618,11 +609,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                       <button
                         type="button"
                         onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
-                        className={`py-1.5 px-1 rounded-xl font-black text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95 ${
-                          isBest
+                        className={`py-1.5 px-1 rounded-xl font-black text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95 ${isBest
                             ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white shadow-2xs'
                             : 'bg-[#063B2A] hover:bg-[#0B8F68] text-white'
-                        }`}
+                          }`}
                       >
                         <CalendarCheck className="w-3 h-3" />
                         <span>ബുക്കിംഗ്</span>

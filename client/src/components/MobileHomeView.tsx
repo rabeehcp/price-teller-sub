@@ -196,40 +196,52 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         </div>
       </div>
 
-      {/* 2. HERO BANNER */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#042B1E] via-[#063B2A] to-[#0A543C] text-white p-4 sm:p-5 shadow-md min-h-[155px] flex items-center justify-between">
-        {/* Decorative glows */}
-        <div className="absolute top-0 right-1/4 w-36 h-36 bg-[#10A978]/20 rounded-full blur-2xl pointer-events-none" />
-        <div className="absolute -bottom-4 left-0 w-28 h-28 bg-[#10A978]/15 rounded-full blur-xl pointer-events-none" />
-
-        {/* Left Content */}
-        <div className="relative z-10 max-w-[58%] space-y-1 sm:space-y-1.5">
-          <h2 className="text-[15px] sm:text-base font-bold text-white leading-snug font-malayalam-heading m-0 tracking-tight">
-            അടുത്ത കടയിലേക്ക്<br />
-            പോകുന്നതിന് മുമ്പ്...
-          </h2>
-          <div className="text-[14px] sm:text-[15px] font-extrabold text-[#7FFFC4] leading-tight font-malayalam-heading">
-            PediaCart-ൽ വില നോക്കൂ.
-          </div>
-          <p className="text-[10.5px] sm:text-[11px] text-[#C0EDD9] font-normal leading-snug font-malayalam m-0 pt-0.5">
-            സമീപത്തെ കടകളിലെ വിലകൾ താരതമ്യം ചെയ്യാം.
-          </p>
-        </div>
-
-        {/* Right 3D Visual Artwork */}
-        <div className="relative z-10 w-[125px] sm:w-[145px] h-[115px] sm:h-[130px] shrink-0 flex items-center justify-center">
+      {/* 2. HERO BANNER: KERALA MARKETPLACE RESPONSIVE BANNER */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#EEDBBE] shadow-xs border border-[#DFCEB7] p-3.5 sm:p-5 md:p-6 min-h-[165px] sm:min-h-[185px] md:min-h-[210px] text-[#2A241C] flex items-center justify-start md:justify-center">
+        {/* Responsive Kerala Village Market & Fresh Produce Background */}
+        <picture className="absolute inset-0 w-full h-full pointer-events-none">
+          <source media="(min-width: 768px)" srcSet="/hero-warm-market-blend.jpg" />
+          <source media="(min-width: 640px)" srcSet="/hero-warm-market-blend.jpg" />
           <img
-            src="/banner-phone-groceries.jpg"
-            alt="PediaCart വില താരതമ്യം"
-            className="w-full h-full object-cover rounded-2xl drop-shadow-2xl shadow-emerald-950/40 border border-white/10"
+            src="/hero-warm-market-blend.jpg"
+            alt="Kerala Village Market Background"
+            className="w-full h-full object-cover object-[80%_center] md:object-center filter contrast-[1.03] brightness-[0.98]"
+            loading="eager"
+            decoding="async"
           />
-        </div>
+        </picture>
 
-        {/* Pagination dots */}
-        <div className="absolute bottom-2.5 left-4 flex items-center gap-1.5">
-          <span className="w-4 h-1.5 bg-white rounded-full" />
-          <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
-          <span className="w-1.5 h-1.5 bg-white/40 rounded-full" />
+        {/* Ambient Gradient Overlay for Contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#2A180E]/30 via-[#2A180E]/15 to-[#2A180E]/25 pointer-events-none" />
+
+        {/* Solid Content Card (Centered on Tabs / iPads) */}
+        <div className="relative z-10 w-full max-w-[75%] sm:max-w-[70%] md:max-w-[480px] lg:max-w-[520px] md:mx-auto bg-[#DED8CF]/95 rounded-2xl md:rounded-3xl p-3.5 sm:p-4 md:p-5 border border-[#CEBEAC] shadow-xs space-y-1.5 md:space-y-2.5 md:text-center transition-all">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#D0C5B4]/60 border border-[#BEB09C] rounded-full text-[9px] sm:text-[10px] font-bold text-[#7C3A20] font-malayalam md:mx-auto">
+            <Sparkles className="w-3 h-3 text-[#BC681D] shrink-0" />
+            <span>തത്സമയ വിലനിലവാരം</span>
+          </div>
+
+          <h2 className="text-[13.5px] sm:text-[15px] md:text-lg font-black text-[#5C2B14] leading-tight font-padmanabha tracking-tight m-0">
+            ഗ്രാമത്തിലെ കടകളിൽ നിന്നും മികച്ച വില കണ്ടെത്തൂ.
+          </h2>
+
+          <p className="text-[9.5px] sm:text-[11px] md:text-xs text-[#4A3F33] font-medium leading-snug font-malayalam m-0 line-clamp-2 md:max-w-md md:mx-auto">
+            സമീപത്തെ മികച്ച കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
+          </p>
+
+          <div className="pt-0.5 flex md:justify-center">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('catalog-products-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+                else if (onViewAllProducts) onViewAllProducts();
+              }}
+              className="inline-flex items-center gap-1 px-3.5 py-1.5 md:px-5 md:py-2 rounded-full bg-[#BC681D] hover:bg-[#A85814] active:scale-95 text-white font-extrabold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam"
+            >
+              <span>വിലകൾ കാണാം 🛡️</span>
+            </button>
+          </div>
         </div>
       </div>
 

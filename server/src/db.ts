@@ -207,6 +207,8 @@ export interface ChatMessage {
   senderRole: 'consumer' | 'merchant' | 'admin';
   senderName: string;
   text: string;
+  audioUrl?: string;
+  audioDuration?: number;
   basketSnapshot?: BasketSnapshot;
   createdAt: string;
   isRead?: boolean;
@@ -1994,7 +1996,6 @@ const now = new Date().toISOString();
   }
 
   public async getConversationMessages(conversationId: string): Promise<ChatMessage[]> {
-
       const res = await query(
         `SELECT id, 
                 conversation_id as "conversationId", 
@@ -2002,6 +2003,8 @@ const now = new Date().toISOString();
                 sender_role as "senderRole", 
                 sender_name as "senderName", 
                 text, 
+                audio_url as "audioUrl",
+                audio_duration as "audioDuration",
                 basket_snapshot as "basketSnapshot",
                 is_read as "isRead",
                 client_msg_id as "clientMsgId",
@@ -2021,11 +2024,12 @@ const now = new Date().toISOString();
     senderName: string,
     text: string,
     basketSnapshot?: BasketSnapshot,
-    clientMsgId?: string
+    clientMsgId?: string,
+    audioUrl?: string,
+    audioDuration?: number
   ): Promise<ChatMessage> {
-const now = new Date().toISOString();
-if (clientMsgId) {
-      
+    const now = new Date().toISOString();
+    if (clientMsgId) {
         const existing = await query(
           `SELECT id, 
                   conversation_id as "conversationId", 
@@ -2033,6 +2037,8 @@ if (clientMsgId) {
                   sender_role as "senderRole", 
                   sender_name as "senderName", 
                   text, 
+                  audio_url as "audioUrl",
+                  audio_duration as "audioDuration",
                   basket_snapshot as "basketSnapshot",
                   is_read as "isRead",
                   client_msg_id as "clientMsgId",
@@ -2044,26 +2050,26 @@ if (clientMsgId) {
         if (existing.rows.length > 0) {
           return existing.rows[0];
         }
-      
     }
-const msgId = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
-const newMsg: ChatMessage = {
+    const msgId = `msg-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
+    const newMsg: ChatMessage = {
       id: msgId,
       conversationId,
       senderId,
       senderRole,
       senderName,
-      text: text.trim(),
+      text: text?.trim() || (audioUrl ? '🎙️ Voice Message' : ''),
+      audioUrl: audioUrl || undefined,
+      audioDuration: audioDuration ? Number(audioDuration) : undefined,
       basketSnapshot: basketSnapshot && Object.keys(basketSnapshot).length > 0 ? basketSnapshot : undefined,
       isRead: false,
       clientMsgId,
       createdAt: now,
     };
 
-
       await query(
-        `INSERT INTO messages (id, conversation_id, sender_id, sender_role, sender_name, text, basket_snapshot, is_read, client_msg_id, created_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        `INSERT INTO messages (id, conversation_id, sender_id, sender_role, sender_name, text, audio_url, audio_duration, basket_snapshot, is_read, client_msg_id, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
         [
           newMsg.id,
           newMsg.conversationId,
@@ -2071,6 +2077,8 @@ const newMsg: ChatMessage = {
           newMsg.senderRole,
           newMsg.senderName,
           newMsg.text,
+          newMsg.audioUrl || null,
+          newMsg.audioDuration || null,
           newMsg.basketSnapshot ? JSON.stringify(newMsg.basketSnapshot) : null,
           false,
           clientMsgId || null,

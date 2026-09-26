@@ -760,7 +760,9 @@ export async function sendMessageApi(
   text: string,
   token?: string,
   basketSnapshot?: BasketSnapshot,
-  clientMsgId?: string
+  clientMsgId?: string,
+  audioUrl?: string,
+  audioDuration?: number
 ): Promise<ChatMessage> {
   const res = await fetch(`${API_BASE}/conversations/${conversationId}/messages`, {
     method: 'POST',
@@ -768,7 +770,7 @@ export async function sendMessageApi(
       'Content-Type': 'application/json',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-    body: JSON.stringify({ text, basketSnapshot, clientMsgId }),
+    body: JSON.stringify({ text, basketSnapshot, clientMsgId, audioUrl, audioDuration }),
   });
   const json = await res.json();
   if (json.success) {

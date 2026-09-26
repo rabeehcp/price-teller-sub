@@ -7,11 +7,7 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "db:init": "tsx src/db/init.ts",
-    "seed:zeev": "tsx src/seedZeevCatalog.ts",
-    "imagekit:migrate": "tsx src/scripts/migrateToImageKit.ts",
-    "ingest:shysha": "tsx src/scripts/ingestShyshaBakery.ts",
-    "ingest:pothys-snacks": "tsx src/scripts/ingestPothysSnacks.ts"
+    "db:init": "tsx src/db/init.ts"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
