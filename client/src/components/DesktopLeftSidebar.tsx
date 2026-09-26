@@ -1,11 +1,11 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { Home, Store, MapPin, ShoppingBag, User as UserIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Store, MapPin, ShoppingBag, User as UserIcon, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface DesktopLeftSidebarProps {
   currentTab: string;
-  onSelectTab: (tab: 'home' | 'shops' | 'map' | 'orders' | 'profile' | any) => void;
+  onSelectTab: (tab: 'home' | 'deals' | 'shops' | 'map' | 'orders' | 'profile' | any) => void;
   currentLocation: Location | null;
   onOpenLocationModal: () => void;
   authUser: User | null;
@@ -19,6 +19,7 @@ interface NavItemConfig {
   malayalam: string;
   english: string;
   icon: React.ComponentType<{ className?: string }>;
+  badge?: string;
 }
 
 const NAV_ITEMS: NavItemConfig[] = [
@@ -27,6 +28,13 @@ const NAV_ITEMS: NavItemConfig[] = [
     malayalam: 'ഹോം',
     english: 'Home',
     icon: Home,
+  },
+  {
+    id: 'deals',
+    malayalam: 'ഫ്ലാഷ് ഡീലുകൾ',
+    english: 'Flash Deals',
+    icon: Zap,
+    badge: 'LIVE',
   },
   {
     id: 'shops',
@@ -125,23 +133,34 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
                   <Icon className="w-4.5 h-4.5 transition-transform group-hover:scale-110" />
                 </div>
 
+                {isCollapsed && item.badge && (
+                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                )}
+
                 {/* Text Content */}
                 {!isCollapsed && (
-                  <div className="min-w-0 flex-1 flex flex-col justify-center">
-                    <span
-                      className={`text-[13px] leading-snug tracking-tight font-malayalam truncate ${
-                        isActive ? 'font-black text-[#7C3A20]' : 'font-bold text-[#3B342B] group-hover:text-[#17221D]'
-                      }`}
-                    >
-                      {item.malayalam}
-                    </span>
-                    <span
-                      className={`text-[10px] leading-tight font-semibold font-sans truncate ${
-                        isActive ? 'text-[#8C4E28]' : 'text-[#7A7061] group-hover:text-[#4A433A]'
-                      }`}
-                    >
-                      {item.english}
-                    </span>
+                  <div className="min-w-0 flex-1 flex items-center justify-between">
+                    <div className="min-w-0 flex flex-col justify-center">
+                      <span
+                        className={`text-[13px] leading-snug tracking-tight font-malayalam truncate ${
+                          isActive ? 'font-black text-[#7C3A20]' : 'font-bold text-[#3B342B] group-hover:text-[#17221D]'
+                        }`}
+                      >
+                        {item.malayalam}
+                      </span>
+                      <span
+                        className={`text-[10px] leading-tight font-semibold font-sans truncate ${
+                          isActive ? 'text-[#8C4E28]' : 'text-[#7A7061] group-hover:text-[#4A433A]'
+                        }`}
+                      >
+                        {item.english}
+                      </span>
+                    </div>
+                    {item.badge && (
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-rose-500 text-white font-sans tracking-wide shrink-0 ml-1 shadow-2xs">
+                        {item.badge}
+                      </span>
+                    )}
                   </div>
                 )}
               </button>

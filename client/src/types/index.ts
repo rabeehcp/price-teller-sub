@@ -176,6 +176,7 @@ export interface FlashDeal {
   shopName: string;
   productId: string;
   productName: string;
+  image?: string;
   emoji: string;
   originalPrice: number;
   dealPrice: number;

@@ -24,7 +24,63 @@ const { pool } = require('../dist/db/pool');
  * 18. Electronics
  */
 
-function classifyProduct(name, currentCat) {
+const MANUAL_OVERRIDES = {
+  "epeedika-grocery-778": "pulses-legumes",
+  "zeev-35681": "beverages",
+  "zeev-42059": "sauces-condiments",
+  "epeedika-grocery-1127": "rice-grains",
+  "atta": "rice-grains",
+  "epeedika-grocery-533": "rice-grains",
+  "zeev-149825": "beverages",
+  "epeedika-grocery-761": "rice-grains",
+  "zeev-163865": "personal-care",
+  "zeev-27196": "cleaning-household",
+  "zeev-45743": "personal-care",
+  "epeedika-grocery-1260": "beverages",
+  "zeev-46131": "personal-care",
+  "pothys-snack-3139108": "biscuits-snacks",
+  "pothys-snack-3136554": "biscuits-snacks",
+  "pothys-snack-3138801": "biscuits-snacks",
+  "epeedika-grocery-1589": "rice-grains",
+  "epeedika-grocery-240": "spices",
+  "epeedika-grocery-235": "spices",
+  "zeev-48693": "personal-care",
+  "shysha-bakery-8872": "beverages",
+  "zeev-151587": "beverages",
+  "epeedika-grocery-326": "beverages",
+  "shysha-bakery-8875": "beverages",
+  "coffee": "beverages",
+  "epeedika-grocery-1416": "spices",
+  "zeev-14592": "personal-care",
+  "epeedika-grocery-296": "pulses-legumes",
+  "epeedika-grocery-302": "pulses-legumes",
+  "epeedika-grocery-231": "spices",
+  "epeedika-grocery-74": "oils-sugar",
+  "zeev-48707": "rice-grains",
+  "pothys-snack-3138830": "biscuits-snacks",
+  "pothys-snack-3395480": "biscuits-snacks",
+  "shysha-bakery-3815": "biscuits-snacks",
+  "pothys-snack-3138556": "biscuits-snacks",
+  "epeedika-grocery-1982": "biscuits-snacks",
+  "zeev-41377": "rice-grains",
+  "zeev-41218": "rice-grains",
+  "zeev-158754": "rice-grains",
+  "zeev-49405": "personal-care",
+  "epeedika-grocery-1227": "spices",
+  "zeev-157986": "personal-care",
+  "mutton-fresh": "meats",
+  "fruit-njalipoovan-elakki": "fruits",
+  "shysha-bakery-7133": "beverages",
+  "pothys-snack-3138677": "biscuits-snacks",
+  "zeev-15878": "baby-family",
+  "pothys-snack-3397690": "personal-care",
+  "fruit-black-grapes": "fruits"
+};
+
+function classifyProduct(name, currentCat, id) {
+  if (id && MANUAL_OVERRIDES[id]) {
+    return MANUAL_OVERRIDES[id];
+  }
   const n = name.trim().toLowerCase();
 
   // 1. BABY & FAMILY

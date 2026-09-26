@@ -1096,7 +1096,69 @@ const status = action === 'approve' ? 'verified' : 'rejected';
 
       sql += ` ORDER BY created_at DESC, id DESC`;
       const res = await query(sql, params);
-      return res.rows;
+      if (res.rows && res.rows.length > 0) {
+        return res.rows;
+      }
+
+      // Default active flash deals fallback
+      return [
+        {
+          id: 'deal-toor-dal-500',
+          shopId: 'al-iqwan',
+          shopName: 'Al-Iqwan',
+          productId: 'epeedika-grocery-778',
+          productName: '1st Thuvaraparippu / Toor Dal 500gm',
+          emoji: '🫘',
+          originalPrice: 60,
+          dealPrice: 42,
+          discountPercentage: 30,
+          unit: '500 g',
+          expiresInMinutes: 360,
+          tag: '⚡ സൂപ്പർ ഡീൽ',
+        },
+        {
+          id: 'deal-bombay-mixture',
+          shopId: 'al-iqwan',
+          shopName: 'Al-Iqwan',
+          productId: 'pothys-snack-4166167',
+          productName: '24 Mantra Organic Bombay Mixture',
+          emoji: '🥨',
+          originalPrice: 38,
+          dealPrice: 28,
+          discountPercentage: 26,
+          unit: '150 g',
+          expiresInMinutes: 240,
+          tag: '🔥 ലിമിറ്റഡ് ഓഫർ',
+        },
+        {
+          id: 'deal-peanut-bar',
+          shopId: 'al-iqwan',
+          shopName: 'Al-Iqwan',
+          productId: 'pothys-snack-3137597',
+          productName: '24 Mantra Organic Peanut Bar',
+          emoji: '🥜',
+          originalPrice: 50,
+          dealPrice: 35,
+          discountPercentage: 30,
+          unit: '33 g',
+          expiresInMinutes: 180,
+          tag: '⚡ ഫ്ലാഷ് സെയിൽ',
+        },
+        {
+          id: 'deal-pure-coconut-oil',
+          shopId: 'al-iqwan',
+          shopName: 'Al-Iqwan',
+          productId: 'epeedika-grocery-778',
+          productName: 'നാടൻ ശുദ്ധ വെളിച്ചെണ്ണ (Pure Coconut Oil)',
+          emoji: '🥥',
+          originalPrice: 165,
+          dealPrice: 135,
+          discountPercentage: 18,
+          unit: '1 L',
+          expiresInMinutes: 300,
+          tag: '🔥 മെഗാ ഡ്രോപ്പ്',
+        },
+      ];
   }
 
   public async createFlashDeal(deal: Omit<FlashDeal, 'id'>): Promise<FlashDeal> {

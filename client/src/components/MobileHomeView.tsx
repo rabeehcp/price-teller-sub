@@ -14,6 +14,7 @@ import {
   Store,
   ShieldCheck,
   Sparkles,
+  Zap,
 } from 'lucide-react';
 
 interface MobileHomeViewProps {
@@ -35,6 +36,7 @@ interface MobileHomeViewProps {
   onOpenShopCatalogue: (shopName: string) => void;
   onViewAllCategories?: () => void;
   onViewAllProducts?: () => void;
+  onOpenDeals?: () => void;
 }
 
 const CATEGORY_CONFIG = [
@@ -275,6 +277,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
   onOpenShopCatalogue,
   onViewAllCategories,
   onViewAllProducts,
+  onOpenDeals,
 }) => {
   const getProductRank = (name: string): number => {
     const lower = name.toLowerCase();
@@ -411,14 +414,14 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
           </div>
 
           <h2 className="text-[13.5px] sm:text-[15px] md:text-lg font-black text-[#5C2B14] leading-tight font-padmanabha tracking-tight m-0">
-            ഗ്രാമത്തിലെ കടകളിൽ നിന്നും മികച്ച വില കണ്ടെത്തൂ.
+            നാട്ടിലെ കടകളിൽ നിന്നും മികച്ച വില കണ്ടെത്തൂ.
           </h2>
 
           <p className="text-[9.5px] sm:text-[11px] md:text-xs text-[#4A3F33] font-medium leading-snug font-malayalam m-0 line-clamp-2 max-w-md mx-auto">
             സമീപത്തെ മികച്ച കടകളിലെ വിലകൾ താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
           </p>
 
-          <div className="pt-0.5 flex justify-center">
+          <div className="pt-0.5 flex justify-center gap-2">
             <button
               type="button"
               onClick={() => {
@@ -426,10 +429,21 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
                 else if (onViewAllProducts) onViewAllProducts();
               }}
-              className="inline-flex items-center gap-1 px-3.5 py-1.5 md:px-5 md:py-2 rounded-full bg-[#BC681D] hover:bg-[#A85814] active:scale-95 text-white font-extrabold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam mx-auto"
+              className="inline-flex items-center gap-1 px-3.5 py-1.5 md:px-5 md:py-2 rounded-full bg-[#BC681D] hover:bg-[#A85814] active:scale-95 text-white font-extrabold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam"
             >
               <span>വിലകൾ കാണാം 🛡️</span>
             </button>
+
+            {onOpenDeals && (
+              <button
+                type="button"
+                onClick={onOpenDeals}
+                className="inline-flex items-center gap-1 px-3 py-1.5 md:px-4 md:py-2 rounded-full bg-[#D2C5B3]/60 hover:bg-[#D9CEBD] border border-[#BFAFA0] active:scale-95 text-[#4A3F33] font-bold text-[10px] sm:text-[11px] md:text-xs shadow-2xs transition-all cursor-pointer font-malayalam"
+              >
+                <Zap className="w-3 h-3 text-amber-600 fill-amber-600" />
+                <span>ഫ്ലാഷ് ഡീലുകൾ</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

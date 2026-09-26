@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Location } from '../types';
-import { Search, Bell, Heart, ChevronDown, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag } from 'lucide-react';
+import { Search, Bell, Heart, ChevronDown, ChevronRight, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag, Zap } from 'lucide-react';
 
 interface DesktopHeaderProps {
   searchQuery: string;
@@ -12,6 +12,7 @@ interface DesktopHeaderProps {
   onOpenFavorites: () => void;
   onOpenOrders: () => void;
   onOpenProfile: () => void;
+  onOpenFlashDeals?: () => void;
   onSelectRole: (role: 'shopper' | 'merchant' | 'admin') => void;
   onLogout: () => void;
   basketCount?: number;
@@ -30,6 +31,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onOpenFavorites,
   onOpenOrders,
   onOpenProfile,
+  onOpenFlashDeals,
   onSelectRole,
   onLogout,
   basketCount = 0,
@@ -142,86 +144,133 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
               <ChevronDown className="w-3.5 h-3.5 text-[#66756E]" />
             </button>
 
-            {/* Dropdown Menu */}
+            {/* Dropdown Menu & Backdrop */}
             {isProfileDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-[#E3ECE7] py-2 z-50 animate-in fade-in zoom-in-95 duration-150 font-sans">
-                {authUser ? (
-                  <div className="px-4 py-2 border-b border-[#F0F4F2]">
-                    <p className="text-xs font-bold text-[#17221D] truncate">{authUser.name}</p>
-                    <p className="text-[10px] text-[#8A9992] truncate">{authUser.email}</p>
-                  </div>
-                ) : (
-                  <div className="px-4 py-2 border-b border-[#F0F4F2]">
-                    <button
-                      onClick={() => {
-                        setIsProfileDropdownOpen(false);
-                        onOpenAuthModal('consumer-login');
-                      }}
-                      className="w-full py-1.5 bg-[#063B2A] text-white text-xs font-bold rounded-xl text-center cursor-pointer font-malayalam"
-                    >
-                      ലോഗിൻ / രജിസ്റ്റർ
-                    </button>
-                  </div>
-                )}
+              <>
+                <div
+                  className="fixed inset-0 z-40"
+                  onClick={() => setIsProfileDropdownOpen(false)}
+                />
+                <div className="absolute right-0 mt-2.5 w-72 bg-white rounded-2xl shadow-xl shadow-slate-900/10 border border-slate-200/90 p-2 z-50 animate-in fade-in zoom-in-95 duration-150 font-sans">
+                  {authUser ? (
+                    <div className="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200/70 mb-1.5 flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#063B2A] to-[#0D4A36] text-white flex items-center justify-center text-sm font-black font-sans shrink-0 shadow-xs ring-2 ring-emerald-500/20">
+                        {avatarLetter}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <p className="text-xs font-black text-slate-800 truncate leading-snug">{authUser.name}</p>
+                        <p className="text-[11px] text-slate-500 truncate font-sans">{authUser.email}</p>
+                        <div className="mt-1">
+                          <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md font-sans ${
+                            authUser.role === 'merchant'
+                              ? 'bg-emerald-100/70 text-emerald-800 border border-emerald-300/60'
+                              : 'bg-white text-slate-600 border border-slate-200'
+                          }`}>
+                            {authUser.role === 'merchant' ? '🏪 Partner Merchant' : '👤 Shopper'}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 mb-1.5 text-center">
+                      <p className="text-xs font-bold text-slate-700 font-malayalam mb-2">PeediyaCart-ലേക്ക് സ്വാഗതം</p>
+                      <button
+                        onClick={() => {
+                          setIsProfileDropdownOpen(false);
+                          onOpenAuthModal('consumer-login');
+                        }}
+                        className="w-full py-2 bg-[#063B2A] hover:bg-[#084D37] text-white text-xs font-bold rounded-xl text-center cursor-pointer font-malayalam transition-colors shadow-2xs"
+                      >
+                        ലോഗിൻ / രജിസ്റ്റർ
+                      </button>
+                    </div>
+                  )}
 
-                <div className="py-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsProfileDropdownOpen(false);
-                      onOpenProfile();
-                    }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#17221D] hover:bg-[#F5F8F6] transition-colors text-left cursor-pointer font-malayalam"
-                  >
-                    <UserIcon className="w-3.5 h-3.5 text-[#0B8F68]" />
-                    <span>പ്രൊഫൈൽ (Profile)</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsProfileDropdownOpen(false);
-                      onOpenOrders();
-                    }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#17221D] hover:bg-[#F5F8F6] transition-colors text-left cursor-pointer font-malayalam"
-                  >
-                    <Heart className="w-3.5 h-3.5 text-[#0B8F68]" />
-                    <span>ഓർഡറുകൾ (Orders)</span>
-                  </button>
-
-                  <div className="border-t border-[#F0F4F2] my-1" />
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsProfileDropdownOpen(false);
-                      if (authUser?.role === 'merchant') {
-                        onSelectRole('merchant');
-                      } else {
-                        onOpenAuthModal('merchant-login');
-                      }
-                    }}
-                    className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-[#063B2A] hover:bg-[#E8F5EE] transition-colors text-left cursor-pointer font-malayalam"
-                  >
-                    <Store className="w-3.5 h-3.5 text-[#0B8F68]" />
-                    <span>വ്യാപാരി പാനൽ (Merchant)</span>
-                  </button>
-
-                  {authUser && (
+                  <div className="space-y-0.5">
                     <button
                       type="button"
                       onClick={() => {
                         setIsProfileDropdownOpen(false);
-                        onLogout();
+                        onOpenProfile();
                       }}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-xs font-bold text-rose-600 hover:bg-rose-50 transition-colors text-left cursor-pointer font-malayalam border-t border-[#F0F4F2] mt-1"
+                      className="w-full group flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100/80 transition-all text-left cursor-pointer"
                     >
-                      <LogOut className="w-3.5 h-3.5 text-rose-600" />
-                      <span>ലോഗ് ഔട്ട് (Logout)</span>
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0B8F68] flex items-center justify-center shrink-0 group-hover:bg-[#063B2A] group-hover:text-white transition-all">
+                          <UserIcon className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="font-malayalam">പ്രൊഫൈൽ</span>
+                        <span className="text-[11px] font-sans text-slate-400 font-normal group-hover:text-slate-600">(Profile)</span>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 group-hover:translate-x-0.5 transition-all" />
                     </button>
-                  )}
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        onOpenOrders();
+                      }}
+                      className="w-full group flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold text-slate-700 hover:text-slate-900 hover:bg-slate-100/80 transition-all text-left cursor-pointer"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-50 text-[#0B8F68] flex items-center justify-center shrink-0 group-hover:bg-[#063B2A] group-hover:text-white transition-all">
+                          <Heart className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="font-malayalam">ഓർഡറുകൾ</span>
+                        <span className="text-[11px] font-sans text-slate-400 font-normal group-hover:text-slate-600">(Orders)</span>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-slate-500 group-hover:translate-x-0.5 transition-all" />
+                    </button>
+
+                    <div className="h-px bg-slate-100 my-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsProfileDropdownOpen(false);
+                        if (authUser?.role === 'merchant') {
+                          onSelectRole('merchant');
+                        } else {
+                          onOpenAuthModal('merchant-login');
+                        }
+                      }}
+                      className="w-full group flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold text-[#063B2A] hover:bg-emerald-50/80 transition-all text-left cursor-pointer border border-emerald-100/60 bg-emerald-50/30"
+                    >
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-100 text-[#063B2A] flex items-center justify-center shrink-0 group-hover:bg-[#063B2A] group-hover:text-white transition-all">
+                          <Store className="w-3.5 h-3.5" />
+                        </div>
+                        <span className="font-malayalam whitespace-nowrap">വ്യാപാരി പാനൽ</span>
+                        <span className="text-[10px] font-sans text-emerald-800 font-semibold px-1.5 py-0.5 bg-emerald-100/80 rounded-md">Partner</span>
+                      </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-emerald-600/70 group-hover:text-emerald-800 group-hover:translate-x-0.5 transition-all" />
+                    </button>
+
+                    {authUser && (
+                      <>
+                        <div className="h-px bg-slate-100 my-1" />
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsProfileDropdownOpen(false);
+                            onLogout();
+                          }}
+                          className="w-full group flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 transition-all text-left cursor-pointer"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-7 h-7 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center shrink-0 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                              <LogOut className="w-3.5 h-3.5" />
+                            </div>
+                            <span className="font-malayalam">ലോഗ് ഔട്ട്</span>
+                            <span className="text-[11px] font-sans opacity-80 font-normal">(Logout)</span>
+                          </div>
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-              </div>
+              </>
             )}
           </div>
 

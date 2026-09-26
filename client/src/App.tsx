@@ -32,6 +32,8 @@ import { ShopDetailModal } from './components/ShopDetailModal';
 import { ShopPriceCatalogueModal } from './components/ShopPriceCatalogueModal';
 import { ItemizedMatrixModal } from './components/ItemizedMatrixModal';
 import { FlashDealsBanner } from './components/FlashDealsBanner';
+import { FlashDealsModal } from './components/FlashDealsModal';
+import { FlashDealsPage } from './components/FlashDealsPage';
 import { StoreDuelModal } from './components/StoreDuelModal';
 import { AddProductModal } from './components/AddProductModal';
 import { AdminPanel } from './components/AdminPanel';
@@ -189,8 +191,8 @@ export const App: React.FC = () => {
   });
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
-  // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites')
-  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories'>('home');
+  // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals')
+  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals'>('home');
 
   // App View State ('welcome' | 'consumer' | 'merchant' | 'admin' | 'partner')
   const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin' | 'partner'>(() => {
@@ -384,6 +386,7 @@ export const App: React.FC = () => {
   const [consumerData, setConsumerData] = useState<ConsumerData | null>(null);
   const [isConsumerDashboardOpen, setIsConsumerDashboardOpen] = useState<boolean>(false);
   const [isSaveBasketModalOpen, setIsSaveBasketModalOpen] = useState<boolean>(false);
+  const [isFlashDealsModalOpen, setIsFlashDealsModalOpen] = useState<boolean>(false);
 
   // Main Data States
   const [locations, setLocations] = useState<Location[]>([]);
@@ -1618,6 +1621,7 @@ export const App: React.FC = () => {
               if (!authUser) handleOpenAuthModal('consumer-login');
               else setShopperTab('profile');
             }}
+            onOpenFlashDeals={() => setIsFlashDealsModalOpen(true)}
             onSelectRole={(r) => {
               if (r === 'shopper') {
                 setAppView('consumer');
@@ -1636,16 +1640,6 @@ export const App: React.FC = () => {
         </div>
 
         <main className="flex-1 w-full px-3 sm:px-4 lg:px-6 py-4 sm:py-5">
-
-          {/* Flash Deals Ticker */}
-          {showDealsBanner && (
-            <div className="hidden lg:block mb-4">
-              <FlashDealsBanner
-                deals={flashDeals}
-                onAddDealToBasket={handleQuickAdd}
-              />
-            </div>
-          )}
 
           {/* MOBILE & TABLET SCREENS (Adaptive Responsive Container) */}
           <div className="lg:hidden w-full max-w-2xl sm:max-w-4xl mx-auto px-1 sm:px-4">
@@ -1709,6 +1703,7 @@ export const App: React.FC = () => {
                     setSelectedMobileCategory(cat);
                     setSelectedCategoryId('all');
                   }}
+                  onOpenDeals={() => setIsFlashDealsModalOpen(true)}
                 />
               )
             )}
@@ -1843,6 +1838,16 @@ export const App: React.FC = () => {
               </div>
             )}
 
+            {shopperTab === 'deals' && (
+              <FlashDealsPage
+                deals={flashDeals}
+                products={products}
+                onAddDealToBasket={handleQuickAdd}
+                onBack={() => setShopperTab('home')}
+                onOpenShopCatalogue={(s) => handleOpenShopCatalogue(s)}
+              />
+            )}
+
             {shopperTab === 'shops' && (
               <StoresListView
                 shops={shops}
@@ -1898,7 +1903,7 @@ export const App: React.FC = () => {
                       if (!authUser) handleOpenAuthModal('consumer-login');
                       else setIsConsumerPreBookingsOpen(true);
                     }}
-                    onOpenDeals={() => setShowDealsBanner(true)}
+                    onOpenDeals={() => setShopperTab('deals')}
                     isRightSidebarOpen={isDesktopRightSidebarOpen}
                   />
                 </div>
@@ -1914,7 +1919,7 @@ export const App: React.FC = () => {
                     onClearBasket={handleClearBasket}
                     onOpenCart={() => setIsMobileBasketOpen(true)}
                     onOpenShops={() => setShopperTab('shops')}
-                    onOpenDeals={() => setShowDealsBanner(true)}
+                    onOpenDeals={() => setShopperTab('deals')}
                     onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
                     onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
                     onOpenItemizedMatrix={() => setIsItemizedMatrixOpen(true)}
@@ -1950,6 +1955,17 @@ export const App: React.FC = () => {
                   </span>
                 )}
               </button>
+            )}
+
+            {/* Desktop Dedicated Flash Deals Page */}
+            {shopperTab === 'deals' && (
+              <FlashDealsPage
+                deals={flashDeals}
+                products={products}
+                onAddDealToBasket={handleQuickAdd}
+                onBack={() => setShopperTab('home')}
+                onOpenShopCatalogue={(s) => handleOpenShopCatalogue(s)}
+              />
             )}
 
             {shopperTab === 'shops' && (
@@ -2356,6 +2372,23 @@ export const App: React.FC = () => {
         />
       )}
 
+      {/* Actual Flash Deals Modal */}
+      <FlashDealsModal
+        isOpen={isFlashDealsModalOpen}
+        onClose={() => setIsFlashDealsModalOpen(false)}
+        deals={flashDeals}
+        onAddDealToBasket={handleQuickAdd}
+        onOpenMerchantPortal={() => {
+          if (authUser?.role === 'merchant') {
+            window.history.pushState({}, '', '/merchant');
+            setAppView('merchant');
+          } else {
+            handleOpenAuthModal('merchant-login');
+          }
+        }}
+        isMerchant={authUser?.role === 'merchant'}
+      />
+
       {/* Consumer Chat with Merchant Modal */}
       {isChatModalOpen && (
         <ConsumerChatModal
@@ -2457,6 +2490,7 @@ export const App: React.FC = () => {
           else setIsConsumerPreBookingsOpen(true);
         }}
         onOpenChat={() => handleOpenChat()}
+        onOpenFlashDeals={() => setShopperTab('deals')}
         onOpenMerchantPortal={() => {
           if (authUser?.role === 'merchant') {
             window.history.pushState({}, '', '/merchant');

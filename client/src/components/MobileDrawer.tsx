@@ -25,6 +25,7 @@ import {
   Layers,
   ArrowLeft,
   Briefcase,
+  Zap,
 } from 'lucide-react';
 import { User } from '../types';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
@@ -46,6 +47,7 @@ interface MobileDrawerProps {
   onOpenConsumerDashboard?: () => void;
   onOpenPreBookings?: () => void;
   onOpenChat?: () => void;
+  onOpenFlashDeals?: () => void;
   onOpenMerchantPortal?: () => void;
   onOpenAdminPortal?: () => void;
 
@@ -76,6 +78,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onOpenConsumerDashboard,
   onOpenPreBookings,
   onOpenChat,
+  onOpenFlashDeals,
   onOpenMerchantPortal,
   onOpenAdminPortal,
   merchantTab = 'dashboard',
@@ -532,6 +535,25 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 </span>
               )}
             </button>
+
+            {/* Flash Deals Option */}
+            {onOpenFlashDeals && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenFlashDeals();
+                }}
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 transition-colors text-left cursor-pointer shadow-2xs"
+              >
+                <div className="flex items-center gap-3.5">
+                  <Zap className="w-4 h-4 text-amber-400 shrink-0 fill-amber-400" />
+                  <span>ഫ്ലാഷ് ഡീലുകൾ (Flash Deals)</span>
+                </div>
+                <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-600 text-white font-sans animate-pulse">
+                  LIVE
+                </span>
+              </button>
+            )}
 
             <button
               onClick={() => {
