@@ -267,16 +267,6 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-in fade-in duration-200 font-sans">
       <div className="relative w-full max-w-4xl bg-white rounded-3xl sm:rounded-[32px] shadow-2xl border border-emerald-950/10 overflow-hidden grid grid-cols-1 md:grid-cols-12 max-h-[94dvh]">
 
-        {/* Floating Close Button */}
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 z-30 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-slate-100/90 hover:bg-slate-200/90 text-slate-600 hover:text-slate-900 flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
-          title="അടയ്ക്കുക (Close)"
-        >
-          <X className="w-4 h-4 sm:w-5 sm:h-5" />
-        </button>
-
         {/* Left Visual Brand Column (Desktop) */}
         <div className="hidden md:flex md:col-span-5 bg-gradient-to-br from-[#0D4A36] via-[#0A3D2C] to-[#06291D] text-white p-8 lg:p-9 flex-col justify-between relative overflow-hidden">
           {/* Ambient Lighting Glows */}
@@ -328,95 +318,71 @@ export const AuthModal: React.FC<AuthModalProps> = ({
         </div>
 
         {/* Right Form Column */}
-        <div className="md:col-span-7 p-5 sm:p-8 flex flex-col justify-start overflow-y-auto max-h-[94dvh] relative bg-white">
+        <div className="md:col-span-7 p-5 sm:p-7 flex flex-col justify-start overflow-y-auto max-h-[94dvh] relative bg-white">
 
-          {/* Mobile Header Branding */}
-          <div className="md:hidden flex flex-col items-center text-center pt-1 pb-3.5">
-            <div className="mb-2">
-              <EnteBazaarLogo size="sm" withTagline={false} />
-            </div>
-            <h2 className="text-lg font-black text-[#0B3D2D] font-padmanabha tracking-tight m-0">
-              {persona === 'merchant' ? 'വ്യാപാരി പോർട്ടൽ' : 'സ്വാഗതം'}
-            </h2>
-            <p className="text-[11px] text-slate-500 font-malayalam mt-0.5">
-              {persona === 'merchant'
-                ? 'നിങ്ങളുടെ കടയുടെ ഉൽപ്പന്നങ്ങളും വിലകളും നിയന്ത്രിക്കുക'
-                : 'മികച്ച ഓഫറുകളും കുറഞ്ഞ വിലകളും ആസ്വദിക്കൂ'}
-            </p>
-          </div>
-
-          <div className="w-full pr-7 sm:pr-8">
-            {/* Top Back Action (if Google sign-in is pending) */}
-            {isGooglePending && (
-              <div className="mb-3">
-                <button
-                  type="button"
-                  onClick={handleCancelGoogleAndReturnToNormalLogin}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all cursor-pointer font-malayalam shadow-2xs group"
-                >
-                  <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-emerald-700" />
-                  <span>
-                    {subTab === 'register' ? '← സാധാരണ രജിസ്ട്രേഷൻ (Back)' : '← സാധാരണ ലോഗിൻ (Back)'}
-                  </span>
-                </button>
+          {/* Standard Modal Header Bar */}
+          <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 mb-1">
+                <img src="/logo.png" alt="PeediyaCart" className="h-5 sm:h-6 w-auto object-contain md:hidden" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-sans">
+                  {persona === 'merchant' ? 'Partner Portal' : 'Shopper'}
+                </span>
               </div>
-            )}
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-padmanabha tracking-tight m-0">
+                {subTab === 'login' ? 'ലോഗിൻ ചെയ്യുക' : 'പുതിയ അക്കൗണ്ട്'}
+              </h2>
+              <p className="text-xs text-slate-500 font-malayalam mt-0.5 line-clamp-1">
+                {persona === 'merchant'
+                  ? 'നിങ്ങളുടെ കടയുടെ ഉൽപ്പന്നങ്ങളും വിലകളും നിയന്ത്രിക്കുക'
+                  : 'സ്വാഗതം! മികച്ച ഓഫറുകളും കുറഞ്ഞ വിലകളും ആസ്വദിക്കൂ'}
+              </p>
+            </div>
+
+            {/* Standard Well-spaced Close Button */}
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer shrink-0 active:scale-95"
+              title="അടയ്ക്കുക (Close)"
+            >
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
           </div>
+
+          {/* Top Back Action (if Google sign-in is pending) */}
+          {isGooglePending && (
+            <div className="mb-3">
+              <button
+                type="button"
+                onClick={handleCancelGoogleAndReturnToNormalLogin}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 transition-all cursor-pointer font-malayalam shadow-2xs group"
+              >
+                <ArrowLeft className="w-3.5 h-3.5 transition-transform group-hover:-translate-x-0.5 text-emerald-700" />
+                <span>
+                  {subTab === 'register' ? '← സാധാരണ രജിസ്ട്രേഷൻ (Back)' : '← സാധാരണ ലോഗിൻ (Back)'}
+                </span>
+              </button>
+            </div>
+          )}
 
           <div className="w-full">
-            {/* Persona Switcher (Premium Segmented Control) */}
-            <div className="w-full grid grid-cols-2 p-1.5 bg-[#EFF4F1] rounded-2xl mb-4 border border-[#E0EBE5] shadow-2xs">
-              <button
-                type="button"
-                onClick={() => {
-                  setPersona('consumer');
-                  setError('');
-                  setEmail('');
-                  setPassword('');
-                }}
-                className={`py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-[13px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam ${persona === 'consumer'
-                    ? 'bg-white text-[#0D4A36] shadow-sm border border-emerald-100/80 scale-[1.01]'
-                    : 'text-[#5C7066] hover:text-[#0D4A36] hover:bg-white/50'
-                  }`}
-              >
-                <UserIcon className="w-4 h-4 text-[#0D4A36]" />
-                <span>ഉപഭോക്താവ്</span>
-                <span className="text-[10px] font-sans text-emerald-800 font-semibold hidden xs:inline">(Shopper)</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setPersona('merchant');
-                  setError('');
-                  setEmail('');
-                  setPassword('');
-                }}
-                className={`py-2 sm:py-2.5 px-3 rounded-xl text-xs sm:text-[13px] font-black transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam ${persona === 'merchant'
-                    ? 'bg-[#0D4A36] text-white shadow-sm scale-[1.01]'
-                    : 'text-[#5C7066] hover:text-[#0D4A36] hover:bg-white/50'
-                  }`}
-              >
-                <Store className="w-4 h-4" />
-                <span>വ്യാപാരി</span>
-                <span className="text-[10px] font-sans text-emerald-200 font-semibold hidden xs:inline">(Merchant)</span>
-              </button>
-            </div>
-
-            {/* Sub-tab: Login vs Register */}
-            <div className="w-full flex items-center bg-slate-100/70 p-1 rounded-xl mb-4.5 border border-slate-200/60 font-malayalam">
+            {/* Primary Action Tabs: Login vs Register */}
+            <div className="grid grid-cols-2 p-1 bg-slate-100/90 rounded-2xl mb-3.5 border border-slate-200/80 font-malayalam shadow-2xs">
               <button
                 type="button"
                 onClick={() => {
                   setSubTab('login');
                   setError('');
                 }}
-                className={`flex-1 py-1.5 sm:py-2 text-xs sm:text-sm font-black rounded-lg transition-all cursor-pointer text-center ${subTab === 'login'
-                    ? 'bg-white text-[#0D4A36] shadow-xs'
+                className={`py-2 sm:py-2.5 px-3 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer text-center flex items-center justify-center gap-1.5 ${
+                  subTab === 'login'
+                    ? 'bg-white text-[#0D4A36] shadow-xs font-black'
                     : 'text-slate-500 hover:text-slate-800'
-                  }`}
+                }`}
               >
-                ലോഗിൻ (Sign In)
+                <span>ലോഗിൻ</span>
+                <span className="text-[11px] font-sans opacity-75 font-semibold">(Sign In)</span>
               </button>
 
               <button
@@ -425,13 +391,67 @@ export const AuthModal: React.FC<AuthModalProps> = ({
                   setSubTab('register');
                   setError('');
                 }}
-                className={`flex-1 py-1.5 sm:py-2 text-xs sm:text-sm font-black rounded-lg transition-all cursor-pointer text-center ${subTab === 'register'
-                    ? 'bg-white text-[#0D4A36] shadow-xs'
+                className={`py-2 sm:py-2.5 px-3 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer text-center flex items-center justify-center gap-1.5 ${
+                  subTab === 'register'
+                    ? 'bg-white text-[#0D4A36] shadow-xs font-black'
                     : 'text-slate-500 hover:text-slate-800'
-                  }`}
+                }`}
               >
-                പുതിയ അക്കൗണ്ട് (Register)
+                <span>രജിസ്റ്റർ</span>
+                <span className="text-[11px] font-sans opacity-75 font-semibold">(Sign Up)</span>
               </button>
+            </div>
+
+            {/* Account Type Selector Strip */}
+            <div className="mb-4 bg-emerald-50/40 border border-emerald-950/10 p-2 sm:p-2.5 rounded-2xl">
+              <div className="flex items-center justify-between px-1 mb-1.5">
+                <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider font-sans">
+                  അക്കൗണ്ട് തരം (Account Type)
+                </span>
+                <span className="text-[10px] font-semibold text-emerald-800 bg-white border border-emerald-200/60 px-2 py-0.5 rounded-full font-sans shadow-2xs">
+                  {persona === 'merchant' ? '🏪 Merchant' : '👤 Shopper'}
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPersona('consumer');
+                    setError('');
+                    setEmail('');
+                    setPassword('');
+                  }}
+                  className={`py-2 sm:py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer font-malayalam border ${
+                    persona === 'consumer'
+                      ? 'bg-white border-[#0D4A36] text-[#0D4A36] shadow-xs ring-1 ring-[#0D4A36]/15 font-black'
+                      : 'bg-white/80 border-slate-200/80 text-slate-600 hover:bg-white hover:text-slate-900'
+                  }`}
+                >
+                  <UserIcon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${persona === 'consumer' ? 'text-[#0D4A36]' : 'text-slate-400'}`} />
+                  <span>ഉപഭോക്താവ്</span>
+                  <span className="text-[10px] font-sans opacity-70 font-normal hidden xs:inline">(Shopper)</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPersona('merchant');
+                    setError('');
+                    setEmail('');
+                    setPassword('');
+                  }}
+                  className={`py-2 sm:py-2.5 px-2.5 rounded-xl text-xs sm:text-[13px] font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer font-malayalam border ${
+                    persona === 'merchant'
+                      ? 'bg-[#0D4A36] border-[#0D4A36] text-white shadow-xs font-black'
+                      : 'bg-white/80 border-slate-200/80 text-slate-600 hover:bg-white hover:text-slate-900'
+                  }`}
+                >
+                  <Store className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${persona === 'merchant' ? 'text-emerald-300' : 'text-slate-400'}`} />
+                  <span>വ്യാപാരി</span>
+                  <span className={`text-[10px] font-sans font-normal hidden xs:inline ${persona === 'merchant' ? 'text-emerald-200' : 'opacity-70'}`}>(Merchant)</span>
+                </button>
+              </div>
             </div>
 
             {/* Error / Success Alerts */}

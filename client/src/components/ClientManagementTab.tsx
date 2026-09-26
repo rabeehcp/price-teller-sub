@@ -238,7 +238,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
             {summary?.totalClients ?? clients.length}
           </p>
           <p className="text-[11px] text-slate-400 mt-1 font-malayalam">
-            {summary?.totalActiveClients ?? clients.filter((c) => c.status === 'active').length} സജീവ ഫീൽഡ് പാർട്ണർമാർ
+            {summary?.totalActiveClients ?? clients.filter((c) => c.status === 'active').length} സജീവ Field Partners
           </p>
         </div>
 
@@ -827,7 +827,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                   <span>മുന്നറിയിപ്പ്: കുറഞ്ഞത് 50 കടകൾ തികച്ചിട്ടില്ല</span>
                 </div>
                 <p className="text-[11px] text-amber-700 font-malayalam leading-relaxed">
-                  ഈ പാർട്ണർ ഇതുവരെ {payoutClient.totalShopsCount || 0}/50 കടകൾ മാത്രമേ ചേർത്തിട്ടുള്ളൂ. (50 കടകൾ പൂർത്തിയാകുമ്പോഴാണ് സാധാരണ പേഔട്ട് നൽകുന്നത്). അഡ്മിൻ എന്ന നിലയിൽ നിങ്ങൾക്ക് വേണമെങ്കിൽ തുക നൽകാം.
+                  ഈ Partner ഇതുവരെ {payoutClient.totalShopsCount || 0}/50 കടകൾ മാത്രമേ ചേർത്തിട്ടുള്ളൂ. (50 കടകൾ പൂർത്തിയാകുമ്പോഴാണ് സാധാരണ പേഔട്ട് നൽകുന്നത്). അഡ്മിൻ എന്ന നിലയിൽ നിങ്ങൾക്ക് വേണമെങ്കിൽ തുക നൽകാം.
                 </p>
               </div>
             ) : (
@@ -837,7 +837,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                   <span>50+ കടകൾ ലക്ഷ്യം പൂർത്തിയായി! (50% കമ്മീഷൻ അൺലോക്ക്ഡ്)</span>
                 </div>
                 <p className="text-[11px] text-emerald-700 font-malayalam leading-relaxed">
-                  ഈ പാർട്ണർ {payoutClient.totalShopsCount} കടകൾ വിജയകരമായി ഓൺബോർഡ് ചെയ്തു. പേഔട്ട് സുരക്ഷിതമായി നൽകാം.
+                  ഈ Partner {payoutClient.totalShopsCount} കടകൾ വിജയകരമായി ഓൺബോർഡ് ചെയ്തു. പേഔട്ട് സുരക്ഷിതമായി നൽകാം.
                 </p>
               </div>
             )}

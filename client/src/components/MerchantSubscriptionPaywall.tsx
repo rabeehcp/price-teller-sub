@@ -50,18 +50,18 @@ interface MerchantSubscriptionPaywallProps {
 const DEFAULT_FALLBACK_PLANS: SubscriptionPlan[] = [
   {
     id: 'plan-starter-119',
-    name: 'മർച്ചന്റ് പാർട്ണർ പ്ലാൻ (Partner Onboarding Plan)',
+    name: 'മർച്ചന്റ് Partner പ്ലാൻ (Partner Onboarding Plan)',
     durationDays: 30,
     pricePaise: 11900,
     currency: 'INR',
-    description: 'ഫീൽഡ് പാർട്ണർ വഴി ചേരുന്ന എല്ലാ കടകൾക്കുമുള്ള പ്രത്യേക പ്ലാൻ (₹119/Month)',
+    description: 'Field Partner വഴി ചേരുന്ന എല്ലാ കടകൾക്കുമുള്ള പ്രത്യേക പ്ലാൻ (₹119/Month)',
     badge: 'Official ₹119 Plan',
     features: [
       'തത്സമയ വില താരതമ്യ ലിസ്റ്റിംഗ് (Live Price Comparison)',
       'ഡിജിറ്റൽ സ്റ്റോർ പ്രൊഫൈലും മുഴുവൻ കാറ്റലോഗും',
       'നേരിട്ടുള്ള ഉപഭോക്തൃ ഇൻ-ആപ്പ് ചാറ്റുകൾ',
       'കൗണ്ടർ POS ബില്ലിംഗ് & തെർമൽ രസീതുകൾ',
-      'ഫീൽഡ് പാർട്ണർ സപ്പോർട്ട് & പ്രയോറിറ്റി വെരിഫിക്കേഷൻ',
+      'Field Partner സപ്പോർട്ട് & പ്രയോറിറ്റി വെരിഫിക്കേഷൻ',
     ],
     isActive: true,
   },
@@ -95,7 +95,7 @@ const DEFAULT_FALLBACK_PLANS: SubscriptionPlan[] = [
       'ഫ്ലാഷ് ഡീലുകൾ & പ്രത്യേക ഓഫർ ബാനറുകൾ',
       'കസ്റ്റമർ പ്രീ-ബുക്കിംഗ് & പിക്ക്അപ്പ് മാനേജ്‌മെന്റ്',
       'അൺലിമിറ്റഡ് POS ബില്ലിംഗ് & WhatsApp രസീതുകൾ',
-      'ഔദ്യോഗിക വെരിഫൈഡ് പാർട്ണർ ബാഡ്ജ്',
+      'ഔദ്യോഗിക Verified Partner ബാഡ്ജ്',
       'പ്രതിമാസം ₹416 മാത്രം (Save 17%)',
     ],
     isActive: true,
@@ -322,7 +322,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg sm:text-xl font-black text-[#17221D] tracking-tight">
-                  സ്റ്റോർ പാർട്ണർ പ്ലാനുകൾ
+                  സ്റ്റോർ Partner പ്ലാനുകൾ
                 </h2>
                 <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#DDF5EA] text-[#063B2A] border border-[#C3EEDC]">
                   Partner Plans
@@ -393,7 +393,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
           <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DDF5EA] border border-[#C3EEDC] text-[#063B2A] text-xs font-black mb-3.5 shadow-2xs font-malayalam">
               <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
-              കേരളത്തിലെ പ്രമുഖ സൂപ്പർമാർക്കറ്റ് പാർട്ണർ നെറ്റ്‌വർക്ക്
+              കേരളത്തിലെ പ്രമുഖ സൂപ്പർമാർക്കറ്റ് Partner നെറ്റ്‌വർക്ക്
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-[#17221D] tracking-tight leading-tight font-malayalam">
               കടയുടെ വിൽപന ഉയർത്താൻ അനുയോജ്യമായ പ്ലാൻ തിരഞ്ഞെടുക്കൂ
@@ -563,7 +563,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
               <div className="flex items-center gap-2 mb-4">
                 <ShieldCheck className="w-5 h-5 text-[#0B8F68]" />
                 <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#063B2A]">
-                  PeediyaCart പാർട്ണർ ആയാലുള്ള നേട്ടങ്ങൾ (Merchant Benefits)
+                  PeediyaCart Partner ആയാലുള്ള നേട്ടങ്ങൾ (Merchant Benefits)
                 </h4>
               </div>
 
@@ -837,7 +837,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
                   <div className="text-[11px] text-[#063B2A] bg-[#EDFAF3] border border-[#C3EEDC] px-2.5 py-1 rounded-lg flex items-center gap-1.5 animate-in fade-in">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>
-                      പാർട്ണർ: <b>{verifiedClientInfo.name}</b> {verifiedClientInfo.area ? `(${verifiedClientInfo.area})` : ''}
+                      Partner: <b>{verifiedClientInfo.name}</b> {verifiedClientInfo.area ? `(${verifiedClientInfo.area})` : ''}
                     </span>
                   </div>
                 ) : clientCode && clientCode.length >= 3 && !isValidatingClient ? (
