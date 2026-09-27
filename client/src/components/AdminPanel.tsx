@@ -197,6 +197,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [newStoreLocationId, setNewStoreLocationId] = useState(locations[0]?.id || 'tirur');
   const [newStoreAddress, setNewStoreAddress] = useState('');
   const [newStorePhone, setNewStorePhone] = useState('+91 98470 ');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
   const [newStoreType, setNewStoreType] = useState<'supermarket' | 'local_mart' | 'organic' | 'wholesale' | 'quick_commerce'>('supermarket');
   const [newStoreDistance, setNewStoreDistance] = useState('1.2');
   const [newStoreLat, setNewStoreLat] = useState<number | undefined>(undefined);
@@ -760,175 +761,143 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
-      {/* 1. DESKTOP LEFT SIDEBAR (Matching Ash Black Theme) */}
-      <aside className="w-56 xl:w-64 bg-[#141816] text-white shrink-0 hidden lg:flex flex-col justify-between p-3.5 xl:p-4 border-r border-[#242A27] shadow-xl fixed top-0 bottom-0 left-0 h-screen z-30 select-none overflow-y-auto">
-        <div>
-          {/* Official Brand Logo */}
-          <div className="px-2 py-2 mb-3">
+      {/* 1. DESKTOP LEFT SIDEBAR (Matching Warm Clean Theme) */}
+      <aside
+        className={`${
+          isSidebarCollapsed ? 'w-20 px-2 py-5' : 'w-56 xl:w-60 pr-3.5 pl-0 py-5'
+        } fixed top-0 left-0 bottom-0 h-screen z-40 bg-[#FAF7F0] text-[#2B231B] shrink-0 hidden lg:flex flex-col justify-between border-r border-[#ECE6DA] shadow-2xs select-none transition-all duration-300 overflow-y-auto no-scrollbar font-sans`}
+      >
+        <div className="space-y-4">
+          {/* Brand Logo */}
+          <div className={`flex items-center ${isSidebarCollapsed ? 'justify-center' : 'px-5'}`}>
             <EnteBazaarLogo
-              size="md"
-              theme="dark"
-              withTagline={true}
+              size="sm"
+              variant={isSidebarCollapsed ? 'icon' : 'horizontal'}
+              theme="light"
+              withTagline={false}
               onClick={() => setActiveTab('overview')}
             />
           </div>
 
-          {/* Admin Role Pill matching Image 2 */}
-          <div className="mb-4 px-2">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-[#1D2220] border border-[#2F3733] text-xs font-bold text-emerald-300">
+          {/* Admin Role Pill */}
+          <div className={isSidebarCollapsed ? 'px-1 flex justify-center' : 'px-4'}>
+            <div
+              className={`flex items-center gap-2 rounded-xl bg-white/80 border border-[#E5DFD4] text-[#2B231B] shadow-2xs transition-all ${
+                isSidebarCollapsed ? 'p-2 justify-center' : 'px-3 py-1.5 text-xs font-bold'
+              }`}
+            >
               <span>👑</span>
-              <span>Admin</span>
+              {!isSidebarCollapsed && <span>Admin</span>}
             </div>
           </div>
 
-          {/* Navigation Links matching Image 2 */}
+          {/* Navigation Links */}
           <nav className="space-y-1">
-            <button
-              onClick={() => setActiveTab('overview')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'overview'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <LayoutGrid className="w-4 h-4 text-emerald-400" />
-              <span>Dashboard</span>
-            </button>
+            {[
+              { id: 'overview', label: 'Dashboard', icon: LayoutGrid },
+              { id: 'stores', label: 'Merchants', icon: Store, badge: String(shops.length) },
+              { id: 'catalog', label: 'Products', icon: Package, badge: String(activeProductList.length) },
+              {
+                id: 'moderation',
+                label: 'Complaints',
+                icon: AlertCircle,
+                badge: reports.filter((r) => r.status === 'pending').length > 0
+                  ? String(reports.filter((r) => r.status === 'pending').length)
+                  : undefined,
+              },
+              { id: 'subscriptions', label: 'Reports', icon: FileText },
+              { id: 'clients', label: 'Field Clients', icon: Briefcase, badge: 'Partners' },
+              { id: 'locations', label: 'Locations', icon: Settings, badge: String(locations.length) },
+            ].map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
 
-            <button
-              onClick={() => setActiveTab('overview')}
-              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer text-[#A2B1A9] hover:bg-[#202623] hover:text-white"
-            >
-              <Users className="w-4 h-4 text-emerald-400" />
-              <span>Users</span>
-            </button>
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setActiveTab(item.id as any)}
+                  title={item.label}
+                  className={`w-full group flex items-center transition-all duration-150 cursor-pointer text-left relative ${
+                    isSidebarCollapsed
+                      ? 'justify-center p-3 rounded-2xl'
+                      : 'gap-3 px-5 py-2.5 rounded-r-xl rounded-l-none'
+                  } ${
+                    isActive
+                      ? 'bg-[#F8E7CD] text-[#1F1A14] font-semibold'
+                      : 'text-[#2D261E] hover:bg-[#F3ECE0]'
+                  }`}
+                >
+                  {/* Active Green Vertical Accent Line */}
+                  {isActive && !isSidebarCollapsed && (
+                    <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#10A978]" />
+                  )}
+                  {isActive && isSidebarCollapsed && (
+                    <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#10A978] rounded-r" />
+                  )}
 
-            <button
-              onClick={() => setActiveTab('stores')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'stores'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Store className="w-4 h-4 text-emerald-400" />
-                <span>Merchants</span>
-              </div>
-              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
-                {shops.length}
-              </span>
-            </button>
+                  {/* Icon */}
+                  <div className={`flex items-center justify-center shrink-0 ${isActive ? 'text-[#0D6344]' : 'text-[#5C5449]'}`}>
+                    <Icon className="w-4.5 h-4.5 stroke-[1.8]" />
+                  </div>
 
-            <button
-              onClick={() => setActiveTab('catalog')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'catalog'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Package className="w-4 h-4 text-emerald-400" />
-                <span>Products</span>
-              </div>
-              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
-                {activeProductList.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('moderation')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'moderation'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <AlertCircle className="w-4 h-4 text-emerald-400" />
-                <span>Complaints</span>
-              </div>
-              {reports.filter((r) => r.status === 'pending').length > 0 && (
-                <span className="bg-amber-500 text-slate-950 text-[10px] font-black px-1.5 py-0.5 rounded-full font-sans">
-                  {reports.filter((r) => r.status === 'pending').length}
-                </span>
-              )}
-            </button>
-
-            <button
-              onClick={() => setActiveTab('subscriptions')}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'subscriptions'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <FileText className="w-4 h-4 text-emerald-400" />
-              <span>Reports</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('clients')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'clients'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Briefcase className="w-4 h-4 text-emerald-400" />
-                <span>Field Clients</span>
-              </div>
-              <span className="bg-[#202623] text-emerald-400 text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
-                Partners
-              </span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('locations')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-2xl text-xs font-bold transition-all cursor-pointer ${
-                activeTab === 'locations'
-                  ? 'bg-[#0B8F68] text-white shadow-xs font-black'
-                  : 'text-[#A2B1A9] hover:bg-[#202623] hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <Settings className="w-4 h-4 text-emerald-400" />
-                <span>Locations</span>
-              </div>
-              <span className="bg-[#202623] text-[#A2B1A9] text-[10px] font-black px-2 py-0.5 rounded-full font-sans">
-                {locations.length}
-              </span>
-            </button>
+                  {/* Label and Badge */}
+                  {!isSidebarCollapsed && (
+                    <div className="flex items-center justify-between flex-1 min-w-0">
+                      <span className="text-sm font-medium tracking-tight truncate">
+                        {item.label}
+                      </span>
+                      {item.badge && (
+                        <span className="text-[10px] font-black px-2 py-0.5 rounded-full bg-[#E8F5EE] text-[#0D6344]">
+                          {item.badge}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Lower Sidebar Actions matching Image 2 */}
-        <div className="space-y-3 pt-3 border-t border-[#242A27]">
-          {/* Ash card */}
-          <div className="p-3 bg-[#1D2220] border border-[#2F3733] rounded-2xl flex items-center gap-2.5">
-            <span className="text-xl">🌱</span>
-            <div className="text-[10px] text-[#A2B1A9] leading-tight font-medium">
-              Together for a stronger local economy.
-            </div>
-          </div>
+        {/* Lower Sidebar Actions */}
+        <div className={`space-y-3 pt-3 border-t border-[#ECE6DA] ${isSidebarCollapsed ? 'px-1' : 'px-4'}`}>
+          {/* Collapse Toggle */}
+          <button
+            type="button"
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className="w-full flex items-center justify-center p-2 text-[#7C6E5E] hover:text-[#2B231B] hover:bg-black/5 rounded-xl transition-colors cursor-pointer text-xs"
+            title={isSidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          >
+            {isSidebarCollapsed ? (
+              <ChevronRight className="w-4 h-4 hover:translate-x-0.5 transition-transform" />
+            ) : (
+              <div className="flex items-center gap-2 w-full justify-center">
+                <ChevronLeft className="w-4 h-4" />
+                <span className="font-semibold text-xs">Collapse</span>
+              </div>
+            )}
+          </button>
 
           {onLogout && (
             <button
               onClick={onLogout}
               title="Logout from Admin"
-              className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-rose-300 hover:text-white hover:bg-rose-600/30 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-rose-500/20"
+              className={`w-full flex items-center justify-center gap-2 text-rose-600 hover:text-rose-700 hover:bg-rose-50 rounded-xl font-bold transition-colors cursor-pointer border border-rose-200/80 ${
+                isSidebarCollapsed ? 'p-2.5 text-xs' : 'px-3 py-2 text-xs'
+              }`}
             >
-              <LogOut className="w-4 h-4" />
-              <span>Logout</span>
+              <LogOut className="w-4 h-4 shrink-0" />
+              {!isSidebarCollapsed && <span>Logout</span>}
             </button>
           )}
         </div>
       </aside>
 
       {/* 2. MAIN ADMIN WORKSPACE */}
-      <div className="flex-1 flex flex-col min-w-0 lg:ml-56 xl:ml-64">
+      <div className={`flex-1 flex flex-col min-w-0 transition-all duration-300 ${
+        isSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-56 xl:ml-60'
+      }`}>
         {/* Top Header Bar matching Image 2 */}
         <header className="bg-white/95 backdrop-blur-md border-b border-[#E3ECE7] px-3 sm:px-6 py-2.5 sm:py-3 sticky top-0 z-20 flex items-center justify-between gap-2 sm:gap-4 shadow-2xs">
           {/* Left: Back / Menu & Search Bar */}
