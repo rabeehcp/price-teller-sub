@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FlashDeal, Product } from '../types';
-import { ArrowLeft, Clock, Plus, Check, Store, Zap, Flame } from 'lucide-react';
+import { ArrowLeft, Clock, Check, Store, Zap, Flame, ShoppingBag } from 'lucide-react';
 import { ProductImage } from './ProductImage';
+import { getMalayalamName } from '../utils/malayalamNames';
 
 interface FlashDealsPageProps {
   deals: FlashDeal[];
@@ -19,11 +20,11 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
   onOpenShopCatalogue,
 }) => {
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
-  const [selectedFilter, setSelectedFilter] = useState<string>('all');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [timeLeft, setTimeLeft] = useState<{ hours: number; minutes: number; seconds: number }>({
     hours: 2,
-    minutes: 48,
-    seconds: 15,
+    minutes: 45,
+    seconds: 18,
   });
 
   // Live countdown timer
@@ -51,26 +52,39 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
     }, 1500);
   };
 
-  const shops = Array.from(new Set(deals.map((d) => d.shopName)));
+  const categories = [
+    { id: 'all', label: 'All Deals' },
+    { id: 'vegetables', label: 'Vegetables', emoji: '🍅' },
+    { id: 'oils-staples', label: 'Oils & Staples', emoji: '🍾' },
+    { id: 'dairy', label: 'Dairy', emoji: '🥛' },
+    { id: 'snacks', label: 'Snacks', emoji: '🍕' },
+  ];
 
-  const filteredDeals = selectedFilter === 'all'
-    ? deals
-    : deals.filter((d) => d.shopName === selectedFilter);
+  const filteredDeals = deals.filter((deal) => {
+    if (selectedCategory === 'all') return true;
+    const prod = products.find((p) => p.id === deal.productId);
+    const cat = prod?.categoryId || '';
+    if (selectedCategory === 'vegetables') return cat.includes('veg') || cat.includes('fruit');
+    if (selectedCategory === 'oils-staples') return cat.includes('oil') || cat.includes('grain') || cat.includes('rice');
+    if (selectedCategory === 'dairy') return cat.includes('dairy');
+    if (selectedCategory === 'snacks') return cat.includes('snack') || cat.includes('bakery') || cat.includes('biscuit');
+    return true;
+  });
 
   return (
-    <div className="w-full max-w-6xl mx-auto space-y-5 animate-in fade-in duration-200 font-sans pb-12">
-      {/* Top Breadcrumb & Back Action */}
+    <div className="w-full max-w-7xl mx-auto space-y-5 animate-in fade-in duration-200 font-sans pb-16">
+      {/* Top Breadcrumb & Return Action */}
       <div className="flex items-center justify-between gap-3">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 transition-all cursor-pointer font-malayalam shadow-2xs group"
+          className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] rounded-xl text-xs sm:text-sm font-bold text-slate-700 hover:text-slate-900 transition-all cursor-pointer font-sans shadow-2xs group"
         >
           <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-0.5 text-slate-500" />
-          <span>← പ്രധാന പേജിലേക്ക് മടങ്ങുക (Back to Home)</span>
+          <span>Back to Products</span>
         </button>
 
-        <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200/80 rounded-full text-xs font-bold text-amber-900 font-sans shadow-2xs">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 border border-amber-200/80 rounded-full text-xs font-bold text-amber-900 font-sans shadow-2xs">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
@@ -80,102 +94,66 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
         </div>
       </div>
 
-      {/* Clean, Modern Hero Banner with Countdown Timer */}
-      <div className="relative bg-gradient-to-br from-white via-[#FAF7F2] to-[#F5ECE0] border border-[#E5DACB] rounded-3xl p-6 sm:p-7 shadow-[0_8px_30px_rgba(30,20,10,0.04)] overflow-hidden">
-        {/* Subtle Ambient Decorative Lighting */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-amber-400/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+      {/* 1. HERO BANNER: VIBRANT GRADIENT BANNER MATCHING MOCKUP */}
+      <div className="relative rounded-3xl bg-gradient-to-r from-[#D97706] via-[#B45309] to-[#0D6344] p-6 sm:p-8 lg:p-9 text-white shadow-md overflow-hidden flex flex-col md:flex-row md:items-center justify-between gap-6">
+        {/* Subtle Ambient Lighting */}
+        <div className="absolute top-0 right-1/3 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2.5 max-w-xl">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-rose-50 border border-rose-200/80 rounded-full text-xs font-bold text-rose-700 font-malayalam shadow-2xs">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
-              </span>
-              <Zap className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
-              <span>ഇന്നത്തെ ലൈവ് ഓഫറുകൾ</span>
-            </div>
-
-            <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#112E22] font-malayalam tracking-tight m-0">
-                ഫ്ലാഷ് ഡീലുകൾ
-              </h1>
-              <span className="text-xs sm:text-sm font-extrabold text-amber-900 bg-amber-100/80 border border-amber-300/60 px-3 py-1 rounded-full font-sans tracking-wide uppercase shadow-2xs">
-                ⚡ Flash Deals
-              </span>
-            </div>
-
-            <p className="text-xs sm:text-sm text-[#4E5C53] font-medium leading-relaxed font-malayalam m-0">
-              നിങ്ങളുടെ സമീപത്തെ രജിസ്റ്റർ ചെയ്ത കടകളിൽ നിന്നും നേരിട്ട് നൽകുന്ന പ്രത്യേക വിലക്കിഴിവുകൾ. തത്സമയ സ്റ്റോക്ക് പരിമിതമാണ്.
-            </p>
+        <div className="relative z-10 space-y-2 max-w-xl">
+          <div className="flex items-center gap-2 font-malayalam-heading text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-white leading-tight tracking-tight">
+            <span>⚡</span>
+            <span>ഇന്നത്തെ മിന്നൽ ഓഫറുകൾ</span>
           </div>
 
-          {/* Clean Frosted Countdown Timer Widget */}
-          <div className="bg-white/90 backdrop-blur-md border border-[#DFD3C3] rounded-2xl p-4 shrink-0 flex flex-col items-center md:items-end shadow-sm">
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700 font-malayalam mb-2.5">
-              <Clock className="w-4 h-4 text-amber-600" />
-              <span>ഡീലുകൾ അവസാനിക്കാൻ ബാക്കി:</span>
+          <div className="text-sm sm:text-base font-bold text-white/90 font-sans">
+            (Today's Flash Deals)
+          </div>
+
+          {/* Live Countdown Timer */}
+          <div className="pt-2 flex items-center gap-2 text-xs sm:text-sm font-semibold text-white/95">
+            <Clock className="w-4 h-4 text-amber-200" />
+            <span>Ends in</span>
+            <div className="font-mono bg-black/35 backdrop-blur-xs px-3 py-1 rounded-lg font-bold text-white tracking-widest text-sm shadow-xs border border-white/20">
+              {String(timeLeft.hours).padStart(2, '0')}:{String(timeLeft.minutes).padStart(2, '0')}:{String(timeLeft.seconds).padStart(2, '0')}
             </div>
-            <div className="flex items-center gap-1.5 font-mono">
-              <div className="flex flex-col items-center">
-                <div className="bg-[#093526] text-white text-lg sm:text-xl font-black px-3 py-1.5 rounded-xl shadow-xs min-w-[44px] text-center">
-                  {String(timeLeft.hours).padStart(2, '0')}
-                </div>
-                <span className="text-[9px] font-bold text-slate-500 mt-1 font-sans">HOURS</span>
-              </div>
-              <span className="text-lg font-black text-slate-400 mb-4">:</span>
-              <div className="flex flex-col items-center">
-                <div className="bg-[#093526] text-white text-lg sm:text-xl font-black px-3 py-1.5 rounded-xl shadow-xs min-w-[44px] text-center">
-                  {String(timeLeft.minutes).padStart(2, '0')}
-                </div>
-                <span className="text-[9px] font-bold text-slate-500 mt-1 font-sans">MINS</span>
-              </div>
-              <span className="text-lg font-black text-slate-400 mb-4">:</span>
-              <div className="flex flex-col items-center">
-                <div className="bg-rose-700 text-white text-lg sm:text-xl font-black px-3 py-1.5 rounded-xl shadow-xs min-w-[44px] text-center animate-pulse">
-                  {String(timeLeft.seconds).padStart(2, '0')}
-                </div>
-                <span className="text-[9px] font-bold text-rose-600 mt-1 font-sans">SECS</span>
-              </div>
-            </div>
+          </div>
+        </div>
+
+        {/* Right Discount Callout */}
+        <div className="relative z-10 text-left md:text-right shrink-0">
+          <div className="text-xs uppercase tracking-widest text-emerald-200 font-bold font-sans">
+            Up to
+          </div>
+          <div className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-sans drop-shadow-xs">
+            50% OFF
           </div>
         </div>
       </div>
 
-      {/* Filter by Shop Pills */}
-      {shops.length > 1 && (
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
-          <span className="text-xs font-bold text-slate-500 font-malayalam shrink-0">കടകൾ:</span>
-          <button
-            type="button"
-            onClick={() => setSelectedFilter('all')}
-            className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
-              selectedFilter === 'all'
-                ? 'bg-[#063B2A] text-white shadow-xs'
-                : 'bg-white border border-[#E0D7CB] text-slate-600 hover:bg-[#FAF7F2]'
-            }`}
-          >
-            എല്ലാ കടകളും ({deals.length})
-          </button>
-          {shops.map((shop) => (
+      {/* 2. CATEGORY FILTER PILLS (Matching Mockup) */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar font-sans">
+        {categories.map((cat) => {
+          const isSelected = selectedCategory === cat.id;
+
+          return (
             <button
-              key={shop}
+              key={cat.id}
               type="button"
-              onClick={() => setSelectedFilter(shop)}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-bold transition-all shrink-0 cursor-pointer ${
-                selectedFilter === shop
-                  ? 'bg-[#063B2A] text-white shadow-xs'
-                  : 'bg-white border border-[#E0D7CB] text-slate-600 hover:bg-[#FAF7F2]'
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 border ${
+                isSelected
+                  ? 'bg-[#DCFCE7] text-[#166534] border-[#BBF7D0] shadow-2xs scale-102 font-extrabold'
+                  : 'bg-white border-[#E5EBE7] text-slate-700 hover:bg-[#F8FAF9] shadow-2xs'
               }`}
             >
-              {shop} ({deals.filter((d) => d.shopName === shop).length})
+              {cat.emoji && <span>{cat.emoji}</span>}
+              <span>{cat.label}</span>
             </button>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
-      {/* Deals Grid */}
+      {/* 3. FLASH DEAL PRODUCT CARDS GRID (Matching Mockup) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredDeals.map((deal) => {
           const isAdded = addedIds[deal.id];
@@ -184,91 +162,93 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
           );
           const resolvedImage = deal.image || matchedProduct?.image;
           const safeEmoji = (deal.emoji && deal.emoji !== '🫘') ? deal.emoji : (matchedProduct?.emoji || '🌾');
+          const savings = deal.originalPrice - deal.dealPrice;
 
           return (
             <div
               key={deal.id}
-              className="bg-white rounded-2xl p-4 border border-[#E3ECE7] hover:border-emerald-500/50 shadow-2xs hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group relative overflow-hidden"
+              className="bg-white rounded-2xl p-4 border border-[#E3ECE7] hover:border-[#0D6344]/50 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between group relative"
             >
-              {/* Top Badges */}
-              <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="inline-flex items-center gap-1 text-[11px] font-black text-rose-700 bg-rose-50 border border-rose-200/80 px-2.5 py-0.5 rounded-full font-sans uppercase shadow-2xs">
-                  <Zap className="w-2.5 h-2.5 fill-current" />
-                  -{deal.discountPercentage}% OFF
-                </span>
-                <span className="text-[11px] font-bold text-amber-800 bg-amber-50/80 px-2.5 py-0.5 rounded-full font-malayalam border border-amber-200/60 shadow-2xs">
-                  {deal.tag || 'ലിമിറ്റഡ് ഡീൽ'}
-                </span>
-              </div>
+              <div>
+                {/* Top Badges (Discount + Urgency) */}
+                <div className="flex items-center justify-between gap-1.5 mb-2.5">
+                  <span className="text-[11px] font-black text-white bg-[#0D6344] px-2.5 py-0.5 rounded-md font-sans shadow-2xs">
+                    {deal.discountPercentage ? `${deal.discountPercentage}% OFF` : `Save ₹${savings}`}
+                  </span>
+                  <span className="text-[10px] font-bold text-rose-600 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-full font-sans">
+                    Only 3 left!
+                  </span>
+                </div>
 
-              {/* Product Visual & Name */}
-              <div className="space-y-2.5 mb-3">
-                <div className="w-full h-36 rounded-xl bg-gradient-to-b from-[#FAF7F2] to-[#F3EDE2] border border-[#E8DEC9]/70 flex items-center justify-center p-3 relative overflow-hidden group-hover:scale-[1.02] transition-transform">
+                {/* Product Thumbnail */}
+                <div className="w-full h-36 flex items-center justify-center p-2 mb-3 bg-white rounded-xl">
                   <ProductImage
                     productId={deal.productId}
                     image={resolvedImage}
                     emoji={safeEmoji}
                     alt={deal.productName}
                     className="w-full h-full"
-                    imgClassName="w-full h-full object-contain mix-blend-multiply"
+                    imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
                     fallbackEmojiClassName="text-5xl"
                   />
                 </div>
 
-                <div>
-                  <h3 className="text-xs sm:text-sm font-extrabold text-[#17261E] font-malayalam tracking-tight line-clamp-2 leading-snug group-hover:text-[#0B8F68] transition-colors m-0">
-                    {deal.productName}
+                {/* Title & Shop Info */}
+                <div className="space-y-1">
+                  <h3 className="text-sm font-bold text-[#17221D] font-sans truncate m-0 group-hover:text-[#0D6344] transition-colors" title={deal.productName}>
+                    {getMalayalamName(deal.productName) !== deal.productName
+                      ? `${getMalayalamName(deal.productName)} (${deal.productName})`
+                      : deal.productName}
                   </h3>
-                  <button
-                    type="button"
-                    onClick={() => onOpenShopCatalogue && onOpenShopCatalogue(deal.shopName)}
-                    className="text-xs text-slate-500 font-sans mt-1 flex items-center gap-1 hover:text-emerald-700 cursor-pointer truncate"
-                  >
-                    <Store className="w-3.5 h-3.5 text-[#BC681D] shrink-0" />
-                    <span className="font-medium text-slate-700 truncate">{deal.shopName}</span>
+
+                  <div className="text-[11px] text-slate-400 font-sans line-through">
+                    Price ₹{deal.originalPrice}
+                  </div>
+
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-base sm:text-lg font-black text-[#17221D] font-sans">
+                      ₹{deal.dealPrice}
+                    </span>
                     {deal.unit && (
-                      <span className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[10px] font-bold font-sans">
-                        {deal.unit}
+                      <span className="text-[11px] text-slate-500 font-sans">
+                        /{deal.unit}
                       </span>
                     )}
-                  </button>
+                  </div>
+
+                  <div
+                    onClick={() => onOpenShopCatalogue && onOpenShopCatalogue(deal.shopName)}
+                    className="flex items-center gap-1 text-[11px] text-[#526359] font-sans pt-1 truncate cursor-pointer hover:text-[#0D6344]"
+                    title={deal.shopName}
+                  >
+                    <Store className="w-3 h-3 text-[#0D6344] shrink-0" />
+                    <span className="font-semibold truncate">{deal.shopName}</span>
+                    <span>•</span>
+                    <span>2.3 km</span>
+                  </div>
                 </div>
               </div>
 
-              {/* Pricing & Add to Cart Action */}
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
-                <div>
-                  <div className="flex items-baseline gap-1.5">
-                    <span className="text-lg font-black text-[#0B3D27] font-sans">
-                      ₹{deal.dealPrice}
-                    </span>
-                    <span className="text-xs text-slate-400 line-through font-sans">
-                      ₹{deal.originalPrice}
-                    </span>
-                  </div>
-                  <p className="text-[10px] font-bold text-emerald-700 font-malayalam m-0">
-                    ₹{deal.originalPrice - deal.dealPrice} ലാഭം
-                  </p>
-                </div>
-
+              {/* Bottom Claim Deal Button */}
+              <div className="pt-3 mt-3 border-t border-[#F0F4F2]">
                 <button
                   type="button"
                   onClick={() => handleAdd(deal.id, deal.productId)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs active:scale-95 ${
+                  className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs active:scale-95 font-sans ${
                     isAdded
-                      ? 'bg-emerald-600 text-white'
-                      : 'bg-[#063B2A] hover:bg-[#09523B] text-white'
+                      ? 'bg-[#064E3B] text-white'
+                      : 'bg-[#0D6344] hover:bg-[#094E35] text-white'
                   }`}
                 >
                   {isAdded ? (
                     <>
                       <Check className="w-3.5 h-3.5" />
-                      <span>ചേർത്തു!</span>
+                      <span>Claimed!</span>
                     </>
                   ) : (
                     <>
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>ചേർക്കുക</span>
+                      <ShoppingBag className="w-3.5 h-3.5" />
+                      <span>Claim Deal</span>
                     </>
                   )}
                 </button>
@@ -279,22 +259,22 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
       </div>
 
       {filteredDeals.length === 0 && (
-        <div className="text-center py-16 px-4 bg-white rounded-3xl border border-slate-200">
-          <div className="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3">
-            <Clock className="w-7 h-7" />
+        <div className="text-center py-16 px-4 bg-white rounded-3xl border border-slate-200 font-sans">
+          <div className="w-14 h-14 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-3 text-2xl">
+            ⚡
           </div>
-          <h3 className="text-lg font-bold text-slate-800 font-malayalam">
-            ഇപ്പോൾ പുതിയ ഫ്ലാഷ് ഡീലുകൾ ലഭ്യമല്ല
+          <h3 className="text-base font-bold text-slate-800">
+            No flash deals found in this category
           </h3>
-          <p className="text-xs text-slate-500 font-malayalam mt-1 max-w-sm mx-auto">
-            നിങ്ങളുടെ പ്രദേശത്തെ സ്റ്റോറുകൾ ലൈവ് ഓഫറുകൾ നൽകുമ്പോൾ ഇവിടെ കാണാം.
+          <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
+            Check back soon as local stores in your area update their daily flash offers.
           </p>
           <button
             type="button"
-            onClick={onBack}
-            className="mt-4 px-4 py-2 bg-[#063B2A] text-white text-xs font-bold rounded-xl font-malayalam cursor-pointer"
+            onClick={() => setSelectedCategory('all')}
+            className="mt-4 px-5 py-2 bg-[#0D6344] text-white text-xs font-bold rounded-xl cursor-pointer"
           >
-            ഹോമിലേക്ക് മടങ്ങുക
+            Show All Deals
           </button>
         </div>
       )}
