@@ -1,6 +1,6 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { Home, Store, MapPin, ShoppingBag, User as UserIcon, ChevronLeft, ChevronRight, Zap } from 'lucide-react';
+import { Home, Zap, Store, MapPin, FileText, User as UserIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface DesktopLeftSidebarProps {
@@ -16,8 +16,7 @@ interface DesktopLeftSidebarProps {
 
 interface NavItemConfig {
   id: string;
-  malayalam: string;
-  english: string;
+  label: string;
   icon: React.ComponentType<{ className?: string }>;
   badge?: string;
 }
@@ -25,39 +24,33 @@ interface NavItemConfig {
 const NAV_ITEMS: NavItemConfig[] = [
   {
     id: 'home',
-    malayalam: 'ഹോം',
-    english: 'Home',
+    label: 'Home',
     icon: Home,
   },
   {
     id: 'deals',
-    malayalam: 'ഫ്ലാഷ് ഡീലുകൾ',
-    english: 'Flash Deals',
+    label: 'Flash Deals',
     icon: Zap,
     badge: 'LIVE',
   },
   {
     id: 'shops',
-    malayalam: 'സമീപത്തെ കടകൾ',
-    english: 'Nearby Shops',
+    label: 'Nearby Shops',
     icon: Store,
   },
   {
     id: 'map',
-    malayalam: 'മാപ്പ് എക്സ്പ്ലോറർ',
-    english: 'Live Map',
+    label: 'Live Map',
     icon: MapPin,
   },
   {
     id: 'orders',
-    malayalam: 'ഓർഡറുകൾ',
-    english: 'My Orders',
-    icon: ShoppingBag,
+    label: 'My Orders',
+    icon: FileText,
   },
   {
     id: 'profile',
-    malayalam: 'പ്രൊഫൈൽ',
-    english: 'My Account',
+    label: 'Profile',
     icon: UserIcon,
   },
 ];
@@ -67,7 +60,7 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
   onSelectTab,
   currentLocation,
   onOpenLocationModal,
-  isCollapsed = true,
+  isCollapsed = false,
   onToggleCollapse,
 }) => {
   const locationName = currentLocation?.name || 'Areekode';
@@ -75,33 +68,24 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
   return (
     <aside
       className={`${
-        isCollapsed ? 'w-20 p-3' : 'w-64 xl:w-68 p-4'
-      } fixed top-0 left-0 bottom-0 h-screen z-40 bg-white text-[#17221D] shrink-0 hidden lg:flex flex-col justify-between border-r border-[#E5ECE8] shadow-xs select-none transition-all duration-300 overflow-y-auto no-scrollbar`}
+        isCollapsed ? 'w-18 px-2 py-4' : 'w-56 xl:w-60 pr-3.5 pl-0 py-5'
+      } fixed top-0 left-0 bottom-0 h-screen z-40 bg-[#FAF7F0] text-[#2B231B] shrink-0 hidden lg:flex flex-col justify-between border-r border-[#ECE6DA] shadow-2xs select-none transition-all duration-200 overflow-y-auto no-scrollbar font-sans`}
     >
-      {/* Top Header & Brand Area */}
-      <div className="relative z-10">
-        <div
-          className={`flex items-center pb-3.5 mb-3 border-b border-[#EEF2F0] ${
-            isCollapsed ? 'justify-center' : 'justify-between px-0.5'
-          }`}
-        >
+      {/* Top Section: Logo & Menu Items */}
+      <div className="space-y-6">
+        {/* Brand Logo */}
+        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'px-5'}`}>
           <EnteBazaarLogo
-            size={isCollapsed ? 'sm' : 'xs'}
+            size={isCollapsed ? 'sm' : 'sm'}
             variant={isCollapsed ? 'icon' : 'horizontal'}
             theme="light"
             withTagline={false}
             onClick={() => onSelectTab('home')}
           />
-          {!isCollapsed && (
-            <span className="inline-flex items-center gap-1 text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-[#0D6344]/10 text-[#0D6344] border border-[#0D6344]/20 font-sans tracking-wide shrink-0 ml-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#0D6344] animate-pulse" />
-              Live
-            </span>
-          )}
         </div>
 
-        {/* Navigation Menu */}
-        <nav className="space-y-1.5 font-sans">
+        {/* Navigation List */}
+        <nav className="space-y-1">
           {NAV_ITEMS.map((item) => {
             const Icon = item.icon;
             const isActive = currentTab === item.id;
@@ -111,53 +95,40 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
                 key={item.id}
                 type="button"
                 onClick={() => onSelectTab(item.id)}
-                title={`${item.malayalam} (${item.english})`}
-                className={`w-full group flex items-center transition-all duration-150 cursor-pointer text-left rounded-2xl relative overflow-hidden ${
+                title={item.label}
+                className={`w-full group flex items-center transition-all duration-150 cursor-pointer text-left relative ${
                   isCollapsed
-                    ? 'justify-center p-3'
-                    : 'gap-3.5 px-3.5 py-2.5'
+                    ? 'justify-center p-3 rounded-2xl'
+                    : 'gap-3 px-5 py-2.5 rounded-r-xl rounded-l-none'
                 } ${
                   isActive
-                    ? 'bg-[#E8F5EE] text-[#0D6344] font-bold shadow-2xs'
-                    : 'text-[#52635B] hover:text-[#11261D] hover:bg-[#F4F8F6]'
+                    ? 'bg-[#F8E7CD] text-[#1F1A14] font-semibold'
+                    : 'text-[#2D261E] hover:bg-[#F3ECE0]'
                 }`}
               >
-                {/* Icon */}
-                <div
-                  className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 transition-all ${
-                    isActive
-                      ? 'text-[#0D6344] font-black scale-105'
-                      : 'text-[#6B7D74] group-hover:text-[#11261D] group-hover:scale-105'
-                  }`}
-                >
-                  <Icon className="w-4.5 h-4.5 transition-transform group-hover:scale-110" />
-                </div>
-
-                {isCollapsed && item.badge && (
-                  <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                {/* Active Green Vertical Accent Line on Left Edge */}
+                {isActive && !isCollapsed && (
+                  <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#10A978]" />
                 )}
 
-                {/* Text Content */}
+                {/* Icon */}
+                <div
+                  className={`flex items-center justify-center shrink-0 ${
+                    isActive ? 'text-[#1F1A14]' : 'text-[#2D261E]'
+                  }`}
+                >
+                  <Icon className="w-4.5 h-4.5 stroke-[1.8]" />
+                </div>
+
+                {/* English Label matching user screenshot */}
                 {!isCollapsed && (
-                  <div className="min-w-0 flex-1 flex items-center justify-between">
-                    <div className="min-w-0 flex flex-col justify-center">
-                      <span
-                        className={`text-[13px] leading-snug tracking-tight font-malayalam truncate ${
-                          isActive ? 'font-black text-[#0D6344]' : 'font-bold text-[#2A3B33] group-hover:text-[#11261D]'
-                        }`}
-                      >
-                        {item.malayalam}
-                      </span>
-                      <span
-                        className={`text-[10px] leading-tight font-semibold font-sans truncate ${
-                          isActive ? 'text-[#0D6344]/80' : 'text-[#7B8C83] group-hover:text-[#4A5D54]'
-                        }`}
-                      >
-                        {item.english}
-                      </span>
-                    </div>
+                  <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                    <span className="text-sm font-medium tracking-tight truncate">
+                      {item.label}
+                    </span>
+
                     {item.badge && (
-                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded-full bg-rose-500 text-white font-sans tracking-wide shrink-0 ml-1 shadow-2xs">
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 rounded bg-[#E11D48] text-white tracking-wider leading-none shadow-2xs">
                         {item.badge}
                       </span>
                     )}
@@ -169,64 +140,37 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
         </nav>
       </div>
 
-      {/* Bottom Area: Location Hub & Collapse Toggle */}
-      <div className="space-y-2.5 pt-3 border-t border-[#EEF2F0] relative z-10">
-        {/* Location Selector */}
-        {isCollapsed ? (
-          <button
-            type="button"
-            onClick={onOpenLocationModal}
-            className="w-full flex items-center justify-center p-3 bg-[#F8FAF9] hover:bg-[#E8F5EE] border border-[#E3ECE7] hover:border-[#0D6344]/30 rounded-2xl text-[#0D6344] cursor-pointer transition-all shadow-2xs active:scale-95"
-            title={`ഡെലിവറി ഹബ്ബ്: ${locationName} (മാറ്റാൻ ക്ലിക്ക് ചെയ്യുക)`}
-          >
-            <MapPin className="w-4 h-4 text-[#0D6344]" />
-          </button>
-        ) : (
-          <div
-            onClick={onOpenLocationModal}
-            className="flex items-center justify-between px-3 py-2 bg-[#F8FAF9] hover:bg-[#E8F5EE] border border-[#E3ECE7] hover:border-[#0D6344]/30 rounded-2xl transition-all cursor-pointer shadow-2xs group"
-            title="ഡെലിവറി സ്ഥലം മാറ്റുക"
-          >
-            <div className="flex items-center gap-2 min-w-0">
-              <MapPin className="w-4 h-4 text-[#0D6344] shrink-0" />
-              <span className="text-xs font-black text-[#17221D] truncate font-sans">
-                {locationName}
-              </span>
-            </div>
-
-            <span className="text-[11px] font-bold text-[#0D6344] group-hover:underline font-malayalam shrink-0">
-              Change
+      {/* Bottom Section: Location Pill & Collapse Button */}
+      <div className={`space-y-3 pt-3 ${isCollapsed ? 'px-1' : 'px-4'}`}>
+        {/* Location Pill matching user screenshot */}
+        <button
+          type="button"
+          onClick={onOpenLocationModal}
+          className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-full border border-[#E5DFD4] bg-white/50 hover:bg-white text-[#2B231B] transition-all cursor-pointer shadow-2xs ${
+            isCollapsed ? 'px-2' : 'px-3'
+          }`}
+          title={`Delivery Hub: ${locationName} (Click to change)`}
+        >
+          <MapPin className="w-3.5 h-3.5 text-[#5C5449] shrink-0" />
+          {!isCollapsed && (
+            <span className="text-xs font-semibold truncate max-w-[120px]">
+              {locationName}
             </span>
-          </div>
-        )}
+          )}
+        </button>
 
-        {/* Clean Mint Info Card */}
-        {!isCollapsed && (
-          <div className="rounded-2xl border border-[#D5EADB] bg-gradient-to-br from-[#EBF5EE] to-[#E3EFE7] p-3 text-center shadow-2xs">
-            <span className="text-[11px] font-bold text-[#0D6344] font-malayalam block">
-              🌿 പ്രാദേശിക കടകൾ · മികച്ച വില
-            </span>
-            <span className="text-[10px] text-[#556B60] font-sans mt-0.5 block">
-              Kerala grocery price comparison
-            </span>
-          </div>
-        )}
-
-        {/* Collapse / Expand Toggle Button */}
+        {/* Optional Collapse Toggle */}
         {onToggleCollapse && (
           <button
             type="button"
             onClick={onToggleCollapse}
-            className={`w-full flex items-center ${
-              isCollapsed ? 'justify-center p-2.5 bg-white hover:bg-[#F8FAF9] shadow-2xs group' : 'justify-between px-3.5 py-2 bg-white hover:bg-[#F8FAF9]'
-            } rounded-xl text-[#556B60] hover:text-[#17221D] transition-all cursor-pointer font-malayalam border border-[#E3ECE7]`}
-            title={isCollapsed ? 'സൈഡ്‌ബാർ വലുതാക്കുക (Expand Sidebar)' : 'സൈഡ്‌ബാർ ചുരുക്കുക (Collapse Sidebar)'}
+            className="w-full flex items-center justify-center p-1.5 text-slate-400 hover:text-slate-700 hover:bg-black/5 rounded-lg transition-colors cursor-pointer text-xs"
+            title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
-            {!isCollapsed && <span className="text-[11px] font-bold">ചുരുക്കുക (Collapse)</span>}
             {isCollapsed ? (
-              <ChevronRight className="w-4 h-4 text-[#0D6344] group-hover:translate-x-0.5 transition-transform" />
+              <ChevronRight className="w-3.5 h-3.5" />
             ) : (
-              <ChevronLeft className="w-4 h-4 text-[#0D6344]" />
+              <ChevronLeft className="w-3.5 h-3.5" />
             )}
           </button>
         )}
