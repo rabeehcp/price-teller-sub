@@ -234,61 +234,52 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // 9 Categories matching the pastel palette of the mockup
+  // 9 Categories with clean, neutral styling
   const desktopCategories = [
     {
       id: 'all',
       label: 'All Items',
       image: '/categories/grocery.jpg',
-      bgColor: 'bg-[#DCFCE7] text-[#166534] border-[#BBF7D0]',
     },
     {
       id: 'vegetables',
       label: 'Vegetables',
       image: '/categories/vegetables.jpg',
-      bgColor: 'bg-[#DCFCE7] text-[#166534] border-[#BBF7D0]',
     },
     {
       id: 'fruits',
       label: 'Fruits',
       image: '/categories/fruits.jpg',
-      bgColor: 'bg-[#FFEDD5] text-[#9A3412] border-[#FED7AA]',
     },
     {
       id: 'rice-grains',
       label: 'Grains',
       image: '/categories/grains.jpg',
-      bgColor: 'bg-[#F7EBE1] text-[#78350F] border-[#EADBCC]',
     },
     {
       id: 'dairy',
       label: 'Dairy',
       image: '/categories/dairy.jpg',
-      bgColor: 'bg-[#E0F2FE] text-[#075985] border-[#BAE6FD]',
     },
     {
       id: 'oils-spices',
       label: 'Oils',
       image: '/categories/oils-spices.jpg',
-      bgColor: 'bg-[#FEF3C7] text-[#854D0E] border-[#FDE68A]',
     },
     {
       id: 'beverages',
       label: 'Beverages',
       image: '/categories/beverages.jpg',
-      bgColor: 'bg-[#FFE4E6] text-[#9F1239] border-[#FECDD3]',
     },
     {
       id: 'bakery-breakfast',
       label: 'Bakery',
       image: '/categories/bakery.jpg',
-      bgColor: 'bg-[#EDE9FE] text-[#5B21B6] border-[#DDD6FE]',
     },
     {
       id: 'cleaning-household',
       label: 'Household',
       image: '/categories/cleaning.jpg',
-      bgColor: 'bg-[#F1F5F9] text-[#334155] border-[#E2E8F0]',
     },
   ];
 
@@ -524,7 +515,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
           </button>
         </div>
 
-        {/* Responsive Category Cards Grid (Pastel Palette from Mockup) */}
+        {/* Responsive Category Cards Grid (Clean White Cards) */}
         <div className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 ${isRightSidebarOpen ? 'xl:grid-cols-5 2xl:grid-cols-9' : 'xl:grid-cols-9'
           } gap-2 sm:gap-2.5 xl:gap-3 font-sans`}>
           {desktopCategories.map((cat) => {
@@ -537,22 +528,26 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 onClick={() => onSelectCategory(cat.id)}
                 className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all cursor-pointer text-center group border ${
                   isSelected
-                    ? 'bg-[#DCFCE7] border-[#0D6344] shadow-sm ring-2 ring-[#0D6344]/20 scale-[1.02]'
-                    : `${cat.bgColor} hover:shadow-sm hover:scale-[1.02]`
+                    ? 'bg-white border-2 border-[#0D6344] shadow-xs ring-2 ring-[#0D6344]/15 scale-[1.02]'
+                    : 'bg-white border border-[#E3ECE7] hover:border-[#0D6344]/35 hover:bg-[#F9FBF9] hover:shadow-2xs hover:scale-[1.01]'
                 }`}
               >
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-110 p-1"
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-105 p-1"
                 >
                   <img
                     src={cat.image}
                     alt={cat.label}
-                    className="w-full h-full object-contain rounded-lg drop-shadow-2xs"
+                    className="w-full h-full object-contain drop-shadow-2xs"
                     loading="lazy"
                   />
                 </div>
                 <span
-                  className="text-[11px] font-bold leading-tight line-clamp-1"
+                  className={`text-[11px] sm:text-xs leading-tight line-clamp-1 transition-colors ${
+                    isSelected
+                      ? 'font-black text-[#0D6344]'
+                      : 'font-bold text-slate-700 group-hover:text-[#0D6344]'
+                  }`}
                 >
                   {cat.label}
                 </span>
