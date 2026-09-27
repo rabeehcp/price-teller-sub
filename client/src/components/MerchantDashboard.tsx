@@ -1189,7 +1189,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   ? String(preBookings.filter((b) => b.status === 'pending').length)
                   : undefined,
               },
-              { id: 'billing', label: 'Earnings', icon: DollarSign },
+              { id: 'billing', label: 'Billing & POS', icon: Receipt },
               { id: 'profile', label: 'Shop Profile', icon: Store },
               {
                 id: 'chats',

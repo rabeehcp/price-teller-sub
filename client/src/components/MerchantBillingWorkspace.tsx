@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Product, Shop, User, SaleItem, MerchantSale, DailySalesSummary, CreateSalePayload } from '../types';
 import { createMerchantSaleApi, fetchMerchantSalesSummaryApi, deleteMerchantSaleApi } from '../services/api';
 import { ProductImage } from './ProductImage';
+import { getMalayalamName } from '../utils/malayalamNames';
 import {
   Receipt,
   Search,
@@ -29,6 +30,9 @@ import {
   Layers,
   Check,
   ArrowLeft,
+  ScanBarcode,
+  ArrowRight,
+  X,
 } from 'lucide-react';
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
@@ -104,6 +108,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
   const [receiptModalSale, setReceiptModalSale] = useState<MerchantSale | null>(null);
   const [deleteModalSale, setDeleteModalSale] = useState<MerchantSale | null>(null);
   const [isDeletingSale, setIsDeletingSale] = useState(false);
+  const [isMobileBillSheetOpen, setIsMobileBillSheetOpen] = useState(false);
 
   const currentShop = shops.find((s) => s.name.toLowerCase() === selectedShopName.toLowerCase()) || shops[0];
 
@@ -261,6 +266,21 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
     );
   };
 
+  // Step quantity directly from catalogue card (+/-)
+  const handleProductStepQuantity = (productId: string, delta: number) => {
+    const index = billItems.findIndex((it) => it.product.id === productId);
+    if (index === -1) return;
+    const currentItem = billItems[index];
+    const newQty = Math.round((currentItem.quantity + delta) * 100) / 100;
+    if (newQty <= 0) {
+      setBillItems((prev) => prev.filter((_, idx) => idx !== index));
+    } else {
+      setBillItems((prev) =>
+        prev.map((it, idx) => (idx === index ? { ...it, quantity: newQty } : it))
+      );
+    }
+  };
+
   // Remove item
   const handleRemoveItem = (index: number) => {
     setBillItems((prev) => prev.filter((_, idx) => idx !== index));
@@ -275,6 +295,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
     setCustomerPhone('');
     setBillNotes('');
     setPaymentMethod('cash');
+    setIsMobileBillSheetOpen(false);
     setErrorMsg(null);
   };
 
@@ -319,6 +340,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
       setCustomerPhone('');
       setBillNotes('');
       setPaymentMethod('cash');
+      setIsMobileBillSheetOpen(false);
 
       // Refresh daily history if on today's date
       loadDailySummary();
@@ -395,59 +417,90 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
 
   return (
     <div className="space-y-4 animate-in fade-in duration-150">
-      {/* Top Workspace Navigation Tabs */}
-      <div className="flex items-center justify-between gap-3 bg-white border border-gray-200 rounded-2xl p-2 shadow-2xs flex-wrap">
-        {onBack && (
-          <button
-            type="button"
-            onClick={onBack}
-            className="p-2 bg-gray-50 hover:bg-[#DDF5EA] border border-gray-200 rounded-xl text-[#063B2A] active:scale-95 transition-all flex items-center gap-1.5 text-xs font-bold cursor-pointer shrink-0"
-            title="ഡാഷ്‌ബോർഡിലേക്ക് മടങ്ങുക (Back to Dashboard)"
-            aria-label="Back to Dashboard"
-          >
-            <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
-            <span className="font-malayalam text-xs font-bold">ഡാഷ്‌ബോർഡ്</span>
-          </button>
-        )}
-        <div className="flex items-center gap-1.5 flex-1 min-w-[280px]">
-          <button
-            onClick={() => setWorkspaceTab('pos')}
-            className={`flex-1 py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              workspaceTab === 'pos'
-                ? 'bg-brand-600 text-white shadow-xs font-black'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            <Receipt className="w-4 h-4" />
-            <span>New Bill (POS)</span>
+      {/* 1. STORE HEADER (Matches Mockup) */}
+      <div className="flex items-center justify-between gap-3 bg-white border border-gray-100 rounded-3xl p-3.5 sm:p-4 shadow-2xs">
+        <div className="flex items-center gap-3">
+          {onBack && (
+            <button
+              type="button"
+              onClick={onBack}
+              className="p-2 bg-gray-50 hover:bg-[#EAF5F0] border border-gray-200 rounded-xl text-[#0D6344] active:scale-95 transition-all flex items-center justify-center cursor-pointer shrink-0"
+              title="ഡാഷ്‌ബോർഡിലേക്ക് മടങ്ങുക (Back to Dashboard)"
+              aria-label="Back to Dashboard"
+            >
+              <ArrowLeft className="w-4 h-4" />
+            </button>
+          )}
+          <div className="w-10 h-10 rounded-2xl bg-[#EAF5F0] text-[#0D6344] flex items-center justify-center text-lg font-bold shadow-2xs shrink-0">
+            🏪
+          </div>
+          <div>
+            <h2 className="text-base sm:text-lg font-extrabold text-gray-900 leading-tight">
+              {selectedShopName}
+            </h2>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span className="text-xs font-semibold text-emerald-700">Active</span>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => {
+            const el = document.getElementById('billing-pos-search-input');
+            if (el) el.focus();
+          }}
+          className="p-2.5 rounded-2xl bg-gray-50 hover:bg-[#EAF5F0] border border-gray-200 text-[#0D6344] active:scale-95 transition-all cursor-pointer shadow-2xs"
+          title="ബാർകോഡ് സ്കാനർ (Barcode Scanner)"
+        >
+          <ScanBarcode className="w-5 h-5" />
+        </button>
+      </div>
+
+      {/* 2. SEGMENTED MODE TOGGLE (Matches Mockup) */}
+      <div className="bg-[#EEF2F0] p-1.5 rounded-2xl flex items-center gap-1.5 shadow-2xs">
+        <button
+          onClick={() => setWorkspaceTab('pos')}
+          className={`flex-1 py-2.5 px-3 rounded-xl transition-all flex flex-col items-center justify-center cursor-pointer ${
+            workspaceTab === 'pos'
+              ? 'bg-[#0D6344] text-white shadow-xs font-extrabold'
+              : 'text-gray-700 hover:text-gray-900 hover:bg-white/60 font-semibold'
+          }`}
+        >
+          <span className="text-xs sm:text-sm font-malayalam font-bold leading-tight flex items-center gap-1.5">
+            <span>ബില്ലിംഗ്</span>
             {billItems.length > 0 && (
-              <span className="bg-amber-500 text-slate-dark text-[10px] font-black px-1.5 py-0.2 rounded-full">
+              <span className="bg-amber-400 text-gray-950 text-[10px] font-black px-1.5 py-0.5 rounded-full">
                 {billItems.length}
               </span>
             )}
-          </button>
+          </span>
+          <span className={`text-[10px] sm:text-[11px] leading-tight mt-0.5 ${workspaceTab === 'pos' ? 'text-emerald-100' : 'text-gray-500'}`}>
+            (New Bill POS)
+          </span>
+        </button>
 
-          <button
-            onClick={() => setWorkspaceTab('history')}
-            className={`flex-1 py-2 px-3.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 cursor-pointer ${
-              workspaceTab === 'history'
-                ? 'bg-brand-600 text-white shadow-xs font-black'
-                : 'text-gray-600 hover:bg-gray-100'
-            }`}
-          >
-            <TrendingUp className="w-4 h-4" />
-            <span>Sales History & Reports</span>
+        <button
+          onClick={() => setWorkspaceTab('history')}
+          className={`flex-1 py-2.5 px-3 rounded-xl transition-all flex flex-col items-center justify-center cursor-pointer ${
+            workspaceTab === 'history'
+              ? 'bg-[#0D6344] text-white shadow-xs font-extrabold'
+              : 'text-gray-700 hover:text-gray-900 hover:bg-white/60 font-semibold'
+          }`}
+        >
+          <span className="text-xs sm:text-sm font-malayalam font-bold leading-tight flex items-center gap-1.5">
+            <span>വിൽപ്പന വിവരങ്ങൾ</span>
             {dailySummary && dailySummary.totalBills > 0 && (
-              <span className="bg-white/20 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full">
+              <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${workspaceTab === 'history' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'}`}>
                 {dailySummary.totalBills}
               </span>
             )}
-          </button>
-        </div>
-
-        <div className="flex items-center gap-2 text-xs text-gray-500 font-semibold px-2">
-          <span>🏪 Store: <b className="text-slate-dark">{selectedShopName}</b></span>
-        </div>
+          </span>
+          <span className={`text-[10px] sm:text-[11px] leading-tight mt-0.5 ${workspaceTab === 'history' ? 'text-emerald-100' : 'text-gray-500'}`}>
+            (Sales History)
+          </span>
+        </button>
       </div>
 
       {/* SUCCESS / ERROR NOTICES */}
@@ -485,103 +538,107 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
       {/* TAB 1: POS BILLING WORKSPACE                                             */}
       {/* ========================================================================= */}
       {workspaceTab === 'pos' && (
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
-          
-          {/* LEFT: Product Search & Quick Picker Catalogue (7 Cols on desktop) */}
-          <div className="lg:col-span-7 space-y-3 bg-white border border-gray-200 rounded-3xl p-4 sm:p-5 shadow-xs">
-            <div className="flex items-center justify-between gap-2 border-b border-gray-100 pb-3">
-              <div>
-                <h3 className="text-sm sm:text-base font-black text-slate-dark flex items-center gap-1.5">
-                  <span>📦 Store Catalogue</span>
-                  <span className="text-xs text-gray-400 font-semibold">({eligibleProducts.length} items)</span>
-                </h3>
-                <p className="text-[11px] text-gray-500">
-                  Select items to add to the customer's current bill
-                </p>
-              </div>
-
-              {/* Instant Search Bar */}
-              <div className="relative w-full max-w-[200px] sm:max-w-[240px]">
-                <Search className="w-3.5 h-3.5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                <input
-                  type="text"
-                  placeholder="Search products..."
-                  value={productSearch}
-                  onChange={(e) => setProductSearch(e.target.value)}
-                  className="w-full pl-8 pr-3 py-1.5 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-brand-500 outline-none transition-all"
-                />
-                {productSearch && (
-                  <button
-                    onClick={() => setProductSearch('')}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 text-xs"
-                  >
-                    ✕
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
-              <button
-                onClick={() => setSelectedCategory('all')}
-                className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap ${
-                  selectedCategory === 'all'
-                    ? 'bg-brand-600 text-white shadow-2xs'
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                }`}
-              >
-                എല്ലാം ({eligibleProducts.length.toLocaleString()})
-              </button>
-              {availableCategories.map((cat) => {
-                const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
-                const count = eligibleProducts.filter(
-                  (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
-                ).length;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-2.5 py-1 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                      selectedCategory === cat.id
-                        ? 'bg-brand-600 text-white shadow-2xs'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    <span>{cat.icon}</span>
-                    <span>{cat.labelMl || cat.label}</span>
-                    <span className="text-[10px] opacity-75">({count.toLocaleString()})</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Products Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-[560px] overflow-y-auto pr-1">
-              {filteredProducts.length === 0 ? (
-                <div className="col-span-full py-12 text-center text-gray-400 text-xs">
-                  No products matched your search in this store.
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+            {/* LEFT / MAIN CATALOGUE: Matches Mockup (Full width on mobile, 7 cols on desktop) */}
+            <div className="lg:col-span-7 space-y-3.5">
+              {/* Search & Barcode Scan Bar */}
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  <input
+                    id="billing-pos-search-input"
+                    type="text"
+                    placeholder="Search products..."
+                    value={productSearch}
+                    onChange={(e) => setProductSearch(e.target.value)}
+                    className="w-full pl-10 pr-9 py-2.5 text-xs sm:text-sm bg-white border border-gray-200 rounded-2xl focus:border-[#0D6344] focus:ring-2 focus:ring-[#0D6344]/15 outline-none shadow-2xs transition-all font-medium"
+                  />
+                  {productSearch && (
+                    <button
+                      onClick={() => setProductSearch('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-0.5 cursor-pointer"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
                 </div>
-              ) : (
-                filteredProducts.map((p) => {
-                  const basePrice = p.prices[selectedShopName] || 0;
-                  const inBill = billItems.find((it) => it.product.id === p.id);
-                  const isOutOfStock = p.stockStatus[selectedShopName] === 'out_of_stock';
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el = document.getElementById('billing-pos-search-input');
+                    if (el) el.focus();
+                  }}
+                  className="p-2.5 sm:px-3 sm:py-2.5 bg-[#0D6344] hover:bg-[#094831] text-white rounded-2xl flex items-center justify-center shrink-0 shadow-xs active:scale-95 transition-all cursor-pointer"
+                  title="സ്കാൻ ചെയ്യുക (Scan Barcode)"
+                >
+                  <ScanBarcode className="w-5 h-5" />
+                </button>
+              </div>
 
+              {/* Category Filter Pills (Matches Mockup) */}
+              <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 no-scrollbar scroll-smooth">
+                <button
+                  onClick={() => setSelectedCategory('all')}
+                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap ${
+                    selectedCategory === 'all'
+                      ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
+                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                  }`}
+                >
+                  എല്ലാം ({eligibleProducts.length.toLocaleString()})
+                </button>
+                {availableCategories.map((cat) => {
+                  const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+                  const count = eligibleProducts.filter(
+                    (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+                  ).length;
+                  const isSelected = selectedCategory === cat.id;
                   return (
-                    <div
-                      key={p.id}
-                      onClick={() => !isOutOfStock && handleAddProductToBill(p)}
-                      className={`border rounded-2xl p-2.5 flex flex-col justify-between transition-all select-none ${
-                        isOutOfStock
-                          ? 'border-gray-200 bg-gray-50 opacity-60 cursor-not-allowed'
-                          : inBill
-                          ? 'border-brand-500 bg-brand-50/40 shadow-xs cursor-pointer hover:border-brand-600'
-                          : 'border-gray-200 bg-white hover:border-brand-300 hover:shadow-xs cursor-pointer active:scale-98'
+                    <button
+                      key={cat.id}
+                      onClick={() => setSelectedCategory(cat.id)}
+                      className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                        isSelected
+                          ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
+                          : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
                       }`}
                     >
-                      <div className="flex items-start justify-between gap-1 mb-1">
-                        <div className="w-8 h-8 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-lg flex items-center justify-center">
+                      <span>{cat.icon}</span>
+                      <span>{cat.labelMl || cat.label}</span>
+                      <span className="text-[10px] opacity-80">({count.toLocaleString()})</span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Products 2-col Grid (Matches Mockup) */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3.5 max-h-[620px] overflow-y-auto pr-1 pb-16 lg:pb-0">
+                {filteredProducts.length === 0 ? (
+                  <div className="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-gray-200">
+                    <div className="text-3xl mb-1">🔍</div>
+                    <p className="text-xs text-gray-500 font-medium">സാധനങ്ങൾ കണ്ടെത്താനായില്ല (No products matched)</p>
+                  </div>
+                ) : (
+                  filteredProducts.map((p) => {
+                    const basePrice = p.prices[selectedShopName] || 0;
+                    const inBill = billItems.find((it) => it.product.id === p.id);
+                    const isOutOfStock = p.stockStatus[selectedShopName] === 'out_of_stock';
+                    const mlName = getMalayalamName(p.name);
+
+                    return (
+                      <div
+                        key={p.id}
+                        className={`border rounded-2xl p-2.5 sm:p-3 flex flex-col justify-between transition-all bg-white shadow-2xs hover:shadow-xs ${
+                          isOutOfStock
+                            ? 'border-gray-200 bg-gray-50/70 opacity-60'
+                            : inBill
+                            ? 'border-emerald-400 ring-1 ring-emerald-400/30 bg-emerald-50/15'
+                            : 'border-gray-200 hover:border-emerald-300'
+                        }`}
+                      >
+                        {/* Product Image Container */}
+                        <div className="w-full h-32 sm:h-36 bg-[#F8FAF9] rounded-xl flex items-center justify-center p-2 mb-2 relative overflow-hidden">
                           <ProductImage
                             productId={p.id}
                             image={p.image}
@@ -589,116 +646,437 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                             alt={p.name}
                             className="w-full h-full"
                             imgClassName="w-full h-full object-contain"
-                            fallbackEmojiClassName="text-xl"
+                            fallbackEmojiClassName="text-4xl"
                           />
                         </div>
-                        {inBill && (
-                          <span className="text-[10px] font-black bg-brand-600 text-white px-1.5 py-0.2 rounded-full shadow-2xs">
-                            {inBill.quantity} in bill
+
+                        {/* Title: Malayalam primary + English subtitle */}
+                        <div className="mb-2">
+                          <h4 className="font-extrabold text-xs sm:text-sm text-gray-900 line-clamp-1 leading-snug font-malayalam">
+                            {mlName}
+                          </h4>
+                          <p className="text-[11px] text-gray-500 font-medium truncate mt-0.5">
+                            {p.name} • {p.defaultUnit}
+                          </p>
+                        </div>
+
+                        {/* Price & Stepper / Add Button */}
+                        <div className="pt-2 border-t border-gray-100 flex items-center justify-between gap-1">
+                          <span className="text-sm sm:text-base font-extrabold text-gray-900">
+                            ₹{basePrice}
                           </span>
-                        )}
-                      </div>
 
-                      <div>
-                        <div className="font-extrabold text-xs text-slate-dark line-clamp-1 leading-snug">
-                          {p.name}
-                        </div>
-                        <div className="text-[10px] text-gray-400 font-semibold mt-0.5">
-                          Unit: {p.defaultUnit}
+                          {inBill ? (
+                            <div className="flex items-center gap-1 bg-[#0D6344] text-white rounded-lg p-0.5 shadow-2xs">
+                              <button
+                                type="button"
+                                onClick={() => handleProductStepQuantity(p.id, -1)}
+                                className="w-6 h-6 hover:bg-white/20 rounded flex items-center justify-center text-xs font-black cursor-pointer transition-colors"
+                                title="കുറയ്ക്കുക (Decrease)"
+                              >
+                                <Minus className="w-3 h-3" />
+                              </button>
+                              <span className="text-xs font-black px-1 min-w-[16px] text-center">
+                                {inBill.quantity}
+                              </span>
+                              <button
+                                type="button"
+                                onClick={() => handleProductStepQuantity(p.id, 1)}
+                                className="w-6 h-6 hover:bg-white/20 rounded flex items-center justify-center text-xs font-black cursor-pointer transition-colors"
+                                title="കൂട്ടുക (Increase)"
+                              >
+                                <Plus className="w-3 h-3" />
+                              </button>
+                            </div>
+                          ) : (
+                            <button
+                              type="button"
+                              disabled={isOutOfStock}
+                              onClick={() => handleAddProductToBill(p)}
+                              className={`w-8 h-8 rounded-lg flex items-center justify-center transition-all cursor-pointer ${
+                                isOutOfStock
+                                  ? 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                                  : 'bg-white border border-emerald-300 text-[#0D6344] hover:bg-[#EAF5F0] hover:border-[#0D6344] active:scale-95 shadow-2xs font-bold'
+                              }`}
+                              title="ബില്ലിലേക്ക് ചേർക്കുക (Add to Bill)"
+                            >
+                              <Plus className="w-4 h-4" />
+                            </button>
+                          )}
                         </div>
                       </div>
-
-                      <div className="mt-2 pt-1.5 border-t border-gray-100 flex items-center justify-between gap-1">
-                        <span className="text-xs font-black text-brand-700">₹{basePrice}</span>
-                        <button
-                          type="button"
-                          disabled={isOutOfStock}
-                          className="px-2 py-0.8 bg-brand-50 hover:bg-brand-100 text-brand-800 rounded-lg text-[11px] font-bold transition-colors flex items-center gap-0.5"
-                        >
-                          <Plus className="w-3 h-3" />
-                          <span>Add</span>
-                        </button>
-                      </div>
-                    </div>
-                  );
-                })
-              )}
+                    );
+                  })
+                )}
+              </div>
             </div>
-          </div>
 
-          {/* RIGHT: Active Bill Table & POS Checkout (5 Cols on desktop) */}
-          <div className="lg:col-span-5 space-y-3 bg-white border border-gray-200 rounded-3xl p-4 sm:p-5 shadow-xs flex flex-col justify-between">
-            <div>
-              {/* Header */}
-              <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-xl bg-brand-100 text-brand-800 flex items-center justify-center font-bold text-sm">
-                    🧾
+            {/* RIGHT: DESKTOP REGISTER (Visible on lg and larger screens) */}
+            <div className="hidden lg:flex lg:col-span-5 space-y-3 bg-white border border-gray-200 rounded-3xl p-5 shadow-xs flex-col justify-between">
+              <div>
+                {/* Header */}
+                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-9 h-9 rounded-xl bg-[#EAF5F0] text-[#0D6344] flex items-center justify-center font-bold text-sm">
+                      🧾
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-gray-900 leading-tight">Customer Bill</h3>
+                      <span className="text-[11px] text-gray-500 font-semibold">
+                        {billCalculations.itemCount} line item{billCalculations.itemCount === 1 ? '' : 's'}
+                      </span>
+                    </div>
+                  </div>
+
+                  {billItems.length > 0 && (
+                    <button
+                      onClick={handleClearBill}
+                      className="text-xs text-rose-600 hover:text-rose-800 font-bold px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Clear</span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Optional Customer Info */}
+                <div className="grid grid-cols-2 gap-2 my-2.5 p-2 bg-gray-50 border border-gray-200/80 rounded-2xl">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
+                      Customer Name (Opt)
+                    </label>
+                    <div className="relative">
+                      <UserIcon className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Rahul K"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-[#0D6344]"
+                      />
+                    </div>
                   </div>
                   <div>
-                    <h3 className="text-sm font-black text-slate-dark leading-tight">Customer Bill</h3>
-                    <span className="text-[11px] text-gray-400 font-semibold">
-                      {billCalculations.itemCount} line item{billCalculations.itemCount === 1 ? '' : 's'}
-                    </span>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
+                      Phone (Opt)
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="tel"
+                        placeholder="e.g. 9876543210"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-[#0D6344]"
+                      />
+                    </div>
                   </div>
                 </div>
 
-                {billItems.length > 0 && (
-                  <button
-                    onClick={handleClearBill}
-                    className="text-xs text-rose-600 hover:text-rose-800 font-bold px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors flex items-center gap-1 cursor-pointer"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                    <span>Clear</span>
-                  </button>
+                {/* Active Bill Line Items List */}
+                {billItems.length === 0 ? (
+                  <div className="py-12 px-4 text-center border-2 border-dashed border-gray-200 rounded-2xl my-2 bg-[#fafbfa]">
+                    <div className="text-3xl mb-2">🛒</div>
+                    <b className="block text-xs text-gray-600 mb-1">Your bill is empty</b>
+                    <p className="text-[11px] text-gray-400">
+                      Click items from the catalogue on the left to add them to this bill.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2.5 max-h-[300px] overflow-y-auto pr-1 my-2">
+                    {billItems.map((item, idx) => {
+                      const basePrice = item.product.prices[selectedShopName] || 0;
+                      const multiplier = item.product.unitMultiplier[item.selectedUnit] ?? 1;
+                      const originalRate = Math.round(basePrice * multiplier);
+                      const lineTotal = Math.round(originalRate * item.quantity * 100) / 100;
+
+                      return (
+                        <div
+                          key={`${item.product.id}-${idx}`}
+                          className="bg-gray-50 border border-gray-200 rounded-2xl p-2.5 text-xs space-y-2"
+                        >
+                          <div className="flex items-center justify-between gap-1.5">
+                            <div className="flex items-center gap-1.5 min-w-0 flex-1">
+                              <div className="w-6 h-6 shrink-0 p-0.5 bg-white border border-gray-100 rounded-md flex items-center justify-center">
+                                <ProductImage
+                                  productId={item.product.id}
+                                  image={item.product.image}
+                                  emoji={item.product.emoji}
+                                  alt={item.product.name}
+                                  className="w-full h-full"
+                                  imgClassName="w-full h-full object-contain"
+                                  fallbackEmojiClassName="text-sm"
+                                />
+                              </div>
+                              <b className="truncate text-gray-900 text-xs">{item.product.name}</b>
+                            </div>
+                            <button
+                              onClick={() => handleRemoveItem(idx)}
+                              className="p-1 text-gray-400 hover:text-rose-600 transition-colors cursor-pointer"
+                              title="Remove item from bill"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 bg-white p-2 rounded-xl border border-gray-200/80">
+                            <div>
+                              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
+                                Unit
+                              </span>
+                              <select
+                                value={item.selectedUnit}
+                                onChange={(e) => handleUnitChange(idx, e.target.value)}
+                                className="w-full bg-gray-50 border border-gray-200 text-gray-800 font-bold text-xs rounded-lg px-2 py-1 outline-none cursor-pointer"
+                              >
+                                {item.product.availableUnits.map((u) => (
+                                  <option key={u} value={u}>
+                                    {u}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            <div>
+                              <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
+                                Quantity
+                              </span>
+                              <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-lg p-0.5">
+                                <button
+                                  type="button"
+                                  onClick={() => handleQuantityChange(idx, -1)}
+                                  className="w-6 h-6 bg-white hover:bg-gray-100 text-gray-700 rounded flex items-center justify-center font-bold text-xs shadow-2xs cursor-pointer"
+                                >
+                                  <Minus className="w-3 h-3" />
+                                </button>
+                                <input
+                                  type="number"
+                                  min="0.1"
+                                  step="any"
+                                  value={item.quantity}
+                                  onChange={(e) => handleSetDirectQuantity(idx, parseFloat(e.target.value) || 1)}
+                                  className="w-10 text-center font-black text-xs bg-transparent border-0 outline-none"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => handleQuantityChange(idx, 1)}
+                                  className="w-6 h-6 bg-[#0D6344] hover:bg-[#094831] text-white rounded flex items-center justify-center font-bold text-xs shadow-2xs cursor-pointer"
+                                >
+                                  <Plus className="w-3 h-3" />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between gap-2 pt-1 border-t border-gray-200/60">
+                            <div className="text-[11px] text-gray-500">
+                              Rate: <b className="text-gray-900 font-bold">₹{originalRate}</b> / {item.selectedUnit}
+                            </div>
+                            <div className="text-right">
+                              <span className="text-[9px] text-gray-400 font-semibold block leading-none">Line Total</span>
+                              <span className="font-black text-xs sm:text-sm text-[#0D6344]">
+                                ₹{lineTotal}
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
                 )}
               </div>
 
-              {/* Optional Customer Info */}
-              <div className="grid grid-cols-2 gap-2 my-2.5 p-2 bg-gray-50 border border-gray-200/80 rounded-2xl">
+              {/* Bottom Checkout & Payment Section */}
+              <div className="pt-3 border-t border-gray-100 space-y-3">
                 <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Customer Name (Opt)
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    Payment Method
                   </label>
-                  <div className="relative">
-                    <UserIcon className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="text"
-                      placeholder="e.g. Rahul K"
-                      value={customerName}
-                      onChange={(e) => setCustomerName(e.target.value)}
-                      className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-brand-500"
-                    />
+                  <div className="grid grid-cols-4 gap-1.5 text-xs font-bold">
+                    {[
+                      { id: 'cash', label: 'Cash', icon: Banknote },
+                      { id: 'upi', label: 'UPI / QR', icon: Smartphone },
+                      { id: 'card', label: 'Card', icon: CreditCard },
+                      { id: 'credit', label: 'Credit', icon: FileText },
+                    ].map((m) => {
+                      const Icon = m.icon;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => setPaymentMethod(m.id as any)}
+                          className={`py-1.5 px-2 rounded-xl border flex flex-col items-center gap-0.5 transition-all cursor-pointer ${
+                            paymentMethod === m.id
+                              ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-2xs font-black'
+                              : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          <Icon className="w-3.5 h-3.5 shrink-0" />
+                          <span className="text-[10px]">{m.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
-                    Phone (Opt)
-                  </label>
-                  <div className="relative">
-                    <Phone className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
-                    <input
-                      type="tel"
-                      placeholder="e.g. 9876543210"
-                      value={customerPhone}
-                      onChange={(e) => setCustomerPhone(e.target.value)}
-                      className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-brand-500"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* Active Bill Line Items List */}
-              {billItems.length === 0 ? (
-                <div className="py-12 px-4 text-center border-2 border-dashed border-gray-200 rounded-2xl my-2 bg-[#fafbfa]">
-                  <div className="text-3xl mb-2">🛒</div>
-                  <b className="block text-xs text-gray-600 mb-1">Your bill is empty</b>
-                  <p className="text-[11px] text-gray-400">
-                    Click items from the catalogue on the left to add them to this bill.
-                  </p>
+                <div className="bg-[#f7faf5] border border-[#e2e8df] rounded-2xl p-3.5 text-xs space-y-2">
+                  <div className="flex items-center justify-between text-gray-600 font-medium">
+                    <span>Subtotal ({billCalculations.itemCount} items)</span>
+                    <span className="font-bold text-gray-900 text-xs sm:text-sm">₹{billCalculations.subtotal}</span>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2 p-2 bg-amber-50/80 border border-amber-200 rounded-xl">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                      <Tag className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span>Discount / Concession</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs font-black text-amber-800">₹</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max={billCalculations.subtotal}
+                        step="any"
+                        placeholder="0"
+                        value={overallDiscount || ''}
+                        onChange={(e) => setOverallDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
+                        className="w-20 text-xs sm:text-sm font-black text-amber-950 bg-white border border-amber-300 rounded-lg px-2 py-1 outline-none text-right shadow-2xs focus:ring-1 focus:ring-amber-500"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-gray-900 text-sm sm:text-base font-black pt-2 border-t border-gray-200">
+                    <span>Final Payable</span>
+                    <span className="text-[#0D6344] text-lg sm:text-xl">₹{billCalculations.netTotal}</span>
+                  </div>
                 </div>
-              ) : (
-                <div className="space-y-2.5 max-h-[320px] overflow-y-auto pr-1 my-2">
+
+                <button
+                  onClick={handleCompleteBill}
+                  disabled={isSubmittingBill || billItems.length === 0}
+                  className={`w-full py-3 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
+                    isSubmittingBill || billItems.length === 0
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-[#0D6344] hover:bg-[#094831] text-white active:scale-98 shadow-emerald-900/10'
+                  }`}
+                >
+                  {isSubmittingBill ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Saving to Database...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>Complete Sale • ₹{billCalculations.netTotal}</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* 3. MOBILE FLOATING LIVE BILL DOCK (Matches Mockup) */}
+          {billItems.length > 0 && (
+            <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 p-3 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-2xl animate-in slide-in-from-bottom duration-200">
+              <div className="max-w-md mx-auto space-y-2">
+                <div className="flex items-center justify-between text-xs font-bold text-gray-900 px-1">
+                  <div>
+                    <span>{billCalculations.itemCount} ഇനങ്ങൾ</span>
+                    <span className="mx-1.5 text-gray-300">•</span>
+                    <span>ആകെ ₹{billCalculations.netTotal}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-[11px] text-gray-600 bg-gray-50 px-2 py-0.5 rounded-lg border border-gray-200">
+                    <span className="font-semibold">UPI</span>
+                    <span className="text-gray-300">|</span>
+                    <span className="font-semibold">Cash</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setIsMobileBillSheetOpen(true)}
+                  className="w-full py-3 px-4 rounded-xl bg-[#0D6344] hover:bg-[#094831] text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-md active:scale-98 transition-all cursor-pointer"
+                >
+                  <span>ബിൽ ചെയ്യുക (Checkout)</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* 4. MOBILE SLIDE-UP CHECKOUT SHEET MODAL */}
+          {isMobileBillSheetOpen && (
+            <div className="lg:hidden fixed inset-0 z-50 flex flex-col justify-end bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
+              <div className="bg-white rounded-t-3xl max-h-[90vh] overflow-y-auto w-full p-4 sm:p-5 shadow-2xl border-t border-gray-200 space-y-3.5 animate-in slide-in-from-bottom duration-200">
+                {/* Header */}
+                <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-xl bg-[#EAF5F0] text-[#0D6344] flex items-center justify-center text-sm font-bold">
+                      🧾
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-black text-gray-900 leading-tight">
+                        ബില്ലിംഗ് വിവരങ്ങൾ (Bill Summary)
+                      </h3>
+                      <span className="text-[11px] text-gray-500 font-semibold">
+                        {billCalculations.itemCount} ഇനങ്ങൾ
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={handleClearBill}
+                      className="text-xs text-rose-600 hover:text-rose-800 font-bold px-2 py-1 rounded-lg hover:bg-rose-50 transition-colors flex items-center gap-1 cursor-pointer"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                      <span>Clear</span>
+                    </button>
+                    <button
+                      onClick={() => setIsMobileBillSheetOpen(false)}
+                      className="p-1.5 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-600 cursor-pointer"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Optional Customer Info */}
+                <div className="grid grid-cols-2 gap-2 p-2.5 bg-gray-50 border border-gray-200/80 rounded-2xl">
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
+                      Customer Name
+                    </label>
+                    <div className="relative">
+                      <UserIcon className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Rahul K"
+                        value={customerName}
+                        onChange={(e) => setCustomerName(e.target.value)}
+                        className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-[#0D6344]"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-0.5">
+                      Phone Number
+                    </label>
+                    <div className="relative">
+                      <Phone className="w-3 h-3 text-gray-400 absolute left-2 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="tel"
+                        placeholder="e.g. 9876543210"
+                        value={customerPhone}
+                        onChange={(e) => setCustomerPhone(e.target.value)}
+                        className="w-full pl-6 pr-2 py-1 text-xs bg-white border border-gray-200 rounded-lg outline-none focus:border-[#0D6344]"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Items List */}
+                <div className="space-y-2.5 max-h-[220px] overflow-y-auto pr-1">
                   {billItems.map((item, idx) => {
                     const basePrice = item.product.prices[selectedShopName] || 0;
                     const multiplier = item.product.unitMultiplier[item.selectedUnit] ?? 1;
@@ -710,7 +1088,6 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                         key={`${item.product.id}-${idx}`}
                         className="bg-gray-50 border border-gray-200 rounded-2xl p-2.5 text-xs space-y-2"
                       >
-                        {/* Line 1: Emoji, Name, and Delete */}
                         <div className="flex items-center justify-between gap-1.5">
                           <div className="flex items-center gap-1.5 min-w-0 flex-1">
                             <div className="w-6 h-6 shrink-0 p-0.5 bg-white border border-gray-100 rounded-md flex items-center justify-center">
@@ -724,20 +1101,17 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                                 fallbackEmojiClassName="text-sm"
                               />
                             </div>
-                            <b className="truncate text-slate-dark text-xs">{item.product.name}</b>
+                            <b className="truncate text-gray-900 text-xs">{item.product.name}</b>
                           </div>
                           <button
                             onClick={() => handleRemoveItem(idx)}
                             className="p-1 text-gray-400 hover:text-rose-600 transition-colors cursor-pointer"
-                            title="Remove item from bill"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
                         </div>
 
-                        {/* Line 2: Unit Selector & Quantity Controls */}
                         <div className="grid grid-cols-2 gap-2 bg-white p-2 rounded-xl border border-gray-200/80">
-                          {/* Unit Selection */}
                           <div>
                             <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
                               Unit
@@ -745,7 +1119,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                             <select
                               value={item.selectedUnit}
                               onChange={(e) => handleUnitChange(idx, e.target.value)}
-                              className="w-full bg-gray-50 border border-gray-200 text-slate-800 font-bold text-xs rounded-lg px-2 py-1 outline-none cursor-pointer"
+                              className="w-full bg-gray-50 border border-gray-200 text-gray-800 font-bold text-xs rounded-lg px-2 py-1 outline-none cursor-pointer"
                             >
                               {item.product.availableUnits.map((u) => (
                                 <option key={u} value={u}>
@@ -755,7 +1129,6 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                             </select>
                           </div>
 
-                          {/* Quantity Controls */}
                           <div>
                             <span className="text-[9px] font-bold text-gray-400 uppercase tracking-wider block mb-0.5">
                               Quantity
@@ -779,7 +1152,7 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                               <button
                                 type="button"
                                 onClick={() => handleQuantityChange(idx, 1)}
-                                className="w-6 h-6 bg-brand-600 hover:bg-brand-700 text-white rounded flex items-center justify-center font-bold text-xs shadow-2xs cursor-pointer"
+                                className="w-6 h-6 bg-[#0D6344] hover:bg-[#094831] text-white rounded flex items-center justify-center font-bold text-xs shadow-2xs cursor-pointer"
                               >
                                 <Plus className="w-3 h-3" />
                               </button>
@@ -787,16 +1160,12 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                           </div>
                         </div>
 
-                        {/* Line 3: Pricing Summary */}
                         <div className="flex items-center justify-between gap-2 pt-1 border-t border-gray-200/60">
                           <div className="text-[11px] text-gray-500">
-                            Rate: <b className="text-slate-dark font-bold">₹{originalRate}</b> / {item.selectedUnit}
+                            Rate: <b className="text-gray-900 font-bold">₹{originalRate}</b> / {item.selectedUnit}
                           </div>
-
-                          {/* Line Total */}
                           <div className="text-right">
-                            <span className="text-[9px] text-gray-400 font-semibold block leading-none">Line Total</span>
-                            <span className="font-black text-xs sm:text-sm text-brand-700">
+                            <span className="font-black text-xs sm:text-sm text-[#0D6344]">
                               ₹{lineTotal}
                             </span>
                           </div>
@@ -805,101 +1174,97 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                     );
                   })}
                 </div>
-              )}
-            </div>
 
-            {/* Bottom Checkout & Payment Section */}
-            <div className="pt-3 border-t border-gray-100 space-y-3">
-              {/* Payment Method Selector */}
-              <div>
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
-                  Payment Method
-                </label>
-                <div className="grid grid-cols-4 gap-1.5 text-xs font-bold">
-                  {[
-                    { id: 'cash', label: 'Cash', icon: Banknote },
-                    { id: 'upi', label: 'UPI / QR', icon: Smartphone },
-                    { id: 'card', label: 'Card', icon: CreditCard },
-                    { id: 'credit', label: 'Credit', icon: FileText },
-                  ].map((m) => {
-                    const Icon = m.icon;
-                    return (
-                      <button
-                        key={m.id}
-                        type="button"
-                        onClick={() => setPaymentMethod(m.id as any)}
-                        className={`py-1.5 px-2 rounded-xl border flex flex-col items-center gap-0.5 transition-all cursor-pointer ${
-                          paymentMethod === m.id
-                            ? 'bg-brand-600 text-white border-brand-700 shadow-2xs font-black'
-                            : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
-                        }`}
-                      >
-                        <Icon className="w-3.5 h-3.5 shrink-0" />
-                        <span className="text-[10px]">{m.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Bill Totals Summary Card */}
-              <div className="bg-[#f7faf5] border border-[#e2e8df] rounded-2xl p-3.5 text-xs space-y-2">
-                <div className="flex items-center justify-between text-gray-600 font-medium">
-                  <span>Subtotal ({billCalculations.itemCount} items)</span>
-                  <span className="font-bold text-slate-dark text-xs sm:text-sm">₹{billCalculations.subtotal}</span>
-                </div>
-
-                {/* Overall Discount Input (Above Final Payable) */}
-                <div className="flex items-center justify-between gap-2 p-2 bg-amber-50/80 border border-amber-200 rounded-xl">
-                  <div className="flex items-center gap-1.5 font-bold text-amber-900">
-                    <Tag className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-                    <span>Discount / Concession</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <span className="text-xs font-black text-amber-800">₹</span>
-                    <input
-                      type="number"
-                      min="0"
-                      max={billCalculations.subtotal}
-                      step="any"
-                      placeholder="0"
-                      value={overallDiscount || ''}
-                      onChange={(e) => setOverallDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
-                      className="w-20 text-xs sm:text-sm font-black text-amber-950 bg-white border border-amber-300 rounded-lg px-2 py-1 outline-none text-right shadow-2xs focus:ring-1 focus:ring-amber-500"
-                    />
+                {/* Payment Method Selector */}
+                <div>
+                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1">
+                    Payment Method
+                  </label>
+                  <div className="grid grid-cols-4 gap-1.5 text-xs font-bold">
+                    {[
+                      { id: 'cash', label: 'Cash', icon: Banknote },
+                      { id: 'upi', label: 'UPI / QR', icon: Smartphone },
+                      { id: 'card', label: 'Card', icon: CreditCard },
+                      { id: 'credit', label: 'Credit', icon: FileText },
+                    ].map((m) => {
+                      const Icon = m.icon;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          onClick={() => setPaymentMethod(m.id as any)}
+                          className={`py-1.5 px-2 rounded-xl border flex flex-col items-center gap-0.5 transition-all cursor-pointer ${
+                            paymentMethod === m.id
+                              ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-2xs font-black'
+                              : 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100'
+                          }`}
+                        >
+                          <Icon className="w-3.5 h-3.5 shrink-0" />
+                          <span className="text-[10px]">{m.label}</span>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-slate-dark text-sm sm:text-base font-black pt-2 border-t border-gray-200">
-                  <span>Final Payable</span>
-                  <span className="text-brand-700 text-lg sm:text-xl">₹{billCalculations.netTotal}</span>
-                </div>
-              </div>
+                {/* Summary Card */}
+                <div className="bg-[#f7faf5] border border-[#e2e8df] rounded-2xl p-3 text-xs space-y-2">
+                  <div className="flex items-center justify-between text-gray-600 font-medium">
+                    <span>Subtotal ({billCalculations.itemCount} items)</span>
+                    <span className="font-bold text-gray-900">₹{billCalculations.subtotal}</span>
+                  </div>
 
-              {/* Complete & Record Bill Action */}
-              <button
-                onClick={handleCompleteBill}
-                disabled={isSubmittingBill || billItems.length === 0}
-                className={`w-full py-3 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
-                  isSubmittingBill || billItems.length === 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-brand-600 hover:bg-brand-700 text-white active:scale-98 shadow-brand-500/20'
-                }`}
-              >
-                {isSubmittingBill ? (
-                  <>
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                    <span>Saving to Database...</span>
-                  </>
-                ) : (
-                  <>
-                    <CheckCircle2 className="w-4 h-4" />
-                    <span>Complete Sale • ₹{billCalculations.netTotal}</span>
-                  </>
-                )}
-              </button>
+                  <div className="flex items-center justify-between gap-2 p-1.5 bg-amber-50/80 border border-amber-200 rounded-xl">
+                    <div className="flex items-center gap-1.5 font-bold text-amber-900">
+                      <Tag className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                      <span>Discount</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-xs font-black text-amber-800">₹</span>
+                      <input
+                        type="number"
+                        min="0"
+                        max={billCalculations.subtotal}
+                        step="any"
+                        placeholder="0"
+                        value={overallDiscount || ''}
+                        onChange={(e) => setOverallDiscount(Math.max(0, parseFloat(e.target.value) || 0))}
+                        className="w-16 text-xs font-black text-amber-950 bg-white border border-amber-300 rounded-lg px-2 py-0.5 outline-none text-right shadow-2xs"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between text-gray-900 font-black pt-1.5 border-t border-gray-200">
+                    <span>Final Payable</span>
+                    <span className="text-[#0D6344] text-base">₹{billCalculations.netTotal}</span>
+                  </div>
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  onClick={handleCompleteBill}
+                  disabled={isSubmittingBill || billItems.length === 0}
+                  className={`w-full py-3.5 px-4 rounded-2xl font-black text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer ${
+                    isSubmittingBill || billItems.length === 0
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-[#0D6344] hover:bg-[#094831] text-white active:scale-98'
+                  }`}
+                >
+                  {isSubmittingBill ? (
+                    <>
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Saving to Database...</span>
+                    </>
+                  ) : (
+                    <>
+                      <CheckCircle2 className="w-4 h-4" />
+                      <span>ബിൽ പൂർത്തിയാക്കുക • ₹{billCalculations.netTotal}</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
 

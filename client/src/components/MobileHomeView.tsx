@@ -127,7 +127,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
   return (
     <div
       onClick={() => onSelectProductForDetail(product)}
-      className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-2xs hover:shadow-md hover:border-[#0D6344]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
+      className={`bg-white border rounded-2xl p-2 sm:p-2.5 shadow-2xs hover:shadow-md hover:border-[#0D6344]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
         isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E5ECE8]'
       }`}
     >
@@ -140,7 +140,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
             e.stopPropagation();
             onToggleFavorite(product);
           }}
-          className="absolute top-0 right-0 p-0.5 text-slate-300 hover:text-[#E11D48] transition-colors cursor-pointer z-10"
+          className="absolute -top-1 -right-1 p-1 text-slate-300 hover:text-[#E11D48] transition-colors cursor-pointer z-10"
           title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
         >
           <Heart
@@ -150,14 +150,14 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
           />
         </button>
 
-        {/* Product Thumbnail (Left) */}
-        <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1 relative bg-[#F5F8F6] rounded-xl border border-slate-100 shrink-0">
+        {/* Product Thumbnail (Left) - Fixed compact size to prevent layout explosion & maximize text room */}
+        <div className="w-14 h-14 min-w-[56px] min-h-[56px] max-w-[56px] max-h-[56px] sm:w-16 sm:h-16 sm:min-w-[64px] sm:min-h-[64px] flex items-center justify-center p-1 relative bg-[#F5F8F6] rounded-xl border border-slate-100 shrink-0 overflow-hidden">
           <ProductImage
             productId={product.id}
             image={product.image}
             emoji={product.emoji}
             alt={mlName || product.name}
-            className="w-full h-full"
+            className="w-full h-full flex items-center justify-center"
             imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105 duration-200"
             fallbackEmojiClassName="text-2xl"
             isOutOfStock={isOutOfStock}
@@ -166,18 +166,33 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
         </div>
 
         {/* Right Info: Malayalam Name, Subtitle, Lowest Store Pill */}
-        <div className="flex-1 min-w-0 pr-4 sm:pr-5">
-          <h3 className="text-xs sm:text-[13px] font-bold text-slate-900 font-malayalam leading-tight line-clamp-1 group-hover:text-[#0D6344] transition-colors m-0">
+        <div className="flex-1 min-w-0 pr-3">
+          <h3
+            className="text-xs sm:text-[13px] font-bold text-slate-900 font-malayalam leading-snug line-clamp-2 group-hover:text-[#0D6344] transition-colors m-0 break-words"
+            title={mlName || product.name}
+          >
             {mlName || product.name}
           </h3>
-          <p className="text-[10px] sm:text-[11px] text-slate-500 font-sans truncate m-0 font-medium mt-0.5">
-            {product.name} {product.defaultUnit ? `(${product.defaultUnit})` : ''}
-          </p>
+
+          {mlName && mlName !== product.name ? (
+            <p
+              className="text-[10px] sm:text-[11px] text-slate-500 font-sans line-clamp-1 m-0 font-medium mt-0.5 break-words"
+              title={`${product.name} ${product.defaultUnit ? `(${product.defaultUnit})` : ''}`}
+            >
+              {product.name} {product.defaultUnit ? `(${product.defaultUnit})` : ''}
+            </p>
+          ) : product.defaultUnit ? (
+            <p className="text-[10px] sm:text-[11px] text-slate-400 font-sans m-0 font-medium mt-0.5">
+              Unit: {product.defaultUnit}
+            </p>
+          ) : null}
 
           {/* Lowest Store Badge */}
-          <div className="mt-1.5 inline-block bg-[#EAF7EE] text-[#0D6344] px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] leading-tight font-medium max-w-full">
+          <div className="mt-1 inline-block bg-[#EAF7EE] text-[#0D6344] px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] leading-tight font-medium max-w-full">
             <span className="block text-[8px] sm:text-[8.5px] text-[#0D6344]/80 font-normal">Lowest store:</span>
-            <span className="font-bold truncate block">{shopInfo?.name || lowestShopName || 'ABC Mart'}: ₹{price}</span>
+            <span className="font-bold line-clamp-1 block truncate" title={`${shopInfo?.name || lowestShopName || 'ABC Mart'}: ₹${price}`}>
+              {shopInfo?.name || lowestShopName || 'ABC Mart'}
+            </span>
           </div>
         </div>
       </div>

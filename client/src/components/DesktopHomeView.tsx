@@ -129,7 +129,7 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
       {/* Middle Info: Name, Price, Rating */}
       <div className="space-y-1 pt-1">
         <div className="flex items-center gap-1">
-          <h3 className="text-xs font-bold text-[#17221D] font-sans truncate m-0">
+          <h3 className="text-xs font-bold text-[#17221D] font-sans line-clamp-2 leading-snug m-0 break-words" title={product.name}>
             {product.name}
           </h3>
           {isOutOfStock && (

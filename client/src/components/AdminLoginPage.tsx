@@ -2,18 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { User } from '../types';
 import { loginUserApi } from '../services/api';
 import {
-  ShieldAlert,
   Lock,
   User as UserIcon,
   Eye,
   EyeOff,
   ArrowLeft,
-  KeyRound,
   AlertCircle,
   CheckCircle2,
   ShieldCheck,
   Clock,
-  Fingerprint,
+  ArrowRight,
+  ShieldAlert,
+  Server,
+  Activity,
+  Layers,
+  Sparkles,
 } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
@@ -102,206 +105,315 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#F4F7F5] text-slate-800 flex flex-col justify-between selection:bg-[#0B8F68] selection:text-white relative overflow-hidden font-sans">
-      {/* Light subtle enterprise background grid pattern */}
-      <div
-        className="absolute inset-0 pointer-events-none opacity-60"
-        style={{
-          backgroundImage: `radial-gradient(circle at 50% 0%, rgba(11, 143, 104, 0.08) 0%, transparent 60%),
-                            radial-gradient(circle at 80% 90%, rgba(11, 143, 104, 0.04) 0%, transparent 50%),
-                            linear-gradient(to right, rgba(0,0,0,0.03) 1px, transparent 1px),
-                            linear-gradient(to bottom, rgba(0,0,0,0.03) 1px, transparent 1px)`,
-          backgroundSize: '100% 100%, 100% 100%, 40px 40px, 40px 40px',
-        }}
-      />
+  const handleQuickFillDemo = () => {
+    setUsername('admin');
+    setPassword('admin123');
+    setError('');
+  };
 
-      {/* Top Header Bar */}
-      <header className="w-full px-6 py-4 flex items-center justify-between border-b border-[#E2ECE6] bg-white/80 backdrop-blur-md relative z-10 shadow-2xs">
-        <div className="flex items-center gap-3">
-          <EnteBazaarLogo size="md" theme="light" />
-          <div className="h-5 w-px bg-slate-200 hidden sm:block" />
-          <div className="hidden sm:flex items-center gap-2">
-            <span className="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-[#E8F8F0] text-[#0B8F68] border border-[#C3EEDC] tracking-wider">
-              Control Center
-            </span>
-            <span className="text-[11px] text-slate-500 font-semibold">
-              Restricted Operations
+  return (
+    <div className="min-h-screen bg-[#F8FAF9] flex selection:bg-[#0D6344] selection:text-white font-sans text-gray-900">
+      {/* ===================================================================== */}
+      {/* LEFT PANE: BRAND & GOVERNANCE SHOWCASE (Visible on lg and larger)     */}
+      {/* ===================================================================== */}
+      <div className="hidden lg:flex lg:w-1/2 xl:w-5/12 bg-[#092B1E] text-white p-10 xl:p-14 flex-col justify-between relative overflow-hidden">
+        {/* Subtle mesh background circles */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#10A978]/15 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 rounded-full bg-[#0B8F68]/20 blur-3xl pointer-events-none" />
+        <div
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            backgroundImage: `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+            backgroundSize: '28px 28px',
+          }}
+        />
+
+        {/* Top Header */}
+        <div className="relative z-10 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <EnteBazaarLogo size="md" theme="dark" />
+            <div className="h-5 w-px bg-white/20" />
+            <span className="text-[11px] font-bold text-emerald-300 uppercase tracking-widest bg-emerald-950/60 px-2.5 py-1 rounded-full border border-emerald-500/30">
+              Enterprise Control
             </span>
           </div>
         </div>
 
-        <button
-          type="button"
-          onClick={onBackToHome}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-98"
-        >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Return to Store</span>
-        </button>
-      </header>
-
-      {/* Main Login Card Section */}
-      <main className="flex-1 flex items-center justify-center p-4 sm:p-6 relative z-10 my-6">
-        <div className="w-full max-w-md bg-white border border-[#DCE8E1] rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-900/[0.04] space-y-6">
-          
-          {/* Top Brand & Security Badge */}
-          <div className="text-center space-y-2.5">
-            <div className="w-13 h-13 rounded-2xl bg-[#E8F8F0] border border-[#C3EEDC] text-[#0B8F68] mx-auto flex items-center justify-center shadow-xs">
-              <ShieldAlert className="w-6.5 h-6.5 text-[#0B8F68]" />
-            </div>
-
-            <div>
-              <div className="inline-flex items-center gap-1.5 bg-rose-50 text-rose-700 border border-rose-200 text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full tracking-wider mb-2">
-                <Fingerprint className="w-3 h-3 text-rose-600" />
-                <span>Restricted Access · Authorized Personnel Only</span>
-              </div>
-              <h1 className="text-2xl font-black text-slate-900 tracking-tight">
-                Admin Console
-              </h1>
-              <p className="text-xs text-slate-500 mt-1 max-w-xs mx-auto leading-relaxed">
-                Secure administrative gateway for platform governance, merchant compliance, and catalog control.
-              </p>
+        {/* Center Showcase */}
+        <div className="relative z-10 my-auto py-10 space-y-8 max-w-md">
+          {/* Glowing Security Shield */}
+          <div className="relative inline-block">
+            <div className="absolute inset-0 bg-[#10A978] opacity-30 blur-2xl rounded-full" />
+            <div className="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-emerald-900/40 border border-emerald-400/40 flex items-center justify-center shadow-xl">
+              <ShieldCheck className="w-10 h-10 text-emerald-400" />
             </div>
           </div>
 
-          {/* Active Non-Admin Session Warning */}
-          {currentUser && currentUser.role !== 'admin' && (
-            <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-start gap-2.5">
-              <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-              <div className="min-w-0 flex-1">
-                <span className="font-bold">Access Blocked:</span> You are currently signed in as{' '}
-                <span className="font-semibold text-slate-900">{currentUser.name}</span> ({currentUser.role}). This account does not possess administrative privileges.
-              </div>
-            </div>
-          )}
+          <div className="space-y-3">
+            <h2 className="text-2xl xl:text-3xl font-black text-white tracking-tight leading-snug">
+              Enterprise Governance Features
+            </h2>
+            <p className="text-emerald-100/70 text-xs sm:text-sm leading-relaxed font-normal">
+              High-security central nexus for multi-merchant price synchronization, subscription management, and platform catalog controls.
+            </p>
+          </div>
 
-          {/* Lockout Notice */}
-          {lockoutSeconds > 0 && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl flex items-center gap-2">
-              <Clock className="w-4 h-4 text-rose-600 shrink-0 animate-spin" />
-              <span>Authentication locked. Try again in {lockoutSeconds}s.</span>
-            </div>
-          )}
-
-          {/* Error Message */}
-          {error && lockoutSeconds <= 0 && (
-            <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl flex items-center gap-2.5">
-              <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
-              <span className="flex-1">{error}</span>
-            </div>
-          )}
-
-          {/* Success Message */}
-          {successMsg && (
-            <div className="p-3 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-xl flex items-center gap-2.5">
-              <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
-              <span className="flex-1">{successMsg}</span>
-            </div>
-          )}
-
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Administrator Identifier
-              </label>
-              <div className="relative">
-                <UserIcon className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Enter administrator ID"
-                  disabled={lockoutSeconds > 0 || isLoading}
-                  autoComplete="username"
-                  className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9FBFA] border border-[#D5E2DA] focus:bg-white focus:border-[#0B8F68] focus:ring-4 focus:ring-[#0B8F68]/10 rounded-xl text-xs text-slate-900 placeholder-slate-400 font-medium transition-all outline-none disabled:opacity-50"
-                  required
-                  autoFocus
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-xs font-bold text-slate-700 mb-1.5">
-                Master Security Key
-              </label>
-              <div className="relative">
-                <Lock className="w-4 h-4 absolute left-3.5 top-3.5 text-slate-400" />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter master password"
-                  disabled={lockoutSeconds > 0 || isLoading}
-                  autoComplete="current-password"
-                  className="w-full pl-10 pr-10 py-2.5 bg-[#F9FBFA] border border-[#D5E2DA] focus:bg-white focus:border-[#0B8F68] focus:ring-4 focus:ring-[#0B8F68]/10 rounded-xl text-xs text-slate-900 placeholder-slate-400 font-medium transition-all outline-none disabled:opacity-50"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
-                  title={showPassword ? 'Hide password' : 'Show password'}
-                  aria-label="Toggle password visibility"
+          {/* Feature list pills */}
+          <div className="space-y-3">
+            {[
+              { text: 'Advanced Security Protocols', icon: ShieldCheck },
+              { text: 'Comprehensive Audit Trails', icon: Activity },
+              { text: 'Role-Based Access Control (RBAC)', icon: Layers },
+            ].map((f, i) => {
+              const Icon = f.icon;
+              return (
+                <div
+                  key={i}
+                  className="flex items-center gap-3 p-3 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm text-xs font-semibold text-emerald-100"
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
+                  <div className="w-7 h-7 rounded-xl bg-emerald-500/20 flex items-center justify-center shrink-0 text-emerald-400">
+                    <Icon className="w-4 h-4" />
+                  </div>
+                  <span>{f.text}</span>
+                </div>
+              );
+            })}
+          </div>
 
-            <div className="flex items-center justify-between text-xs text-slate-500 pt-1">
-              <label className="flex items-center gap-2 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  checked={rememberMe}
-                  onChange={(e) => setRememberMe(e.target.checked)}
-                  className="w-4 h-4 rounded border-slate-300 text-[#0B8F68] focus:ring-[#0B8F68] cursor-pointer accent-[#0B8F68]"
-                />
-                <span className="text-[11px] text-slate-600 font-medium">Remember this workstation</span>
-              </label>
-              <span className="text-[11px] text-slate-500 font-medium flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                <span>TLS 1.3 Encrypted</span>
+          {/* Live Platform Status Glass Card */}
+          <div className="p-4 rounded-2xl bg-white/10 border border-white/15 backdrop-blur-md space-y-3 shadow-lg">
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2 font-bold text-white">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>Live Platform Status</span>
+              </div>
+              <span className="text-[10px] text-emerald-300 font-extrabold uppercase tracking-wider bg-emerald-950/80 px-2 py-0.5 rounded-md border border-emerald-500/30">
+                Systems Operational
               </span>
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading || lockoutSeconds > 0}
-              className="w-full py-3 bg-[#0B8F68] hover:bg-[#087353] active:scale-[0.99] disabled:opacity-50 text-white font-bold rounded-xl shadow-md shadow-[#0B8F68]/20 transition-all cursor-pointer text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-3"
-            >
-              {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-              ) : (
-                <>
-                  <KeyRound className="w-4 h-4" />
-                  <span>Verify Credentials & Enter</span>
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Notice */}
-          <div className="pt-3 border-t border-slate-100 text-center">
-            <p className="text-[11px] text-slate-500 leading-relaxed">
-              All unauthorized access attempts are recorded. Access is strictly audited under Role-Based Access Control (RBAC).
-            </p>
+            <div className="grid grid-cols-3 gap-2 pt-2 border-t border-white/10 text-center">
+              <div>
+                <span className="text-[10px] text-emerald-200/70 block">Sessions</span>
+                <b className="text-xs font-black text-white">Active</b>
+              </div>
+              <div>
+                <span className="text-[10px] text-emerald-200/70 block">Server Load</span>
+                <b className="text-xs font-black text-white">18% Normal</b>
+              </div>
+              <div>
+                <span className="text-[10px] text-emerald-200/70 block">Latency</span>
+                <b className="text-xs font-black text-white">45ms</b>
+              </div>
+            </div>
           </div>
         </div>
-      </main>
 
-      {/* Footer */}
-      <footer className="w-full py-4 text-center text-[11px] text-slate-500 border-t border-[#E2ECE6] bg-white/70 backdrop-blur-md">
-        <div className="flex items-center justify-center gap-2 font-medium">
-          <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500" />
-          <span>PeediyaCart Administrative Subsystem</span>
-          <span className="text-slate-300">·</span>
-          <span>Zero Trust Environment</span>
-          <span className="text-slate-300">·</span>
-          <span>v2.4.0</span>
+        {/* Footer info */}
+        <div className="relative z-10 text-[11px] text-emerald-100/50 flex items-center justify-between">
+          <span>PeediyaCart Core Subsystem</span>
+          <span>Zero-Trust Architecture</span>
         </div>
-      </footer>
+      </div>
+
+      {/* ===================================================================== */}
+      {/* RIGHT PANE: CRISP, CLEAN LOGIN FORM                                   */}
+      {/* ===================================================================== */}
+      <div className="flex-1 flex flex-col justify-between p-4 sm:p-8 lg:p-12 overflow-y-auto">
+        {/* Top Navbar */}
+        <div className="flex items-center justify-between max-w-md w-full mx-auto">
+          <div className="lg:hidden flex items-center gap-2">
+            <EnteBazaarLogo size="sm" theme="light" />
+          </div>
+
+          <button
+            type="button"
+            onClick={onBackToHome}
+            className="flex items-center gap-2 px-3.5 py-1.5 text-xs font-bold text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-100 border border-gray-200 rounded-xl transition-all cursor-pointer shadow-2xs active:scale-95 ml-auto"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 text-gray-500" />
+            <span>Return to Store</span>
+          </button>
+        </div>
+
+        {/* Form Container */}
+        <div className="max-w-md w-full mx-auto my-auto py-8">
+          <div className="bg-white border border-gray-200/80 rounded-3xl p-6 sm:p-8 shadow-xl shadow-gray-200/50 space-y-6">
+            {/* Header & Badges */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="inline-flex items-center gap-1.5 bg-[#EAF5F0] text-[#0D6344] text-[11px] font-black uppercase px-2.5 py-1 rounded-full border border-emerald-200 tracking-wider">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#0D6344]" />
+                  <span>Admin Control Center</span>
+                </div>
+
+                <span className="text-[10px] font-semibold text-gray-400">
+                  v2.4.0 Secure
+                </span>
+              </div>
+
+              <div>
+                <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+                  Admin Control Center
+                </h1>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  Enter your verified administrator credentials to access platform governance and analytics.
+                </p>
+              </div>
+            </div>
+
+            {/* Warning if current user is not admin */}
+            {currentUser && currentUser.role !== 'admin' && (
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 flex items-start gap-2.5">
+                <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div className="min-w-0 flex-1">
+                  <span className="font-bold">Notice:</span> You are signed in as{' '}
+                  <b className="text-gray-900">{currentUser.name}</b> ({currentUser.role}). Please authenticate with administrator credentials.
+                </div>
+              </div>
+            )}
+
+            {/* Lockout notice */}
+            {lockoutSeconds > 0 && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold rounded-xl flex items-center gap-2">
+                <Clock className="w-4 h-4 text-rose-600 shrink-0 animate-spin" />
+                <span>Authentication locked. Try again in {lockoutSeconds}s.</span>
+              </div>
+            )}
+
+            {/* Error message */}
+            {error && lockoutSeconds <= 0 && (
+              <div className="p-3.5 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-2xl flex items-center gap-2.5 animate-in fade-in">
+                <AlertCircle className="w-4 h-4 shrink-0 text-rose-600" />
+                <span className="flex-1">{error}</span>
+              </div>
+            )}
+
+            {/* Success message */}
+            {successMsg && (
+              <div className="p-3.5 bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-2xl flex items-center gap-2.5 animate-in fade-in">
+                <CheckCircle2 className="w-4 h-4 shrink-0 text-emerald-600" />
+                <span className="flex-1">{successMsg}</span>
+              </div>
+            )}
+
+            {/* Form Fields */}
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Admin ID or Username
+                </label>
+                <div className="relative">
+                  <UserIcon className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="e.g. admin"
+                    disabled={lockoutSeconds > 0 || isLoading}
+                    autoComplete="username"
+                    className="w-full pl-10 pr-3.5 py-2.5 bg-[#F9FBFA] border border-gray-200 focus:bg-white focus:border-[#0D6344] focus:ring-4 focus:ring-[#0D6344]/10 rounded-xl text-xs text-gray-900 placeholder-gray-400 font-medium transition-all outline-none disabled:opacity-50"
+                    required
+                    autoFocus
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1.5">
+                  Master Password
+                </label>
+                <div className="relative">
+                  <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    disabled={lockoutSeconds > 0 || isLoading}
+                    autoComplete="current-password"
+                    className="w-full pl-10 pr-10 py-2.5 bg-[#F9FBFA] border border-gray-200 focus:bg-white focus:border-[#0D6344] focus:ring-4 focus:ring-[#0D6344]/10 rounded-xl text-xs text-gray-900 placeholder-gray-400 font-medium transition-all outline-none disabled:opacity-50"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors cursor-pointer p-1"
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between text-xs text-gray-500 pt-0.5">
+                <label className="flex items-center gap-2 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 rounded border-gray-300 text-[#0D6344] focus:ring-[#0D6344] cursor-pointer accent-[#0D6344]"
+                  />
+                  <span className="text-[11px] text-gray-600 font-medium">Remember this workstation</span>
+                </label>
+                <span className="text-[11px] text-gray-400 font-medium flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>TLS 1.3</span>
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isLoading || lockoutSeconds > 0}
+                className="w-full py-3.5 bg-[#0D6344] hover:bg-[#094831] active:scale-[0.99] disabled:opacity-50 text-white font-black rounded-xl shadow-md shadow-[#0D6344]/20 transition-all cursor-pointer text-xs uppercase tracking-wider flex items-center justify-center gap-2 mt-2"
+              >
+                {isLoading ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <>
+                    <span>Authenticate & Access</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Quick Demo Helper & Security Badges */}
+            <div className="pt-2 border-t border-gray-100 space-y-3">
+              <div className="flex items-center justify-center gap-2 text-[10px] text-gray-500 font-medium">
+                <button
+                  type="button"
+                  onClick={handleQuickFillDemo}
+                  className="text-xs text-[#0D6344] hover:text-[#094831] font-bold hover:underline cursor-pointer flex items-center gap-1 bg-[#EAF5F0] px-2.5 py-1 rounded-lg border border-emerald-200/80 transition-colors"
+                  title="Click to auto-fill default admin credentials"
+                >
+                  <Sparkles className="w-3 h-3 text-[#0D6344]" />
+                  <span>Quick Demo Fill (admin / admin123)</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-center gap-3 text-[10px] text-gray-400 font-semibold uppercase tracking-wider pt-1">
+                <span className="flex items-center gap-1">
+                  <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                  SSL SECURE
+                </span>
+                <span>•</span>
+                <span className="flex items-center gap-1">
+                  <Lock className="w-3 h-3 text-gray-400" />
+                  TWO-FACTOR ENABLED
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom Footer */}
+        <div className="text-center text-[11px] text-gray-400 py-2">
+          <span>PeediyaCart Administrative Subsystem · Zero-Trust Environment · v2.4.0</span>
+        </div>
+      </div>
     </div>
   );
 };
+
