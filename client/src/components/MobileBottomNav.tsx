@@ -1,9 +1,9 @@
 import React from 'react';
-import { Home, Search, ShoppingBag, ClipboardList, User as UserIcon, Scale } from 'lucide-react';
+import { Home, Zap, Scale, ShoppingBag, User as UserIcon } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeTab: string;
-  onSelectTab: (tab: 'home' | 'search' | 'compare' | 'cart' | 'orders' | 'profile') => void;
+  onSelectTab: (tab: 'home' | 'search' | 'compare' | 'cart' | 'orders' | 'profile' | 'deals') => void;
   basketCount: number;
 }
 
@@ -13,7 +13,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   basketCount,
 }) => {
   const navItems: Array<{
-    id: 'home' | 'search' | 'compare' | 'cart' | 'profile';
+    id: 'home' | 'deals' | 'compare' | 'cart' | 'profile';
     label: string;
     icon: React.ReactNode;
     badge?: number;
@@ -24,13 +24,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
       icon: <Home className="w-5 h-5" />,
     },
     {
-      id: 'search',
-      label: 'തിരയുക',
-      icon: <Search className="w-5 h-5" />,
+      id: 'deals',
+      label: 'ഓഫറുകൾ',
+      icon: <Zap className="w-5 h-5" />,
     },
     {
       id: 'compare',
-      label: 'താരതമ്യം',
+      label: 'കടകൾ',
       icon: <Scale className="w-5 h-5" />,
     },
     {
@@ -41,13 +41,13 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     },
     {
       id: 'profile',
-      label: 'പ്രൊഫൈൽ',
+      label: 'അക്കൗണ്ട്',
       icon: <UserIcon className="w-5 h-5" />,
     },
   ];
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-100/90 py-1.5 px-2 shadow-[0_-3px_16px_rgba(0,0,0,0.03)] flex items-center justify-around font-malayalam select-none backdrop-blur-md">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 border-t border-[#E3ECE7] py-2 px-3 shadow-[0_-4px_20px_rgba(0,0,0,0.04)] flex items-center justify-around font-malayalam select-none backdrop-blur-md">
       {navItems.map((item) => {
         const isActive = activeTab === item.id;
         return (
@@ -55,34 +55,34 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
             key={item.id}
             type="button"
             onClick={() => onSelectTab(item.id)}
-            className={`flex flex-col items-center justify-center py-0.5 px-1.5 rounded-lg transition-all cursor-pointer relative ${
+            className={`flex flex-col items-center justify-center py-0.5 px-2 rounded-xl transition-all cursor-pointer relative ${
               isActive
-                ? 'text-[#064E3B]'
+                ? 'text-[#0D6344]'
                 : 'text-slate-400 hover:text-slate-600'
             }`}
           >
             <div className="relative">
               <div
-                className={`p-1 rounded-lg transition-transform ${
-                  isActive ? 'scale-105 text-[#0B8F68]' : 'text-slate-400'
+                className={`p-1 rounded-xl transition-transform ${
+                  isActive ? 'scale-110 text-[#0D6344]' : 'text-slate-400'
                 }`}
               >
                 {React.cloneElement(item.icon as React.ReactElement, {
-                  className: 'w-[18px] h-[18px]',
+                  className: 'w-[20px] h-[20px]',
                 })}
               </div>
 
               {/* Cart item badge */}
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -right-1.5 bg-[#E11D48] text-white text-[8.5px] font-black w-3.5 h-3.5 rounded-full flex items-center justify-center border border-white shadow-2xs font-sans">
+                <span className="absolute -top-1 -right-2 bg-[#E11D48] text-white text-[9px] font-black min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border-2 border-white shadow-2xs font-sans">
                   {item.badge > 99 ? '99+' : item.badge}
                 </span>
               )}
             </div>
 
             <span
-              className={`text-[9.5px] tracking-tight mt-0.5 leading-none ${
-                isActive ? 'text-[#064E3B] font-black' : 'text-slate-400 font-bold'
+              className={`text-[10px] tracking-tight mt-0.5 leading-none ${
+                isActive ? 'text-[#0D6344] font-black' : 'text-slate-500 font-bold'
               }`}
             >
               {item.label}
