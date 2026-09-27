@@ -425,202 +425,85 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-4 md:space-y-4.5 lg:space-y-6 font-sans">
 
-      {/* 1. HERO BANNER: EXACT MATCH TO THE APPROVED MOCKUP */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#EBF5EE] via-[#E8F3EB] to-[#DCEDE2] border border-[#CFE4D7] p-6 sm:p-7 lg:p-8 shadow-[0_4px_24px_rgba(20,60,40,0.04)] min-h-[220px] lg:min-h-[260px] text-[#19271F] flex flex-col justify-center">
+      {/* 1. HERO BANNER: EXACT MATCH TO USER'S SCREENSHOT */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#E4F2E9] min-h-[220px] lg:min-h-[250px] p-6 sm:p-8 lg:p-9 shadow-xs flex items-center justify-between font-sans">
 
-        {/* Clean Studio Fresh Groceries Basket on the right side */}
-        <div className="absolute right-0 top-0 bottom-0 w-[44%] max-w-[480px] pointer-events-none hidden lg:block overflow-hidden">
-          <img
-            src="/hero-groceries-fresh.jpg"
-            alt="Fresh Groceries Basket"
-            className="w-full h-full object-cover object-left opacity-90 mix-blend-multiply filter contrast-[1.02]"
-            loading="eager"
-          />
-          {/* Soft fade-out into the background on the left */}
-          <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#E8F3EB] to-transparent pointer-events-none" />
+        {/* Left Content Column */}
+        <div className="relative z-10 space-y-2.5 max-w-md lg:max-w-lg shrink-0">
+          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black text-[#1A251E] font-malayalam tracking-tight leading-[1.25] m-0">
+            ആവശ്യമായതെല്ലാം,<br />
+            മികച്ച വിലയിൽ കണ്ടെത്തൂ.
+          </h1>
+
+          <p className="text-xs sm:text-sm text-[#38483F] font-medium font-sans m-0">
+            Find and compare local grocery prices in Kerala
+          </p>
+
+          <div className="pt-2">
+            <button
+              type="button"
+              onClick={() => {
+                const el = document.getElementById('catalog-products-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="inline-flex items-center px-6 py-2 rounded-full bg-[#107048] hover:bg-[#0B5C3A] active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xs transition-all cursor-pointer font-malayalam"
+            >
+              വിലകൾ കാണാം
+            </button>
+          </div>
         </div>
 
-        {/* Adaptive Grid */}
-        <div className={`relative z-10 w-full grid grid-cols-1 ${
-          isRightSidebarOpen
-            ? 'xl:grid-cols-[1.12fr_295px] 2xl:grid-cols-[1.25fr_330px]'
-            : 'lg:grid-cols-[1.15fr_310px] xl:grid-cols-[1.2fr_330px] 2xl:grid-cols-[1.3fr_350px]'
-        } items-center justify-between gap-4 xl:gap-5`}>
+        {/* Right Side: Fresh Groceries Basket & Floating Live Price Card */}
+        <div className="relative flex items-center justify-end flex-1 h-full min-h-[200px] pointer-events-none sm:pointer-events-auto">
+          {/* Fresh Groceries Basket Image */}
+          <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] h-48 sm:h-56 lg:h-60 shrink-0">
+            <img
+              src="/hero-groceries-fresh.jpg"
+              alt="Fresh Groceries Basket"
+              className="w-full h-full object-contain object-right mix-blend-multiply filter contrast-[1.03]"
+              loading="eager"
+            />
 
-          {/* Left Content Column */}
-          <div className="space-y-3 min-w-0 max-w-xl lg:max-w-none">
-            <h1 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-black text-[#11261D] font-malayalam tracking-tight leading-[1.22] m-0">
-              ആവശ്യമായതെല്ലാം,<br />
-              <span className="text-[#0D6344]">മികച്ച വിലയിൽ</span> കണ്ടെത്തൂ.
-            </h1>
+            {/* Floating Glassmorphic Live Price Card (Exact Match to Screenshot) */}
+            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md rounded-2xl p-3 border border-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.07)] w-[155px] sm:w-[170px] space-y-2 select-none">
+              <div className="text-[11px] font-semibold text-[#1A251E] font-sans">
+                Live price
+              </div>
 
-            <p className="text-xs sm:text-sm text-[#465A50] font-medium leading-relaxed font-sans m-0 max-w-lg">
-              Find and compare local grocery prices in Kerala
-            </p>
-
-            {/* Quick Live Price Ticker */}
-            <div className="hidden sm:flex items-center gap-2 pt-0.5 text-xs text-[#2A4738] font-sans font-bold flex-wrap">
-              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
-                <span>🍅</span>
-                <span>തക്കാളി</span>
-                <span className="text-[#0D6344] font-sans font-extrabold">₹14</span>
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
-                <span>🧅</span>
-                <span>സവാള</span>
-                <span className="text-[#0D6344] font-sans font-extrabold">₹32</span>
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
-                <span>🥥</span>
-                <span>വെളിച്ചെണ്ണ</span>
-                <span className="text-[#0D6344] font-sans font-extrabold">₹145</span>
-              </span>
-            </div>
-
-            {/* CTA & Value Buttons */}
-            <div className="flex items-center gap-2.5 pt-1.5 font-malayalam flex-wrap">
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('catalog-products-section');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }}
-                className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#0D6344] hover:bg-[#094E35] active:scale-95 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer shrink-0"
-              >
-                <span>വിലകൾ കാണാം</span>
-                <span className="text-sm font-sans">✓</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={onOpenDeals}
-                className="group flex items-center gap-1.5 bg-amber-100/90 hover:bg-amber-200/90 border border-amber-300 px-3.5 py-1.5 rounded-full shadow-2xs text-xs font-black text-amber-900 transition-all cursor-pointer shrink-0 active:scale-95"
-                title="ഫ്ലാഷ് ഡീലുകൾ കാണുക"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-600 fill-amber-500 group-hover:scale-110 transition-transform" />
-                <span>ഫ്ലാഷ് ഡീലുകൾ</span>
-                <span className="bg-rose-600 text-white text-[9px] font-black px-1.5 py-0.2 rounded-full tracking-wider animate-pulse">
-                  LIVE
-                </span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Live Price Floating Frosted Widget matching the Mockup */}
-          <div className={`${isRightSidebarOpen ? 'hidden xl:flex' : 'hidden lg:flex'} flex-col justify-center space-y-2.5 w-full font-sans`}>
-            {/* Live Indicator Header */}
-            <div className="flex items-center justify-between px-1 text-xs font-bold text-[#11261D] font-sans">
+              {/* Row 1: Coconut Oil */}
               <div className="flex items-center gap-2">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0D6344]"></span>
-                </span>
-                <span className="font-bold text-xs">Live price</span>
+                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+                  <img src="/categories/oils-spices.jpg" alt="Coconut Oil" className="w-full h-full object-contain rounded" />
+                </div>
+                <div className="min-w-0 flex-1 leading-tight">
+                  <div className="text-[10px] text-slate-600 font-sans truncate">Coconut Oil</div>
+                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹190/L</div>
+                </div>
               </div>
-              <span className="text-[10px] font-sans font-extrabold text-[#0D6344] bg-white/90 border border-emerald-200/60 px-2 py-0.5 rounded-full shadow-2xs">
-                REAL-TIME
-              </span>
-            </div>
 
-            {/* Card 1: Coconut Oil */}
-            <div
-              onClick={() => {
-                const el = document.getElementById('catalog-products-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  <img src="/categories/oils-spices.jpg" alt="Coconut Oil" className="w-full h-full object-contain rounded-lg" />
+              {/* Row 2: ABC Mart */}
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+                  <img src="/categories/vegetables.jpg" alt="ABC Mart" className="w-full h-full object-contain rounded" />
                 </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
-                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">Coconut Oil</span>
-                    <span className="font-sans text-[10px] font-bold text-[#0D6344] bg-[#E8F5EE] border border-[#C3EEDC] px-1.5 py-0.2 rounded-md">1L</span>
-                  </div>
-                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
-                    <Store className="w-2.5 h-2.5 text-[#0D6344] shrink-0" />
-                    <span>Al-Iqwan • 1.2 km</span>
-                  </div>
+                <div className="min-w-0 flex-1 leading-tight">
+                  <div className="text-[10px] text-slate-600 font-sans truncate">ABC Mart:</div>
+                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
                 </div>
               </div>
-              <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
-                <div className="text-sm font-black text-[#0D6344] font-sans tracking-tight">
-                  ₹190/L
+
+              {/* Row 3: Rice */}
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+                  <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded" />
                 </div>
-                <div className="text-[9px] font-bold text-emerald-800 bg-[#E8F5EE] px-1.5 py-0.2 rounded-full whitespace-nowrap">
-                  Lowest
+                <div className="min-w-0 flex-1 leading-tight">
+                  <div className="text-[10px] text-slate-600 font-sans truncate">Rice</div>
+                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
                 </div>
               </div>
             </div>
-
-            {/* Card 2: ABC Mart comparison */}
-            <div
-              onClick={() => {
-                const el = document.getElementById('catalog-products-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  <Store className="w-5 h-5 text-[#0D6344]" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
-                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">ABC Mart</span>
-                  </div>
-                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
-                    <span>Supermarket • 0.5 km</span>
-                  </div>
-                </div>
-              </div>
-              <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
-                <div className="text-sm font-black text-slate-700 font-sans tracking-tight">
-                  ₹195/L
-                </div>
-                <div className="text-[9px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded-full whitespace-nowrap">
-                  Average
-                </div>
-              </div>
-            </div>
-
-            {/* Card 3: Rice */}
-            <div
-              onClick={() => {
-                const el = document.getElementById('catalog-products-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
-            >
-              <div className="flex items-center gap-2.5 min-w-0">
-                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded-lg" />
-                </div>
-                <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
-                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">Rice</span>
-                    <span className="font-sans text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-1.5 py-0.2 rounded-md">5kg</span>
-                  </div>
-                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
-                    <Store className="w-2.5 h-2.5 text-[#0D6344] shrink-0" />
-                    <span>Malabar Store • 0.8 km</span>
-                  </div>
-                </div>
-              </div>
-              <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
-                <div className="text-sm font-black text-[#0D6344] font-sans tracking-tight">
-                  ₹195/L
-                </div>
-                <div className="text-[9px] font-bold text-emerald-800 bg-[#E8F5EE] px-1.5 py-0.2 rounded-full whitespace-nowrap">
-                  Best Price
-                </div>
-              </div>
-            </div>
-
           </div>
-
         </div>
 
       </div>
