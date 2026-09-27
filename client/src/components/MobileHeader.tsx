@@ -78,14 +78,17 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
             )}
           </button>
 
-          {/* User Profile Avatar */}
+          {/* User Profile Avatar with Notification Dot */}
           <button
             type="button"
             onClick={onOpenProfile || onOpenDrawer}
-            className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center text-xs font-bold font-sans shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer ring-2 ring-[#0B8F68]/20"
+            className="relative w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center text-xs font-bold font-sans shadow-xs hover:opacity-90 active:scale-95 transition-all cursor-pointer ring-2 ring-[#0D6344]/20"
             aria-label="Profile"
           >
             {avatarLetter}
+            {unreadNotificationsCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-[#EF4444] rounded-full ring-2 ring-white" />
+            )}
           </button>
         </div>
       </div>

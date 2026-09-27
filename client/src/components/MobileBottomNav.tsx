@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Zap, Scale, ShoppingBag, User as UserIcon } from 'lucide-react';
+import { Home, Zap, Store, ShoppingCart, User as UserIcon } from 'lucide-react';
 
 interface MobileBottomNavProps {
   activeTab: string;
@@ -31,12 +31,12 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
     {
       id: 'compare',
       label: 'കടകൾ',
-      icon: <Scale className="w-5 h-5" />,
+      icon: <Store className="w-5 h-5" />,
     },
     {
       id: 'cart',
       label: 'കാർട്ട്',
-      icon: <ShoppingBag className="w-5 h-5" />,
+      icon: <ShoppingCart className="w-5 h-5" />,
       badge: basketCount,
     },
     {
@@ -74,7 +74,7 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
 
               {/* Cart item badge */}
               {item.badge !== undefined && item.badge > 0 && (
-                <span className="absolute -top-1 -right-2 bg-[#E11D48] text-white text-[9px] font-black min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border-2 border-white shadow-2xs font-sans">
+                <span className="absolute -top-1 -right-2 bg-[#0D6344] text-white text-[9px] font-black min-w-[16px] h-4 px-1 rounded-full flex items-center justify-center border-2 border-white shadow-2xs font-sans">
                   {item.badge > 99 ? '99+' : item.badge}
                 </span>
               )}

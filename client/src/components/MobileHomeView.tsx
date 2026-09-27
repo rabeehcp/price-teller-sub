@@ -15,6 +15,7 @@ import {
   ShieldCheck,
   Sparkles,
   Zap,
+  Mic,
 } from 'lucide-react';
 
 interface MobileHomeViewProps {
@@ -40,11 +41,6 @@ interface MobileHomeViewProps {
 }
 
 const CATEGORY_CONFIG = [
-  {
-    id: 'all',
-    label: 'എല്ലാം',
-    image: '/categories/grocery.jpg',
-  },
   {
     id: 'vegetables',
     label: 'പച്ചക്കറികൾ',
@@ -72,8 +68,13 @@ const CATEGORY_CONFIG = [
   },
   {
     id: 'bakery-breakfast',
-    label: 'ബേക്കറി',
+    label: 'മാംസം & മീൻ',
     image: '/categories/bakery.jpg',
+  },
+  {
+    id: 'all',
+    label: 'എല്ലാം',
+    image: '/categories/grocery.jpg',
   },
   {
     id: 'beverages',
@@ -116,7 +117,6 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
   const priceValues = Object.values(product.prices || {}).filter(p => typeof p === 'number' && p > 0);
   const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 0;
   const mlName = getMalayalamName(product.name);
-  const hasDifferentMl = mlName && mlName.toLowerCase() !== product.name.toLowerCase();
 
   const isOutOfStock = Boolean(
     product.stockStatus &&
@@ -127,123 +127,115 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
   return (
     <div
       onClick={() => onSelectProductForDetail(product)}
-      className={`bg-white border rounded-2xl p-3 sm:p-3.5 shadow-2xs hover:shadow-md hover:border-[#0D6344]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
-        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7]'
+      className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-2xs hover:shadow-md hover:border-[#0D6344]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E5ECE8]'
       }`}
     >
-      {/* Top: Shop Pill & Favorite Wishlist Button */}
-      <div className="flex items-center justify-between gap-1 mb-1.5">
-        <span className="text-[9.5px] font-bold text-[#0D6344] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[120px] font-malayalam flex items-center gap-1 shadow-2xs">
-          <span className="truncate">Lowest: {shopInfo?.name || lowestShopName}</span>
-        </span>
+      {/* Top Section: Side-by-side Image (Left) + Info & Wishlist (Right) */}
+      <div className="flex items-start gap-2 relative">
+        {/* Wishlist Heart Icon (Top-Right) */}
         <button
           type="button"
           onClick={(e) => {
             e.stopPropagation();
             onToggleFavorite(product);
           }}
-          className="text-slate-300 hover:text-[#E11D48] p-1 rounded-full hover:bg-slate-50 transition-colors cursor-pointer"
+          className="absolute top-0 right-0 p-0.5 text-slate-300 hover:text-[#E11D48] transition-colors cursor-pointer z-10"
           title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
         >
           <Heart
-            className={`w-4 h-4 transition-colors ${
+            className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-colors ${
               isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300 hover:text-slate-400'
             }`}
           />
         </button>
-      </div>
 
-      {/* Product Thumbnail in Clean Neutral Container */}
-      <div className="w-full h-28 sm:h-32 flex items-center justify-center p-1.5 relative bg-[#FAFCFB] rounded-xl border border-slate-100/80 mb-1">
-        <ProductImage
-          productId={product.id}
-          image={product.image}
-          emoji={product.emoji}
-          alt={mlName}
-          className="w-full h-full"
-          imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105 duration-200"
-          fallbackEmojiClassName="text-3xl"
-          isOutOfStock={isOutOfStock}
-          stampSize="xs"
-        />
-      </div>
+        {/* Product Thumbnail (Left) */}
+        <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center p-1 relative bg-[#F5F8F6] rounded-xl border border-slate-100 shrink-0">
+          <ProductImage
+            productId={product.id}
+            image={product.image}
+            emoji={product.emoji}
+            alt={mlName || product.name}
+            className="w-full h-full"
+            imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105 duration-200"
+            fallbackEmojiClassName="text-2xl"
+            isOutOfStock={isOutOfStock}
+            stampSize="xs"
+          />
+        </div>
 
-      {/* Info: Name, Price, and Action Button */}
-      <div className="space-y-1.5 pt-1">
-        <div className="min-h-[38px]">
-          <h3 className="text-xs sm:text-[13px] font-black text-slate-900 font-malayalam leading-snug line-clamp-1 group-hover:text-[#0D6344] transition-colors m-0">
-            {hasDifferentMl ? mlName : product.name}
+        {/* Right Info: Malayalam Name, Subtitle, Lowest Store Pill */}
+        <div className="flex-1 min-w-0 pr-4 sm:pr-5">
+          <h3 className="text-xs sm:text-[13px] font-bold text-slate-900 font-malayalam leading-tight line-clamp-1 group-hover:text-[#0D6344] transition-colors m-0">
+            {mlName || product.name}
           </h3>
-          {hasDifferentMl ? (
-            <p className="text-[10px] text-slate-400 font-sans truncate m-0 font-medium mt-0.5">
-              {product.name}
-            </p>
+          <p className="text-[10px] sm:text-[11px] text-slate-500 font-sans truncate m-0 font-medium mt-0.5">
+            {product.name} {product.defaultUnit ? `(${product.defaultUnit})` : ''}
+          </p>
+
+          {/* Lowest Store Badge */}
+          <div className="mt-1.5 inline-block bg-[#EAF7EE] text-[#0D6344] px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] leading-tight font-medium max-w-full">
+            <span className="block text-[8px] sm:text-[8.5px] text-[#0D6344]/80 font-normal">Lowest store:</span>
+            <span className="font-bold truncate block">{shopInfo?.name || lowestShopName || 'ABC Mart'}: ₹{price}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Section: Price & Action Stepper/Button */}
+      <div className="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-50">
+        <div className="min-w-0">
+          {price > 0 ? (
+            <span className="text-sm sm:text-base font-black text-slate-900 font-sans tracking-tight leading-none">
+              ₹{price}
+            </span>
           ) : (
-            <p className="text-[10px] text-slate-400 font-sans truncate m-0 font-medium mt-0.5 capitalize">
-              {product.categoryId}
-            </p>
+            <span className="text-[10px] text-slate-400 font-malayalam leading-none">വില ലഭ്യമല്ല</span>
           )}
         </div>
 
-        <div className="flex items-end justify-between pt-1 gap-1">
-          <div className="min-w-0 flex-1">
-            {price > 0 ? (
-              <div className="flex items-baseline gap-0.5 flex-wrap">
-                <span className="text-sm sm:text-base font-black text-slate-900 font-sans tracking-tight leading-none">
-                  ₹{price}
-                </span>
-                <span className="text-[10px] text-slate-400 font-medium font-sans whitespace-nowrap leading-none">
-                  /{formatPerUnitLabel(product.defaultUnit)}
-                </span>
-              </div>
-            ) : (
-              <span className="text-[10px] text-slate-400 font-malayalam leading-none">വില ലഭ്യമല്ല</span>
-            )}
-          </div>
-
-          <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
-            {isOutOfStock ? (
-              <span className="text-[9px] font-bold font-malayalam text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">
-                തീർന്നു
-              </span>
-            ) : qty > 0 ? (
-              <div className="flex items-center bg-[#0D6344] text-white rounded-xl px-1.5 py-1 gap-1 shadow-xs">
-                <button
-                  type="button"
-                  onClick={() => onQuantityChange(product.id, -1)}
-                  className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
-                  aria-label="കുറയ്ക്കുക"
-                >
-                  <Minus className="w-3 h-3" />
-                </button>
-                <span className="px-1 text-xs font-black font-sans min-w-[14px] text-center">
-                  {qty}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => onQuantityChange(product.id, 1)}
-                  className="w-5 h-5 flex items-center justify-center rounded-lg hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
-                  aria-label="കൂട്ടുക"
-                >
-                  <Plus className="w-3 h-3" />
-                </button>
-              </div>
-            ) : price <= 0 ? (
-              <span className="text-[9px] font-bold font-malayalam text-[#8A9992] bg-slate-100 px-2 py-0.5 rounded-lg select-none">
-                ലഭ്യമല്ല
-              </span>
-            ) : (
+        <div className="shrink-0" onClick={(e) => e.stopPropagation()}>
+          {isOutOfStock ? (
+            <span className="text-[9px] font-bold font-malayalam text-red-500 bg-red-50 border border-red-200 px-2 py-0.5 rounded-lg">
+              തീർന്നു
+            </span>
+          ) : qty > 0 ? (
+            <div className="flex items-center bg-[#0D6344] text-white rounded-lg px-2 py-1 gap-2 shadow-xs">
               <button
                 type="button"
-                onClick={() => onAddToBasket(product, product.defaultUnit)}
-                className="px-3 py-1.5 bg-[#0D6344] hover:bg-[#064E3B] text-white text-[11px] font-black rounded-xl shadow-2xs transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer whitespace-nowrap"
-                aria-label="ചേർക്കുക"
+                onClick={() => onQuantityChange(product.id, -1)}
+                className="w-3.5 h-3.5 flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
+                aria-label="കുറയ്ക്കുക"
               >
-                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>ചേർക്കുക</span>
+                <Minus className="w-2.5 h-2.5" />
               </button>
-            )}
-          </div>
+              <span className="text-xs font-bold font-sans min-w-[12px] text-center">
+                {qty}
+              </span>
+              <button
+                type="button"
+                onClick={() => onQuantityChange(product.id, 1)}
+                className="w-3.5 h-3.5 flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all cursor-pointer"
+                aria-label="കൂട്ടുക"
+              >
+                <Plus className="w-2.5 h-2.5" />
+              </button>
+            </div>
+          ) : price <= 0 ? (
+            <span className="text-[9px] font-bold font-malayalam text-[#8A9992] bg-slate-100 px-2 py-0.5 rounded-lg select-none">
+              ലഭ്യമല്ല
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => onAddToBasket(product, product.defaultUnit)}
+              className="px-2.5 sm:px-3 py-1.5 bg-[#0D6344] hover:bg-[#064E3B] text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-2xs transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer whitespace-nowrap"
+              aria-label="ചേർക്കുക"
+            >
+              <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+              <span>ചേർക്കുക</span>
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -352,87 +344,76 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
 
       {/* 1. SEARCH BAR */}
       <div>
-        <div className="relative flex items-center bg-white border border-[#E3ECE7] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-2xl p-1.5 pl-4 shadow-2xs transition-all">
-          <Search className="w-4 h-4 text-slate-400 shrink-0" />
+        <div className="relative flex items-center bg-white border border-[#E3ECE7] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-2xl py-2 px-3.5 shadow-2xs transition-all">
+          <Search className="w-4.5 h-4.5 text-slate-400 shrink-0 mr-2.5" />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => onSearchChange(e.target.value)}
             placeholder="പലചരക്ക് ഉൽപ്പന്നങ്ങൾ തിരയുക..."
-            className="w-full px-2.5 py-1 text-xs font-semibold text-slate-800 placeholder:text-slate-400 bg-transparent outline-none font-malayalam"
+            className="w-full text-xs sm:text-sm font-medium text-slate-800 placeholder:text-slate-400 bg-transparent outline-none font-malayalam"
           />
           {searchQuery ? (
             <button
               type="button"
               onClick={() => onSearchChange('')}
-              className="p-1.5 text-slate-400 hover:text-slate-700 rounded-full cursor-pointer mr-1"
+              className="p-1 text-slate-400 hover:text-slate-700 rounded-full cursor-pointer ml-1"
             >
               <X className="w-4 h-4" />
             </button>
           ) : (
             <button
               type="button"
-              className="w-8 h-8 rounded-xl bg-[#0D6344] text-white flex items-center justify-center shrink-0 shadow-2xs active:scale-95 transition-transform cursor-pointer mr-0.5"
-              title="Search"
+              className="p-1 text-slate-600 hover:text-[#0D6344] transition-colors cursor-pointer ml-1"
+              title="Voice Search"
             >
-              <Search className="w-3.5 h-3.5" />
+              <Mic className="w-4.5 h-4.5" />
             </button>
           )}
         </div>
       </div>
 
       {/* 2. HERO PROMO BANNER: FRESH PRODUCE & FLASH DEALS */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#DFF5E9] via-[#EAF7F0] to-[#D8F2E4] border border-[#C3EEDC] shadow-xs p-4 sm:p-5 flex items-center justify-between gap-3 text-slate-800">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#DFF2E8] via-[#E8F6EE] to-[#D5EFE2] border border-[#C5ECD8] shadow-xs p-4 sm:p-5 flex items-center justify-between gap-3 text-slate-800">
         <div className="relative z-10 flex-1 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-white/90 border border-emerald-200/80 rounded-full text-[10px] font-black text-[#0D6344] shadow-2xs font-sans">
-            <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-            <Zap className="w-3 h-3 text-amber-500 fill-amber-500" />
-            <span>Flash Deals LIVE</span>
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#FFE8D6] rounded-full text-[10px] font-bold text-[#C2410C] font-sans">
+            <Zap className="w-3 h-3 text-[#EA580C] fill-[#EA580C]" />
+            <span>Flash Deals</span>
+            <span className="bg-[#DC2626] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase ml-0.5">
+              LIVE
+            </span>
           </div>
 
-          <h2 className="text-[15px] sm:text-lg font-black text-slate-900 leading-tight font-malayalam tracking-tight m-0">
-            നിത്യോപയോഗ സാധനങ്ങൾ ഏറ്റവും കുറഞ്ഞ വിലയിൽ!
+          <h2 className="text-[15px] sm:text-lg font-black text-slate-900 leading-snug font-malayalam tracking-tight m-0">
+            നിത്യോപയോഗ<br />സാധനങ്ങൾ ഏറ്റവും<br />കുറഞ്ഞ വിലയിൽ!
           </h2>
 
-          <p className="text-[10px] sm:text-xs text-slate-600 font-medium leading-snug font-malayalam m-0 line-clamp-2 max-w-xs">
-            നാട്ടിലെ മികച്ച കടകളിലെ തത്സമയ വിലകൾ താരതമ്യം ചെയ്യാം.
-          </p>
-
-          <div className="pt-1 flex items-center gap-2">
-            {onOpenDeals ? (
-              <button
-                type="button"
-                onClick={onOpenDeals}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0D6344] hover:bg-[#064E3B] active:scale-95 text-white font-black text-xs shadow-xs transition-all cursor-pointer font-malayalam"
-              >
-                <span>ഓഫറുകൾ കാണുക</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={() => {
-                  const el = document.getElementById('catalog-products-section');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  else if (onViewAllProducts) onViewAllProducts();
-                }}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0D6344] hover:bg-[#064E3B] active:scale-95 text-white font-black text-xs shadow-xs transition-all cursor-pointer font-malayalam"
-              >
-                <span>വിലകൾ കാണാം</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            )}
+          <div className="pt-1">
+            <button
+              type="button"
+              onClick={onOpenDeals || onViewAllProducts}
+              className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#0D6344] hover:bg-[#064E3B] active:scale-95 text-white font-bold text-xs shadow-sm transition-all cursor-pointer font-malayalam"
+            >
+              <span>ഓഫറുകൾ കാണുക</span>
+            </button>
           </div>
         </div>
 
         {/* Fresh Groceries Produce Basket Graphic */}
-        <div className="relative shrink-0 w-28 sm:w-36 h-24 sm:h-28 flex items-center justify-center">
+        <div className="relative shrink-0 w-32 sm:w-40 h-28 sm:h-32 flex items-center justify-center">
           <img
             src="/hero-groceries-fresh.jpg"
             alt="Fresh Groceries Produce Basket"
-            className="w-full h-full object-contain drop-shadow-md rounded-2xl transform hover:scale-105 transition-transform"
+            className="w-full h-full object-contain drop-shadow-md"
           />
         </div>
+      </div>
+
+      {/* Banner Carousel Indicator Dots */}
+      <div className="flex items-center justify-center gap-1.5 pt-0.5 pb-1">
+        <span className="w-4 h-1.5 rounded-full bg-[#0D6344]" />
+        <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+        <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
       </div>
 
       {/* 3. LIVE PRICE TICKER */}
@@ -481,28 +462,28 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`shrink-0 w-[76px] sm:w-[84px] flex flex-col items-center justify-between p-2.5 rounded-2xl transition-all cursor-pointer text-center group border relative ${
+                className={`shrink-0 w-[74px] sm:w-[82px] h-[86px] sm:h-[94px] flex flex-col items-center justify-between p-2 rounded-2xl transition-all cursor-pointer text-center group border relative ${
                   isSelected
-                    ? 'bg-[#E8F5EE] border-[#0D6344] shadow-xs ring-2 ring-[#0D6344]/20'
-                    : 'bg-white border-[#E3ECE7] hover:border-[#0D6344]/40 shadow-2xs'
+                    ? 'bg-white border-2 border-[#0D6344] shadow-xs'
+                    : 'bg-white border border-slate-200 hover:border-slate-300 shadow-2xs'
                 }`}
               >
                 {isSelected && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#0D6344] absolute top-2 right-2" />
+                  <span className="w-2 h-2 rounded-full bg-[#0D6344] absolute top-1.5 right-1.5" />
                 )}
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-105 p-1 bg-[#F5F8F6] border border-[#E3ECE7]/80 shadow-2xs"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-1 overflow-hidden transition-transform group-hover:scale-105 p-1 bg-[#F5F8F6] border border-slate-100"
                 >
                   <img
                     src={cat.image}
                     alt={cat.label}
-                    className="w-full h-full object-contain rounded-lg drop-shadow-2xs"
+                    className="w-full h-full object-contain drop-shadow-2xs"
                     loading="lazy"
                   />
                 </div>
                 <span
-                  className={`text-[10px] font-bold leading-tight line-clamp-1 w-full text-center ${
-                    isSelected ? 'text-[#0D6344] font-black' : 'text-slate-700'
+                  className={`text-[10px] sm:text-[10.5px] font-bold leading-tight line-clamp-1 w-full text-center ${
+                    isSelected ? 'text-[#0D6344] font-black' : 'text-slate-800'
                   }`}
                 >
                   {cat.label}

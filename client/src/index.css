@@ -65,7 +65,7 @@
 }
 
 .font-malayalam {
-  font-family: 'Inter', 'Noto Sans Malayalam', sans-serif;
+  font-family: 'Noto Sans Malayalam', 'Anek Malayalam', 'Inter', sans-serif;
   line-height: 1.48;
 }
 
