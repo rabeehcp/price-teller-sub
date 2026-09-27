@@ -344,8 +344,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
 
       {/* 1. SEARCH BAR */}
       <div>
-        <div className="relative flex items-center bg-white border border-[#E3ECE7] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-2xl py-2 px-3.5 shadow-2xs transition-all">
-          <Search className="w-4.5 h-4.5 text-slate-400 shrink-0 mr-2.5" />
+        <div className="relative flex items-center bg-white border border-[#E3ECE7] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-full py-2.5 px-4 shadow-2xs transition-all">
+          <Search className="w-5 h-5 text-slate-400 shrink-0 mr-3" />
           <input
             type="text"
             value={searchQuery}
@@ -367,53 +367,43 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
               className="p-1 text-slate-600 hover:text-[#0D6344] transition-colors cursor-pointer ml-1"
               title="Voice Search"
             >
-              <Mic className="w-4.5 h-4.5" />
+              <Mic className="w-5 h-5" />
             </button>
           )}
         </div>
       </div>
 
-      {/* 2. HERO PROMO BANNER: FRESH PRODUCE & FLASH DEALS */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#DFF2E8] via-[#E8F6EE] to-[#D5EFE2] border border-[#C5ECD8] shadow-xs p-4 sm:p-5 flex items-center justify-between gap-3 text-slate-800">
-        <div className="relative z-10 flex-1 space-y-2">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 bg-[#FFE8D6] rounded-full text-[10px] font-bold text-[#C2410C] font-sans">
-            <Zap className="w-3 h-3 text-[#EA580C] fill-[#EA580C]" />
-            <span>Flash Deals</span>
-            <span className="bg-[#DC2626] text-white text-[8px] font-black px-1.5 py-0.2 rounded-full uppercase ml-0.5">
-              LIVE
-            </span>
-          </div>
-
-          <h2 className="text-[15px] sm:text-lg font-black text-slate-900 leading-snug font-malayalam tracking-tight m-0">
-            നിത്യോപയോഗ<br />സാധനങ്ങൾ ഏറ്റവും<br />കുറഞ്ഞ വിലയിൽ!
-          </h2>
-
-          <div className="pt-1">
-            <button
-              type="button"
-              onClick={onOpenDeals || onViewAllProducts}
-              className="inline-flex items-center px-4 py-1.5 rounded-full bg-[#0D6344] hover:bg-[#064E3B] active:scale-95 text-white font-bold text-xs shadow-sm transition-all cursor-pointer font-malayalam"
-            >
-              <span>ഓഫറുകൾ കാണുക</span>
-            </button>
-          </div>
-        </div>
-
-        {/* Fresh Groceries Produce Basket Graphic */}
-        <div className="relative shrink-0 w-32 sm:w-40 h-28 sm:h-32 flex items-center justify-center">
+      {/* 2. HERO PROMO BANNER: EXACT MATCH TO MOCKUP */}
+      <div className="space-y-2">
+        <div
+          onClick={onOpenDeals || onViewAllProducts}
+          className="relative overflow-hidden rounded-3xl cursor-pointer group shadow-2xs hover:shadow-md transition-all active:scale-[0.99] border border-[#C5ECD8] bg-[#D5EDDF]"
+        >
           <img
-            src="/hero-groceries-fresh.jpg"
-            alt="Fresh Groceries Produce Basket"
-            className="w-full h-full object-contain drop-shadow-md"
+            src="/hero-banner-fresh.png"
+            alt="നിത്യോപയോഗ സാധനങ്ങൾ ഏറ്റവും കുറഞ്ഞ വിലയിൽ - Flash Deals"
+            className="w-full h-auto object-cover block"
           />
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onOpenDeals) onOpenDeals();
+              else if (onViewAllProducts) onViewAllProducts();
+            }}
+            className="sr-only"
+            aria-label="ഓഫറുകൾ കാണുക (View Flash Deals)"
+          >
+            ഓഫറുകൾ കാണുക
+          </button>
         </div>
-      </div>
 
-      {/* Banner Carousel Indicator Dots */}
-      <div className="flex items-center justify-center gap-1.5 pt-0.5 pb-1">
-        <span className="w-4 h-1.5 rounded-full bg-[#0D6344]" />
-        <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-        <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+        {/* Carousel Indicator Dots */}
+        <div className="flex items-center justify-center gap-1.5 pt-0.5 pb-1">
+          <span className="w-4 h-1.5 rounded-full bg-[#0D6344]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+        </div>
       </div>
 
       {/* 3. LIVE PRICE TICKER */}
