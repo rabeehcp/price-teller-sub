@@ -1494,8 +1494,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               )}
 
               {/* Main Card Wrapper */}
-              {/* Main Card Wrapper */}
-              <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-7 shadow-xs font-sans">
+              <div className="bg-white border border-[#E3ECE7] rounded-2xl sm:rounded-3xl p-3.5 sm:p-5 md:p-7 shadow-xs font-sans">
                 
                 {/* 1. Primary View Mode Toggle: Listed Products vs Master Catalog */}
                 <div className="flex items-center justify-between gap-3 pb-4 border-b border-[#F0F4F2] mb-5 flex-wrap sm:flex-nowrap">
@@ -1841,7 +1840,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   <>
                     {/* 5A. DESKTOP VIEW: High-Density Modern SaaS Table */}
                     <div className="hidden md:block overflow-x-auto border border-[#E3ECE7] rounded-2xl shadow-xs bg-white">
-                      <table className="w-full text-left text-xs border-collapse">
+                      <table className="w-full min-w-[700px] text-left text-xs border-collapse">
                         <thead>
                           <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-[11px] select-none tracking-wider uppercase">
                             <th className="py-3.5 px-3.5 w-12 text-center">
@@ -2083,15 +2082,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       </table>
                     </div>
 
-                    {/* 5B. MOBILE VIEW: Fast-Scrolling, Compact Product Cards */}
-                    <div className="md:hidden space-y-2.5">
+                    {/* 5B. MOBILE VIEW: Fast-Scrolling, Touch-Optimized Product Cards */}
+                    <div className="md:hidden space-y-3">
                       {/* Helpful Hint Pill */}
-                      <div className="flex items-center justify-between px-1 py-1 text-[11px] font-bold text-gray-500 font-malayalam">
+                      <div className="flex items-center justify-between px-1 text-[11px] font-bold text-gray-500 font-malayalam">
                         <span className="flex items-center gap-1.5 text-slate-700">
                           <Scale className="w-3.5 h-3.5 text-[#0D6344]" />
-                          <span>ഉൽപ്പന്നത്തിൽ തൊട്ടാൽ വിപണി വിശകലനം ചെയ്യാം</span>
+                          <span>നേരിട്ട് വിലയും സ്റ്റോക്കും മാറ്റാം, വിശകലനം ചെയ്യാം</span>
                         </span>
-                        <span className="text-[10px] font-sans text-gray-400">
+                        <span className="text-[10px] font-sans text-gray-400 font-semibold">
                           ({paginatedInventoryList.length} എണ്ണം)
                         </span>
                       </div>
@@ -2109,26 +2108,29 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         return (
                           <div
                             key={p.id}
-                            onClick={() => setAnalyzingProduct(p)}
-                            className={`bg-white border rounded-2xl p-3 shadow-2xs flex items-center justify-between gap-3 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0D6344]/50 ${
+                            className={`bg-white border rounded-2xl p-3 shadow-2xs transition-all space-y-2.5 ${
                               isSelected
                                 ? 'border-[#0D6344] bg-[#EDFAF3]/70 ring-1 ring-[#0D6344]'
                                 : isDirty
                                 ? 'border-amber-400 bg-amber-50/25 ring-1 ring-amber-300'
                                 : currentStock === 'out_of_stock'
                                 ? 'border-rose-200 bg-rose-50/15'
-                                : 'border-[#E3ECE7]'
+                                : 'border-[#E3ECE7] hover:border-[#0D6344]/40'
                             }`}
                           >
-                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                            {/* Top Row: Checkbox + Product Image + Dual-Language Titles + Delist Trash Button */}
+                            <div className="flex items-start gap-2.5">
                               <input
                                 type="checkbox"
                                 checked={isSelected}
-                                onClick={(e) => e.stopPropagation()}
                                 onChange={() => toggleSelectProduct(p.id)}
-                                className="rounded cursor-pointer accent-[#0D6344] w-4 h-4 shrink-0"
+                                className="rounded cursor-pointer accent-[#0D6344] w-4 h-4 mt-1 shrink-0"
                               />
-                              <div className="w-12 h-12 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs relative overflow-hidden">
+
+                              <div
+                                onClick={() => setAnalyzingProduct(p)}
+                                className="w-12 h-12 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs relative overflow-hidden cursor-pointer"
+                              >
                                 <ProductImage
                                   productId={p.id}
                                   image={p.image}
@@ -2141,7 +2143,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   stampSize="xs"
                                 />
                               </div>
-                              <div className="min-w-0 flex-1">
+
+                              <div
+                                onClick={() => setAnalyzingProduct(p)}
+                                className="min-w-0 flex-1 cursor-pointer"
+                              >
                                 <div className="flex items-center gap-1.5 flex-wrap">
                                   <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate font-malayalam">
                                     {hasDifferentMl ? mlName : p.name}
@@ -2160,64 +2166,87 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 {hasDifferentMl && (
                                   <p className="text-[10px] text-slate-400 font-sans truncate">{p.name}</p>
                                 )}
-                                <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium truncate">
-                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded">{p.defaultUnit}</span>
+                                <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium">
+                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200/60">
+                                    {p.defaultUnit}
+                                  </span>
                                   <span>•</span>
-                                  <span className="capitalize text-emerald-800 bg-emerald-50/80 px-1.5 py-0.2 rounded font-bold">
+                                  <span className="capitalize text-emerald-800 bg-emerald-50 px-1.5 py-0.2 rounded font-semibold border border-emerald-100">
                                     {p.categoryId}
                                   </span>
                                 </div>
                               </div>
+
+                              <button
+                                type="button"
+                                onClick={() => setDelistConfirmProduct(p)}
+                                className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-transparent transition-colors cursor-pointer shrink-0"
+                                title="സ്റ്റോറിൽ നിന്ന് ഒഴിവാക്കുക"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
 
-                            <div className="flex items-center gap-2 shrink-0">
-                              <div className="text-right">
-                                <div className="text-sm font-black text-slate-900 font-sans flex items-center justify-end gap-0.5">
-                                  <span className="text-xs text-gray-400 font-bold">₹</span>
-                                  <span>{currentPrice}</span>
-                                </div>
-                                <div className="flex items-center justify-end gap-1 mt-0.5">
-                                  {priceDelta !== 0 && (
-                                    <span
-                                      className={`text-[9px] font-black font-sans ${
-                                        priceDelta > 0 ? 'text-emerald-700' : 'text-rose-700'
-                                      }`}
-                                    >
-                                      {priceDelta > 0 ? `+₹${priceDelta.toFixed(0)}` : `-₹${Math.abs(priceDelta).toFixed(0)}`}
-                                    </span>
-                                  )}
-                                  <span
-                                    className={`px-1.5 py-0.5 rounded-md text-[9px] font-black flex items-center gap-1 font-malayalam ${
-                                      currentStock === 'in_stock'
-                                        ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                        : currentStock === 'low_stock'
-                                        ? 'bg-amber-50 text-amber-800 border border-amber-200'
-                                        : 'bg-rose-50 text-rose-800 border border-rose-200'
-                                    }`}
-                                  >
-                                    <span
-                                      className={`w-1.5 h-1.5 rounded-full ${
-                                        currentStock === 'in_stock'
-                                          ? 'bg-emerald-500'
-                                          : currentStock === 'low_stock'
-                                          ? 'bg-amber-500'
-                                          : 'bg-rose-500'
-                                      }`}
-                                    />
-                                    <span>
-                                      {currentStock === 'in_stock'
-                                        ? 'സ്റ്റോക്ക്'
-                                        : currentStock === 'low_stock'
-                                        ? 'കുറവ്'
-                                        : 'തീർന്നു'}
-                                    </span>
-                                  </span>
-                                </div>
+                            {/* Bottom Controls Row: Price Input + Stock Dropdown + Analytics Button */}
+                            <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                              {/* Price Field */}
+                              <div className="flex items-center bg-white border border-[#D9E5DF] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-xl overflow-hidden shadow-2xs h-9 w-24 xs:w-28 shrink-0">
+                                <span className="px-2 text-[#0D6344] font-bold text-xs bg-[#F4F8F6] border-r border-[#D9E5DF] select-none">
+                                  ₹
+                                </span>
+                                <input
+                                  type="number"
+                                  min="1"
+                                  value={currentPrice}
+                                  onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
+                                  className="w-full px-2 py-1 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                />
                               </div>
 
-                              <div className="p-1 rounded-lg bg-gray-50 text-gray-400">
-                                <ChevronRight className="w-4 h-4" />
+                              {/* Stock Dropdown */}
+                              <div className="relative inline-flex items-center flex-1 max-w-[140px]">
+                                <span
+                                  className={`w-2 h-2 rounded-full absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
+                                    currentStock === 'in_stock'
+                                      ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]'
+                                      : currentStock === 'low_stock'
+                                      ? 'bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.5)]'
+                                      : 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.5)]'
+                                  }`}
+                                />
+                                <select
+                                  value={currentStock}
+                                  onChange={(e) =>
+                                    handleStockChange(
+                                      p.id,
+                                      e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock'
+                                    )
+                                  }
+                                  className={`w-full text-[11px] font-bold pl-6 pr-6 py-2 rounded-xl border appearance-none cursor-pointer transition-all outline-none font-malayalam shadow-2xs ${
+                                    currentStock === 'in_stock'
+                                      ? 'bg-emerald-50/90 text-emerald-800 border-emerald-200'
+                                      : currentStock === 'low_stock'
+                                      ? 'bg-amber-50/90 text-amber-800 border-amber-200'
+                                      : 'bg-rose-50/90 text-rose-800 border-rose-200'
+                                  }`}
+                                >
+                                  <option value="in_stock">ഇൻ സ്റ്റോക്ക്</option>
+                                  <option value="low_stock">കുറഞ്ഞത്</option>
+                                  <option value="out_of_stock">തീർന്നു</option>
+                                </select>
+                                <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
                               </div>
+
+                              {/* Analytics Button */}
+                              <button
+                                type="button"
+                                onClick={() => setAnalyzingProduct(p)}
+                                className="px-2.5 py-2 bg-[#F0F8F4] hover:bg-[#E2F2E9] text-[#0D6344] border border-[#C5E8D4] rounded-xl text-xs font-bold transition-all flex items-center gap-1 cursor-pointer shadow-2xs font-malayalam shrink-0"
+                                title="വിപണി വിശകലനം കാണുക"
+                              >
+                                <Scale className="w-3.5 h-3.5" />
+                                <span className="hidden xs:inline">വിശകലനം</span>
+                              </button>
                             </div>
                           </div>
                         );
@@ -2255,7 +2284,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                     {/* Desktop Master Catalog Table */}
                     <div className="hidden md:block border border-[#E3ECE7] rounded-2xl overflow-hidden shadow-xs bg-white">
-                      <table className="w-full text-left text-xs border-collapse">
+                      <table className="w-full min-w-[700px] text-left text-xs border-collapse">
                         <thead>
                           <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-[11px] select-none tracking-wider uppercase font-malayalam">
                             <th className="py-3.5 px-4 font-bold">ഉൽപ്പന്നം</th>
@@ -2365,8 +2394,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       </table>
                     </div>
 
-                    {/* Mobile Master Catalog Cards: Compact Rows */}
-                    <div className="md:hidden space-y-2.5">
+                    {/* Mobile Master Catalog Cards: Touch-Optimized Rows */}
+                    <div className="md:hidden space-y-3">
                       {paginatedInventoryList.map((p) => {
                         const existingPrices = Object.values(p.prices);
                         const avg =
@@ -2376,17 +2405,20 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   existingPrices.length
                               )
                             : 50;
+                        const customP = relistCustomPrices[p.id] ?? avg;
                         const mlName = getMalayalamName(p.name);
                         const hasDifferentMl = mlName && mlName.toLowerCase() !== p.name.toLowerCase();
 
                         return (
                           <div
                             key={p.id}
-                            onClick={() => setAnalyzingProduct(p)}
-                            className="bg-white border border-[#E3ECE7] rounded-2xl p-3 shadow-2xs flex items-center justify-between gap-3 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0D6344]"
+                            className="bg-white border border-[#E3ECE7] rounded-2xl p-3 shadow-2xs space-y-2.5 hover:border-[#0D6344]/40 transition-all"
                           >
-                            <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                              <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex items-center justify-center shrink-0">
+                            <div className="flex items-start gap-2.5">
+                              <div
+                                onClick={() => setAnalyzingProduct(p)}
+                                className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex items-center justify-center shrink-0 cursor-pointer"
+                              >
                                 <ProductImage
                                   productId={p.id}
                                   image={p.image}
@@ -2397,7 +2429,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   fallbackEmojiClassName="text-xl"
                                 />
                               </div>
-                              <div className="min-w-0 flex-1">
+                              <div
+                                onClick={() => setAnalyzingProduct(p)}
+                                className="min-w-0 flex-1 cursor-pointer"
+                              >
                                 <h4 className="text-xs sm:text-sm font-black text-slate-800 leading-snug truncate font-malayalam">
                                   {hasDifferentMl ? mlName : p.name}
                                 </h4>
@@ -2405,34 +2440,54 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   <p className="text-[10px] text-slate-400 font-sans truncate">{p.name}</p>
                                 )}
                                 <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium">
-                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded">{p.defaultUnit}</span>
+                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded border border-slate-200/60">
+                                    {p.defaultUnit}
+                                  </span>
                                   <span>•</span>
                                   <span className="capitalize text-slate-500">{p.categoryId}</span>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2.5 shrink-0">
-                              <div className="text-right">
-                                <span className="text-[10px] text-gray-400 block font-medium font-malayalam">ശരാശരി</span>
+                            <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
+                              <div className="text-left">
+                                <span className="text-[10px] text-gray-400 block font-medium font-malayalam">വിപണി ശരാശരി</span>
                                 <span className="text-xs font-black text-slate-800 font-sans">₹{avg}</span>
                               </div>
-                              <button
-                                type="button"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleRelistProduct(p);
-                                }}
-                                disabled={delistLoading === p.id}
-                                className="px-3 py-2 bg-[#0D6344] hover:bg-[#064E3B] text-white rounded-xl text-xs font-black shadow-2xs flex items-center gap-1 cursor-pointer transition-colors font-malayalam"
-                              >
-                                {delistLoading === p.id ? (
-                                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                                ) : (
-                                  <PlusCircle className="w-3.5 h-3.5" />
-                                )}
-                                <span>ചേർക്കുക</span>
-                              </button>
+
+                              <div className="flex items-center gap-2">
+                                <div className="flex items-center bg-white border border-[#D9E5DF] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-xl overflow-hidden shadow-2xs h-9 w-24">
+                                  <span className="px-2 text-[#0D6344] font-bold text-xs bg-[#F4F8F6] border-r border-[#D9E5DF] select-none">
+                                    ₹
+                                  </span>
+                                  <input
+                                    type="number"
+                                    min="1"
+                                    value={customP}
+                                    onChange={(e) =>
+                                      setRelistCustomPrices((prev) => ({
+                                        ...prev,
+                                        [p.id]: Number(e.target.value),
+                                      }))
+                                    }
+                                    className="w-full px-2 py-1 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                  />
+                                </div>
+
+                                <button
+                                  type="button"
+                                  onClick={() => handleRelistProduct(p)}
+                                  disabled={delistLoading === p.id}
+                                  className="px-3.5 py-2 bg-[#0D6344] hover:bg-[#064E3B] text-white rounded-xl text-xs font-black shadow-2xs flex items-center gap-1.5 cursor-pointer transition-colors font-malayalam shrink-0"
+                                >
+                                  {delistLoading === p.id ? (
+                                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                                  ) : (
+                                    <PlusCircle className="w-3.5 h-3.5" />
+                                  )}
+                                  <span>ചേർക്കുക</span>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         );
