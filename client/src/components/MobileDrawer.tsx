@@ -101,55 +101,55 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
       />
 
-      {/* Drawer Panel */}
-      <div className="relative w-4/5 max-w-xs bg-gradient-to-b from-[#081510] via-[#0B1A14] to-[#05100B] text-white flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-300 font-sans h-full overflow-y-auto border-r border-emerald-900/30">
+      {/* Drawer Panel - Warm, Clean, Professional Sidebar */}
+      <div className="relative w-4/5 max-w-xs bg-[#FAF7F2] text-[#1F1A14] flex flex-col justify-between shadow-2xl z-10 animate-in slide-in-from-left duration-300 font-sans h-full overflow-y-auto border-r border-[#ECE6DA]">
 
         {/* Top Header */}
-        <div className="p-5 border-b border-emerald-900/40 bg-[#06110C]/80 backdrop-blur-md">
-          <div className="flex items-center justify-between h-9 mb-4">
+        <div className="p-4 sm:p-5 border-b border-[#ECE6DA] bg-[#F7F2EA]">
+          <div className="flex items-center justify-between h-9 mb-3">
             <EnteBazaarLogo
               size="md"
-              theme="dark"
+              theme="light"
               className="h-8 flex items-center"
             />
             <button
               onClick={onClose}
-              className="w-8 h-8 rounded-xl flex items-center justify-center bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors cursor-pointer border border-white/5 shrink-0"
+              className="w-8 h-8 rounded-xl flex items-center justify-center bg-black/5 hover:bg-black/10 text-[#7C6E5E] hover:text-[#1F1A14] transition-colors cursor-pointer border border-[#ECE6DA] shrink-0"
               title="Close Drawer"
               aria-label="Close Drawer"
             >
-              <X className="w-4.5 h-4.5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
 
           {authUser ? (
-            <div className="flex items-center gap-3 pt-1">
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0D5B41] to-[#087353] text-white flex items-center justify-center text-lg font-black shrink-0 border border-emerald-400/30 shadow-md">
+            <div className="p-3 bg-white border border-[#ECE6DA] rounded-2xl flex items-center gap-3 shadow-2xs">
+              <div className="w-11 h-11 rounded-2xl bg-[#E8F5EE] border border-[#C5ECD8] text-[#0D6344] flex items-center justify-center text-lg font-black shrink-0 shadow-2xs">
                 {isMerchant && authUser.shopName ? '🏪' : (authUser.name ? authUser.name.charAt(0).toUpperCase() : '👤')}
               </div>
               <div className="min-w-0 flex-1">
-                <h4 className="font-black text-sm text-white truncate m-0 font-malayalam">
+                <h4 className="font-bold text-sm text-[#1F1A14] truncate m-0 font-malayalam leading-tight">
                   {isMerchant ? (authUser.shopName || authUser.name || 'എന്റെ കട') : (authUser.name || 'ഉപയോക്താവ്')}
                 </h4>
-                <p className="text-[11px] text-slate-400 truncate font-mono">
+                <p className="text-[11px] text-[#7C6E5E] truncate font-sans mt-0.5">
                   {authUser.email || authUser.username || authUser.phone || 'Verified'}
                 </p>
-                <span className="inline-block mt-0.5 text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
-                  {isMerchant ? '🟢 വ്യാപാരി (MERCHANT)' : isAdmin ? '🛡️ അഡ്മിൻ (ADMIN)' : '🛒 ഉപഭോക്താവ് (SHOPPER)'}
+                <span className="inline-block mt-1 text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-[#E8F5EE] text-[#0D6344] border border-[#C5ECD8]">
+                  {isMerchant ? '● വ്യാപാരി (MERCHANT)' : isAdmin ? '🛡️ അഡ്മിൻ (ADMIN)' : '🛒 ഉപഭോക്താവ് (SHOPPER)'}
                 </span>
               </div>
             </div>
           ) : (
-            <div className="pt-2">
+            <div className="pt-1">
               <button
                 onClick={() => {
                   onClose();
                   if (onOpenAuthModal) onOpenAuthModal('consumer-login');
                 }}
-                className="w-full py-2.5 px-4 bg-gradient-to-r from-[#0D5B41] via-[#0E6C4C] to-[#0A4A35] hover:brightness-110 active:scale-95 text-white font-black text-xs rounded-xl shadow-md border border-emerald-400/30 transition-all flex items-center justify-center gap-2 font-malayalam cursor-pointer"
+                className="w-full py-2.5 px-4 bg-[#0D6344] hover:bg-[#064E3B] active:scale-95 text-white font-bold text-xs rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 font-malayalam cursor-pointer"
               >
                 <UserIcon className="w-4 h-4" />
                 <span>ലോഗിൻ / സൈൻ അപ്പ് ചെയ്യുക</span>
@@ -162,8 +162,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {/* MERCHANT MODE NAVIGATION MENU */}
         {/* ============================================================ */}
         {isMerchant && (
-          <div className="p-4 space-y-1.5 flex-1 font-malayalam">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2 font-sans">
+          <div className="p-3.5 space-y-1 flex-1 font-malayalam">
+            <div className="text-[10px] font-bold text-[#8C7E6E] uppercase tracking-wider px-3 mb-2 font-sans">
               Merchant Navigation
             </div>
 
@@ -173,12 +173,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('dashboard');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'dashboard'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'dashboard'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <LayoutGrid className={`w-4 h-4 shrink-0 ${merchantTab === 'dashboard' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'dashboard' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <LayoutGrid className={`w-4 h-4 shrink-0 ${merchantTab === 'dashboard' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഡാഷ്‌ബോർഡ് (Dashboard)</span>
             </button>
 
@@ -188,12 +192,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('billing');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'billing'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'billing'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Receipt className={`w-4 h-4 shrink-0 ${merchantTab === 'billing' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'billing' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Receipt className={`w-4 h-4 shrink-0 ${merchantTab === 'billing' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ബില്ലിംഗ് & POS</span>
             </button>
 
@@ -203,12 +211,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('inventory');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'inventory'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'inventory'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Package className={`w-4 h-4 shrink-0 ${merchantTab === 'inventory' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'inventory' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Package className={`w-4 h-4 shrink-0 ${merchantTab === 'inventory' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഉൽപ്പന്നങ്ങൾ (Products)</span>
             </button>
 
@@ -218,17 +230,21 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('prebookings');
                 onClose();
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'prebookings'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'prebookings'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <div className="flex items-center gap-3.5">
-                <CalendarCheck className={`w-4 h-4 shrink-0 ${merchantTab === 'prebookings' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'prebookings' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <div className="flex items-center gap-3">
+                <CalendarCheck className={`w-4 h-4 shrink-0 ${merchantTab === 'prebookings' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
                 <span>ഓർഡറുകൾ (Pre-Bookings)</span>
               </div>
               {pendingOrdersCount > 0 && (
-                <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                <span className="bg-[#0D6344] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-sans">
                   {pendingOrdersCount}
                 </span>
               )}
@@ -240,17 +256,21 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('chats');
                 onClose();
               }}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'chats'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'chats'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <div className="flex items-center gap-3.5">
-                <MessageCircle className={`w-4 h-4 shrink-0 ${merchantTab === 'chats' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'chats' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <div className="flex items-center gap-3">
+                <MessageCircle className={`w-4 h-4 shrink-0 ${merchantTab === 'chats' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
                 <span>കസ്റ്റമർ ചാറ്റ് (Customer Chats)</span>
               </div>
               {unreadChatsCount > 0 && (
-                <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                <span className="bg-[#0D6344] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-sans">
                   {unreadChatsCount}
                 </span>
               )}
@@ -262,11 +282,15 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('deals');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'deals'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'deals'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
+              {merchantTab === 'deals' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
               <Flame className="w-4 h-4 text-[#F4B740] shrink-0" />
               <span>ഫ്ലാഷ് ഡീലുകൾ (Flash Deals)</span>
             </button>
@@ -277,17 +301,21 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectMerchantTab) onSelectMerchantTab('profile');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${merchantTab === 'profile'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'profile'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Store className={`w-4 h-4 shrink-0 ${merchantTab === 'profile' ? 'text-white' : 'text-slate-400'}`} />
+              {merchantTab === 'profile' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Store className={`w-4 h-4 shrink-0 ${merchantTab === 'profile' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>സ്റ്റോർ പ്രൊഫൈൽ (Store Profile)</span>
             </button>
 
             {/* Switch Mode & Role Switchers */}
-            <div className="pt-3 pb-2 border-t border-white/[0.08] my-2 space-y-1.5">
+            <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">
               {onBackToShopper && (
                 <button
                   type="button"
@@ -295,9 +323,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     onClose();
                     onBackToShopper();
                   }}
-                  className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all text-left cursor-pointer"
+                  className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#0D6344] bg-[#E8F5EE] hover:bg-[#D5EFE2] border border-[#C5ECD8] transition-all text-left cursor-pointer"
                 >
-                  <ArrowLeft className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <ArrowLeft className="w-4 h-4 text-[#0D6344] shrink-0" />
                   <span>കസ്റ്റമർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper)</span>
                 </button>
               )}
@@ -308,13 +336,13 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     onClose();
                     onOpenSubscriptionModal();
                   }}
-                  className="w-full flex items-center justify-between px-3 py-2.5 bg-[#20272E] hover:bg-[#28313A] rounded-xl text-xs font-bold text-slate-200 border border-white/[0.08] transition-colors cursor-pointer shadow-2xs"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#FDF5E8] hover:bg-[#FAEAD2] rounded-xl text-xs font-bold text-[#925807] border border-[#FBE6BA] transition-colors cursor-pointer shadow-2xs"
                 >
                   <div className="flex items-center gap-2">
-                    <Crown className="w-3.5 h-3.5 text-[#F4B740]" />
+                    <Crown className="w-4 h-4 text-[#D97706]" />
                     <span>സബ്സ്ക്രിപ്ഷൻ പ്ലാൻ (Plans)</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <ChevronRight className="w-4 h-4 text-[#B45309]" />
                 </button>
               )}
             </div>
@@ -325,9 +353,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   onLogout();
                   onClose();
                 }}
-                className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left cursor-pointer"
+                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-colors text-left cursor-pointer"
               >
-                <LogOut className="w-4 h-4 text-rose-400 shrink-0" />
+                <LogOut className="w-4 h-4 text-rose-600 shrink-0" />
                 <span>ലോഗൗട്ട് (Logout)</span>
               </button>
             )}
@@ -338,8 +366,8 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {/* ADMIN MODE NAVIGATION MENU */}
         {/* ============================================================ */}
         {isAdmin && (
-          <div className="p-4 space-y-1.5 flex-1 font-malayalam">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2 font-sans">
+          <div className="p-3.5 space-y-1 flex-1 font-malayalam">
+            <div className="text-[10px] font-bold text-[#8C7E6E] uppercase tracking-wider px-3 mb-2 font-sans">
               Admin Navigation
             </div>
 
@@ -348,12 +376,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('dashboard');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'dashboard'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'dashboard'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'dashboard' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>അഡ്മിൻ ഡാഷ്‌ബോർഡ് (Dashboard)</span>
             </button>
 
@@ -362,12 +394,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('users');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'users'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'users'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Users className={`w-4 h-4 shrink-0 ${adminTab === 'users' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'users' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Users className={`w-4 h-4 shrink-0 ${adminTab === 'users' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഉപയോക്താക്കൾ (Users)</span>
             </button>
 
@@ -376,12 +412,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('shops');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'shops'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'shops'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'shops' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>കടകൾ (Shops Directory)</span>
             </button>
 
@@ -390,12 +430,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('products');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'products'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'products'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'products' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>മാസ്റ്റർ ഉൽപ്പന്നങ്ങൾ (Products)</span>
             </button>
 
@@ -404,12 +448,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('subscriptions');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'subscriptions'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'subscriptions'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <CreditCard className={`w-4 h-4 shrink-0 ${adminTab === 'subscriptions' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'subscriptions' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <CreditCard className={`w-4 h-4 shrink-0 ${adminTab === 'subscriptions' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>സബ്‌സ്‌ക്രിപ്ഷനുകൾ (Subscriptions)</span>
             </button>
 
@@ -418,12 +466,16 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('clients');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'clients'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'clients'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Briefcase className={`w-4 h-4 shrink-0 ${adminTab === 'clients' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'clients' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Briefcase className={`w-4 h-4 shrink-0 ${adminTab === 'clients' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഫീൽഡ് ക്ലയന്റ്സ് (Field Clients / Agents)</span>
             </button>
 
@@ -432,16 +484,20 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onSelectAdminTab) onSelectAdminTab('audit');
                 onClose();
               }}
-              className={`w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer ${adminTab === 'audit'
-                  ? 'bg-[#0B8F68] text-white font-black shadow-xs'
-                  : 'text-slate-300 hover:bg-white/[0.08] hover:text-white'
-                }`}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'audit'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
             >
-              <Layers className={`w-4 h-4 shrink-0 ${adminTab === 'audit' ? 'text-white' : 'text-slate-400'}`} />
+              {adminTab === 'audit' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Layers className={`w-4 h-4 shrink-0 ${adminTab === 'audit' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
             </button>
 
-            <div className="pt-3 pb-2 border-t border-white/[0.08] my-2 space-y-1.5">
+            <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">
               {onBackToShopper && (
                 <button
                   type="button"
@@ -449,9 +505,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     onClose();
                     onBackToShopper();
                   }}
-                  className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all text-left cursor-pointer"
+                  className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#0D6344] bg-[#E8F5EE] hover:bg-[#D5EFE2] border border-[#C5ECD8] transition-all text-left cursor-pointer"
                 >
-                  <ArrowLeft className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <ArrowLeft className="w-4 h-4 text-[#0D6344] shrink-0" />
                   <span>കസ്റ്റമർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper)</span>
                 </button>
               )}
@@ -463,9 +519,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   onLogout();
                   onClose();
                 }}
-                className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left cursor-pointer"
+                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-colors text-left cursor-pointer"
               >
-                <LogOut className="w-4 h-4 text-rose-400 shrink-0" />
+                <LogOut className="w-4 h-4 text-rose-600 shrink-0" />
                 <span>ലോഗൗട്ട് (Logout)</span>
               </button>
             )}
@@ -473,18 +529,18 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         )}
 
         {/* ============================================================ */}
-        {/* SHOPPER / CONSUMER MODE NAVIGATION MENU (Screen 9) */}
+        {/* SHOPPER / CONSUMER MODE NAVIGATION MENU */}
         {/* ============================================================ */}
         {isShopper && (
-          <div className="p-4 space-y-1 flex-1 font-malayalam">
+          <div className="p-3.5 space-y-1 flex-1 font-malayalam">
             <button
               onClick={() => {
                 if (onNavigateTab) onNavigateTab('home');
                 onClose();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <Home className="w-4 h-4 text-slate-400 shrink-0" />
+              <Home className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>ഹോം (Home)</span>
             </button>
 
@@ -493,9 +549,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onNavigateTab) onNavigateTab('shops');
                 onClose();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <Store className="w-4 h-4 text-slate-400 shrink-0" />
+              <Store className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>സമീപത്തെ കടകൾ (Shops)</span>
             </button>
 
@@ -504,14 +560,14 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (onNavigateTab) onNavigateTab('home');
                 onClose();
               }}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3.5">
-                <ShoppingCart className="w-4 h-4 text-slate-400 shrink-0" />
+              <div className="flex items-center gap-3">
+                <ShoppingCart className="w-4 h-4 text-[#7C6E5E] shrink-0" />
                 <span>എന്റെ ബാസ്കറ്റ് (My Basket)</span>
               </div>
               {basketCount > 0 && (
-                <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                <span className="bg-[#0D6344] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-sans">
                   {basketCount}
                 </span>
               )}
@@ -523,14 +579,14 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
                 else if (onOpenPreBookings) onOpenPreBookings();
               }}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3.5">
-                <Clock className="w-4 h-4 text-slate-400 shrink-0" />
+              <div className="flex items-center gap-3">
+                <Clock className="w-4 h-4 text-[#7C6E5E] shrink-0" />
                 <span>ഓർഡറുകൾ (Orders)</span>
               </div>
               {pendingOrdersCount > 0 && (
-                <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                <span className="bg-[#0D6344] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-sans">
                   {pendingOrdersCount}
                 </span>
               )}
@@ -543,10 +599,10 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   onClose();
                   onOpenFlashDeals();
                 }}
-                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-amber-300 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/25 transition-colors text-left cursor-pointer shadow-2xs"
+                className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#C2410C] bg-[#FFE8D6] hover:bg-[#FED7AA] border border-[#FDBA74] transition-colors text-left cursor-pointer shadow-2xs"
               >
-                <div className="flex items-center gap-3.5">
-                  <Zap className="w-4 h-4 text-amber-400 shrink-0 fill-amber-400" />
+                <div className="flex items-center gap-3">
+                  <Zap className="w-4 h-4 text-[#EA580C] shrink-0 fill-[#EA580C]" />
                   <span>ഫ്ലാഷ് ഡീലുകൾ (Flash Deals)</span>
                 </div>
                 <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-rose-600 text-white font-sans animate-pulse">
@@ -561,14 +617,14 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
                 else if (onOpenChat) onOpenChat();
               }}
-              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <div className="flex items-center gap-3.5">
-                <MessageCircle className="w-4 h-4 text-slate-400 shrink-0" />
+              <div className="flex items-center gap-3">
+                <MessageCircle className="w-4 h-4 text-[#7C6E5E] shrink-0" />
                 <span>കടകളുമായി ചാറ്റ് (Chat with Shops)</span>
               </div>
               {unreadChatsCount > 0 && (
-                <span className="bg-[#0B8F68] text-white text-[10px] font-black px-2 py-0.2 rounded-full font-sans">
+                <span className="bg-[#0D6344] text-white text-[10px] font-bold px-2 py-0.5 rounded-full font-sans">
                   {unreadChatsCount}
                 </span>
               )}
@@ -580,9 +636,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
                 else if (onOpenConsumerDashboard) onOpenConsumerDashboard();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <Heart className="w-4 h-4 text-slate-400 shrink-0" />
+              <Heart className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>എന്റെ ഇഷ്ടങ്ങൾ (Favorites)</span>
             </button>
 
@@ -592,9 +648,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
                 else if (onOpenConsumerDashboard) onOpenConsumerDashboard();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <UserIcon className="w-4 h-4 text-slate-400 shrink-0" />
+              <UserIcon className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>പ്രൊഫൈൽ (Profile)</span>
             </button>
 
@@ -604,9 +660,9 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 if (!authUser && onOpenAuthModal) onOpenAuthModal('consumer-login');
                 else if (onOpenConsumerDashboard) onOpenConsumerDashboard();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <Settings className="w-4 h-4 text-slate-400 shrink-0" />
+              <Settings className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>ക്രമീകരണങ്ങൾ (Settings)</span>
             </button>
 
@@ -615,27 +671,27 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 alert('PeediyaCart സഹായം: കസ്റ്റമർ സപ്പോർട്ടിനായി support@peediyacart.in ബന്ധപ്പെടുക.');
                 onClose();
               }}
-              className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-slate-300 hover:bg-white/[0.08] hover:text-white transition-colors text-left cursor-pointer"
+              className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14] transition-colors text-left cursor-pointer"
             >
-              <HelpCircle className="w-4 h-4 text-slate-400 shrink-0" />
+              <HelpCircle className="w-4 h-4 text-[#7C6E5E] shrink-0" />
               <span>സഹായം (Help)</span>
             </button>
 
             {/* Direct Role Switching */}
-            <div className="pt-3 pb-2 border-t border-white/[0.08] my-2 space-y-1.5">
+            <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">
               {onOpenMerchantPortal && (
                 <button
                   onClick={() => {
                     onClose();
                     onOpenMerchantPortal();
                   }}
-                  className="w-full flex items-center justify-between px-3 py-2.5 bg-[#20272E] hover:bg-[#28313A] rounded-xl text-xs font-bold text-slate-200 border border-white/[0.08] transition-colors cursor-pointer shadow-2xs"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#E8F5EE] hover:bg-[#D5EFE2] rounded-xl text-xs font-bold text-[#0D6344] border border-[#C5ECD8] transition-colors cursor-pointer shadow-2xs"
                 >
                   <div className="flex items-center gap-2">
-                    <Store className="w-3.5 h-3.5 text-emerald-400" />
+                    <Store className="w-4 h-4 text-[#0D6344]" />
                     <span>വ്യാപാരി പാനൽ (Merchant)</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <ChevronRight className="w-4 h-4 text-[#0D6344]" />
                 </button>
               )}
 
@@ -645,13 +701,13 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                     onClose();
                     onOpenAdminPortal();
                   }}
-                  className="w-full flex items-center justify-between px-3 py-2.5 bg-[#20272E] hover:bg-[#28313A] rounded-xl text-xs font-bold text-slate-200 border border-white/[0.08] transition-colors cursor-pointer shadow-2xs"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#F1F5F9] hover:bg-[#E2E8F0] rounded-xl text-xs font-bold text-[#334155] border border-[#CBD5E1] transition-colors cursor-pointer shadow-2xs"
                 >
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                    <ShieldCheck className="w-4 h-4 text-[#334155]" />
                     <span>അഡ്മിൻ പാനൽ (Admin)</span>
                   </div>
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                  <ChevronRight className="w-4 h-4 text-[#334155]" />
                 </button>
               )}
             </div>
@@ -662,26 +718,26 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   onLogout();
                   onClose();
                 }}
-                className="w-full flex items-center gap-3.5 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-colors text-left cursor-pointer"
+                className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-colors text-left cursor-pointer"
               >
-                <LogOut className="w-4 h-4 text-rose-400 shrink-0" />
+                <LogOut className="w-4 h-4 text-rose-600 shrink-0" />
                 <span>ലോഗൗട്ട് (Logout)</span>
               </button>
             )}
           </div>
         )}
 
-        {/* Local Shops Support Card (Matching Screen 9 bottom) */}
-        <div className="p-4 border-t border-white/[0.08] bg-[#13171B]">
-          <div className="p-3 bg-[#1C2228] rounded-2xl border border-white/[0.08] flex items-start gap-2.5 shadow-2xs">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+        {/* Local Shops Support Card */}
+        <div className="p-4 border-t border-[#ECE6DA] bg-[#F7F2EA]">
+          <div className="p-3 bg-white rounded-2xl border border-[#ECE6DA] flex items-start gap-2.5 shadow-2xs">
+            <div className="w-8 h-8 rounded-xl bg-[#E8F5EE] text-[#0D6344] flex items-center justify-center shrink-0 shadow-2xs">
               <Palmtree className="w-4 h-4" />
             </div>
             <div>
-              <h5 className="font-black text-xs text-white font-malayalam leading-tight mb-0.5">
+              <h5 className="font-bold text-xs text-[#1F1A14] font-malayalam leading-tight mb-0.5">
                 {isMerchant ? 'വ്യാപാരം മെച്ചപ്പെടുത്താം' : 'പ്രാദേശിക കടകളെ പിന്തുണക്കാം'}
               </h5>
-              <p className="text-[10px] text-slate-400 font-malayalam leading-snug">
+              <p className="text-[10px] text-[#7C6E5E] font-malayalam leading-relaxed m-0">
                 {isMerchant
                   ? 'കൃത്യമായ വിലകളും ഉൽപ്പന്ന ലഭ്യതയും അപ്‌ഡേറ്റ് ചെയ്ത് കൂടുതൽ ഉപഭോക്താക്കളെ നേടൂ.'
                   : 'നിങ്ങളുടെ പിന്തുണ കേരളത്തിലെ പ്രാദേശിക കടകൾക്ക് വളരെയധികം പ്രധാനമാണ്.'}
