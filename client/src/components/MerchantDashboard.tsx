@@ -90,6 +90,8 @@ import { MobileMerchantView } from './MobileMerchantView';
 import { MobileDrawer } from './MobileDrawer';
 import { MerchantProductAnalysisModal } from './MerchantProductAnalysisModal';
 import { DesktopMerchantOverview } from './DesktopMerchantOverview';
+import { getMalayalamName } from '../utils/malayalamNames';
+
 
 
 interface MerchantDashboardProps {
@@ -1492,11 +1494,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               )}
 
               {/* Main Card Wrapper */}
-              <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-6 shadow-xs">
+              {/* Main Card Wrapper */}
+              <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-7 shadow-xs font-sans">
                 
                 {/* 1. Primary View Mode Toggle: Listed Products vs Master Catalog */}
-                <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-gray-100 mb-4 flex-wrap sm:flex-nowrap">
-                  <div className="flex items-center gap-1.5 bg-gray-100 p-1 rounded-2xl border border-gray-200 w-full sm:w-fit text-xs font-bold shadow-2xs">
+                <div className="flex items-center justify-between gap-3 pb-4 border-b border-[#F0F4F2] mb-5 flex-wrap sm:flex-nowrap">
+                  <div className="flex items-center gap-1.5 bg-[#F1F5F3] p-1.5 rounded-2xl border border-[#E3ECE7] w-full sm:w-fit text-xs font-bold shadow-2xs">
                     <button
                       type="button"
                       onClick={() => {
@@ -1505,13 +1508,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         setInventoryCurrentPage(1);
                         setSelectedProductIds(new Set());
                       }}
-                      className={`flex-1 sm:flex-none px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                      className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
                         inventoryViewMode === 'carried'
-                          ? 'bg-white text-[#063B2A] shadow-xs border border-gray-200 font-black'
-                          : 'text-gray-500 hover:text-gray-800'
+                          ? 'bg-white text-[#0D6344] shadow-xs border border-[#D5EADB] font-black'
+                          : 'text-slate-600 hover:text-slate-900 font-bold'
                       }`}
                     >
-                      <span className="w-2 h-2 rounded-full bg-[#10A978]" />
+                      <span className="w-2 h-2 rounded-full bg-[#10A978] animate-pulse" />
                       <span>ലിസ്റ്റ് ചെയ്തവ ({carriedProducts.length})</span>
                     </button>
                     <button
@@ -1522,13 +1525,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         setInventoryCurrentPage(1);
                         setSelectedProductIds(new Set());
                       }}
-                      className={`flex-1 sm:flex-none px-4 py-2 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
+                      className={`flex-1 sm:flex-none px-5 py-2.5 rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
                         inventoryViewMode === 'not_carried'
                           ? 'bg-white text-slate-900 shadow-xs border border-gray-200 font-black'
-                          : 'text-gray-500 hover:text-gray-800'
+                          : 'text-slate-600 hover:text-slate-900 font-bold'
                       }`}
                     >
-                      <PlusCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
+                      <PlusCircle className="w-4 h-4 text-[#0D6344]" />
                       <span>മാസ്റ്റർ കാറ്റലോഗ് ({notCarriedProducts.length})</span>
                     </button>
                   </div>
@@ -1536,7 +1539,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   <button
                     type="button"
                     onClick={() => setMerchantTab('profile')}
-                    className="px-3 py-1.5 rounded-xl text-xs font-bold text-[#0B8F68] hover:bg-[#EDFAF3] border border-[#C3EEDC]/60 transition-colors cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap"
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-[#0D6344] bg-white hover:bg-[#E8F5EE] border border-[#C3EEDC] transition-all cursor-pointer flex items-center gap-1.5 shrink-0 whitespace-nowrap shadow-2xs font-malayalam"
                   >
                     <span>+ വിഭാഗങ്ങൾ മാറ്റുക</span>
                   </button>
@@ -1544,32 +1547,36 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                 {/* 2. Category Sorting Ribbon (Exclusively for Listed Products) */}
                 {inventoryViewMode === 'carried' && (
-                  <div className="mb-4 pb-3 border-b border-gray-100 animate-in fade-in duration-150">
-                    <div className="flex items-center justify-between gap-2 mb-2 flex-wrap sm:flex-nowrap">
+                  <div className="mb-5 pb-4 border-b border-[#F0F4F2] animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between gap-2 mb-2.5 flex-wrap sm:flex-nowrap">
                       <div className="flex items-center gap-2 min-w-0">
-                        <Tag className="w-4 h-4 text-[#0B8F68] shrink-0" />
-                        <span className="text-xs font-bold text-slate-800 shrink-0">വിഭാഗങ്ങൾ (ലിസ്റ്റ് ചെയ്തവ)</span>
-                        <span className="text-[11px] text-slate-400 font-sans whitespace-nowrap">
-                          ({carriedProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ)
+                        <Tag className="w-4 h-4 text-[#0D6344] shrink-0" />
+                        <span className="text-xs font-bold text-slate-800 shrink-0 font-malayalam">വിഭാഗങ്ങൾ (ലിസ്റ്റ് ചെയ്തവ)</span>
+                        <span className="text-[11px] text-slate-500 font-sans whitespace-nowrap bg-slate-100 px-2 py-0.5 rounded-md font-semibold">
+                          {carriedProducts.length.toLocaleString()} ഉൽപ്പന്നങ്ങൾ
                         </span>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 overflow-x-auto py-1 no-scrollbar scroll-smooth">
+                    <div className="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar scroll-smooth font-malayalam">
                       <button
                         type="button"
                         onClick={() => {
                           setInventoryCategoryFilter('all');
                           setInventoryCurrentPage(1);
                         }}
-                        className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                        className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap border ${
                           inventoryCategoryFilter === 'all'
-                            ? 'bg-[#0B8F68] text-white shadow-xs'
-                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
+                            : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
                         }`}
                       >
                         <span>✨ എല്ലാം</span>
-                        <span className="text-[10px] font-sans opacity-80 font-black">({carriedProducts.length.toLocaleString()})</span>
+                        <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
+                          inventoryCategoryFilter === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                        }`}>
+                          {carriedProducts.length.toLocaleString()}
+                        </span>
                       </button>
                       {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
                         const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
@@ -1577,6 +1584,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                           (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
                         ).length;
                         if (count === 0 && inventoryCategoryFilter !== cat.id) return null;
+                        const isSelected = inventoryCategoryFilter === cat.id;
+
                         return (
                           <button
                             key={cat.id}
@@ -1585,15 +1594,19 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                               setInventoryCategoryFilter(cat.id);
                               setInventoryCurrentPage(1);
                             }}
-                            className={`px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                              inventoryCategoryFilter === cat.id
-                                ? 'bg-[#0B8F68] text-white shadow-xs'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                            className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap border ${
+                              isSelected
+                                ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
+                                : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
                             }`}
                           >
                             <span>{cat.icon}</span>
                             <span>{cat.labelMl || cat.label}</span>
-                            <span className="text-[10px] font-sans opacity-80 font-black">({count.toLocaleString()})</span>
+                            <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
+                              isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                            }`}>
+                              {count.toLocaleString()}
+                            </span>
                           </button>
                         );
                       })}
@@ -1601,19 +1614,19 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   </div>
                 )}
 
-                {/* 3. Stock Status Filter Bar (Active in Carried mode) */}
+                {/* 3. Stock Status Filter Bar */}
                 {inventoryViewMode === 'carried' && (
-                  <div className="flex items-center gap-1 overflow-x-auto pb-1 text-xs font-bold scrollbar-none mb-4">
+                  <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs font-bold scrollbar-none mb-5 font-malayalam">
                     <button
                       type="button"
                       onClick={() => {
                         setInventoryStockFilter('all');
                         setInventoryCurrentPage(1);
                       }}
-                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer shrink-0 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer shrink-0 border ${
                         inventoryStockFilter === 'all'
-                          ? 'bg-[#0B8F68] text-white shadow-2xs font-black'
-                          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                          ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-2xs font-black'
+                          : 'bg-white text-slate-700 border-[#E3ECE7] hover:bg-slate-50 shadow-2xs'
                       }`}
                     >
                       എല്ലാം ({carriedProductsInCategory.length})
@@ -1624,10 +1637,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         setInventoryStockFilter('in_stock');
                         setInventoryCurrentPage(1);
                       }}
-                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
                         inventoryStockFilter === 'in_stock'
-                          ? 'bg-emerald-700 text-white shadow-2xs font-black'
-                          : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border border-emerald-200'
+                          ? 'bg-emerald-700 text-white border-emerald-700 shadow-2xs font-black'
+                          : 'bg-emerald-50 text-emerald-800 hover:bg-emerald-100 border-emerald-200/80 shadow-2xs'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-emerald-500" />
@@ -1639,10 +1652,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         setInventoryStockFilter('low_stock');
                         setInventoryCurrentPage(1);
                       }}
-                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
                         inventoryStockFilter === 'low_stock'
-                          ? 'bg-amber-600 text-white shadow-2xs font-black'
-                          : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border border-amber-200'
+                          ? 'bg-amber-600 text-white border-amber-600 shadow-2xs font-black'
+                          : 'bg-amber-50 text-amber-800 hover:bg-amber-100 border-amber-200/80 shadow-2xs'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-amber-500" />
@@ -1654,10 +1667,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         setInventoryStockFilter('out_of_stock');
                         setInventoryCurrentPage(1);
                       }}
-                      className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                      className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
                         inventoryStockFilter === 'out_of_stock'
-                          ? 'bg-rose-700 text-white shadow-2xs font-black'
-                          : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
+                          ? 'bg-rose-700 text-white border-rose-700 shadow-2xs font-black'
+                          : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border-rose-200/80 shadow-2xs'
                       }`}
                     >
                       <span className="w-2 h-2 rounded-full bg-rose-500" />
@@ -1670,10 +1683,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                           setInventoryStockFilter('modified');
                           setInventoryCurrentPage(1);
                         }}
-                        className={`px-2.5 py-1 rounded-xl transition-all cursor-pointer flex items-center gap-1 shrink-0 ${
+                        className={`px-3.5 py-1.5 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 shrink-0 border ${
                           inventoryStockFilter === 'modified'
-                            ? 'bg-amber-600 text-white shadow-2xs font-black'
-                            : 'bg-amber-100 text-amber-900 border border-amber-300'
+                            ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-xs font-black'
+                            : 'bg-amber-100 text-amber-900 border-amber-300 font-bold shadow-2xs'
                         }`}
                       >
                         <span>✏️ മാറ്റങ്ങൾ ({dirtyPriceIds.size})</span>
@@ -1683,10 +1696,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 )}
 
                 {/* 3. Search & Operational Actions Bar */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-2 flex-1 max-w-lg">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+                  <div className="flex items-center gap-2.5 flex-1 max-w-lg">
                     <div className="relative flex-1">
-                      <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
+                      <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
                       <input
                         type="text"
                         value={search}
@@ -1695,7 +1708,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                           setInventoryCurrentPage(1);
                         }}
                         placeholder="ഉൽപ്പന്നത്തിന്റെ പേര് അല്ലെങ്കിൽ കാറ്റഗറി തിരയുക..."
-                        className="w-full pl-9 pr-8 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl outline-none focus:border-[#0B8F68] focus:bg-white transition-all"
+                        className="w-full pl-9 pr-8 py-2.5 text-xs bg-[#F8FAF9] border border-[#E3ECE7] rounded-xl outline-none focus:border-[#0D6344] focus:bg-white focus:ring-2 focus:ring-[#E8F5EE] transition-all font-malayalam text-slate-800 placeholder:text-slate-400 shadow-2xs"
                       />
                       {search && (
                         <button
@@ -1703,7 +1716,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                             setSearch('');
                             setInventoryCurrentPage(1);
                           }}
-                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 p-0.5 cursor-pointer"
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-0.5 cursor-pointer"
                         >
                           <X className="w-3.5 h-3.5" />
                         </button>
@@ -1711,14 +1724,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="text-[11px] text-gray-400 hidden md:inline">ഒരു പേജിൽ:</span>
+                      <span className="text-[11px] text-slate-400 hidden md:inline font-malayalam">ഒരു പേജിൽ:</span>
                       <select
                         value={inventoryItemsPerPage}
                         onChange={(e) => {
                           setInventoryItemsPerPage(Number(e.target.value));
                           setInventoryCurrentPage(1);
                         }}
-                        className="px-2.5 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold text-gray-700 outline-none cursor-pointer hover:bg-white transition-colors"
+                        className="px-3 py-2 bg-white border border-[#E3ECE7] rounded-xl text-xs font-bold text-slate-700 outline-none cursor-pointer hover:border-slate-300 transition-colors shadow-2xs font-sans"
                       >
                         <option value={25}>25 എണ്ണം</option>
                         <option value={50}>50 എണ്ണം</option>
@@ -1731,7 +1744,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     {inventoryViewMode === 'carried' && dirtyPriceIds.size > 0 && (
                       <button
                         onClick={handleDiscardChanges}
-                        className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                        className="px-3.5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 font-malayalam shadow-2xs"
                       >
                         <RotateCcw className="w-3.5 h-3.5" />
                         <span>റദ്ദാക്കുക</span>
@@ -1742,18 +1755,18 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       <button
                         onClick={handleSaveAll}
                         disabled={isSaving}
-                        className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-black shadow-xs transition-all cursor-pointer ${
+                        className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-black shadow-xs transition-all cursor-pointer font-malayalam ${
                           dirtyPriceIds.size > 0
-                            ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white animate-pulse'
-                            : 'bg-[#0B8F68] hover:bg-[#063B2A] text-white disabled:bg-gray-300'
+                            ? 'bg-[#0D6344] hover:bg-[#064E3B] text-white animate-pulse ring-2 ring-emerald-300'
+                            : 'bg-[#0D6344] hover:bg-[#064E3B] text-white disabled:bg-slate-200 disabled:text-slate-400'
                         }`}
                       >
                         {isSaving ? (
-                          <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          <RefreshCw className="w-4 h-4 animate-spin" />
                         ) : saveSuccess ? (
-                          <CheckCircle2 className="w-3.5 h-3.5 text-white" />
+                          <CheckCircle2 className="w-4 h-4 text-white" />
                         ) : (
-                          <Save className="w-3.5 h-3.5" />
+                          <Save className="w-4 h-4" />
                         )}
                         <span>
                           {isSaving
@@ -1826,12 +1839,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   </div>
                 ) : inventoryViewMode === 'carried' ? (
                   <>
-                    {/* 5A. DESKTOP VIEW: High-Density Table */}
-                    <div className="hidden md:block overflow-x-auto border border-[#E3ECE7] rounded-2xl">
+                    {/* 5A. DESKTOP VIEW: High-Density Modern SaaS Table */}
+                    <div className="hidden md:block overflow-x-auto border border-[#E3ECE7] rounded-2xl shadow-xs bg-white">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-xs select-none">
-                            <th className="py-3.5 px-3 w-10 text-center">
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-[11px] select-none tracking-wider uppercase">
+                            <th className="py-3.5 px-3.5 w-12 text-center">
                               <input
                                 type="checkbox"
                                 checked={isAllCurrentPageSelected}
@@ -1839,17 +1852,17 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   if (el) el.indeterminate = isSomeCurrentPageSelected;
                                 }}
                                 onChange={toggleSelectAllCurrentPage}
-                                className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4"
+                                className="rounded cursor-pointer accent-[#0D6344] w-4 h-4"
                               />
                             </th>
-                            <th className="py-3.5 px-4 font-bold">ഉൽപ്പന്നം</th>
-                            <th className="py-3.5 px-3 font-bold">യൂണിറ്റ്</th>
-                            <th className="py-3.5 px-4 font-bold">വിൽപന വില (₹)</th>
-                            <th className="py-3.5 px-4 font-bold">സ്റ്റോക്ക്</th>
-                            <th className="py-3.5 px-4 text-right font-bold">നടപടികൾ</th>
+                            <th className="py-3.5 px-4 font-bold font-malayalam">ഉൽപ്പന്നം</th>
+                            <th className="py-3.5 px-3 font-bold font-malayalam">യൂണിറ്റ്</th>
+                            <th className="py-3.5 px-4 font-bold font-malayalam">വിൽപന വില (₹)</th>
+                            <th className="py-3.5 px-4 font-bold font-malayalam">സ്റ്റോക്ക്</th>
+                            <th className="py-3.5 px-4 text-right font-bold font-malayalam">നടപടികൾ</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-[#F0F4F2]">
                           {paginatedInventoryList.map((p) => {
                             const currentPrice = editablePrices[p.id] ?? 0;
                             const originalPrice = p.prices?.[selectedShopName] ?? currentPrice;
@@ -1857,67 +1870,76 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                             const isDirty = dirtyPriceIds.has(p.id);
                             const isSelected = selectedProductIds.has(p.id);
                             const priceDelta = currentPrice - originalPrice;
+                            const mlName = getMalayalamName(p.name);
+                            const hasDifferentMl = mlName && mlName.toLowerCase() !== p.name.toLowerCase();
 
                             return (
                               <tr
                                 key={p.id}
-                                className={`transition-colors ${
+                                className={`transition-all duration-150 ${
                                   isSelected
-                                    ? 'bg-[#EDFAF3]/70'
+                                    ? 'bg-[#EDFAF3]/80'
                                     : isDirty
-                                    ? 'bg-amber-50/50'
+                                    ? 'bg-amber-50/40'
                                     : currentStock === 'out_of_stock'
                                     ? 'bg-rose-50/20 hover:bg-rose-50/40'
-                                    : 'hover:bg-gray-50/80'
+                                    : 'hover:bg-[#F9FAF9]'
                                 }`}
                               >
-                                <td className="py-3 px-3 text-center">
+                                <td className="py-3.5 px-3.5 text-center">
                                   <input
                                     type="checkbox"
                                     checked={isSelected}
                                     onChange={() => toggleSelectProduct(p.id)}
-                                    className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4"
+                                    className="rounded cursor-pointer accent-[#0D6344] w-4 h-4"
                                   />
                                 </td>
 
                                 <td
-                                  className="py-3 px-4 cursor-pointer group"
+                                  className="py-3.5 px-4 cursor-pointer group"
                                   onClick={() => setAnalyzingProduct(p)}
                                   title="വിപണി വിശകലനവും വിശദാംശങ്ങളും കാണാൻ ക്ലിക്ക് ചെയ്യുക"
                                 >
                                   <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs group-hover:border-[#0B8F68] transition-colors relative overflow-hidden">
+                                    <div className="w-11 h-11 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs group-hover:border-[#0D6344]/50 group-hover:shadow-xs transition-all relative overflow-hidden">
                                       <ProductImage
                                         productId={p.id}
                                         image={p.image}
                                         emoji={p.emoji}
                                         alt={p.name}
                                         className="w-full h-full"
-                                        imgClassName="w-full h-full object-contain"
+                                        imgClassName="w-full h-full object-contain transition-transform group-hover:scale-105 duration-200"
                                         fallbackEmojiClassName="text-xl"
                                         isOutOfStock={currentStock === 'out_of_stock'}
                                         stampSize="xs"
                                       />
                                     </div>
-                                    <div>
-                                      <div className="flex items-center gap-1.5 flex-wrap">
-                                        <b className="font-bold text-slate-900 group-hover:text-[#0B8F68] transition-colors block text-xs leading-snug">{p.name}</b>
+                                    <div className="min-w-0">
+                                      <div className="flex items-center gap-2 flex-wrap">
+                                        <b className="font-bold text-slate-900 group-hover:text-[#0D6344] transition-colors block text-[13px] leading-snug font-malayalam">
+                                          {hasDifferentMl ? mlName : p.name}
+                                        </b>
                                         {currentStock === 'out_of_stock' && (
-                                          <span className="px-1.5 py-0.2 bg-rose-100 text-rose-800 border border-rose-300 rounded font-black text-[9px] tracking-tight">
-                                            OUT OF STOCK
+                                          <span className="px-2 py-0.5 bg-rose-50 text-rose-700 border border-rose-200 rounded-md font-black text-[9px] tracking-tight">
+                                            ഔട്ട് ഓഫ് സ്റ്റോക്ക്
                                           </span>
                                         )}
                                         {isDirty && (
-                                          <span className="px-1.5 py-0.2 bg-amber-100 text-amber-800 rounded font-bold text-[9px]">
+                                          <span className="px-2 py-0.5 bg-amber-50 text-amber-900 border border-amber-200 rounded-md font-bold text-[9px]">
                                             മാറ്റം വരുത്തി
                                           </span>
                                         )}
                                       </div>
-                                      <div className="flex items-center gap-2 mt-0.5">
-                                        <span className="px-2 py-0.5 bg-gray-100 text-gray-600 rounded-md text-[10px] font-bold capitalize">
+                                      {hasDifferentMl && (
+                                        <div className="text-[11px] text-slate-500 font-sans truncate max-w-sm font-medium mt-0.5">
+                                          {p.name}
+                                        </div>
+                                      )}
+                                      <div className="flex items-center gap-2 mt-1">
+                                        <span className="px-2 py-0.5 bg-[#F4F7F5] text-slate-600 border border-[#E5EBE7] rounded-md text-[10px] font-semibold">
                                           {p.categoryId}
                                         </span>
-                                        <span className="text-[10px] text-[#0B8F68] font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-0.5">
+                                        <span className="text-[10px] text-[#0D6344] font-bold opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 font-malayalam">
                                           <Scale className="w-3 h-3" /> വിശകലനം
                                         </span>
                                       </div>
@@ -1925,16 +1947,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-3">
-                                  <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono font-bold">
+                                <td className="py-3.5 px-3">
+                                  <span className="px-2.5 py-1 bg-slate-100/90 text-slate-700 rounded-lg text-xs font-mono font-bold border border-slate-200/60 inline-block shadow-2xs">
                                     {p.defaultUnit}
                                   </span>
                                 </td>
 
-                                <td className="py-3 px-4">
+                                <td className="py-3.5 px-4">
                                   <div className="space-y-1">
-                                    <div className="flex items-center bg-white border border-gray-200 focus-within:border-[#0B8F68] focus-within:ring-2 focus-within:ring-[#DDF5EA] rounded-xl overflow-hidden w-28 transition-all shadow-2xs">
-                                      <span className="px-2.5 text-gray-400 font-bold text-xs bg-gray-50 border-r border-gray-200">
+                                    <div className="flex items-center bg-white border border-[#D9E5DF] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-xl overflow-hidden w-28 transition-all shadow-2xs">
+                                      <span className="px-2.5 py-1.5 text-[#0D6344] font-bold text-xs bg-[#F4F8F6] border-r border-[#D9E5DF] select-none">
                                         ₹
                                       </span>
                                       <input
@@ -1942,17 +1964,17 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                         min="1"
                                         value={currentPrice}
                                         onChange={(e) => handlePriceChange(p.id, Number(e.target.value))}
-                                        className="w-full px-2 py-1.5 text-xs font-bold text-slate-900 text-right outline-none font-sans"
+                                        className="w-full px-2 py-1.5 text-xs font-black text-slate-900 text-right outline-none font-sans"
                                       />
                                     </div>
                                     {priceDelta !== 0 && (
                                       <div className="text-[10px] font-sans font-bold flex items-center justify-end gap-0.5">
                                         {priceDelta > 0 ? (
-                                          <span className="text-emerald-700">
+                                          <span className="text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
                                             +₹{priceDelta.toFixed(1)}
                                           </span>
                                         ) : (
-                                          <span className="text-rose-700">
+                                          <span className="text-rose-700 bg-rose-50 px-1.5 py-0.2 rounded border border-rose-200">
                                             -₹{Math.abs(priceDelta).toFixed(1)}
                                           </span>
                                         )}
@@ -1961,15 +1983,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-4">
+                                <td className="py-3.5 px-4">
                                   <div className="relative inline-flex items-center">
                                     <span
-                                      className={`w-2 h-2 rounded-full absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none ${
+                                      className={`w-2 h-2 rounded-full absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none ${
                                         currentStock === 'in_stock'
-                                          ? 'bg-emerald-500'
+                                          ? 'bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]'
                                           : currentStock === 'low_stock'
-                                          ? 'bg-amber-500'
-                                          : 'bg-rose-500'
+                                          ? 'bg-amber-500 shadow-[0_0_6px_rgba(245,158,11,0.5)]'
+                                          : 'bg-rose-500 shadow-[0_0_6px_rgba(244,63,94,0.5)]'
                                       }`}
                                     />
                                     <select
@@ -1980,28 +2002,28 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                           e.target.value as 'in_stock' | 'low_stock' | 'out_of_stock'
                                         )
                                       }
-                                      className={`text-xs font-bold pl-6 pr-7 py-1.5 rounded-xl border appearance-none cursor-pointer transition-colors outline-none ${
+                                      className={`text-xs font-bold pl-7 pr-8 py-2 rounded-xl border appearance-none cursor-pointer transition-all outline-none font-malayalam shadow-2xs ${
                                         currentStock === 'in_stock'
-                                          ? 'bg-emerald-50/80 text-emerald-800 border-emerald-200/80 hover:bg-emerald-100/80'
+                                          ? 'bg-emerald-50/90 text-emerald-800 border-emerald-200 hover:bg-emerald-100/90'
                                           : currentStock === 'low_stock'
-                                          ? 'bg-amber-50/80 text-amber-800 border-amber-200/80 hover:bg-amber-100/80'
-                                          : 'bg-rose-50/80 text-rose-800 border-rose-200/80 hover:bg-rose-100/80'
+                                          ? 'bg-amber-50/90 text-amber-800 border-amber-200 hover:bg-amber-100/90'
+                                          : 'bg-rose-50/90 text-rose-800 border-rose-200 hover:bg-rose-100/90'
                                       }`}
                                     >
                                       <option value="in_stock">ഇൻ സ്റ്റോക്ക്</option>
                                       <option value="low_stock">കുറഞ്ഞ സ്റ്റോക്ക്</option>
                                       <option value="out_of_stock">തീർന്നുപോയി</option>
                                     </select>
-                                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+                                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-4 text-right">
+                                <td className="py-3.5 px-4 text-right">
                                   <div className="flex items-center justify-end gap-1.5">
                                     <button
                                       type="button"
                                       onClick={() => setAnalyzingProduct(p)}
-                                      className="px-2.5 py-1.5 bg-[#EDFAF3] hover:bg-[#DDF5EA] text-[#0B8F68] border border-[#C3EEDC]/80 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+                                      className="px-3 py-1.5 bg-[#F0F8F4] hover:bg-[#E2F2E9] text-[#0D6344] border border-[#C5E8D4] rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs font-malayalam"
                                       title="വിപണി വിശകലനം കാണുക"
                                     >
                                       <Scale className="w-3.5 h-3.5" />
@@ -2010,10 +2032,10 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     <button
                                       type="button"
                                       onClick={() => setDelistConfirmProduct(p)}
-                                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-transparent hover:border-rose-100 transition-all cursor-pointer"
+                                      className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-transparent hover:border-rose-100 transition-all cursor-pointer"
                                       title="സ്റ്റോറിൽ നിന്ന് ഒഴിവാക്കുക"
                                     >
-                                      <Trash2 className="w-3.5 h-3.5" />
+                                      <Trash2 className="w-4 h-4" />
                                     </button>
                                   </div>
                                 </td>
@@ -2023,13 +2045,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                           {paginatedInventoryList.length === 0 && (
                             <tr>
-                              <td colSpan={6} className="py-12 text-center">
+                              <td colSpan={6} className="py-14 text-center">
                                 <div className="max-w-md mx-auto flex flex-col items-center">
                                   <span className="text-4xl block mb-2">🔍</span>
-                                  <h4 className="font-extrabold text-slate-800 text-sm mb-1">
+                                  <h4 className="font-extrabold text-slate-800 text-sm mb-1 font-malayalam">
                                     ഉൽപ്പന്നങ്ങൾ കണ്ടെത്താനായില്ല
                                   </h4>
-                                  <p className="text-xs text-gray-500 mb-4">
+                                  <p className="text-xs text-gray-500 mb-4 font-malayalam">
                                     തിരഞ്ഞെടുത്ത ഫിൽട്ടർ അല്ലെങ്കിൽ സെർച്ചിന് അനുയോജ്യമായ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ സ്റ്റോറിൽ ഇല്ല.
                                   </p>
                                   <div className="flex items-center gap-2">
@@ -2040,14 +2062,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                         setInventoryStockFilter('all');
                                         setInventoryCategoryFilter('all');
                                       }}
-                                      className="px-3.5 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                                      className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold transition-all cursor-pointer font-malayalam"
                                     >
                                       ഫിൽട്ടറുകൾ റീസെറ്റ് ചെയ്യുക
                                     </button>
                                     <button
                                       type="button"
                                       onClick={() => setIsMasterPickerOpen(true)}
-                                      className="px-4 py-2 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer transition-all"
+                                      className="px-4 py-2 bg-[#0D6344] hover:bg-[#064E3B] text-white rounded-xl text-xs font-black shadow-xs flex items-center gap-1.5 cursor-pointer transition-all font-malayalam"
                                     >
                                       <PlusCircle className="w-3.5 h-3.5" />
                                       <span>മാസ്റ്റർ കാറ്റലോഗ്</span>
@@ -2061,13 +2083,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       </table>
                     </div>
 
-                    {/* 5B. MOBILE VIEW: Fast-Scrolling, Compact Product Rows (Tap to Open & Analyze) */}
-                    <div className="md:hidden space-y-2">
+                    {/* 5B. MOBILE VIEW: Fast-Scrolling, Compact Product Cards */}
+                    <div className="md:hidden space-y-2.5">
                       {/* Helpful Hint Pill */}
-                      <div className="flex items-center justify-between px-1 py-1 text-[11px] font-bold text-gray-500">
+                      <div className="flex items-center justify-between px-1 py-1 text-[11px] font-bold text-gray-500 font-malayalam">
                         <span className="flex items-center gap-1.5 text-slate-700">
-                          <Scale className="w-3.5 h-3.5 text-[#0B8F68]" />
-                          <span>ഉൽപ്പന്നത്തിൽ തൊട്ടാൽ (Tap) വിപണി വില വിശകലനം ചെയ്യാം</span>
+                          <Scale className="w-3.5 h-3.5 text-[#0D6344]" />
+                          <span>ഉൽപ്പന്നത്തിൽ തൊട്ടാൽ വിപണി വിശകലനം ചെയ്യാം</span>
                         </span>
                         <span className="text-[10px] font-sans text-gray-400">
                           ({paginatedInventoryList.length} എണ്ണം)
@@ -2081,14 +2103,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                         const isDirty = dirtyPriceIds.has(p.id);
                         const isSelected = selectedProductIds.has(p.id);
                         const priceDelta = currentPrice - originalPrice;
+                        const mlName = getMalayalamName(p.name);
+                        const hasDifferentMl = mlName && mlName.toLowerCase() !== p.name.toLowerCase();
 
                         return (
                           <div
                             key={p.id}
                             onClick={() => setAnalyzingProduct(p)}
-                            className={`bg-white border rounded-2xl p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0B8F68]/60 ${
+                            className={`bg-white border rounded-2xl p-3 shadow-2xs flex items-center justify-between gap-3 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0D6344]/50 ${
                               isSelected
-                                ? 'border-[#0B8F68] bg-[#EDFAF3]/70 ring-1 ring-[#0B8F68]'
+                                ? 'border-[#0D6344] bg-[#EDFAF3]/70 ring-1 ring-[#0D6344]'
                                 : isDirty
                                 ? 'border-amber-400 bg-amber-50/25 ring-1 ring-amber-300'
                                 : currentStock === 'out_of_stock'
@@ -2096,16 +2120,15 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 : 'border-[#E3ECE7]'
                             }`}
                           >
-                            {/* Checkbox (e.stopPropagation()) + Thumbnail + Name + Unit */}
                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
                               <input
                                 type="checkbox"
                                 checked={isSelected}
                                 onClick={(e) => e.stopPropagation()}
                                 onChange={() => toggleSelectProduct(p.id)}
-                                className="rounded cursor-pointer accent-[#0B8F68] w-4 h-4 shrink-0"
+                                className="rounded cursor-pointer accent-[#0D6344] w-4 h-4 shrink-0"
                               />
-                              <div className="w-11 h-11 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs relative overflow-hidden">
+                              <div className="w-12 h-12 rounded-xl bg-white border border-[#E3ECE7] p-1 flex items-center justify-center shrink-0 shadow-2xs relative overflow-hidden">
                                 <ProductImage
                                   productId={p.id}
                                   image={p.image}
@@ -2120,8 +2143,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                               </div>
                               <div className="min-w-0 flex-1">
                                 <div className="flex items-center gap-1.5 flex-wrap">
-                                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate">
-                                    {p.name}
+                                  <h4 className="text-xs sm:text-sm font-black text-slate-900 leading-snug truncate font-malayalam">
+                                    {hasDifferentMl ? mlName : p.name}
                                   </h4>
                                   {currentStock === 'out_of_stock' && (
                                     <span className="px-1.5 py-0.2 bg-rose-100 text-rose-800 border border-rose-300 text-[8px] font-black rounded shrink-0">
@@ -2134,8 +2157,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     </span>
                                   )}
                                 </div>
+                                {hasDifferentMl && (
+                                  <p className="text-[10px] text-slate-400 font-sans truncate">{p.name}</p>
+                                )}
                                 <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium truncate">
-                                  <span className="font-bold text-slate-700 font-mono">{p.defaultUnit}</span>
+                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded">{p.defaultUnit}</span>
                                   <span>•</span>
                                   <span className="capitalize text-emerald-800 bg-emerald-50/80 px-1.5 py-0.2 rounded font-bold">
                                     {p.categoryId}
@@ -2144,7 +2170,6 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                               </div>
                             </div>
 
-                            {/* Right: Price & Stock Status Pill & Chevron */}
                             <div className="flex items-center gap-2 shrink-0">
                               <div className="text-right">
                                 <div className="text-sm font-black text-slate-900 font-sans flex items-center justify-end gap-0.5">
@@ -2162,7 +2187,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                     </span>
                                   )}
                                   <span
-                                    className={`px-1.5 py-0.5 rounded-md text-[9px] font-black flex items-center gap-1 ${
+                                    className={`px-1.5 py-0.5 rounded-md text-[9px] font-black flex items-center gap-1 font-malayalam ${
                                       currentStock === 'in_stock'
                                         ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
                                         : currentStock === 'low_stock'
@@ -2199,7 +2224,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       })}
 
                       {paginatedInventoryList.length === 0 && (
-                        <div className="py-12 text-center bg-white border border-[#E3ECE7] rounded-2xl p-6">
+                        <div className="py-12 text-center bg-white border border-[#E3ECE7] rounded-2xl p-6 font-malayalam">
                           <span className="text-3xl block mb-2">🔍</span>
                           <h4 className="font-extrabold text-slate-800 text-sm mb-1">ഉൽപ്പന്നങ്ങൾ കണ്ടെത്താനായില്ല</h4>
                           <p className="text-xs text-gray-500 mb-3">തിരഞ്ഞെടുത്ത ഫിൽട്ടറിന് അനുയോജ്യമായ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ സ്റ്റോറിൽ ഇല്ല.</p>
@@ -2221,26 +2246,26 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 ) : (
                   /* VIEW MODE 2: DELISTED / NOT CARRIED ITEMS */
                   <div className="overflow-x-auto">
-                    <div className="p-3.5 bg-amber-50 border border-amber-200 rounded-2xl mb-4 text-xs text-amber-900 font-medium flex items-center gap-2.5">
-                      <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                    <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-2xl mb-4 text-xs text-emerald-950 font-medium flex items-center gap-2.5 font-malayalam shadow-2xs">
+                      <PlusCircle className="w-4 h-4 text-[#0D6344] shrink-0" />
                       <span>
                         ഈ ഉൽപ്പന്നങ്ങൾ നിങ്ങളുടെ വിഭാഗത്തിലുള്ളതാണ്, എന്നാൽ ഇപ്പോൾ <b>{selectedShopName}</b> സ്റ്റോറിൽ ലിസ്റ്റ് ചെയ്തിട്ടില്ല. വിൽക്കാൻ ആഗ്രഹിക്കുന്ന വില നൽകി 1-ക്ലിക്കിൽ സ്റ്റോറിലേക്ക് ചേർക്കാം.
                       </span>
                     </div>
 
                     {/* Desktop Master Catalog Table */}
-                    <div className="hidden md:block border border-[#E3ECE7] rounded-2xl overflow-hidden">
+                    <div className="hidden md:block border border-[#E3ECE7] rounded-2xl overflow-hidden shadow-xs bg-white">
                       <table className="w-full text-left text-xs border-collapse">
                         <thead>
-                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-xs select-none">
+                          <tr className="bg-[#F8FAF9] border-b border-[#E3ECE7] text-slate-500 font-bold text-[11px] select-none tracking-wider uppercase font-malayalam">
                             <th className="py-3.5 px-4 font-bold">ഉൽപ്പന്നം</th>
                             <th className="py-3.5 px-3 font-bold">യൂണിറ്റ്</th>
                             <th className="py-3.5 px-4 font-bold">ശരാശരി മാർക്കറ്റ് വില</th>
                             <th className="py-3.5 px-4 font-bold">വിൽപന വില (₹)</th>
-                            <th className="py-3.5 px-4 text-right font-bold">ചേർക്കുക</th>
+                            <th className="py-3.5 px-4 text-right font-bold">സ്റ്റോക്കിൽ ചേർക്കുക</th>
                           </tr>
                         </thead>
-                        <tbody className="divide-y divide-gray-100">
+                        <tbody className="divide-y divide-[#F0F4F2]">
                           {paginatedInventoryList.map((p) => {
                             const avg =
                               Object.values(p.prices).length > 0
@@ -2250,10 +2275,13 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   )
                                 : 50;
                             const customP = relistCustomPrices[p.id] ?? avg;
+                            const mlName = getMalayalamName(p.name);
+                            const hasDifferentMl = mlName && mlName.toLowerCase() !== p.name.toLowerCase();
+
                             return (
-                              <tr key={p.id} className="hover:bg-gray-50/80 transition-colors">
-                                <td className="py-3 px-3 flex items-center gap-2.5">
-                                  <div className="w-9 h-9 shrink-0 p-0.5 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center opacity-70">
+                              <tr key={p.id} className="hover:bg-[#F9FAF9] transition-colors">
+                                <td className="py-3.5 px-4 flex items-center gap-3">
+                                  <div className="w-10 h-10 shrink-0 p-1 bg-white border border-[#E3ECE7] rounded-xl flex items-center justify-center shadow-2xs">
                                     <ProductImage
                                       productId={p.id}
                                       image={p.image}
@@ -2264,25 +2292,34 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                       fallbackEmojiClassName="text-xl"
                                     />
                                   </div>
-                                  <div>
-                                    <b className="font-bold text-slate-800 block">{p.name}</b>
-                                    <span className="text-[10px] text-gray-400 font-medium capitalize">
+                                  <div className="min-w-0">
+                                    <b className="font-bold text-slate-800 block text-[13px] leading-tight font-malayalam">
+                                      {hasDifferentMl ? mlName : p.name}
+                                    </b>
+                                    {hasDifferentMl && (
+                                      <div className="text-[11px] text-slate-400 font-sans truncate max-w-sm mt-0.5">
+                                        {p.name}
+                                      </div>
+                                    )}
+                                    <span className="text-[10px] text-slate-500 font-semibold bg-slate-100 px-1.5 py-0.2 rounded mt-1 inline-block">
                                       {p.categoryId}
                                     </span>
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-3">
-                                  <span className="px-2 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono font-bold">
+                                <td className="py-3.5 px-3">
+                                  <span className="px-2.5 py-1 bg-slate-100 text-slate-700 rounded-lg text-xs font-mono font-bold border border-slate-200/60 inline-block shadow-2xs">
                                     {p.defaultUnit}
                                   </span>
                                 </td>
 
-                                <td className="py-3 px-3 text-gray-600 font-bold font-sans">₹{avg}</td>
+                                <td className="py-3.5 px-4 text-slate-700 font-bold font-sans">
+                                  <span className="bg-slate-100 px-2 py-1 rounded-lg text-xs">₹{avg}</span>
+                                </td>
 
-                                <td className="py-3 px-3">
-                                  <div className="flex items-center bg-white border border-gray-300 focus-within:border-[#0B8F68] rounded-xl overflow-hidden w-28">
-                                    <span className="px-2 text-gray-400 font-bold bg-gray-50 border-r border-gray-200">
+                                <td className="py-3.5 px-4">
+                                  <div className="flex items-center bg-white border border-[#D9E5DF] focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 rounded-xl overflow-hidden w-28 shadow-2xs">
+                                    <span className="px-2.5 py-1.5 text-[#0D6344] font-bold text-xs bg-[#F4F8F6] border-r border-[#D9E5DF] select-none">
                                       ₹
                                     </span>
                                     <input
@@ -2295,16 +2332,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                           [p.id]: Number(e.target.value),
                                         }))
                                       }
-                                      className="w-full px-2 py-1 text-xs font-black text-slate-900 text-right outline-none font-sans"
+                                      className="w-full px-2 py-1.5 text-xs font-black text-slate-900 text-right outline-none font-sans"
                                     />
                                   </div>
                                 </td>
 
-                                <td className="py-3 px-3 text-right">
+                                <td className="py-3.5 px-4 text-right">
                                   <button
                                     onClick={() => handleRelistProduct(p)}
                                     disabled={delistLoading === p.id}
-                                    className="px-3.5 py-1.5 bg-[#0B8F68] hover:bg-[#063B2A] disabled:opacity-50 text-white rounded-xl text-xs font-black shadow-2xs transition-all flex items-center gap-1.5 cursor-pointer ml-auto"
+                                    className="px-4 py-2 bg-[#0D6344] hover:bg-[#064E3B] disabled:opacity-50 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer ml-auto font-malayalam"
                                   >
                                     {delistLoading === p.id ? (
                                       <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -2319,7 +2356,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                           })}
                           {paginatedInventoryList.length === 0 && (
                             <tr>
-                              <td colSpan={5} className="py-8 text-center text-gray-400 font-medium">
+                              <td colSpan={5} className="py-12 text-center text-gray-400 font-medium font-malayalam">
                                 ഈ വിഭാഗത്തിലുള്ള എല്ലാ ഉൽപ്പന്നങ്ങളും നിലവിൽ നിങ്ങളുടെ സ്റ്റോറിൽ ലഭ്യമാണ്!
                               </td>
                             </tr>
@@ -2329,7 +2366,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                     </div>
 
                     {/* Mobile Master Catalog Cards: Compact Rows */}
-                    <div className="md:hidden space-y-2">
+                    <div className="md:hidden space-y-2.5">
                       {paginatedInventoryList.map((p) => {
                         const existingPrices = Object.values(p.prices);
                         const avg =
@@ -2339,14 +2376,17 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   existingPrices.length
                               )
                             : 50;
+                        const mlName = getMalayalamName(p.name);
+                        const hasDifferentMl = mlName && mlName.toLowerCase() !== p.name.toLowerCase();
+
                         return (
                           <div
                             key={p.id}
                             onClick={() => setAnalyzingProduct(p)}
-                            className="bg-white border border-[#E3ECE7] rounded-2xl p-2.5 sm:p-3 shadow-2xs flex items-center justify-between gap-2.5 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0B8F68]"
+                            className="bg-white border border-[#E3ECE7] rounded-2xl p-3 shadow-2xs flex items-center justify-between gap-3 transition-all active:scale-[0.99] cursor-pointer hover:border-[#0D6344]"
                           >
                             <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                              <div className="w-11 h-11 rounded-xl bg-gray-50 border border-gray-100 p-1 flex items-center justify-center shrink-0">
+                              <div className="w-12 h-12 rounded-xl bg-gray-50 border border-gray-100 p-1 flex items-center justify-center shrink-0">
                                 <ProductImage
                                   productId={p.id}
                                   image={p.image}
@@ -2358,20 +2398,23 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                 />
                               </div>
                               <div className="min-w-0 flex-1">
-                                <h4 className="text-xs sm:text-sm font-black text-slate-800 leading-snug truncate">
-                                  {p.name}
+                                <h4 className="text-xs sm:text-sm font-black text-slate-800 leading-snug truncate font-malayalam">
+                                  {hasDifferentMl ? mlName : p.name}
                                 </h4>
+                                {hasDifferentMl && (
+                                  <p className="text-[10px] text-slate-400 font-sans truncate">{p.name}</p>
+                                )}
                                 <div className="flex items-center gap-1.5 mt-0.5 text-[10px] text-gray-500 font-medium">
-                                  <span className="font-bold text-slate-700 font-mono">{p.defaultUnit}</span>
+                                  <span className="font-bold text-slate-700 font-mono bg-slate-100 px-1.5 py-0.2 rounded">{p.defaultUnit}</span>
                                   <span>•</span>
                                   <span className="capitalize text-slate-500">{p.categoryId}</span>
                                 </div>
                               </div>
                             </div>
 
-                            <div className="flex items-center gap-2 shrink-0">
+                            <div className="flex items-center gap-2.5 shrink-0">
                               <div className="text-right">
-                                <span className="text-[10px] text-gray-400 block font-medium">വിപണി ശരാശരി</span>
+                                <span className="text-[10px] text-gray-400 block font-medium font-malayalam">ശരാശരി</span>
                                 <span className="text-xs font-black text-slate-800 font-sans">₹{avg}</span>
                               </div>
                               <button
@@ -2381,7 +2424,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                                   handleRelistProduct(p);
                                 }}
                                 disabled={delistLoading === p.id}
-                                className="px-3 py-1.5 bg-[#0B8F68] hover:bg-[#063B2A] text-white rounded-xl text-xs font-black shadow-2xs flex items-center gap-1 cursor-pointer transition-colors"
+                                className="px-3 py-2 bg-[#0D6344] hover:bg-[#064E3B] text-white rounded-xl text-xs font-black shadow-2xs flex items-center gap-1 cursor-pointer transition-colors font-malayalam"
                               >
                                 {delistLoading === p.id ? (
                                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -2396,7 +2439,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       })}
 
                       {paginatedInventoryList.length === 0 && (
-                        <div className="py-8 text-center text-gray-400 font-medium">
+                        <div className="py-8 text-center text-gray-400 font-medium font-malayalam">
                           ഈ വിഭാഗത്തിലുള്ള എല്ലാ ഉൽപ്പന്നങ്ങളും നിലവിൽ നിങ്ങളുടെ സ്റ്റോറിൽ ലഭ്യമാണ്!
                         </div>
                       )}
@@ -2406,21 +2449,21 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 
                 {/* 6. PAGINATION CONTROLS */}
                 {filteredInventoryList.length > 0 && (
-                  <div className="mt-4 pt-3 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none text-xs">
-                    <div className="text-gray-500 font-medium text-center sm:text-left">
+                  <div className="mt-5 pt-4 border-t border-[#EAEFEA] flex flex-col sm:flex-row sm:items-center justify-between gap-3 select-none text-xs">
+                    <div className="text-slate-500 font-medium text-center sm:text-left font-malayalam">
                       കാണിക്കുന്നത്{' '}
                       <b className="text-slate-900 font-sans">{startIndex + 1}</b> -{' '}
                       <b className="text-slate-900 font-sans">
                         {Math.min(startIndex + inventoryItemsPerPage, filteredInventoryList.length)}
                       </b>{' '}
-                      (ആകെ <b className="text-slate-900 font-sans">{filteredInventoryList.length}</b> ഉൽപ്പന്നങ്ങൾ)
+                      (ആകെ <b className="text-[#0D6344] font-sans font-bold">{filteredInventoryList.length.toLocaleString()}</b> ഉൽപ്പന്നങ്ങൾ)
                     </div>
 
                     <div className="flex items-center justify-center gap-1.5">
                       <button
                         onClick={() => setInventoryCurrentPage(1)}
                         disabled={safeCurrentPage === 1}
-                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        className="p-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] disabled:opacity-30 rounded-xl text-slate-700 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-colors"
                         title="ആദ്യ പേജ്"
                       >
                         <ChevronsLeft className="w-4 h-4" />
@@ -2428,22 +2471,22 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       <button
                         onClick={() => setInventoryCurrentPage((prev) => Math.max(1, prev - 1))}
                         disabled={safeCurrentPage === 1}
-                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        className="p-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] disabled:opacity-30 rounded-xl text-slate-700 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-colors"
                         title="മുമ്പത്തെ പേജ്"
                       >
                         <ChevronLeft className="w-4 h-4" />
                       </button>
 
-                      <div className="flex items-center gap-1 px-2 font-sans font-bold">
-                        <span className="text-slate-900">{safeCurrentPage}</span>
-                        <span className="text-gray-400">/</span>
-                        <span className="text-gray-500">{totalPages}</span>
+                      <div className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F4F8F6] border border-[#E0EBE4] rounded-xl font-sans text-xs font-black">
+                        <span className="text-[#0D6344]">{safeCurrentPage}</span>
+                        <span className="text-slate-400 font-normal">/</span>
+                        <span className="text-slate-600">{totalPages}</span>
                       </div>
 
                       <button
                         onClick={() => setInventoryCurrentPage((prev) => Math.min(totalPages, prev + 1))}
                         disabled={safeCurrentPage === totalPages}
-                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        className="p-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] disabled:opacity-30 rounded-xl text-slate-700 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-colors"
                         title="അടുത്ത പേജ്"
                       >
                         <ChevronRight className="w-4 h-4" />
@@ -2451,7 +2494,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       <button
                         onClick={() => setInventoryCurrentPage(totalPages)}
                         disabled={safeCurrentPage === totalPages}
-                        className="p-1.5 bg-gray-100 hover:bg-gray-200 disabled:opacity-30 rounded-lg text-gray-700 cursor-pointer disabled:cursor-not-allowed"
+                        className="p-2 bg-white hover:bg-slate-50 border border-[#E3ECE7] disabled:opacity-30 rounded-xl text-slate-700 cursor-pointer disabled:cursor-not-allowed shadow-2xs transition-colors"
                         title="അവസാന പേജ്"
                       >
                         <ChevronsRight className="w-4 h-4" />
