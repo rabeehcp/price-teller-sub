@@ -425,17 +425,17 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-4 md:space-y-4.5 lg:space-y-6 font-sans">
 
-      {/* 1. HERO BANNER: EXACT MATCH TO USER'S SCREENSHOT */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#E4F2E9] min-h-[220px] lg:min-h-[250px] p-6 sm:p-8 lg:p-9 shadow-xs flex items-center justify-between font-sans">
+      {/* 1. HERO BANNER: EXACT MATCH TO USER'S REFERENCE */}
+      <div className="relative overflow-hidden rounded-3xl bg-[#D6EFE3] border border-[#C2E3D4] min-h-[200px] lg:min-h-[235px] p-6 sm:p-7 lg:p-8 shadow-xs flex items-center justify-between font-sans">
 
         {/* Left Content Column */}
-        <div className="relative z-10 space-y-2.5 max-w-md lg:max-w-lg shrink-0">
-          <h1 className="text-2xl sm:text-3xl lg:text-[32px] font-black text-[#1A251E] font-malayalam tracking-tight leading-[1.25] m-0">
+        <div className="relative z-10 space-y-2 max-w-[55%] sm:max-w-md lg:max-w-lg shrink-0">
+          <h1 className="font-malayalam-heading text-2xl sm:text-3xl lg:text-[34px] font-extrabold text-[#12231A] tracking-tight leading-[1.2] m-0">
             ആവശ്യമായതെല്ലാം,<br />
             മികച്ച വിലയിൽ കണ്ടെത്തൂ.
           </h1>
 
-          <p className="text-xs sm:text-sm text-[#38483F] font-medium font-sans m-0">
+          <p className="text-xs sm:text-sm text-[#3E5246] font-medium font-sans m-0 mt-1.5">
             Find and compare local grocery prices in Kerala
           </p>
 
@@ -446,60 +446,60 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 const el = document.getElementById('catalog-products-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center px-6 py-2 rounded-full bg-[#107048] hover:bg-[#0B5C3A] active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xs transition-all cursor-pointer font-malayalam"
+              className="inline-flex items-center px-6 py-2 rounded-full bg-[#107048] hover:bg-[#0B5C3A] active:scale-95 text-white font-bold text-xs sm:text-sm shadow-xs transition-all cursor-pointer font-malayalam-heading"
             >
               വിലകൾ കാണാം
             </button>
           </div>
         </div>
 
-        {/* Right Side: Fresh Groceries Basket & Floating Live Price Card */}
-        <div className="relative flex items-center justify-end flex-1 h-full min-h-[200px] pointer-events-none sm:pointer-events-auto">
-          {/* Fresh Groceries Basket Image */}
-          <div className="relative w-72 sm:w-84 md:w-96 lg:w-[420px] h-48 sm:h-56 lg:h-60 shrink-0">
+        {/* Right Side: Seamless Studio Fresh Groceries Basket & Floating Live Price Card */}
+        <div className="relative flex items-center justify-end flex-1 h-full min-h-[180px] pointer-events-none sm:pointer-events-auto overflow-visible">
+          {/* Basket + Card Relative Wrapper */}
+          <div className="relative h-44 sm:h-52 lg:h-56 max-h-[225px] flex items-center justify-end shrink-0">
             <img
               src="/hero-groceries-fresh.jpg"
               alt="Fresh Groceries Basket"
-              className="w-full h-full object-contain object-right mix-blend-multiply filter contrast-[1.03]"
+              className="h-full w-auto max-w-[260px] sm:max-w-[340px] lg:max-w-[390px] object-contain object-right"
               loading="eager"
             />
 
-            {/* Floating Glassmorphic Live Price Card (Exact Match to Screenshot) */}
-            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-md rounded-2xl p-3 border border-white/70 shadow-[0_8px_24px_rgba(0,0,0,0.07)] w-[155px] sm:w-[170px] space-y-2 select-none">
-              <div className="text-[11px] font-semibold text-[#1A251E] font-sans">
+            {/* Floating Glassmorphic Live Price Card (Exact Match to Reference) */}
+            <div className="absolute right-0 sm:right-2 top-1/2 -translate-y-1/2 bg-white/85 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-white/80 shadow-[0_8px_24px_rgba(0,0,0,0.08)] w-[140px] sm:w-[158px] space-y-1.5 select-none z-20 pointer-events-auto">
+              <div className="text-[11px] font-bold text-[#14231A] font-sans">
                 Live price
               </div>
 
               {/* Row 1: Coconut Oil */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
                   <img src="/categories/oils-spices.jpg" alt="Coconut Oil" className="w-full h-full object-contain rounded" />
                 </div>
                 <div className="min-w-0 flex-1 leading-tight">
-                  <div className="text-[10px] text-slate-600 font-sans truncate">Coconut Oil</div>
-                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹190/L</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-slate-600 font-sans truncate">Coconut Oil</div>
+                  <div className="text-[10.5px] sm:text-[11px] font-bold text-slate-900 font-sans">₹190/L</div>
                 </div>
               </div>
 
               {/* Row 2: ABC Mart */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
                   <img src="/categories/vegetables.jpg" alt="ABC Mart" className="w-full h-full object-contain rounded" />
                 </div>
                 <div className="min-w-0 flex-1 leading-tight">
-                  <div className="text-[10px] text-slate-600 font-sans truncate">ABC Mart:</div>
-                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-slate-600 font-sans truncate">ABC Mart:</div>
+                  <div className="text-[10.5px] sm:text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
                 </div>
               </div>
 
               {/* Row 3: Rice */}
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-[#E3ECE7] flex items-center justify-center p-0.5 shrink-0 shadow-2xs">
                   <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded" />
                 </div>
                 <div className="min-w-0 flex-1 leading-tight">
-                  <div className="text-[10px] text-slate-600 font-sans truncate">Rice</div>
-                  <div className="text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
+                  <div className="text-[9.5px] sm:text-[10px] text-slate-600 font-sans truncate">Rice</div>
+                  <div className="text-[10.5px] sm:text-[11px] font-bold text-slate-900 font-sans">₹195/L</div>
                 </div>
               </div>
             </div>
