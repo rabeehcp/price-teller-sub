@@ -100,41 +100,44 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
 
   return (
     <aside className="w-[280px] xl:w-[310px] 2xl:w-[350px] shrink-0 space-y-3 xl:space-y-4 font-sans select-none sticky top-16 xl:top-20 max-h-[calc(100vh-80px)] overflow-y-auto no-scrollbar pb-6 animate-in fade-in slide-in-from-right-2 duration-150">
-      {/* 0. TOP TAB SWITCHER (Cart vs Live Price Comparison) & CLOSE BUTTON */}
-      <div className="bg-white border border-[#E3ECE7] rounded-2xl p-1.5 shadow-2xs flex items-center gap-1 font-malayalam">
-        <div className="grid grid-cols-2 gap-1 flex-1">
+      {/* 0. TOP TAB SWITCHER (Cart Items vs Store Comparison) & CLOSE BUTTON */}
+      <div className="bg-white border-b border-[#E3ECE7] px-2 flex items-center justify-between font-sans">
+        <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => setActiveRightTab('cart')}
-            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeRightTab === 'cart'
-                ? 'bg-[#063B2A] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
+            className={`py-3 px-1 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 ${
+              activeRightTab === 'cart'
+                ? 'text-[#0D6344] font-black'
+                : 'text-slate-500 hover:text-slate-900'
+            }`}
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
-            <span className="truncate">കാർട്ട്</span>
+            <span>Cart Items</span>
             {totalBasketCount > 0 && (
-              <span
-                className={`text-[10px] px-1.5 py-0.2 rounded-full font-sans font-bold ${activeRightTab === 'cart' ? 'bg-[#10A978] text-white' : 'bg-emerald-100 text-emerald-800'
-                  }`}
-              >
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-[#E8F5EE] text-[#0D6344]">
                 {totalBasketCount}
               </span>
+            )}
+            {activeRightTab === 'cart' && (
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0D6344] rounded-full" />
             )}
           </button>
 
           <button
             type="button"
             onClick={() => setActiveRightTab('compare')}
-            className={`py-2 px-2.5 rounded-xl text-xs font-black transition-all flex items-center justify-center gap-1.5 cursor-pointer ${activeRightTab === 'compare'
-                ? 'bg-[#063B2A] text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
+            className={`py-3 px-1 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 ${
+              activeRightTab === 'compare'
+                ? 'text-[#0D6344] font-black'
+                : 'text-slate-500 hover:text-slate-900'
+            }`}
           >
-            <Compass className="w-3.5 h-3.5" />
-            <span className="truncate">താരതമ്യം</span>
+            <span>Store Comparison</span>
             {hasItems && (
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            )}
+            {activeRightTab === 'compare' && (
+              <span className="absolute bottom-0 inset-x-0 h-0.5 bg-[#0D6344] rounded-full" />
             )}
           </button>
         </div>
@@ -143,8 +146,8 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-xl transition-colors cursor-pointer shrink-0"
-            title="സൈഡ്‌ബാർ മറയ്ക്കുക (Hide panel to expand view)"
+            className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer shrink-0"
+            title="Hide panel"
           >
             <X className="w-4 h-4" />
           </button>
@@ -153,47 +156,42 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
 
       {/* VIEW 1: MY CART VIEW */}
       {activeRightTab === 'cart' && (
-        <div className="space-y-4 animate-in fade-in duration-150">
+        <div className="space-y-3 animate-in fade-in duration-150">
           {/* Cart Widget */}
           <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 shadow-2xs space-y-3">
             {/* Header */}
             <div className="flex items-center justify-between pb-2 border-b border-[#F0F4F2]">
-              <div className="flex items-center gap-2">
-                <ShoppingBag className="w-4 h-4 text-[#0B8F68]" />
-                <h3 className="text-sm font-extrabold text-[#17221D] font-malayalam m-0">
-                  തിരഞ്ഞെടുത്ത സാധനങ്ങൾ
+              <div className="flex items-center gap-1.5">
+                <ShoppingBag className="w-4 h-4 text-[#0D6344]" />
+                <h3 className="text-xs font-bold text-[#17221D] font-sans m-0 uppercase tracking-wider">
+                  Order Summary ({totalBasketCount})
                 </h3>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-[#0B8F68] bg-[#E8F5EE] px-2 py-0.5 rounded-full font-malayalam">
-                  {totalBasketCount} ഇനം
-                </span>
-                {basket.length > 0 && (
-                  <button
-                    type="button"
-                    onClick={onClearBasket}
-                    className="text-[#8A9992] hover:text-[#E11D48] p-1 rounded-full transition-colors cursor-pointer"
-                    title="ക്ലിയർ ചെയ്യുക"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                )}
-              </div>
+              {basket.length > 0 && (
+                <button
+                  type="button"
+                  onClick={onClearBasket}
+                  className="text-xs text-rose-500 hover:text-rose-700 font-bold transition-colors cursor-pointer"
+                  title="Clear Cart"
+                >
+                  Clear All
+                </button>
+              )}
             </div>
 
-            {/* Cart Item Rows (Scrollable for increased items) */}
+            {/* Cart Item Rows */}
             {basket.length === 0 ? (
-              <div className="py-6 text-center space-y-2">
-                <div className="w-10 h-10 rounded-full bg-[#F5F8F6] text-[#8A9992] flex items-center justify-center mx-auto text-base">
+              <div className="py-8 text-center space-y-2">
+                <div className="w-12 h-12 rounded-full bg-[#F5F8F6] text-[#8A9992] flex items-center justify-center mx-auto text-xl">
                   🛒
                 </div>
-                <p className="text-xs text-[#8A9992] font-malayalam">
-                  കാർട്ട് ശൂന്യമാണ്. ഉൽപ്പന്നങ്ങൾ ചേർക്കൂ!
+                <p className="text-xs text-[#8A9992] font-sans">
+                  Your cart is empty. Add items to compare prices!
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5 max-h-[48vh] min-h-[140px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-emerald-200">
+              <div className="space-y-2.5 max-h-[46vh] min-h-[140px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-emerald-200">
                 {basket.map((item) => {
                   const prod = item.product;
                   const priceValues = Object.values(prod.prices || {});
@@ -206,10 +204,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                   return (
                     <div
                       key={prod.id}
-                      className="flex items-center justify-between p-2 rounded-2xl bg-[#F8FAF7] border border-[#E8ECE3] text-xs"
+                      className="flex items-center justify-between p-2.5 rounded-2xl bg-[#F9FBFA] border border-[#E8EFEA] text-xs hover:border-[#C3EEDC] transition-all group"
                     >
                       {/* Image */}
-                      <div className="w-10 h-10 rounded-xl bg-white border border-[#E3ECE7] p-1 shrink-0 flex items-center justify-center overflow-hidden">
+                      <div className="w-11 h-11 rounded-xl bg-white border border-[#E3ECE7] p-1 shrink-0 flex items-center justify-center overflow-hidden shadow-2xs">
                         <ProductImage
                           productId={prod.id}
                           image={prod.image}
@@ -222,32 +220,46 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
 
                       {/* Title & Price */}
                       <div className="flex-1 min-w-0 px-2.5">
-                        <h4 className="font-extrabold text-[#17221D] font-malayalam truncate m-0 text-xs">
+                        <h4 className="font-bold text-[#17221D] font-sans truncate m-0 text-xs">
                           {prod.name}
                         </h4>
-                        <span className="text-[10px] text-[#8A9992] font-sans">
-                          {formatCartItemQuantity(item.quantity, unit)} • ₹{itemTotal}
+                        <span className="text-[11px] font-black text-[#0D6344] font-sans">
+                          ₹{itemTotal}
+                          <span className="text-[10px] text-slate-400 font-normal ml-1">
+                            ({formatCartItemQuantity(item.quantity, unit)})
+                          </span>
                         </span>
                       </div>
 
-                      {/* Stepper */}
-                      <div className="flex items-center gap-1 shrink-0 bg-white border border-[#E3ECE7] rounded-lg p-0.5">
+                      {/* Stepper & Remove */}
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        <div className="flex items-center gap-1 bg-white border border-[#E3ECE7] rounded-lg p-0.5 shadow-2xs">
+                          <button
+                            type="button"
+                            onClick={() => onQuantityChange(prod.id, -1)}
+                            className="w-5 h-5 flex items-center justify-center text-[#17221D] hover:bg-[#F0F5F2] rounded cursor-pointer"
+                          >
+                            <Minus className="w-2.5 h-2.5" />
+                          </button>
+                          <span className="px-1 text-[11px] font-black font-sans">
+                            {item.quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => onQuantityChange(prod.id, 1)}
+                            className="w-5 h-5 flex items-center justify-center text-[#17221D] hover:bg-[#F0F5F2] rounded cursor-pointer"
+                          >
+                            <Plus className="w-2.5 h-2.5" />
+                          </button>
+                        </div>
+
                         <button
                           type="button"
-                          onClick={() => onQuantityChange(prod.id, -1)}
-                          className="w-5 h-5 flex items-center justify-center text-[#17221D] hover:bg-slate-100 rounded cursor-pointer"
+                          onClick={() => onRemoveItem(prod.id)}
+                          className="p-1 text-slate-300 hover:text-rose-500 rounded-md transition-colors cursor-pointer"
+                          title="Remove item"
                         >
-                          <Minus className="w-2.5 h-2.5" />
-                        </button>
-                        <span className="px-1 text-[11px] font-black font-sans">
-                          {item.quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => onQuantityChange(prod.id, 1)}
-                          className="w-5 h-5 flex items-center justify-center text-[#17221D] hover:bg-slate-100 rounded cursor-pointer"
-                        >
-                          <Plus className="w-2.5 h-2.5" />
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
@@ -256,34 +268,44 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
               </div>
             )}
 
-            {/* Subtotal & Actions */}
+            {/* Subtotal, Estimated Tax & Checkout Button matching Mockup */}
             {hasItems && (
-              <div className="pt-2 border-t border-gray-100 space-y-2.5">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="text-slate-500 font-malayalam font-bold">ആകെ തുക (ഏകദേശം)</span>
-                  <span className="text-base font-black text-slate-900 font-sans">₹{subtotal}</span>
+              <div className="pt-3 border-t border-gray-100 space-y-3 font-sans">
+                <div className="space-y-1.5 text-xs">
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Subtotal</span>
+                    <span className="font-bold text-slate-800">₹{subtotal.toFixed ? subtotal.toFixed(2) : subtotal}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-slate-500">
+                    <span>Estimated Tax</span>
+                    <span className="font-bold text-slate-800">₹0.00</span>
+                  </div>
+                  <div className="pt-1.5 border-t border-dashed border-gray-200 flex items-center justify-between text-sm font-black text-slate-900">
+                    <span>Total</span>
+                    <span className="text-[#0D6344] text-base">₹{subtotal.toFixed ? subtotal.toFixed(2) : subtotal}</span>
+                  </div>
                 </div>
 
                 {/* Direct Compare Trigger Banner */}
                 <button
                   type="button"
                   onClick={() => setActiveRightTab('compare')}
-                  className="w-full py-2 px-3 bg-[#E8F5EE] hover:bg-[#D5EADB] text-[#063B2A] border border-[#C3EEDC] rounded-2xl text-xs font-black transition-all flex items-center justify-between cursor-pointer font-malayalam"
+                  className="w-full py-2 px-3 bg-[#E8F5EE] hover:bg-[#D5EADB] text-[#0D6344] border border-[#C3EEDC] rounded-2xl text-xs font-black transition-all flex items-center justify-between cursor-pointer font-malayalam"
                 >
                   <div className="flex items-center gap-1.5">
-                    <Sparkles className="w-4 h-4 text-[#0B8F68]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[#0D6344]" />
                     <span>ഏത് കടയിലാണ് ലാഭം? താരതമ്യം കാണുക</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#0B8F68]" />
+                  <ChevronRight className="w-4 h-4 text-[#0D6344]" />
                 </button>
 
                 <button
                   type="button"
                   onClick={onOpenCart}
-                  className="w-full py-2.5 px-4 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-98 text-white text-xs font-black rounded-2xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
+                  className="w-full py-3 px-4 bg-[#0D6344] hover:bg-[#094E35] active:scale-98 text-white text-xs font-black rounded-2xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-sans"
                 >
-                  <span>കാർട്ട് പൂർണ്ണമായി കാണുക</span>
-                  <ChevronRight className="w-3.5 h-3.5" />
+                  <span>Checkout</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             )}

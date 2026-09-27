@@ -61,22 +61,22 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           </button>
         )}
 
-        {/* Middle: Integrated Search Bar (Matching Image 1) */}
+        {/* Middle: Integrated Search Bar (Matching Mockup) */}
         <div className="flex-1 max-w-xl xl:max-w-2xl">
-          <div className="relative flex items-center bg-[#F5F8F6] border border-[#E3ECE7] rounded-full py-2 px-4 shadow-2xs focus-within:bg-white focus-within:border-[#0B8F68] transition-all">
-            <Search className="w-4 h-4 text-[#8A9992] shrink-0 mr-2.5" />
+          <div className="relative flex items-center bg-[#F4F7F5] border border-[#E0ECE5] rounded-full py-2.5 px-4 shadow-2xs focus-within:bg-white focus-within:border-[#0D6344] focus-within:ring-2 focus-within:ring-[#0D6344]/15 transition-all">
+            <Search className="w-4 h-4 text-[#7A8E84] shrink-0 mr-2.5" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder="എന്താണ് തിരയുന്നത്?"
-              className="w-full bg-transparent text-xs font-semibold text-[#17221D] placeholder-[#8A9992] outline-none font-malayalam"
+              placeholder="Search products, grocery..."
+              className="w-full bg-transparent text-xs font-semibold text-[#17221D] placeholder-[#7A8E84] outline-none font-sans"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => onSearchChange('')}
-                className="p-1 text-[#8A9992] hover:text-[#17221D] rounded-full cursor-pointer"
+                className="p-1 text-[#7A8E84] hover:text-[#17221D] rounded-full cursor-pointer"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -92,22 +92,23 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             <button
               type="button"
               onClick={onToggleRightSidebar}
-              className={`flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 rounded-full border transition-all cursor-pointer font-malayalam shadow-2xs ${isRightSidebarOpen
-                  ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-xs'
-                  : 'bg-[#F5F8F6] hover:bg-[#E8F8F0] border-[#E3ECE7] hover:border-[#10A978]/40 text-[#17221D]'
-                }`}
+              className={`flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-sans shadow-2xs ${
+                isRightSidebarOpen
+                  ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs'
+                  : 'bg-[#E8F5EE] hover:bg-[#DCF0E4] border-[#C3EEDC] text-[#0D6344]'
+              }`}
               title={isRightSidebarOpen ? 'കാർട്ട് പാനൽ മറയ്ക്കുക (Hide Cart)' : 'കാർട്ട് & താരതമ്യം കാണുക (View Cart & Compare)'}
             >
-              <ShoppingBag className={`w-3.5 h-3.5 ${isRightSidebarOpen ? 'text-[#34D399]' : 'text-[#0B8F68]'}`} />
-              <span className="text-xs font-bold hidden md:inline">കാർട്ട്</span>
-              {basketCount > 0 ? (
-                <span className={`text-[11px] font-black font-sans px-2 py-0.2 rounded-full ${isRightSidebarOpen ? 'bg-[#10A978] text-white' : 'bg-[#063B2A] text-white'
-                  }`}>
-                  {basketCount} • ₹{basketSubtotal}
-                </span>
-              ) : (
-                <span className="text-[10px] text-slate-400 font-sans font-bold">0</span>
-              )}
+              <ShoppingBag className={`w-3.5 h-3.5 ${isRightSidebarOpen ? 'text-white' : 'text-[#0D6344]'}`} />
+              <span className="text-xs font-black">
+                {basketCount > 0 ? (
+                  <span>
+                    {basketCount} <span className="opacity-60 mx-0.5">•</span> ₹{basketSubtotal.toFixed ? basketSubtotal.toFixed(2) : basketSubtotal}
+                  </span>
+                ) : (
+                  <span>Cart</span>
+                )}
+              </span>
             </button>
           )}
 
@@ -125,20 +126,20 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           <button
             type="button"
             onClick={onOpenFavorites}
-            className="p-2.5 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+            className="p-2 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
             aria-label="Favorites"
           >
             <Heart className="w-4 h-4 text-[#2D3E35]" />
           </button>
 
-          {/* User Profile Avatar Dropdown (Matching Image 1) */}
+          {/* User Profile Avatar Dropdown (Matching Mockup) */}
           <div className="relative">
             <button
               type="button"
               onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-              className="flex items-center gap-1.5 p-1 hover:bg-[#F5F8F6] rounded-full transition-all cursor-pointer"
+              className="flex items-center gap-1 p-0.5 hover:bg-[#F5F8F6] rounded-full transition-all cursor-pointer"
             >
-              <div className="w-9 h-9 rounded-full bg-[#063B2A] text-white flex items-center justify-center text-xs font-bold font-sans shadow-xs ring-2 ring-[#0B8F68]/20">
+              <div className="w-9 h-9 rounded-full bg-[#0D6344] text-white flex items-center justify-center text-xs font-black font-sans shadow-xs ring-2 ring-[#0D6344]/20">
                 {avatarLetter}
               </div>
               <ChevronDown className="w-3.5 h-3.5 text-[#66756E]" />

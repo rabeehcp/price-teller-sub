@@ -83,14 +83,15 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
   return (
     <div
       onClick={() => onSelectProductForDetail(product)}
-      className={`bg-white border rounded-2xl p-3 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative ${
-        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E3ECE7] hover:border-[#0B8F68]/40'
+      className={`bg-white border rounded-2xl p-3.5 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative ${
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E5ECE8] hover:border-[#0D6344]/40'
       }`}
     >
       {/* Top: Distance / Shop Pill & Wishlist Button */}
       <div className="flex items-center justify-between gap-1 mb-1">
-        <span className="text-[10px] font-bold text-[#063B2A] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[130px] font-malayalam">
-          {shopInfo?.name || lowestShopName}
+        <span className="text-[10px] font-bold text-[#0D6344] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[130px] font-sans flex items-center gap-1">
+          <span>📍</span>
+          <span>0.5 km</span>
         </span>
 
         <button
@@ -116,7 +117,7 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
           productId={product.id}
           image={product.image}
           emoji={product.emoji}
-          alt={getMalayalamName(product.name)}
+          alt={product.name}
           className="w-full h-full"
           imgClassName="max-h-full max-w-full object-contain transition-transform group-hover:scale-105"
           fallbackEmojiClassName="text-4xl"
@@ -128,8 +129,8 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
       {/* Middle Info: Name, Price, Rating */}
       <div className="space-y-1 pt-1">
         <div className="flex items-center gap-1">
-          <h3 className="text-xs font-extrabold text-[#17221D] font-malayalam truncate m-0">
-            {getMalayalamName(product.name)}
+          <h3 className="text-xs font-bold text-[#17221D] font-sans truncate m-0">
+            {product.name}
           </h3>
           {isOutOfStock && (
             <span className="shrink-0 text-[8px] font-black uppercase text-red-600 bg-red-50 border border-red-200 px-1 py-0.2 rounded font-mono">
@@ -140,10 +141,10 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
 
         <div className="flex items-baseline gap-1">
           <span className="text-sm font-black text-[#17221D] font-sans">
-            {price > 0 ? `₹${price}` : 'ലഭ്യമല്ല'}
+            {price > 0 ? `₹${price}` : 'Not available'}
           </span>
           {price > 0 && (
-            <span className="text-[10px] text-slate-500 font-sans whitespace-nowrap">
+            <span className="text-[10px] text-slate-400 font-sans whitespace-nowrap">
               /{formatPerUnitLabel(product.defaultUnit)}
             </span>
           )}
@@ -159,12 +160,10 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
         </div>
 
         {/* Shop Location */}
-        <div className="flex items-center gap-1 text-[10px] text-[#8F9F97] font-malayalam pt-0.5 truncate">
-          <span className="font-bold text-[#4D6158] truncate">
+        <div className="flex items-center gap-1 text-[10px] text-[#8F9F97] font-sans pt-0.5 truncate">
+          <span className="font-medium text-[#4D6158] truncate">
             {lowestShopName}
           </span>
-          <span>•</span>
-          <span>1.2 km</span>
         </div>
       </div>
 
@@ -174,12 +173,12 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
           <button
             type="button"
             disabled
-            className="w-full py-1.5 px-3 bg-slate-100 border border-slate-200 text-slate-400 text-[11px] font-black rounded-xl select-none flex items-center justify-center gap-1 font-malayalam cursor-not-allowed"
+            className="w-full py-2 px-3 bg-slate-100 border border-slate-200 text-slate-400 text-[11px] font-bold rounded-xl select-none flex items-center justify-center gap-1 font-sans cursor-not-allowed"
           >
-            <span>{isOutOfStock ? '🚫 സ്റ്റോക്കില്ല' : '🚫 ലഭ്യമല്ല'}</span>
+            <span>{isOutOfStock ? 'Out of stock' : 'Unavailable'}</span>
           </button>
         ) : qty > 0 ? (
-          <div className="flex items-center justify-between bg-[#063B2A] text-white rounded-xl p-1 shadow-xs">
+          <div className="flex items-center justify-between bg-[#0D6344] text-white rounded-xl p-1 shadow-xs">
             <button
               type="button"
               onClick={() => onQuantityChange(product.id, -1)}
@@ -200,10 +199,10 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
           <button
             type="button"
             onClick={() => onAddToBasket(product, product.defaultUnit)}
-            className="w-full py-1.5 px-3 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-95 text-white text-[11px] font-black rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 font-malayalam cursor-pointer"
+            className="w-full py-2 px-3 bg-[#0D6344] hover:bg-[#094E35] active:scale-95 text-white text-[11px] font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 font-sans cursor-pointer"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
-            <span>കാർട്ടിൽ ചേർക്കുക</span>
+            <span>Add to Cart</span>
           </button>
         )}
       </div>
@@ -235,61 +234,61 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // 9 Categories starting with "എല്ലാം" (All) with realistic high-resolution images
+  // 9 Categories matching the pastel palette of the mockup
   const desktopCategories = [
     {
       id: 'all',
-      label: 'എല്ലാം',
+      label: 'All Items',
       image: '/categories/grocery.jpg',
-      bgColor: 'bg-[#E8F5EE]',
+      bgColor: 'bg-[#DCFCE7] text-[#166534] border-[#BBF7D0]',
     },
     {
       id: 'vegetables',
-      label: 'പച്ചക്കറികൾ',
+      label: 'Vegetables',
       image: '/categories/vegetables.jpg',
-      bgColor: 'bg-[#E8F6ED]',
+      bgColor: 'bg-[#DCFCE7] text-[#166534] border-[#BBF7D0]',
     },
     {
       id: 'fruits',
-      label: 'പഴങ്ങൾ',
+      label: 'Fruits',
       image: '/categories/fruits.jpg',
-      bgColor: 'bg-[#FEF1E6]',
+      bgColor: 'bg-[#FFEDD5] text-[#9A3412] border-[#FED7AA]',
     },
     {
       id: 'rice-grains',
-      label: 'അരി & ധാന്യങ്ങൾ',
+      label: 'Grains',
       image: '/categories/grains.jpg',
-      bgColor: 'bg-[#F9EFE3]',
+      bgColor: 'bg-[#F7EBE1] text-[#78350F] border-[#EADBCC]',
     },
     {
       id: 'dairy',
-      label: 'പാൽ & പാലുൽപ്പന്നങ്ങൾ',
+      label: 'Dairy',
       image: '/categories/dairy.jpg',
-      bgColor: 'bg-[#EBF4FC]',
+      bgColor: 'bg-[#E0F2FE] text-[#075985] border-[#BAE6FD]',
     },
     {
       id: 'oils-spices',
-      label: 'എണ്ണ & മസാലകൾ',
+      label: 'Oils',
       image: '/categories/oils-spices.jpg',
-      bgColor: 'bg-[#FFF9E6]',
+      bgColor: 'bg-[#FEF3C7] text-[#854D0E] border-[#FDE68A]',
     },
     {
       id: 'beverages',
-      label: 'പാനീയങ്ങൾ',
+      label: 'Beverages',
       image: '/categories/beverages.jpg',
-      bgColor: 'bg-[#E9F6F8]',
+      bgColor: 'bg-[#FFE4E6] text-[#9F1239] border-[#FECDD3]',
     },
     {
       id: 'bakery-breakfast',
-      label: 'ബേക്കറി & സ്നാക്കുകൾ',
+      label: 'Bakery',
       image: '/categories/bakery.jpg',
-      bgColor: 'bg-[#FDF2E7]',
+      bgColor: 'bg-[#EDE9FE] text-[#5B21B6] border-[#DDD6FE]',
     },
     {
       id: 'cleaning-household',
-      label: 'വീട്ടുപകരണങ്ങൾ',
+      label: 'Household',
       image: '/categories/cleaning.jpg',
-      bgColor: 'bg-[#F2EFFB]',
+      bgColor: 'bg-[#F1F5F9] text-[#334155] border-[#E2E8F0]',
     },
   ];
 
@@ -426,75 +425,76 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
   return (
     <div className="space-y-4 md:space-y-4.5 lg:space-y-6 font-sans">
 
-      {/* 1. HERO BANNER: KERALA MARKETPLACE WITH RESPONSIVE BACKGROUND ARTWORK & MODERN FROSTED GLASS */}
-      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#F5EFE6] to-[#EADBCA] shadow-[0_10px_35px_rgba(20,40,30,0.06)] border border-[#DFCEB7]/80 p-4 sm:p-5 md:p-5.5 lg:p-6 xl:p-7 min-h-[220px] lg:min-h-[270px] text-[#19271F] flex flex-col justify-center">
+      {/* 1. HERO BANNER: EXACT MATCH TO THE APPROVED MOCKUP */}
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#EBF5EE] via-[#E8F3EB] to-[#DCEDE2] border border-[#CFE4D7] p-6 sm:p-7 lg:p-8 shadow-[0_4px_24px_rgba(20,60,40,0.04)] min-h-[220px] lg:min-h-[260px] text-[#19271F] flex flex-col justify-center">
 
-        {/* Responsive Multi-Breakpoint Background Artwork */}
-        <picture className="absolute inset-0 w-full h-full pointer-events-none">
-          <source media="(min-width: 1536px)" srcSet="/hero-warm-market-blend.jpg" />
-          <source media="(min-width: 1024px)" srcSet="/hero-warm-market-blend.jpg" />
-          <source media="(min-width: 640px)" srcSet="/hero-warm-market-blend.jpg" />
+        {/* Clean Studio Fresh Groceries Basket on the right side */}
+        <div className="absolute right-0 top-0 bottom-0 w-[44%] max-w-[480px] pointer-events-none hidden lg:block overflow-hidden">
           <img
-            src="/hero-warm-market-blend.jpg"
-            alt="Kerala Village Market Background"
-            className="w-full h-full object-cover object-[78%_center] sm:object-[70%_center] md:object-[60%_center] lg:object-center xl:object-center filter contrast-[1.05] brightness-[1.0] transition-all duration-300"
+            src="/hero-groceries-fresh.jpg"
+            alt="Fresh Groceries Basket"
+            className="w-full h-full object-cover object-left opacity-90 mix-blend-multiply filter contrast-[1.02]"
             loading="eager"
-            decoding="async"
           />
-        </picture>
+          {/* Soft fade-out into the background on the left */}
+          <div className="absolute inset-y-0 left-0 w-28 bg-gradient-to-r from-[#E8F3EB] to-transparent pointer-events-none" />
+        </div>
 
-        {/* Subtle Ambient Lighting Overlay: Enhances Fresh Produce Greens and Tropical Warmth */}
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-950/20 via-black/5 to-amber-950/20 pointer-events-none" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-
-        {/* Side-by-Side Adaptive Grid: Spacious, Breathable & Balanced when Cart & Sidebar are Expanded */}
+        {/* Adaptive Grid */}
         <div className={`relative z-10 w-full grid grid-cols-1 ${
           isRightSidebarOpen
             ? 'xl:grid-cols-[1.12fr_295px] 2xl:grid-cols-[1.25fr_330px]'
             : 'lg:grid-cols-[1.15fr_310px] xl:grid-cols-[1.2fr_330px] 2xl:grid-cols-[1.3fr_350px]'
-        } items-center justify-center gap-4 xl:gap-5`}>
+        } items-center justify-between gap-4 xl:gap-5`}>
 
-          {/* Left Content Column: Luminous Frosted Glass Card with Vibrant Depth */}
-          <div className="bg-white/80 hover:bg-white/85 backdrop-blur-md rounded-3xl p-5 sm:p-6 shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-white/70 ring-1 ring-black/[0.03] space-y-3.5 min-w-0 max-w-xl lg:max-w-none mx-auto lg:mx-0 transition-all duration-300">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-emerald-900/10 border border-emerald-800/15 backdrop-blur-xs rounded-full text-xs font-extrabold text-emerald-900 shadow-2xs font-malayalam">
-              <span className="relative flex h-2 w-2 shrink-0">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-600"></span>
-              </span>
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
-              <span>പ്രാദേശിക കടകളിലെ തത്സമയ വിലനിലവാരം</span>
-            </div>
-
-            <h1 className="text-xl sm:text-2xl lg:text-[27px] xl:text-[29px] 2xl:text-[32px] font-black text-[#0B2E21] leading-tight font-padmanabha tracking-tight m-0">
-              നാട്ടിലെ കടകളിൽ നിന്നും{' '}
-              <span className="bg-gradient-to-r from-[#D96B1C] via-[#BC681D] to-[#99470A] bg-clip-text text-transparent">
-                മികച്ച വില
-              </span>{' '}
-              കണ്ടെത്തൂ.
+          {/* Left Content Column */}
+          <div className="space-y-3 min-w-0 max-w-xl lg:max-w-none">
+            <h1 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[38px] font-black text-[#11261D] font-malayalam tracking-tight leading-[1.22] m-0">
+              ആവശ്യമായതെല്ലാം,<br />
+              <span className="text-[#0D6344]">മികച്ച വിലയിൽ</span> കണ്ടെത്തൂ.
             </h1>
 
-            <p className="text-xs sm:text-sm text-[#374940] font-medium leading-relaxed font-malayalam m-0 max-w-xl">
-              നിങ്ങളുടെ അടുത്തുള്ള മികച്ച സ്റ്റോറുകളിലെ വിലകൾ തത്സമയം താരതമ്യം ചെയ്ത് ഏറ്റവും കുറഞ്ഞ നിരക്കിൽ സാധനങ്ങൾ കണ്ടെത്തൂ.
+            <p className="text-xs sm:text-sm text-[#465A50] font-medium leading-relaxed font-sans m-0 max-w-lg">
+              Find and compare local grocery prices in Kerala
             </p>
 
-            {/* CTA & Interactive Value Pillars & Flash Deals Quick Link */}
-            <div className="flex items-center gap-2 pt-1 font-malayalam flex-wrap">
+            {/* Quick Live Price Ticker */}
+            <div className="hidden sm:flex items-center gap-2 pt-0.5 text-xs text-[#2A4738] font-sans font-bold flex-wrap">
+              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
+                <span>🍅</span>
+                <span>തക്കാളി</span>
+                <span className="text-[#0D6344] font-sans font-extrabold">₹14</span>
+              </span>
+              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
+                <span>🧅</span>
+                <span>സവാള</span>
+                <span className="text-[#0D6344] font-sans font-extrabold">₹32</span>
+              </span>
+              <span className="flex items-center gap-1.5 bg-white/90 border border-[#D5E6DC] px-2.5 py-1 rounded-full shadow-2xs font-malayalam">
+                <span>🥥</span>
+                <span>വെളിച്ചെണ്ണ</span>
+                <span className="text-[#0D6344] font-sans font-extrabold">₹145</span>
+              </span>
+            </div>
+
+            {/* CTA & Value Buttons */}
+            <div className="flex items-center gap-2.5 pt-1.5 font-malayalam flex-wrap">
               <button
                 type="button"
                 onClick={() => {
                   const el = document.getElementById('catalog-products-section');
                   if (el) el.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#0E4D34] to-[#0A3D2A] hover:from-[#0B3D29] hover:to-[#082E20] active:scale-95 text-white font-extrabold text-xs sm:text-sm shadow-md hover:shadow-lg transition-all cursor-pointer shrink-0"
+                className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#0D6344] hover:bg-[#094E35] active:scale-95 text-white font-bold text-xs sm:text-sm shadow-md transition-all cursor-pointer shrink-0"
               >
                 <span>വിലകൾ കാണാം</span>
-                <span className="text-sm">🛡️</span>
+                <span className="text-sm font-sans">✓</span>
               </button>
 
               <button
                 type="button"
                 onClick={onOpenDeals}
-                className="group flex items-center gap-1.5 bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-500/10 hover:from-amber-500/20 hover:to-rose-500/20 border border-amber-500/30 px-3.5 py-1.5 rounded-full shadow-2xs text-xs font-black text-amber-900 transition-all cursor-pointer shrink-0 backdrop-blur-xs active:scale-95"
+                className="group flex items-center gap-1.5 bg-amber-100/90 hover:bg-amber-200/90 border border-amber-300 px-3.5 py-1.5 rounded-full shadow-2xs text-xs font-black text-amber-900 transition-all cursor-pointer shrink-0 active:scale-95"
                 title="ഫ്ലാഷ് ഡീലുകൾ കാണുക"
               >
                 <Zap className="w-3.5 h-3.5 text-amber-600 fill-amber-500 group-hover:scale-110 transition-transform" />
@@ -503,32 +503,22 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                   LIVE
                 </span>
               </button>
-
-              <span className="flex items-center gap-1.5 bg-white/70 hover:bg-white/90 border border-emerald-950/10 px-3 py-1.5 rounded-full shadow-2xs text-xs font-bold text-[#2A3B31] transition-all cursor-default shrink-0 backdrop-blur-xs">
-                <Store className="w-3.5 h-3.5 text-[#BC681D]" /> പ്രാദേശിക കടകൾ
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/70 hover:bg-white/90 border border-emerald-950/10 px-3 py-1.5 rounded-full shadow-2xs text-xs font-bold text-[#2A3B31] transition-all cursor-default shrink-0 backdrop-blur-xs">
-                <TrendingDown className="w-3.5 h-3.5 text-[#0B8F68]" /> വില താരതമ്യം
-              </span>
-              <span className="flex items-center gap-1.5 bg-white/70 hover:bg-white/90 border border-emerald-950/10 px-3 py-1.5 rounded-full shadow-2xs text-xs font-bold text-[#2A3B31] transition-all cursor-default shrink-0 backdrop-blur-xs">
-                <Tag className="w-3.5 h-3.5 text-[#BC681D]" /> മികച്ച ലാഭം
-              </span>
             </div>
           </div>
 
-          {/* Right Live Price Comparison Widget - Modern Frosted Glass Floating Cards */}
+          {/* Right Live Price Floating Frosted Widget matching the Mockup */}
           <div className={`${isRightSidebarOpen ? 'hidden xl:flex' : 'hidden lg:flex'} flex-col justify-center space-y-2.5 w-full font-sans`}>
             {/* Live Indicator Header */}
-            <div className="flex items-center justify-between px-1 text-xs font-extrabold text-[#0B2E21] font-malayalam">
+            <div className="flex items-center justify-between px-1 text-xs font-bold text-[#11261D] font-sans">
               <div className="flex items-center gap-2">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0D6344]"></span>
                 </span>
-                <span>തത്സമയ താരതമ്യം</span>
+                <span className="font-bold text-xs">Live price</span>
               </div>
-              <span className="text-[10px] font-sans font-extrabold text-emerald-800 bg-emerald-100/70 border border-emerald-200/50 px-2 py-0.5 rounded-full">
-                LIVE PRICES
+              <span className="text-[10px] font-sans font-extrabold text-[#0D6344] bg-white/90 border border-emerald-200/60 px-2 py-0.5 rounded-full shadow-2xs">
+                REAL-TIME
               </span>
             </div>
 
@@ -538,65 +528,97 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 const el = document.getElementById('catalog-products-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="flex items-center justify-between p-3 sm:p-3.5 bg-white/85 hover:bg-white/95 backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
             >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-emerald-950/10 flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  <img src="/categories/oils-spices.jpg" alt="വെളിച്ചെണ്ണ" className="w-full h-full object-contain rounded-lg" />
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <img src="/categories/oils-spices.jpg" alt="Coconut Oil" className="w-full h-full object-contain rounded-lg" />
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-sm sm:text-base font-black text-[#14291F] tracking-tight truncate">
-                    <span className="font-padmanabha group-hover:text-emerald-900 transition-colors">വെളിച്ചെണ്ണ</span>
-                    <span className="font-sans text-[11px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.5 rounded-md">1L</span>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
+                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">Coconut Oil</span>
+                    <span className="font-sans text-[10px] font-bold text-[#0D6344] bg-[#E8F5EE] border border-[#C3EEDC] px-1.5 py-0.2 rounded-md">1L</span>
                   </div>
-                  <div className="text-[11px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
-                    <Store className="w-3 h-3 text-[#BC681D] shrink-0" />
+                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
+                    <Store className="w-2.5 h-2.5 text-[#0D6344] shrink-0" />
                     <span>Al-Iqwan • 1.2 km</span>
                   </div>
                 </div>
               </div>
               <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
-                <div className="text-base sm:text-lg font-black text-[#0B3D27] font-sans tracking-tight">
-                  ₹145
+                <div className="text-sm font-black text-[#0D6344] font-sans tracking-tight">
+                  ₹190/L
                 </div>
-                <div className="text-[10px] sm:text-[11px] font-extrabold text-white bg-gradient-to-r from-emerald-600 to-emerald-700 px-2 py-0.5 rounded-full font-malayalam whitespace-nowrap shadow-2xs">
-                  ₹10 ലാഭം
+                <div className="text-[9px] font-bold text-emerald-800 bg-[#E8F5EE] px-1.5 py-0.2 rounded-full whitespace-nowrap">
+                  Lowest
                 </div>
               </div>
             </div>
 
-            {/* Card 2: Matta Rice */}
+            {/* Card 2: ABC Mart comparison */}
             <div
               onClick={() => {
                 const el = document.getElementById('catalog-products-section');
                 if (el) el.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="flex items-center justify-between p-3 sm:p-3.5 bg-white/85 hover:bg-white/95 backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
             >
-              <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-white border border-emerald-950/10 flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                  <img src="/categories/grains.jpg" alt="മട്ട അരി" className="w-full h-full object-contain rounded-lg" />
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <Store className="w-5 h-5 text-[#0D6344]" />
                 </div>
                 <div className="min-w-0">
-                  <div className="flex items-center gap-1.5 text-sm sm:text-base font-black text-[#14291F] tracking-tight truncate">
-                    <span className="font-padmanabha group-hover:text-emerald-900 transition-colors">മട്ട അരി</span>
-                    <span className="font-sans text-[11px] font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-1.5 py-0.5 rounded-md">5kg</span>
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
+                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">ABC Mart</span>
                   </div>
-                  <div className="text-[11px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
-                    <Store className="w-3 h-3 text-[#BC681D] shrink-0" />
+                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
+                    <span>Supermarket • 0.5 km</span>
+                  </div>
+                </div>
+              </div>
+              <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
+                <div className="text-sm font-black text-slate-700 font-sans tracking-tight">
+                  ₹195/L
+                </div>
+                <div className="text-[9px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.2 rounded-full whitespace-nowrap">
+                  Average
+                </div>
+              </div>
+            </div>
+
+            {/* Card 3: Rice */}
+            <div
+              onClick={() => {
+                const el = document.getElementById('catalog-products-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="flex items-center justify-between p-3 bg-white/95 hover:bg-white backdrop-blur-md rounded-2xl border border-white/80 shadow-[0_4px_16px_rgba(20,50,30,0.06)] hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group"
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <div className="w-10 h-10 rounded-xl bg-[#F5FAF6] border border-[#E0ECE3] flex items-center justify-center p-1 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <img src="/categories/grains.jpg" alt="Rice" className="w-full h-full object-contain rounded-lg" />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-[#14291F] tracking-tight truncate">
+                    <span className="font-sans group-hover:text-[#0D6344] transition-colors">Rice</span>
+                    <span className="font-sans text-[10px] font-bold text-amber-800 bg-amber-50 border border-amber-200/60 px-1.5 py-0.2 rounded-md">5kg</span>
+                  </div>
+                  <div className="text-[10px] text-[#526359] font-medium font-sans mt-0.5 truncate flex items-center gap-1">
+                    <Store className="w-2.5 h-2.5 text-[#0D6344] shrink-0" />
                     <span>Malabar Store • 0.8 km</span>
                   </div>
                 </div>
               </div>
               <div className="text-right flex flex-col items-end gap-0.5 shrink-0 pl-2">
-                <div className="text-base sm:text-lg font-black text-[#0B3D27] font-sans tracking-tight">
-                  ₹225
+                <div className="text-sm font-black text-[#0D6344] font-sans tracking-tight">
+                  ₹195/L
                 </div>
-                <div className="text-[10px] sm:text-[11px] font-extrabold text-white bg-gradient-to-r from-emerald-600 to-emerald-700 px-2 py-0.5 rounded-full font-malayalam whitespace-nowrap shadow-2xs">
-                  ₹15 ലാഭം
+                <div className="text-[9px] font-bold text-emerald-800 bg-[#E8F5EE] px-1.5 py-0.2 rounded-full whitespace-nowrap">
+                  Best Price
                 </div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -606,22 +628,22 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       {/* 2. CATEGORIES SECTION */}
       <section className="space-y-3">
         <div className="flex items-center justify-between px-1">
-          <h2 className="text-base font-extrabold text-[#2A241C] font-malayalam m-0">
-            വിഭാഗങ്ങൾ
+          <h2 className="text-base font-extrabold text-[#11261D] font-sans m-0">
+            Categories
           </h2>
           <button
             type="button"
             onClick={() => onSelectCategory('all')}
-            className="text-xs font-bold text-[#BC681D] hover:text-[#7C3A20] flex items-center gap-0.5 font-malayalam cursor-pointer transition-colors"
+            className="text-xs font-bold text-[#0D6344] hover:text-[#094E35] flex items-center gap-1 font-sans cursor-pointer transition-colors"
           >
-            <span>എല്ലാം കാണുക</span>
+            <span>View All</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Responsive Category Cards Grid (9 items starting with "എല്ലാം") */}
+        {/* Responsive Category Cards Grid (Pastel Palette from Mockup) */}
         <div className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-5 ${isRightSidebarOpen ? 'xl:grid-cols-5 2xl:grid-cols-9' : 'xl:grid-cols-9'
-          } gap-2 sm:gap-2.5 xl:gap-3 font-malayalam`}>
+          } gap-2 sm:gap-2.5 xl:gap-3 font-sans`}>
           {desktopCategories.map((cat) => {
             const isSelected = selectedCategoryId === cat.id;
 
@@ -630,13 +652,14 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                 key={cat.id}
                 type="button"
                 onClick={() => onSelectCategory(cat.id)}
-                className={`flex flex-col items-center justify-center p-2.5 sm:p-3 rounded-2xl transition-all cursor-pointer text-center group border ${isSelected
-                    ? 'bg-[#DFCFB6] border-[#BC681D] shadow-sm ring-2 ring-[#BC681D]/20 scale-[1.02]'
-                    : 'bg-white border-[#E0D7CB] hover:bg-[#FAF7F2] hover:border-[#BC681D]/40 shadow-2xs'
-                  }`}
+                className={`flex flex-col items-center justify-center p-3 rounded-2xl transition-all cursor-pointer text-center group border ${
+                  isSelected
+                    ? 'bg-[#DCFCE7] border-[#0D6344] shadow-sm ring-2 ring-[#0D6344]/20 scale-[1.02]'
+                    : `${cat.bgColor} hover:shadow-sm hover:scale-[1.02]`
+                }`}
               >
                 <div
-                  className={`w-12 h-12 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-110 p-1 ${cat.bgColor} shadow-2xs`}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center mb-1.5 overflow-hidden transition-transform group-hover:scale-110 p-1"
                 >
                   <img
                     src={cat.image}
@@ -646,8 +669,7 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
                   />
                 </div>
                 <span
-                  className={`text-[11px] font-bold leading-tight line-clamp-1 ${isSelected ? 'text-[#7C3A20] font-black' : 'text-[#3B342B]'
-                    }`}
+                  className="text-[11px] font-bold leading-tight line-clamp-1"
                 >
                   {cat.label}
                 </span>
@@ -657,19 +679,19 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
         </div>
       </section>
 
-      {/* 3. PRODUCTS SECTION (Displaying "എല്ലാ ഉൽപ്പന്നങ്ങളും" or the selected category) */}
-      <section className="space-y-3">
+      {/* 3. PRODUCTS SECTION */}
+      <section id="catalog-products-section" className="space-y-3 font-sans">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <h2 className="text-base font-extrabold text-[#17221D] font-malayalam m-0">
+            <h2 className="text-base font-extrabold text-[#11261D] font-sans m-0">
               {searchQuery
-                ? `തിരയൽ ഫലങ്ങൾ ("${searchQuery}")`
+                ? `Search Results ("${searchQuery}")`
                 : selectedCategoryId === 'all'
-                  ? 'എല്ലാ ഉൽപ്പന്നങ്ങളും'
-                  : (desktopCategories.find((c) => c.id === selectedCategoryId)?.label || 'ഉൽപ്പന്നങ്ങൾ')}
+                  ? 'Featured Products'
+                  : (desktopCategories.find((c) => c.id === selectedCategoryId)?.label || 'Products')}
             </h2>
-            <span className="bg-[#E8F5EE] text-[#0B8F68] border border-[#C3EEDC] text-[10px] font-bold px-2.5 py-0.5 rounded-full font-sans">
-              {displayedProducts.length} ഇനങ്ങൾ
+            <span className="bg-[#E8F5EE] text-[#0D6344] border border-[#C3EEDC] text-[10px] font-bold px-2.5 py-0.5 rounded-full font-sans">
+              {displayedProducts.length} items
             </span>
           </div>
 
@@ -677,9 +699,9 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
             <button
               type="button"
               onClick={() => onSelectCategory('all')}
-              className="text-xs font-bold text-[#0B8F68] hover:text-[#063B2A] flex items-center gap-0.5 font-malayalam cursor-pointer transition-colors"
+              className="text-xs font-bold text-[#0D6344] hover:text-[#094E35] flex items-center gap-0.5 font-sans cursor-pointer transition-colors"
             >
-              <span>എല്ലാം കാണുക</span>
+              <span>View All</span>
               <ChevronRight className="w-3.5 h-3.5" />
             </button>
           )}
