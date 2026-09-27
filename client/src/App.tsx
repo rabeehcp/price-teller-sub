@@ -542,10 +542,6 @@ export const App: React.FC = () => {
   };
 
   const handleOpenPreBooking = (targetShopName?: string) => {
-    if (!authUser) {
-      handleOpenAuthModal('consumer-login');
-      return;
-    }
     const chosenShop =
       targetShopName ||
       comparison?.bestShopName ||
@@ -1917,7 +1913,7 @@ export const App: React.FC = () => {
                     onQuantityChange={handleQuantityChange}
                     onRemoveItem={handleRemoveItem}
                     onClearBasket={handleClearBasket}
-                    onOpenCart={() => setIsMobileBasketOpen(true)}
+                    onOpenCart={() => handleOpenPreBooking()}
                     onOpenShops={() => setShopperTab('shops')}
                     onOpenDeals={() => setShopperTab('deals')}
                     onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
