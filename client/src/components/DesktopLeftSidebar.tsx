@@ -68,8 +68,8 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
   return (
     <aside
       className={`${
-        isCollapsed ? 'w-18 px-2 py-4' : 'w-56 xl:w-60 pr-3.5 pl-0 py-5'
-      } fixed top-0 left-0 bottom-0 h-screen z-40 bg-[#FAF7F0] text-[#2B231B] shrink-0 hidden lg:flex flex-col justify-between border-r border-[#ECE6DA] shadow-2xs select-none transition-all duration-200 overflow-y-auto no-scrollbar font-sans`}
+        isCollapsed ? 'w-20 px-2 py-5' : 'w-56 xl:w-60 pr-3.5 pl-0 py-5'
+      } fixed top-0 left-0 bottom-0 h-screen z-40 bg-[#FAF7F0] text-[#2B231B] shrink-0 hidden lg:flex flex-col justify-between border-r border-[#ECE6DA] shadow-2xs select-none transition-all duration-300 overflow-y-auto no-scrollbar font-sans`}
     >
       {/* Top Section: Logo & Menu Items */}
       <div className="space-y-6">
@@ -110,6 +110,9 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
                 {isActive && !isCollapsed && (
                   <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#10A978]" />
                 )}
+                {isActive && isCollapsed && (
+                  <span className="absolute left-0 top-1.5 bottom-1.5 w-1 bg-[#10A978] rounded-r" />
+                )}
 
                 {/* Icon */}
                 <div
@@ -146,8 +149,8 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
         <button
           type="button"
           onClick={onOpenLocationModal}
-          className={`w-full flex items-center justify-center gap-1.5 py-2 rounded-full border border-[#E5DFD4] bg-white/50 hover:bg-white text-[#2B231B] transition-all cursor-pointer shadow-2xs ${
-            isCollapsed ? 'px-2' : 'px-3'
+          className={`flex items-center justify-center rounded-full border border-[#E5DFD4] bg-white/50 hover:bg-white text-[#2B231B] transition-all cursor-pointer shadow-2xs ${
+            isCollapsed ? 'w-10 h-10 mx-auto p-0' : 'w-full py-2 px-3 gap-1.5'
           }`}
           title={`Delivery Hub: ${locationName} (Click to change)`}
         >
@@ -168,9 +171,9 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? (
-              <ChevronRight className="w-3.5 h-3.5" />
+              <ChevronRight className="w-4 h-4 text-[#7C6E5E] hover:translate-x-0.5 transition-transform" />
             ) : (
-              <ChevronLeft className="w-3.5 h-3.5" />
+              <ChevronLeft className="w-4 h-4 text-[#7C6E5E]" />
             )}
           </button>
         )}
