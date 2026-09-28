@@ -147,7 +147,7 @@ export const FlashDealsPage: React.FC<FlashDealsPageProps> = ({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search products..."
-          className="w-full pl-9.5 pr-8 py-2 bg-white border border-slate-200/90 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 transition-all font-sans shadow-2xs"
+          className="w-full pl-10 pr-9 py-2.5 bg-white border border-slate-200/90 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-slate-400 transition-all font-sans shadow-2xs"
         />
         {searchQuery && (
           <button
