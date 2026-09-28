@@ -16,24 +16,24 @@ export const FlashDealsBanner: React.FC<FlashDealsBannerProps> = ({
   if (!deals || deals.length === 0) return null;
 
   return (
-    <div className="bg-gradient-to-r from-amber-500 via-amber-600 to-emerald-600 text-white rounded-2xl p-4 sm:p-5 mb-6 shadow-md relative overflow-hidden">
+    <div className="bg-gradient-to-r from-[#063B2A] to-[#084D37] text-white rounded-2xl p-4 sm:p-5 mb-6 shadow-md relative overflow-hidden border border-emerald-900/30">
       {/* Header */}
       <div className="flex items-center justify-between gap-2 mb-3">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-xs">
-            <Sparkles className="w-4 h-4 text-amber-200 fill-amber-200" />
+          <div className="p-1.5 bg-white/10 rounded-lg backdrop-blur-xs">
+            <Sparkles className="w-4 h-4 text-emerald-300 fill-emerald-300" />
           </div>
           <div>
-            <h3 className="text-sm sm:text-base font-black tracking-tight leading-none">
+            <h3 className="text-sm sm:text-base font-bold tracking-tight leading-none text-white">
               Today's Local Flash Deals & Markdown Drops
             </h3>
-            <p className="text-[11px] text-amber-100 font-medium mt-0.5">
+            <p className="text-[11px] text-emerald-100/80 font-medium mt-0.5">
               Verified daily deals at participating neighbourhood stores
             </p>
           </div>
         </div>
-        <div className="hidden sm:flex items-center gap-1 text-[11px] font-bold bg-black/20 px-2.5 py-1 rounded-full border border-white/20">
-          <Clock className="w-3 h-3 text-amber-200" />
+        <div className="hidden sm:flex items-center gap-1 text-[11px] font-medium bg-white/10 px-2.5 py-1 rounded-full border border-white/15 text-emerald-200">
+          <Clock className="w-3 h-3 text-emerald-300" />
           <span>Limited daily inventory</span>
         </div>
       </div>

@@ -1189,6 +1189,22 @@ const newDeal: FlashDeal = {
       return newDeal;
   }
 
+  public async deleteFlashDeal(id: string, shopName?: string): Promise<boolean> {
+    try {
+      let sql = `DELETE FROM flash_deals WHERE id = $1`;
+      const params: any[] = [id];
+      if (shopName) {
+        sql += ` AND shop_name = $2`;
+        params.push(shopName);
+      }
+      await query(sql, params);
+      return true;
+    } catch (err) {
+      console.error('Failed to delete flash deal:', err);
+      return false;
+    }
+  }
+
   public async updateMerchantPrices(
     shopName: string,
     updates: { productId: string; price: number; stockStatus: 'in_stock' | 'low_stock' | 'out_of_stock' }[]

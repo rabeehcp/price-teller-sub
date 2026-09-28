@@ -6,23 +6,26 @@ import {
   Location,
 } from '../types';
 import {
-  Scale,
   ArrowLeft,
   Share2,
-  Award,
-  Sparkles,
   MapPin,
   CheckCircle2,
   AlertCircle,
   MessageCircle,
   CalendarCheck,
-  Compass,
   ShoppingBag,
-  TrendingDown,
   Store,
-  ChevronRight,
   Phone,
+  Sparkles,
+  ChevronDown,
+  Check,
+  Scale,
+  ShoppingCart,
+  User,
+  Users,
+  Bell,
 } from 'lucide-react';
+import { ProductImage } from './ProductImage';
 
 interface MobileCompareViewProps {
   basketItems: BasketItem[];
@@ -50,116 +53,115 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
   onOpenWhatsAppExport,
 }) => {
   const [comparisonSubTab, setComparisonSubTab] = useState<'single' | 'split'>('single');
-  const [sortBy, setSortBy] = useState<'value' | 'price' | 'distance'>('value');
+  const [sortBy, setSortBy] = useState<'price' | 'distance' | 'value'>('price');
 
   const hasItems = basketItems.length > 0;
   const shops = comparison?.shops || [];
   const bestShop = shops.length > 0 ? shops[0] : null;
   const splitOpt = comparison?.splitOptimization;
 
-  // Sorted shops based on active sort chip
+  // Sort shops based on selected criteria
   const sortedShops = [...shops].sort((a, b) => {
     if (sortBy === 'price') return a.total - b.total;
     if (sortBy === 'distance') return a.distanceKm - b.distanceKm;
-    // Default 'value': availability first, then price, then distance
     if (a.isAllAvailable !== b.isAllAvailable) return a.isAllAvailable ? -1 : 1;
     if (a.total !== b.total) return a.total - b.total;
     return a.distanceKm - b.distanceKm;
   });
 
   return (
-    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto space-y-3.5 font-sans pb-32 animate-in fade-in duration-150">
+    <div className="w-full font-sans antialiased text-slate-800">
       
-      {/* 1. Header */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-[#F0F4F2] sticky top-0 z-30 shadow-2xs">
-        <div className="flex items-center gap-2">
-          {onBack && (
+      {/* ========================================================================= */}
+      {/* 1. MOBILE-ONLY VIEW (< lg) - EXACT MATCH TO price_comparison_mobile MOCKUP */}
+      {/* ========================================================================= */}
+      <div className="block lg:hidden max-w-md mx-auto px-4 pb-28 pt-2 space-y-4">
+        
+        {/* Top Header Bar */}
+        <div className="flex items-center justify-between py-2">
+          {onBack ? (
             <button
               type="button"
               onClick={onBack}
-              className="p-1 -ml-1 text-[#17221D] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+              className="p-2 -ml-2 text-slate-800 hover:text-black rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Back"
             >
-              <ArrowLeft className="w-5 h-5 text-[#17221D]" />
+              <ArrowLeft className="w-6 h-6 stroke-[2.2]" />
             </button>
+          ) : (
+            <div className="w-8" />
           )}
-          <div className="flex items-center gap-1.5">
-            <div className="w-7 h-7 rounded-lg bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center">
-              <Scale className="w-4 h-4" />
-            </div>
-            <div>
-              <h1 className="text-sm font-extrabold text-[#17221D] font-malayalam m-0 leading-tight">
-                വില താരതമ്യം
-              </h1>
-              <span className="text-[10px] text-[#66756E] font-medium block">
-                📍 {currentLocation?.name || 'തിരൂർ'} മാർക്കറ്റ്
-              </span>
-            </div>
+
+          <div className="text-center flex-1 px-2">
+            <h1 className="text-lg font-bold text-slate-900 tracking-tight font-malayalam leading-tight">
+              വില താരതമ്യം
+            </h1>
+            <span className="text-[11px] text-slate-500 font-medium block">
+              Price Comparison
+            </span>
           </div>
+
+          {hasItems && onOpenWhatsAppExport ? (
+            <button
+              type="button"
+              onClick={onOpenWhatsAppExport}
+              className="p-2 -mr-2 text-slate-800 hover:text-black rounded-full hover:bg-slate-100 transition-colors cursor-pointer"
+              aria-label="Share"
+            >
+              <Share2 className="w-5 h-5 stroke-[2]" />
+            </button>
+          ) : (
+            <div className="w-8" />
+          )}
         </div>
 
-        {hasItems && onOpenWhatsAppExport && (
+        {/* Location Pill */}
+        <div className="flex justify-center">
           <button
             type="button"
-            onClick={onOpenWhatsAppExport}
-            className="flex items-center gap-1 text-[11px] font-bold text-[#063B2A] bg-[#E8F5EE] hover:bg-[#D5EADB] border border-[#C3EEDC] px-2.5 py-1 rounded-full transition-colors cursor-pointer active:scale-95 font-malayalam"
-            title="വാട്സ്ആപ്പിൽ ഷെയർ ചെയ്യുക"
+            onClick={onOpenLocationModal}
+            className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#ECFDF5] border border-emerald-100 text-slate-800 text-xs font-semibold shadow-2xs hover:bg-[#DDF9EB] transition-colors cursor-pointer"
           >
-            <Share2 className="w-3 h-3 text-[#0B8F68]" />
-            <span>ഷെയർ</span>
+            <MapPin className="w-3.5 h-3.5 text-emerald-700 fill-emerald-700" />
+            <span>{currentLocation?.name || 'Areekode'} Market</span>
           </button>
-        )}
-      </div>
+        </div>
 
-      <div className="px-3.5 space-y-3">
         {/* EMPTY STATE */}
         {!hasItems ? (
-          <div className="p-6 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3.5 shadow-2xs mt-2">
-            <div className="w-16 h-16 rounded-2xl bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto shadow-inner">
-              <Scale className="w-8 h-8 text-[#0B8F68]" />
+          <div className="p-8 bg-white border border-slate-200/80 rounded-3xl text-center space-y-4 shadow-sm mt-4">
+            <div className="w-16 h-16 rounded-2xl bg-[#E8F5EE] text-[#063B2A] flex items-center justify-center mx-auto border border-[#C3EEDC]">
+              <Scale className="w-8 h-8" />
             </div>
-            
-            <div className="space-y-1">
-              <h3 className="text-base font-black text-[#17221D] font-malayalam m-0">
+            <div className="space-y-1.5">
+              <h3 className="text-base font-black text-slate-900 font-malayalam">
                 താരതമ്യം ചെയ്യാൻ സാധനങ്ങൾ ചേർക്കൂ
               </h3>
-              <p className="text-xs text-[#66756E] font-malayalam max-w-xs mx-auto leading-relaxed">
+              <p className="text-xs text-slate-500 font-malayalam leading-relaxed">
                 സാധനങ്ങൾ ബാസ്ക്കറ്റിൽ ചേർത്താൽ നിങ്ങളുടെ പ്രദേശത്തെ കടകളിലെ കൃത്യമായ വില വ്യത്യാസവും ലാഭവും ഇവിടെ കാണാം.
               </p>
             </div>
-
             {onGoToSearch && (
               <button
                 type="button"
                 onClick={onGoToSearch}
-                className="w-full py-3 px-4 bg-[#063B2A] hover:bg-[#0B8F68] active:scale-98 text-white text-xs font-black rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam"
+                className="w-full py-3 px-4 bg-[#0D6344] hover:bg-[#064E3B] text-white text-sm font-bold rounded-2xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer font-malayalam active:scale-95"
               >
                 <ShoppingBag className="w-4 h-4" />
                 <span>സാധനങ്ങൾ തിരഞ്ഞെടുക്കുക</span>
               </button>
             )}
-
-            {/* Feature Highlights */}
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100 text-left font-malayalam">
-              <div className="p-2.5 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
-                <div className="text-xs font-black text-[#0B8F68] mb-0.5">⚡ ഒറ്റ കട വില</div>
-                <div className="text-[10px] text-slate-600">ഏറ്റവും കുറഞ്ഞ നിരക്കുള്ള കട തൽക്ഷണം അറിയാം</div>
-              </div>
-              <div className="p-2.5 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7]">
-                <div className="text-xs font-black text-amber-600 mb-0.5">✨ സ്പ്ലിറ്റ് ലാഭം</div>
-                <div className="text-[10px] text-slate-600">കടകൾ തിരിച്ച് വാങ്ങി പരമാവധി ലാഭിക്കാം</div>
-              </div>
-            </div>
           </div>
         ) : (!comparison || shops.length === 0) ? (
-          <div className="bg-white rounded-2xl p-6 text-center shadow-xs border border-slate-100 space-y-4 font-malayalam">
-            <div className="w-16 h-16 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center mx-auto text-3xl">
+          <div className="bg-white rounded-3xl p-8 text-center shadow-sm border border-slate-200/80 space-y-4">
+            <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto text-3xl border border-amber-200/60">
               🏪
             </div>
             <div className="space-y-1">
-              <h3 className="text-base font-black text-slate-800">
+              <h3 className="text-base font-black text-slate-900 font-malayalam">
                 {currentLocation?.name || 'ഈ പ്രദേശത്ത്'} കടകൾ ലഭ്യമല്ല
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed max-w-xs mx-auto">
+              <p className="text-xs text-slate-500 leading-relaxed">
                 വില താരതമ്യം ചെയ്യാൻ നിലവിൽ കടകൾ രജിസ്റ്റർ ചെയ്തിട്ടുള്ള പ്രദേശം തിരഞ്ഞെടുക്കൂ.
               </p>
             </div>
@@ -167,337 +169,218 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
               <button
                 type="button"
                 onClick={onOpenLocationModal}
-                className="w-full py-2.5 px-4 bg-[#0B8F68] text-white rounded-xl text-xs font-black flex items-center justify-center gap-2 shadow-xs hover:bg-[#097353] transition-colors cursor-pointer active:scale-98"
+                className="w-full py-2.5 px-4 bg-[#0D6344] hover:bg-[#064E3B] text-white rounded-2xl text-xs font-bold flex items-center justify-center gap-2 shadow-xs transition-colors cursor-pointer active:scale-95"
               >
                 <MapPin className="w-4 h-4" />
-                <span>📍 പ്രദേശം മാറ്റുക (Change Location)</span>
+                <span>പ്രദേശം മാറ്റുക (Change Location)</span>
               </button>
             )}
           </div>
         ) : (
           <>
-            {/* 2. Top Savings Summary Card */}
-            {comparison && (
-              <div className="bg-gradient-to-br from-[#063B2A] via-[#0B4D38] to-[#04281C] text-white rounded-2xl p-3.5 shadow-md space-y-2 relative overflow-hidden">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5 text-emerald-300 text-xs font-bold font-malayalam">
-                    <Award className="w-4 h-4 text-amber-400" />
-                    <span>ഏറ്റവും മികച്ച നിരക്ക്</span>
+            {/* Best Deal Store Card */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-1">
+              <div className="flex items-center justify-between">
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-sm font-semibold text-slate-800">Best Deal Store</span>
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 fill-emerald-100" />
                   </div>
-                  {comparison.maxSavings > 0 && (
-                    <span className="bg-emerald-500/30 text-emerald-200 border border-emerald-400/40 text-[10px] font-black px-2 py-0.5 rounded-full font-malayalam">
-                      ₹{Math.round(comparison.maxSavings)} വരെ ലാഭം
-                    </span>
-                  )}
+                  <h2 className="text-2xl font-black text-slate-900 tracking-tight mt-0.5">
+                    {comparison.bestShopName || bestShop?.shopName}
+                  </h2>
+                  <p className="text-xs text-slate-500 font-medium">Verified store</p>
                 </div>
-
-                <div className="flex items-baseline justify-between pt-0.5">
-                  <div>
-                    <span className="text-xs text-emerald-200/80 block font-malayalam">ശുപാർശ ചെയ്യുന്ന കട:</span>
-                    <span className="text-base font-black text-white truncate max-w-[200px] block">
-                      {comparison.bestShopName || bestShop?.shopName}
-                    </span>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-2xl font-black text-emerald-300 font-sans">
-                      ₹{Math.round(comparison.bestTotal)}
-                    </span>
-                    {comparison.averageMarketTotal > comparison.bestTotal && (
-                      <span className="text-[10px] text-slate-300 block line-through font-sans">
-                        ശരാശരി: ₹{Math.round(comparison.averageMarketTotal)}
-                      </span>
-                    )}
-                  </div>
+                <div className="text-right">
+                  <span className="text-4xl font-extrabold text-slate-900 tracking-tight font-sans">
+                    ₹{Math.round(comparison.bestTotal)}
+                  </span>
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* 3. Sub-Tabs: Single Store vs Split Optimizer */}
-            <div className="grid grid-cols-2 gap-1.5 bg-[#F5F8F6] p-1 rounded-xl text-xs font-bold border border-[#E3ECE7]">
+            {/* Segmented Control Pill: Single Store vs Split Optimizer */}
+            <div className="bg-white rounded-2xl border border-slate-200/80 p-1.5 flex gap-1.5 shadow-2xs">
               <button
                 type="button"
                 onClick={() => setComparisonSubTab('single')}
-                className={`py-2 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer font-malayalam ${
+                className={`flex-1 py-2.5 px-3 rounded-xl text-center text-sm font-bold transition-all cursor-pointer ${
                   comparisonSubTab === 'single'
-                    ? 'bg-white text-slate-900 shadow-2xs font-black'
-                    : 'text-slate-500 hover:text-slate-900'
+                    ? 'bg-[#0D6344] text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Award className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
-                <span>ഒറ്റ കട (Single Store)</span>
+                Single Store
               </button>
-              
               <button
                 type="button"
                 onClick={() => setComparisonSubTab('split')}
-                className={`py-2 px-2 rounded-lg flex items-center justify-center gap-1.5 transition-all relative cursor-pointer font-malayalam ${
+                className={`flex-1 py-2.5 px-3 rounded-xl text-center text-sm font-bold transition-all cursor-pointer ${
                   comparisonSubTab === 'split'
-                    ? 'bg-white text-slate-900 shadow-2xs font-black'
-                    : 'text-slate-500 hover:text-slate-900'
+                    ? 'bg-[#0D6344] text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
-                <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
-                <span>സ്പ്ലിറ്റ് ഒപ്റ്റിമൈസർ</span>
-                {splitOpt?.isWorthSplitting && (
-                  <span className="w-2 h-2 rounded-full bg-[#10A978] absolute top-1.5 right-1.5" />
-                )}
+                Split Optimizer
               </button>
             </div>
 
-            {/* 4. Sort Filter Chips (Single Store Tab) */}
+            {/* Store Comparison Cards List (Mobile) */}
             {comparisonSubTab === 'single' && (
-              <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500 overflow-x-auto pb-0.5 no-scrollbar font-malayalam">
-                <span className="flex items-center gap-1 shrink-0 text-slate-400">
-                  <Compass className="w-3 h-3" /> ക്രമീകരിക്കുക:
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setSortBy('value')}
-                  className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                    sortBy === 'value'
-                      ? 'bg-[#063B2A] text-white'
-                      : 'bg-white border border-[#E3ECE7] text-slate-700'
-                  }`}
-                >
-                  ⚡ സ്മാർട്ട് വാല്യു
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSortBy('price')}
-                  className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                    sortBy === 'price'
-                      ? 'bg-[#063B2A] text-white'
-                      : 'bg-white border border-[#E3ECE7] text-slate-700'
-                  }`}
-                >
-                  ₹ വിലക്കുറവ്
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSortBy('distance')}
-                  className={`px-2.5 py-1 rounded-lg transition-colors cursor-pointer shrink-0 ${
-                    sortBy === 'distance'
-                      ? 'bg-[#063B2A] text-white'
-                      : 'bg-white border border-[#E3ECE7] text-slate-700'
-                  }`}
-                >
-                  📍 സമീപം
-                </button>
-              </div>
-            )}
+              <div className="space-y-4">
+                {sortedShops.map((shop: ShopComparisonResult) => {
+                  return (
+                    <div
+                      key={shop.shopId || shop.shopName}
+                      className="bg-white rounded-2xl border border-slate-200/80 p-5 shadow-sm space-y-3"
+                    >
+                      {/* Row 1: Store Name & Distance */}
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-bold text-slate-900">
+                          {shop.shopName}
+                        </h3>
+                        <span className="text-sm font-semibold text-slate-500">
+                          {shop.distanceKm} km
+                        </span>
+                      </div>
 
-            {/* 5. SINGLE STORE CONTENT */}
-            {comparisonSubTab === 'single' && (
-              <div className="space-y-3">
-                {sortedShops.length === 0 ? (
-                  <div className="p-4 bg-white border border-slate-200 rounded-2xl text-center text-xs text-slate-500 font-malayalam">
-                    ഈ പ്രദേശത്തെ കടകളുടെ വില വിവരങ്ങൾ തയ്യാറാകുന്നു...
-                  </div>
-                ) : (
-                  sortedShops.map((shop: ShopComparisonResult) => {
-                    const isBest = shop.shopName === bestShop?.shopName;
-                    return (
-                      <div
-                        key={shop.shopId || shop.shopName}
-                        className={`rounded-2xl p-3.5 transition-all bg-white ${
-                          isBest
-                            ? 'border-2 border-[#0B8F68] bg-[#F4FAF6] shadow-sm'
-                            : 'border border-[#E3ECE7] hover:border-gray-300 shadow-2xs'
-                        }`}
-                      >
-                        {/* Store Header & Badge */}
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-1.5 min-w-0">
-                            <Store className="w-4 h-4 text-[#0B8F68] shrink-0" />
-                            <b className="text-sm font-black text-slate-900 truncate">
-                              {shop.shopName}
-                            </b>
-                          </div>
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            {shop.phone && (
-                              <a
-                                href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
-                                className="p-1.5 rounded-full bg-emerald-50 hover:bg-emerald-100 text-[#0B8F68] border border-emerald-200/80 transition-all active:scale-95"
-                                title={`${shop.shopName} വിളിക്കുക`}
-                              >
-                                <Phone className="w-3.5 h-3.5" />
-                              </a>
-                            )}
-                            {isBest && (
-                              <span className="text-[9px] font-black bg-[#0B8F68] text-white px-2 py-0.5 rounded-full uppercase shadow-2xs font-malayalam">
-                                ഏറ്റവും കുറഞ്ഞ വില
-                              </span>
-                            )}
-                          </div>
-                        </div>
-
-                        {/* Total Price & Distance */}
-                        <div className="flex items-baseline justify-between my-1.5">
-                          <div className="text-2xl font-black text-slate-900 font-sans tracking-tight">
-                            ₹{Math.round(shop.total)}
-                          </div>
-                          <div className="flex items-center gap-1 text-[11px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-md">
-                            <MapPin className="w-3 h-3 text-[#0B8F68]" />
-                            <span>{shop.distanceKm} km</span>
-                          </div>
-                        </div>
-
-                        {/* Availability Status */}
-                        <div className="flex items-center gap-2 text-xs mb-2">
-                          {shop.isAllAvailable ? (
-                            <span className="text-emerald-700 font-bold flex items-center gap-1 text-[11px] font-malayalam">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                              <span>എല്ലാ ഇനങ്ങളും ലഭ്യമാണ് ({basketItems.length}/{basketItems.length})</span>
+                      {/* Row 2: Stock Availability status */}
+                      <div className="flex items-center gap-1.5">
+                        {shop.isAllAvailable ? (
+                          <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-800">
+                            <span className="w-4 h-4 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" />
                             </span>
-                          ) : (
-                            <span className="text-rose-700 font-bold flex items-center gap-1 text-[11px] font-malayalam">
-                              <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                              <span>{shop.outOfStockCount} ഇനം സ്റ്റോക്കില്ല</span>
-                            </span>
-                          )}
-                        </div>
-
-                        {/* Missing Products Details */}
-                        {!shop.isAllAvailable && shop.missingProducts && shop.missingProducts.length > 0 && (
-                          <div className="mb-2.5 p-2 bg-rose-50 border border-rose-200 rounded-xl text-[10px] text-rose-950 font-malayalam">
-                            <span className="font-bold block mb-1">ലഭ്യമല്ലാത്തവ:</span>
-                            <div className="flex flex-wrap gap-1">
-                              {shop.missingProducts.map((p) => (
-                                <span
-                                  key={p.productId}
-                                  className="inline-block bg-white border border-rose-200 px-1.5 py-0.5 rounded-md font-bold text-rose-700"
-                                >
-                                  {p.productName}
-                                </span>
-                              ))}
-                            </div>
+                            <span>All {basketItems.length} items in stock</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-700">
+                            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                            <span>{shop.outOfStockCount} items out of stock</span>
                           </div>
                         )}
+                      </div>
 
-                        {/* Price Difference vs Best */}
-                        <div className="text-xs font-bold mb-2.5 font-malayalam">
-                          {isBest ? (
-                            <span className="text-[#0B8F68] flex items-center gap-1">
-                              <Sparkles className="w-3 h-3" />
-                              <span>ബാസ്ക്കറ്റിലെ ഏറ്റവും മികച്ച നിരക്ക്</span>
-                            </span>
-                          ) : (
-                            <span className="text-slate-500">
-                              {bestShop?.shopName}-നേക്കാൾ ₹{Math.round(shop.differenceVsBest)} കൂടുതൽ
-                            </span>
-                          )}
-                        </div>
+                      {/* Row 3: Total Price */}
+                      <div>
+                        <span className="text-3xl font-extrabold text-slate-900 font-sans tracking-tight">
+                          ₹{Math.round(shop.total)}
+                        </span>
+                      </div>
 
-                        {/* Action Buttons: കട കാണുക, വിളിക്കുക, ചാറ്റ്, പ്രീ-ബുക്ക് */}
-                        <div className={`grid ${shop.phone ? 'grid-cols-4' : 'grid-cols-3'} gap-1 font-malayalam pt-1 border-t border-slate-100`}>
-                          <button
-                            type="button"
-                            onClick={() => onOpenShopDetails && onOpenShopDetails(shop.shopName)}
-                            className="py-2 px-1 rounded-xl font-bold text-[10.5px] bg-slate-100 hover:bg-slate-200 text-slate-800 flex items-center justify-center transition-all cursor-pointer active:scale-95"
+                      {/* Row 4: 4 Solid Green Action Buttons with English labels */}
+                      <div className="grid grid-cols-4 gap-2 pt-1">
+                        {/* 1. Store */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenShopDetails && onOpenShopDetails(shop.shopName)}
+                          className="bg-[#0D6344] hover:bg-[#084530] text-white p-2.5 sm:p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                        >
+                          <Store className="w-5 h-5" />
+                          <span className="text-xs font-semibold">Store</span>
+                        </button>
+
+                        {/* 2. Call */}
+                        {shop.phone ? (
+                          <a
+                            href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                            className="bg-[#0D6344] hover:bg-[#084530] text-white p-2.5 sm:p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
                           >
-                            <span>കട</span>
-                          </button>
-
-                          {shop.phone && (
-                            <a
-                              href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
-                              className="py-2 px-1 bg-emerald-50 hover:bg-emerald-100 text-[#064E3B] border border-emerald-200/80 rounded-xl font-bold text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95"
-                              title={`${shop.shopName} ഫോൺ വിളിക്കുക`}
-                            >
-                              <Phone className="w-3 h-3 text-[#0B8F68]" />
-                              <span>വിളിക്കുക</span>
-                            </a>
-                          )}
-
+                            <Phone className="w-5 h-5" />
+                            <span className="text-xs font-semibold">Call</span>
+                          </a>
+                        ) : (
                           <button
                             type="button"
                             onClick={() => onOpenChat && onOpenChat(shop.shopName)}
-                            className="py-2 px-1 bg-[#E8F5EE] hover:bg-[#D5EADB] text-[#063B2A] border border-[#C3EEDC] rounded-xl font-bold text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95"
+                            className="bg-[#0D6344] hover:bg-[#084530] text-white p-2.5 sm:p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
                           >
-                            <MessageCircle className="w-3 h-3 text-[#0B8F68]" />
-                            <span>ചാറ്റ്</span>
+                            <Phone className="w-5 h-5" />
+                            <span className="text-xs font-semibold">Call</span>
                           </button>
+                        )}
 
-                          <button
-                            type="button"
-                            onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
-                            className={`py-2 px-1 rounded-xl font-black text-[10.5px] flex items-center justify-center gap-0.5 transition-all cursor-pointer active:scale-95 ${
-                              isBest
-                                ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white shadow-2xs'
-                                : 'bg-[#063B2A] hover:bg-[#0B8F68] text-white'
-                            }`}
-                          >
-                            <CalendarCheck className="w-3 h-3" />
-                            <span>പ്രീ-ബുക്ക്</span>
-                          </button>
-                        </div>
+                        {/* 3. Chat */}
+                        <button
+                          type="button"
+                          onClick={() => onOpenChat && onOpenChat(shop.shopName)}
+                          className="bg-[#0D6344] hover:bg-[#084530] text-white p-2.5 sm:p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                        >
+                          <MessageCircle className="w-5 h-5" />
+                          <span className="text-xs font-semibold">Chat</span>
+                        </button>
+
+                        {/* 4. Pre-Book */}
+                        <button
+                          type="button"
+                          onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
+                          className="bg-[#0D6344] hover:bg-[#084530] text-white p-2.5 sm:p-3 rounded-2xl flex flex-col items-center justify-center gap-1.5 shadow-2xs transition-all active:scale-95 cursor-pointer"
+                        >
+                          <CalendarCheck className="w-5 h-5" />
+                          <span className="text-xs font-semibold">Pre-Book</span>
+                        </button>
                       </div>
-                    );
-                  })
-                )}
+                    </div>
+                  );
+                })}
               </div>
             )}
 
-            {/* 6. SPLIT OPTIMIZER CONTENT */}
+            {/* Split Optimizer Content (Mobile) */}
             {comparisonSubTab === 'split' && (
-              <div className="space-y-3">
+              <div className="space-y-3 font-sans">
                 {splitOpt?.isWorthSplitting ? (
-                  <div className="space-y-3 font-malayalam">
-                    <div className="p-3.5 bg-gradient-to-r from-amber-50 to-emerald-50 border border-amber-200 rounded-2xl space-y-1 shadow-2xs">
-                      <div className="flex items-center gap-1.5 text-xs font-black text-[#063B2A]">
-                        <Sparkles className="w-4 h-4 text-amber-500" />
-                        <span>സ്പ്ലിറ്റ് ചെയ്താൽ ₹{Math.round(splitOpt.additionalSavings)} അധികം ലാഭം!</span>
+                  <div className="space-y-3">
+                    <div className="p-4 bg-emerald-50 border border-emerald-200/80 rounded-2xl space-y-1">
+                      <div className="flex items-center gap-2 text-sm font-bold text-[#0D6344]">
+                        <Sparkles className="w-4 h-4 text-emerald-600" />
+                        <span>Extra Savings: ₹{Math.round(splitOpt.additionalSavings)}</span>
                       </div>
-                      <p className="text-[11px] text-slate-600 leading-snug">
+                      <p className="text-xs text-slate-600 leading-relaxed font-malayalam">
                         {splitOpt.tipMessage || 'രണ്ട് കടകളിൽ നിന്ന് ഏറ്റവും വിലകുറഞ്ഞവ വേർതിരിച്ച് വാങ്ങി കൂടുതൽ ലാഭിക്കാം.'}
                       </p>
                     </div>
 
-                    {/* Stores in Split */}
                     {splitOpt.stores?.map((st, idx) => (
-                      <div key={idx} className="bg-white border border-[#E3ECE7] rounded-2xl p-3 space-y-2 shadow-2xs">
-                        <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
+                      <div key={idx} className="bg-white border border-slate-200/90 rounded-2xl p-4 space-y-3 shadow-xs">
+                        <div className="flex items-center justify-between border-b border-slate-100 pb-2">
                           <div>
-                            <span className="text-[10px] font-bold text-slate-400 uppercase">കട {idx + 1}</span>
-                            <h4 className="text-xs font-black text-slate-900 m-0">{st.shopName}</h4>
+                            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Store {idx + 1}</span>
+                            <h4 className="text-base font-bold text-slate-900">{st.shopName}</h4>
                           </div>
-                          <span className="text-sm font-black text-[#0B8F68] font-sans">
+                          <span className="text-lg font-black text-[#0D6344] font-sans">
                             ₹{Math.round(st.subtotal)}
                           </span>
                         </div>
 
-                        {/* Items to buy */}
                         <div className="space-y-1">
-                          <span className="text-[10px] font-bold text-slate-500">ഇവിടെ വാങ്ങേണ്ടവ ({st.items?.length || 0} എണ്ണം):</span>
-                          <div className="space-y-1">
-                            {st.items?.map((it, i) => (
-                              <div key={i} className="flex items-center justify-between text-[11px] text-slate-700 bg-slate-50 p-1.5 rounded-lg">
-                                <span className="truncate">{it.productName} ({it.quantity} {it.unit})</span>
-                                <span className="font-bold font-sans">₹{Math.round(it.lineTotal)}</span>
-                              </div>
-                            ))}
-                          </div>
+                          {st.items?.map((it, i) => (
+                            <div key={i} className="flex items-center justify-between text-xs text-slate-700 bg-slate-50 p-2 rounded-xl">
+                              <span className="truncate pr-2 font-medium">{it.productName} ({it.quantity} {it.unit})</span>
+                              <span className="font-bold text-slate-900 font-sans">₹{Math.round(it.lineTotal)}</span>
+                            </div>
+                          ))}
                         </div>
 
                         <button
                           type="button"
                           onClick={() => onPreBookBasket && onPreBookBasket(st.shopName)}
-                          className="w-full py-2 bg-[#063B2A] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 active:scale-95"
+                          className="w-full py-2.5 bg-[#0D6344] hover:bg-[#084530] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 active:scale-95 shadow-xs transition-all cursor-pointer"
                         >
-                          <CalendarCheck className="w-3.5 h-3.5" />
-                          <span>{st.shopName}-ൽ നിന്ന് പ്രീ-ബുക്ക് ചെയ്യുക</span>
+                          <CalendarCheck className="w-4 h-4" />
+                          <span>Pre-Book from {st.shopName}</span>
                         </button>
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <div className="p-6 bg-white border border-[#E3ECE7] rounded-2xl text-center space-y-2 font-malayalam">
-                    <div className="text-2xl">✨</div>
-                    <h4 className="text-xs font-black text-slate-900 m-0">
-                      സ്പ്ലിറ്റ് ചെയ്യേണ്ട ആവശ്യമില്ല
+                  <div className="p-8 bg-white border border-slate-200/80 rounded-2xl text-center space-y-2 shadow-2xs">
+                    <div className="text-3xl mb-1">✨</div>
+                    <h4 className="text-sm font-bold text-slate-900">
+                      No Split Needed
                     </h4>
-                    <p className="text-[11px] text-slate-500 max-w-xs mx-auto leading-relaxed">
-                      നിങ്ങൾ തിരഞ്ഞെടുത്ത സാധനങ്ങൾക്ക് ഏറ്റവും കുറഞ്ഞ നിരക്ക് ഒറ്റ കടയിൽ ({bestShop?.shopName || 'Best Store'}) ലഭ്യമാണ്.
+                    <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+                      All your basket items already have the best possible combined rate at {bestShop?.shopName || 'Single Store'}.
                     </p>
                   </div>
                 )}
@@ -506,6 +389,465 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
           </>
         )}
       </div>
+
+      {/* ========================================================================= */}
+      {/* 2. DESKTOP VIEW (lg:) - EXACT MATCH TO price_comparison_desktop MOCKUP     */}
+      {/* ========================================================================= */}
+      <div className="hidden lg:block w-full max-w-[1400px] mx-auto px-4 pb-16 pt-1 font-sans">
+        
+        {/* Top Dark Green Navigation Header (Exact match to Mockup top bar) */}
+        <div className="w-full bg-[#173C2C] text-white px-6 py-3.5 flex items-center justify-between rounded-2xl shadow-md mb-6">
+          {/* Left: PeediyaCart Logo */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg bg-emerald-700/60 flex items-center justify-center text-white">
+              <ShoppingCart className="w-4 h-4" />
+            </div>
+            <span className="text-base font-extrabold tracking-tight text-white font-sans">
+              PeediyaCart
+            </span>
+          </div>
+
+          {/* Center Breadcrumb */}
+          <div className="flex items-center gap-2 text-xs font-medium text-emerald-100/80">
+            <span
+              onClick={onBack}
+              className="hover:text-white cursor-pointer transition-colors"
+            >
+              Home
+            </span>
+            <span>&gt;</span>
+            <span
+              onClick={onBack}
+              className="hover:text-white cursor-pointer transition-colors"
+            >
+              Basket
+            </span>
+            <span>&gt;</span>
+            <span className="text-white font-bold">Price Comparison</span>
+          </div>
+
+          {/* Right User & Actions Icons */}
+          <div className="flex items-center gap-3 text-emerald-100/90">
+            <button
+              type="button"
+              className="p-1.5 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors cursor-pointer"
+              title="Profile"
+            >
+              <User className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              className="p-1.5 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors cursor-pointer"
+              title="Community"
+            >
+              <Users className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              className="p-1.5 hover:text-white hover:bg-emerald-800/50 rounded-full transition-colors relative cursor-pointer"
+              title="Notifications"
+            >
+              <Bell className="w-4 h-4" />
+              <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1 right-1" />
+            </button>
+          </div>
+        </div>
+
+        {/* Sub-bar: Left Tabs | Right Location & Sort by */}
+        <div className="flex items-center justify-between border-b border-slate-200/80 pb-3 mb-6">
+          {/* Tabs */}
+          <div className="flex items-center gap-6">
+            <button
+              type="button"
+              onClick={() => setComparisonSubTab('single')}
+              className={`text-sm font-bold pb-3 -mb-3 transition-colors cursor-pointer ${
+                comparisonSubTab === 'single'
+                  ? 'text-slate-900 border-b-2 border-[#173C2C]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              Single Store Comparison
+            </button>
+            <button
+              type="button"
+              onClick={() => setComparisonSubTab('split')}
+              className={`text-sm font-medium pb-3 -mb-3 transition-colors cursor-pointer ${
+                comparisonSubTab === 'split'
+                  ? 'text-slate-900 border-b-2 border-[#173C2C]'
+                  : 'text-slate-500 hover:text-slate-800'
+              }`}
+            >
+              Split Cart Optimizer
+            </button>
+          </div>
+
+          {/* Right Location & Sort Dropdown */}
+          <div className="flex items-center gap-4">
+            {/* Location Pill */}
+            <button
+              type="button"
+              onClick={onOpenLocationModal}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 text-xs font-semibold cursor-pointer transition-colors shadow-2xs"
+            >
+              <MapPin className="w-3.5 h-3.5 text-slate-600" />
+              <span>{currentLocation?.name || 'Areekode'} Market</span>
+              <span className="text-xs">🗺️</span>
+            </button>
+
+            {/* Sort by Dropdown */}
+            <div className="flex items-center gap-2 text-xs">
+              <span className="text-slate-500 font-medium">Sort by</span>
+              <div className="relative">
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  aria-label="Sort by comparison option"
+                  className="appearance-none bg-white border border-slate-300 hover:border-slate-400 rounded-lg px-3 py-1.5 pr-8 text-xs font-semibold text-slate-800 cursor-pointer shadow-2xs focus:outline-none focus:ring-1 focus:ring-[#173C2C]"
+                >
+                  <option value="price">Price (Low-High)</option>
+                  <option value="distance">Distance (Nearest)</option>
+                  <option value="value">Smart Value</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-500 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* EMPTY STATE (DESKTOP) */}
+        {!hasItems ? (
+          <div className="p-12 bg-white border border-slate-200/80 rounded-3xl text-center space-y-4 shadow-sm max-w-xl mx-auto my-12">
+            <div className="w-16 h-16 rounded-2xl bg-[#E8F5EE] text-[#063B2A] flex items-center justify-center mx-auto border border-[#C3EEDC]">
+              <Scale className="w-8 h-8" />
+            </div>
+            <div className="space-y-1.5">
+              <h3 className="text-lg font-bold text-slate-900">
+                Your Basket is Empty
+              </h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                Add grocery items to your basket to compare real-time prices across all verified local supermarkets in your area.
+              </p>
+            </div>
+            {onGoToSearch && (
+              <button
+                type="button"
+                onClick={onGoToSearch}
+                className="py-3 px-6 bg-[#173C2C] hover:bg-[#0c2b1f] text-white text-sm font-bold rounded-xl shadow-xs transition-all inline-flex items-center gap-2 cursor-pointer active:scale-95"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Browse Products</span>
+              </button>
+            )}
+          </div>
+        ) : (!comparison || shops.length === 0) ? (
+          <div className="bg-white rounded-3xl p-12 text-center shadow-sm border border-slate-200/80 space-y-4 max-w-xl mx-auto my-12">
+            <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center mx-auto text-3xl border border-amber-200/60">
+              🏪
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-bold text-slate-900">
+                No stores registered in {currentLocation?.name || 'this location'}
+              </h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto leading-relaxed">
+                Please switch to a supported market town to view price comparison and live stock.
+              </p>
+            </div>
+            {onOpenLocationModal && (
+              <button
+                type="button"
+                onClick={onOpenLocationModal}
+                className="py-2.5 px-6 bg-[#173C2C] hover:bg-[#0c2b1f] text-white rounded-xl text-xs font-bold inline-flex items-center gap-2 shadow-xs transition-colors cursor-pointer active:scale-95"
+              >
+                <MapPin className="w-4 h-4" />
+                <span>Change Location</span>
+              </button>
+            )}
+          </div>
+        ) : (
+          /* 2-COLUMN MAIN LAYOUT (DESKTOP) */
+          <div className="grid grid-cols-12 gap-6 items-start">
+            
+            {/* Left Column: Best Deal Summary Sidebar (Sticky, col-span-3) */}
+            <div className="col-span-3 sticky top-4">
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-sm space-y-5">
+                {/* Title */}
+                <h3 className="text-base font-bold text-slate-900 tracking-tight">
+                  Best Deal Summary
+                </h3>
+
+                {/* Recommend the store green box */}
+                <div className="bg-[#E5F5E9] rounded-xl p-3.5 space-y-1">
+                  <span className="text-[11px] text-slate-600 font-medium block">
+                    Recommend the store
+                  </span>
+                  <div className="text-lg font-bold text-slate-900 leading-tight">
+                    {comparison.bestShopName || bestShop?.shopName}
+                  </div>
+                </div>
+
+                {/* Total price & Total savings stats row */}
+                <div className="grid grid-cols-2 gap-3 pb-2 border-b border-slate-100">
+                  <div>
+                    <span className="text-[11px] text-slate-500 font-medium block">Total price</span>
+                    <span className="text-2xl font-black text-slate-900 font-sans tracking-tight">
+                      ₹{Math.round(comparison.bestTotal)}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-[11px] text-slate-500 font-medium block">Total savings</span>
+                    <span className="text-2xl font-black text-[#136F48] font-sans tracking-tight">
+                      ₹{Math.round(comparison.maxSavings || 0)}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Basket Items List */}
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between text-xs font-bold text-slate-900">
+                    <span>Basket Items</span>
+                    <span className="text-[11px] font-normal text-slate-400">{basketItems.length} items</span>
+                  </div>
+
+                  <div className="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+                    {basketItems.map((item) => {
+                      const p = item.product;
+                      const itemBreakdown = bestShop?.items?.find((i) => i.productId === item.productId);
+                      const name = p?.name || itemBreakdown?.productName || 'Item';
+                      const img = p?.image || itemBreakdown?.image;
+                      const emoji = p?.emoji || itemBreakdown?.emoji || '📦';
+                      const unitPrice = itemBreakdown ? itemBreakdown.unitPrice : 0;
+                      const price = itemBreakdown ? itemBreakdown.lineTotal : 0;
+
+                      return (
+                        <div
+                          key={item.productId}
+                          className="flex items-center justify-between gap-2.5 text-xs py-1"
+                        >
+                          <div className="flex items-center gap-2.5 min-w-0">
+                            <div className="w-8 h-8 rounded-lg bg-slate-50 border border-slate-200/80 p-0.5 shrink-0 flex items-center justify-center overflow-hidden">
+                              <ProductImage
+                                productId={item.productId}
+                                image={img}
+                                emoji={emoji}
+                                alt={name}
+                                className="w-full h-full"
+                                imgClassName="w-full h-full object-contain"
+                                fallbackEmojiClassName="text-sm"
+                              />
+                            </div>
+                            <div className="min-w-0">
+                              <span className="font-semibold text-slate-900 block truncate text-xs">
+                                {name}
+                              </span>
+                              <span className="text-[11px] text-slate-400 font-sans block">
+                                ₹{Math.round(unitPrice || price)}
+                              </span>
+                            </div>
+                          </div>
+
+                          <span className="font-bold text-slate-900 font-sans text-xs shrink-0">
+                            ₹{Math.round(price)}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            {/* Right Column: Store Cards 3-Column Grid (col-span-9) */}
+            <div className="col-span-9">
+              {comparisonSubTab === 'single' ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4.5">
+                  {sortedShops.map((shop: ShopComparisonResult) => {
+                    return (
+                      <div
+                        key={shop.shopId || shop.shopName}
+                        className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-2xs hover:shadow-md transition-shadow flex flex-col justify-between space-y-3"
+                      >
+                        {/* Top: Dual Verified Badges row */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 text-[10.5px] font-bold px-2 py-0.5 rounded-full border border-emerald-100">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" /> Verified
+                            </span>
+                            <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 text-[10.5px] font-bold px-2 py-0.5 rounded-full border border-emerald-100">
+                              <Check className="w-2.5 h-2.5 stroke-[3]" /> Verified
+                            </span>
+                          </div>
+
+                          {/* Store Name & Distance / Stock */}
+                          <div>
+                            <h4 className="text-sm sm:text-base font-bold text-slate-900 truncate">
+                              {shop.shopName}
+                            </h4>
+                            <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium mt-0.5">
+                              <MapPin className="w-3 h-3 text-slate-400" />
+                              <span>{shop.distanceKm} km</span>
+                              <span>•</span>
+                              <span className={shop.isAllAvailable ? 'text-emerald-700 font-semibold' : 'text-rose-600 font-semibold'}>
+                                {shop.isAllAvailable ? 'In Stock' : `${shop.outOfStockCount} missing`}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Big Gray Price Banner Box */}
+                          <div className="bg-[#F1F3F5] rounded-xl p-3 my-2">
+                            <span className="text-3xl font-extrabold text-slate-900 font-sans tracking-tight">
+                              ₹{Math.round(shop.total)}
+                            </span>
+                          </div>
+
+                          {/* Itemized List of Basket Products */}
+                          <div className="space-y-1.5 pt-1">
+                            {basketItems.map((item) => {
+                              const p = item.product;
+                              const itemBreakdown = shop.items?.find((i) => i.productId === item.productId);
+                              const name = p?.name || itemBreakdown?.productName || 'Item';
+                              const isMissing = !itemBreakdown || itemBreakdown.unitPrice <= 0 || itemBreakdown.stockStatus === 'out_of_stock';
+
+                              return (
+                                <div
+                                  key={item.productId}
+                                  className="flex items-center justify-between text-xs py-0.5"
+                                >
+                                  <span className="text-slate-700 font-medium truncate pr-2">
+                                    {name}
+                                  </span>
+                                  <span className={`font-bold font-sans text-xs shrink-0 ${isMissing ? 'text-rose-600' : 'text-slate-900'}`}>
+                                    {isMissing ? 'N/A' : `₹${Math.round(itemBreakdown.lineTotal)}`}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
+
+                        {/* Bottom Action Buttons: View Store (Solid Green), Call, Chat, Pre-Book (Outlines) */}
+                        <div className="grid grid-cols-4 gap-1.5 pt-3 border-t border-slate-100">
+                          {/* 1. View Store */}
+                          <button
+                            type="button"
+                            onClick={() => onOpenShopDetails && onOpenShopDetails(shop.shopName)}
+                            className="bg-[#173C2C] hover:bg-[#0c2b1f] text-white text-xs font-semibold py-2 px-1 rounded-lg text-center cursor-pointer shadow-2xs transition-all active:scale-95 truncate"
+                          >
+                            View Store
+                          </button>
+
+                          {/* 2. Call */}
+                          {shop.phone ? (
+                            <a
+                              href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
+                              className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium py-2 px-1 rounded-lg text-center cursor-pointer transition-all active:scale-95 truncate"
+                            >
+                              Call
+                            </a>
+                          ) : (
+                            <button
+                              type="button"
+                              onClick={() => onOpenChat && onOpenChat(shop.shopName)}
+                              className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium py-2 px-1 rounded-lg text-center cursor-pointer transition-all active:scale-95 truncate"
+                            >
+                              Call
+                            </button>
+                          )}
+
+                          {/* 3. Chat */}
+                          <button
+                            type="button"
+                            onClick={() => onOpenChat && onOpenChat(shop.shopName)}
+                            className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium py-2 px-1 rounded-lg text-center cursor-pointer transition-all active:scale-95 truncate"
+                          >
+                            Chat
+                          </button>
+
+                          {/* 4. Pre-Book */}
+                          <button
+                            type="button"
+                            onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
+                            className="bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium py-2 px-1 rounded-lg text-center cursor-pointer transition-all active:scale-95 truncate"
+                          >
+                            Pre-Book
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                /* Desktop Split Optimizer */
+                <div className="space-y-4">
+                  {splitOpt?.isWorthSplitting ? (
+                    <div className="space-y-4">
+                      <div className="p-5 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-2xl flex items-center justify-between">
+                        <div>
+                          <h4 className="text-base font-bold text-[#173C2C] flex items-center gap-2">
+                            <Sparkles className="w-5 h-5 text-emerald-600" />
+                            <span>Split Cart Savings: ₹{Math.round(splitOpt.additionalSavings)} Extra Savings</span>
+                          </h4>
+                          <p className="text-xs text-slate-600 mt-1 max-w-lg">
+                            Buying specific items from these different local stores saves you more than buying all from a single store.
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {splitOpt.stores?.map((st, idx) => (
+                          <div key={idx} className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 shadow-sm flex flex-col justify-between">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5">
+                                <div>
+                                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Store {idx + 1}</span>
+                                  <h4 className="text-base font-bold text-slate-900">{st.shopName}</h4>
+                                </div>
+                                <span className="text-xl font-extrabold text-[#173C2C] font-sans">
+                                  ₹{Math.round(st.subtotal)}
+                                </span>
+                              </div>
+
+                              <div className="space-y-1.5">
+                                {st.items?.map((it, i) => (
+                                  <div key={i} className="flex items-center justify-between text-xs text-slate-700 bg-slate-50 p-2.5 rounded-xl">
+                                    <span className="truncate pr-2 font-medium">{it.productName} ({it.quantity} {it.unit})</span>
+                                    <span className="font-bold text-slate-900 font-sans">₹{Math.round(it.lineTotal)}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            <button
+                              type="button"
+                              onClick={() => onPreBookBasket && onPreBookBasket(st.shopName)}
+                              className="w-full py-2.5 bg-[#173C2C] hover:bg-[#0c2b1f] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 active:scale-95 shadow-xs transition-all cursor-pointer"
+                            >
+                              <CalendarCheck className="w-4 h-4" />
+                              <span>Pre-Book from {st.shopName}</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-12 bg-white border border-slate-200/80 rounded-2xl text-center space-y-2">
+                      <div className="text-3xl mb-1">✨</div>
+                      <h4 className="text-base font-bold text-slate-900">
+                        No Split Cart Needed
+                      </h4>
+                      <p className="text-xs text-slate-500 max-w-sm mx-auto leading-relaxed">
+                        Your basket items already have the lowest overall rate at {bestShop?.shopName || 'Single Store'}.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+          </div>
+        )}
+      </div>
+
     </div>
   );
 };

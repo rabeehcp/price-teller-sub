@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { FlashDeal, Product, Shop, User, Conversation, ChatMessage, PreBooking, PreBookingStatus, SubscriptionStatusResponse, DailySalesSummary, MerchantSale } from '../types';
 import { formatChatDateTime } from './ConsumerChatModal';
 import { ProductImage } from './ProductImage';
@@ -8,6 +8,7 @@ import { VoiceNotePlayer } from './VoiceNotePlayer';
 import { VoiceMessageRecorder } from './VoiceMessageRecorder';
 import {
   createFlashDealApi,
+  deleteFlashDealApi,
   updateMerchantPricesApi,
   updateMerchantShopApi,
   delistMerchantProductApi,
@@ -106,6 +107,8 @@ interface MerchantDashboardProps {
   onLogout?: () => void;
   subStatus?: SubscriptionStatusResponse | null;
   onOpenSubscriptionPaywall?: () => void;
+  flashDeals?: FlashDeal[];
+  onDealsUpdated?: (updatedDeals: FlashDeal[]) => void;
 }
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
@@ -135,6 +138,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   onLogout,
   subStatus: propsSubStatus,
   onOpenSubscriptionPaywall,
+  flashDeals = [],
+  onDealsUpdated,
 }) => {
   const initialShopName = authUser?.shopName || shops[0]?.name || 'Green Mart';
   const [selectedShopName, setSelectedShopName] = useState<string>(initialShopName);
@@ -628,6 +633,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     }
   };
 
+  const [isDeletingDealId, setIsDeletingDealId] = useState<string | null>(null);
+
   const handleCreateDeal = async (e: React.FormEvent) => {
     e.preventDefault();
     const prod = products.find((p) => p.id === dealProductId);
@@ -636,7 +643,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     const originalPrice = editablePrices[prod.id] || prod.prices[currentShop.name] || 50;
 
     try {
-      await createFlashDealApi({
+      const created = await createFlashDealApi({
         shopId: currentShop.id,
         shopName: currentShop.name,
         productId: prod.id,
@@ -648,12 +655,37 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
         expiresInMinutes: Number(dealDuration),
         tag: dealTag,
       });
+      if (onDealsUpdated && created) {
+        onDealsUpdated([created, ...flashDeals]);
+      }
       setDealSuccessMsg(`Flash deal for ${prod.name} is now live on PeediyaCart!`);
-      setTimeout(() => setDealSuccessMsg(''), 3000);
+      setTimeout(() => setDealSuccessMsg(''), 4000);
     } catch (err) {
       console.error(err);
     }
   };
+
+  const handleDeleteDeal = async (dealId: string) => {
+    setIsDeletingDealId(dealId);
+    try {
+      await deleteFlashDealApi(dealId);
+      if (onDealsUpdated) {
+        onDealsUpdated(flashDeals.filter((d) => d.id !== dealId));
+      }
+    } catch (err) {
+      console.error('Failed to delete deal:', err);
+    } finally {
+      setIsDeletingDealId(null);
+    }
+  };
+
+  const activeStoreDeals = useMemo(() => {
+    return (flashDeals || []).filter(
+      (d) =>
+        d.shopName.toLowerCase() === selectedShopName.toLowerCase() ||
+        (currentShop && d.shopId === currentShop.id)
+    );
+  }, [flashDeals, selectedShopName, currentShop]);
 
   // Delist & Relist States
   const [delistConfirmProduct, setDelistConfirmProduct] = useState<Product | null>(null);
@@ -2991,6 +3023,68 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
               <span>Broadcast Flash Deal Live</span>
             </button>
           </form>
+
+          {/* Active Deals List for Current Shop */}
+          <div className="mt-8 pt-6 border-t border-slate-100 space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="text-sm font-black text-slate-800 flex items-center gap-2 m-0">
+                <Tag className="w-4 h-4 text-emerald-600" />
+                <span>Active Deals Broadcasted by {selectedShopName}</span>
+              </h4>
+              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                {activeStoreDeals.length} Live
+              </span>
+            </div>
+
+            {activeStoreDeals.length === 0 ? (
+              <p className="text-xs text-slate-400 py-4 text-center border border-dashed border-slate-200 rounded-xl m-0">
+                No active flash deals currently broadcasted for this store.
+              </p>
+            ) : (
+              <div className="space-y-2.5">
+                {activeStoreDeals.map((deal: FlashDeal) => {
+                  const savings = Math.max(0, deal.originalPrice - deal.dealPrice);
+                  const discountPct = deal.discountPercentage || (deal.originalPrice > 0 ? Math.round((savings / deal.originalPrice) * 100) : 0);
+                  return (
+                    <div
+                      key={deal.id}
+                      className="flex items-center justify-between p-3 bg-slate-50 hover:bg-white border border-slate-200 rounded-xl transition-all shadow-2xs gap-3"
+                    >
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <span className="text-2xl shrink-0">{deal.emoji || '🔥'}</span>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-slate-900 truncate">
+                              {deal.productName}
+                            </span>
+                            <span className="text-[10px] font-black bg-amber-100 text-amber-900 px-1.5 py-0.2 rounded-md shrink-0">
+                              {discountPct}% OFF
+                            </span>
+                          </div>
+                          <div className="text-[11px] text-slate-500 flex items-center gap-2 mt-0.5">
+                            <span className="font-bold text-emerald-700 font-sans">₹{deal.dealPrice}</span>
+                            <span className="line-through text-slate-400 font-sans">₹{deal.originalPrice}</span>
+                            <span>•</span>
+                            <span className="truncate">{deal.tag || 'Flash Deal'}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteDeal(deal.id)}
+                        disabled={isDeletingDealId === deal.id}
+                        className="px-2.5 py-1.5 text-xs font-bold text-rose-600 hover:text-white hover:bg-rose-600 border border-rose-200 hover:border-rose-600 rounded-lg transition-all shrink-0 cursor-pointer disabled:opacity-50"
+                        title="End this flash deal"
+                      >
+                        {isDeletingDealId === deal.id ? 'Ending...' : 'End Deal'}
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

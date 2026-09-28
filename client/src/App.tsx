@@ -32,7 +32,6 @@ import { ShopDetailModal } from './components/ShopDetailModal';
 import { ShopPriceCatalogueModal } from './components/ShopPriceCatalogueModal';
 import { ItemizedMatrixModal } from './components/ItemizedMatrixModal';
 import { FlashDealsBanner } from './components/FlashDealsBanner';
-import { FlashDealsModal } from './components/FlashDealsModal';
 import { FlashDealsPage } from './components/FlashDealsPage';
 import { StoreDuelModal } from './components/StoreDuelModal';
 import { AddProductModal } from './components/AddProductModal';
@@ -64,6 +63,7 @@ import { DesktopLeftSidebar } from './components/DesktopLeftSidebar';
 import { DesktopHomeView } from './components/DesktopHomeView';
 import { DesktopRightSidebar } from './components/DesktopRightSidebar';
 import { DesktopProfileView } from './components/DesktopProfileView';
+import { DesktopCompareView } from './components/DesktopCompareView';
 import { EnteBazaarLogo } from './components/EnteBazaarLogo';
 import { loadActiveBasket, persistActiveBasket, clearActiveBasket, rehydrateBasket } from './services/sessionManager';
 
@@ -386,7 +386,6 @@ export const App: React.FC = () => {
   const [consumerData, setConsumerData] = useState<ConsumerData | null>(null);
   const [isConsumerDashboardOpen, setIsConsumerDashboardOpen] = useState<boolean>(false);
   const [isSaveBasketModalOpen, setIsSaveBasketModalOpen] = useState<boolean>(false);
-  const [isFlashDealsModalOpen, setIsFlashDealsModalOpen] = useState<boolean>(false);
 
   // Main Data States
   const [locations, setLocations] = useState<Location[]>([]);
@@ -1499,6 +1498,8 @@ export const App: React.FC = () => {
           onLogout={handleLogout}
           subStatus={merchantSubStatus}
           onOpenSubscriptionPaywall={() => setIsMerchantUpgradeModalOpen(true)}
+          flashDeals={flashDeals}
+          onDealsUpdated={(updated) => setFlashDeals(updated)}
         />
         {isAddProductModalOpen && (
           <AddProductModal
@@ -1567,23 +1568,26 @@ export const App: React.FC = () => {
     <div className="min-h-screen flex bg-white text-[#17221D] font-sans">
 
       {/* 1. DESKTOP LEFT SIDEBAR (Matching Image 1 Reference) */}
-      <DesktopLeftSidebar
-        currentTab={shopperTab}
-        onSelectTab={(tab) => {
-          setShopperTab(tab);
-          if (tab === 'home') setSelectedCategoryId('all');
-        }}
-        currentLocation={currentLocation}
-        onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
-        authUser={authUser}
-        onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
-        isCollapsed={isLeftSidebarCollapsed}
-        onToggleCollapse={handleToggleLeftSidebar}
-      />
+      {shopperTab !== 'compare' && (
+        <DesktopLeftSidebar
+          currentTab={shopperTab}
+          onSelectTab={(tab) => {
+            setShopperTab(tab);
+            if (tab === 'home') setSelectedCategoryId('all');
+          }}
+          currentLocation={currentLocation}
+          onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+          authUser={authUser}
+          onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+          isCollapsed={isLeftSidebarCollapsed}
+          onToggleCollapse={handleToggleLeftSidebar}
+        />
+      )}
 
       {/* 2. MAIN APPLICATION WORKSPACE */}
-      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-300 ${isLeftSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-56 xl:ml-60'
-        }`}>
+      <div className={`flex-1 flex flex-col min-w-0 pb-16 lg:pb-0 transition-all duration-300 ${
+        shopperTab === 'compare' ? 'ml-0' : (isLeftSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-56 xl:ml-60')
+      }`}>
 
         {/* Mobile Header matching Screen 1 */}
         <MobileHeader
@@ -1597,45 +1601,47 @@ export const App: React.FC = () => {
         />
 
         {/* Desktop Header (Matching Image 1) with Location Selector & Cart Toggle */}
-        <div className="hidden lg:block">
-          <DesktopHeader
-            searchQuery={searchQuery}
-            onSearchChange={setSearchQuery}
-            authUser={authUser}
-            currentLocation={currentLocation}
-            onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
-            onOpenAuthModal={handleOpenAuthModal}
-            onOpenFavorites={() => {
-              if (!authUser) handleOpenAuthModal('consumer-login');
-              else setShopperTab('profile');
-            }}
-            onOpenOrders={() => {
-              if (!authUser) handleOpenAuthModal('consumer-login');
-              else setShopperTab('orders');
-            }}
-            onOpenProfile={() => {
-              if (!authUser) handleOpenAuthModal('consumer-login');
-              else setShopperTab('profile');
-            }}
-            onOpenFlashDeals={() => setIsFlashDealsModalOpen(true)}
-            onSelectRole={(r) => {
-              if (r === 'shopper') {
-                setAppView('consumer');
-              } else if (r === 'merchant') {
-                setAppView('merchant');
-              } else if (r === 'admin') {
-                setAppView('admin');
-              }
-            }}
-            onLogout={handleLogout}
-            basketCount={totalBasketCount}
-            basketSubtotal={basketSubtotal}
-            isRightSidebarOpen={isDesktopRightSidebarOpen}
-            onToggleRightSidebar={() => setIsDesktopRightSidebarOpen((prev) => !prev)}
-          />
-        </div>
+        {shopperTab !== 'compare' && (
+          <div className="hidden lg:block">
+            <DesktopHeader
+              searchQuery={searchQuery}
+              onSearchChange={setSearchQuery}
+              authUser={authUser}
+              currentLocation={currentLocation}
+              onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+              onOpenAuthModal={handleOpenAuthModal}
+              onOpenFavorites={() => {
+                if (!authUser) handleOpenAuthModal('consumer-login');
+                else setShopperTab('profile');
+              }}
+              onOpenOrders={() => {
+                if (!authUser) handleOpenAuthModal('consumer-login');
+                else setShopperTab('orders');
+              }}
+              onOpenProfile={() => {
+                if (!authUser) handleOpenAuthModal('consumer-login');
+                else setShopperTab('profile');
+              }}
+              onOpenFlashDeals={() => setShopperTab('deals')}
+              onSelectRole={(r) => {
+                if (r === 'shopper') {
+                  setAppView('consumer');
+                } else if (r === 'merchant') {
+                  setAppView('merchant');
+                } else if (r === 'admin') {
+                  setAppView('admin');
+                }
+              }}
+              onLogout={handleLogout}
+              basketCount={totalBasketCount}
+              basketSubtotal={basketSubtotal}
+              isRightSidebarOpen={isDesktopRightSidebarOpen}
+              onToggleRightSidebar={() => setIsDesktopRightSidebarOpen((prev) => !prev)}
+            />
+          </div>
+        )}
 
-        <main className="flex-1 w-full px-3 sm:px-4 lg:px-6 py-4 sm:py-5">
+        <main className={`flex-1 w-full ${shopperTab === 'compare' ? 'p-0' : 'px-3 sm:px-4 lg:px-6 py-4 sm:py-5'}`}>
 
           {/* MOBILE & TABLET SCREENS (Adaptive Responsive Container) */}
           <div className="lg:hidden w-full max-w-2xl sm:max-w-4xl mx-auto px-1 sm:px-4">
@@ -1699,7 +1705,7 @@ export const App: React.FC = () => {
                     setSelectedMobileCategory(cat);
                     setSelectedCategoryId('all');
                   }}
-                  onOpenDeals={() => setIsFlashDealsModalOpen(true)}
+                  onOpenDeals={() => setShopperTab('deals')}
                 />
               )
             )}
@@ -2059,20 +2065,28 @@ export const App: React.FC = () => {
 
             {/* Desktop Full Price Comparison Page */}
             {shopperTab === 'compare' && (
-              <div className="max-w-4xl mx-auto py-4">
-                <MobileCompareView
-                  basketItems={basket}
-                  comparison={comparison}
-                  currentLocation={currentLocation}
-                  onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
-                  onBack={() => setShopperTab('home')}
-                  onGoToSearch={() => setShopperTab('search')}
-                  onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
-                  onOpenChat={(shopName) => handleOpenChat(shopName)}
-                  onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
-                  onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
-                />
-              </div>
+              <DesktopCompareView
+                basketItems={basket}
+                comparison={comparison}
+                currentLocation={currentLocation}
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                onBack={() => setShopperTab('home')}
+                onGoToCart={() => setShopperTab('cart')}
+                onGoToSearch={() => setShopperTab('search')}
+                onOpenShopDetails={(shopName) => setSelectedShopDetail(shopName)}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onPreBookBasket={(shopName) => handleOpenPreBooking(shopName)}
+                onOpenWhatsAppExport={() => setIsWhatsAppModalOpen(true)}
+                onOpenProfile={() => {
+                  if (!authUser) handleOpenAuthModal('consumer-login');
+                  else setShopperTab('profile');
+                }}
+                onOpenOrders={() => {
+                  if (!authUser) handleOpenAuthModal('consumer-login');
+                  else setShopperTab('orders');
+                }}
+                onOpenDeals={() => setShopperTab('deals')}
+              />
             )}
 
             {/* Desktop Full Search / Category Page */}
@@ -2129,79 +2143,75 @@ export const App: React.FC = () => {
 
       </div>
 
-      {/* Floating Bottom Basket Bar for Mobile & Tablet */}
+      {/* Floating Bottom Basket Bar for Mobile & Tablet - Ultra-Slim White Light Pill */}
       {basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare' && (
-        <div className="lg:hidden fixed bottom-[64px] sm:bottom-[70px] left-3.5 right-3.5 sm:left-auto sm:right-6 sm:w-[420px] z-30 bg-gradient-to-r from-[#04281C] via-[#063B2A] to-[#084D37] text-white rounded-2xl p-2.5 sm:p-3 shadow-[0_12px_28px_rgba(4,40,28,0.38)] flex items-center justify-between animate-in slide-in-from-bottom duration-200 border border-[#10A978]/35 font-malayalam backdrop-blur-md">
+        <div className="lg:hidden fixed bottom-[64px] sm:bottom-[70px] left-3.5 right-3.5 sm:left-auto sm:right-6 sm:w-[420px] z-30 bg-white/95 text-slate-900 rounded-full px-3.5 py-1.5 sm:py-2 shadow-[0_8px_30px_rgba(0,0,0,0.12)] flex items-center justify-between animate-in slide-in-from-bottom-2 duration-200 border border-slate-200/90 font-sans backdrop-blur-md">
           {comparison?.shops && comparison.shops.length > 0 && comparison.bestTotal > 0 ? (
             <>
+              {/* Left: Cart Icon + Total items • Best Price */}
+              <div
+                onClick={() => setIsMobileBasketOpen(true)}
+                className="flex items-center gap-1.5 cursor-pointer hover:opacity-80 transition-opacity pl-0.5 shrink-0"
+                title="ബാസ്ക്കറ്റ് കാണുക"
+              >
+                <ShoppingCart className="w-4 h-4 text-slate-800 stroke-[2.2]" />
+                <span className="text-xs font-black text-slate-900 tracking-tight font-sans">
+                  {totalBasketCount} • ₹{Math.round(comparison.bestTotal)}
+                </span>
+              </div>
+
+              {/* Middle: Divider | + Green Dot + Recommended Store */}
               <div
                 onClick={() => setShopperTab('compare')}
-                className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0 pr-2"
+                className="flex items-center gap-1.5 min-w-0 px-2 cursor-pointer border-l border-slate-200 ml-1.5"
+                title="താരതമ്യം കാണുക"
               >
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#10A978] to-[#34D399] flex items-center justify-center text-[#063B2A] shrink-0 shadow-md">
-                  <Scale className="w-5 h-5 stroke-[2.5]" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-[11px] font-bold text-emerald-200/90 truncate">
-                    {totalBasketCount} ഇനങ്ങൾ ബാസ്കറ്റിൽ
-                  </div>
-                  <div className="text-sm font-black text-white font-sans flex items-baseline gap-1">
-                    <span className="text-[10px] text-emerald-300 font-malayalam font-bold">കുറഞ്ഞ നിരക്ക്:</span>
-                    <span className="text-[#34D399] text-base font-black">₹{Math.round(comparison.bestTotal)}</span>
-                  </div>
-                </div>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0 animate-pulse" />
+                <span className="text-xs font-semibold text-slate-700 truncate max-w-[110px] sm:max-w-[140px]">
+                  {comparison.bestShopName || comparison.shops[0]?.shopName}
+                </span>
               </div>
-              <div className="flex items-center gap-1.5 shrink-0">
-                <button
-                  onClick={() => setShopperTab('compare')}
-                  className="px-3.5 py-2 bg-gradient-to-r from-[#10A978] to-[#0B8F68] hover:brightness-110 text-white text-xs font-black rounded-xl cursor-pointer active:scale-95 shadow-md flex items-center gap-1.5 border border-emerald-400/30"
-                >
-                  <Scale className="w-3.5 h-3.5" />
-                  <span>താരതമ്യം</span>
-                </button>
-                <button
-                  onClick={() => setIsMobileBasketOpen(true)}
-                  className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl cursor-pointer active:scale-95 transition-colors border border-white/10"
-                  title="ബാസ്ക്കറ്റ് കാണുക"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                </button>
-              </div>
+
+              {/* Right: Solid Dark Green Pill Button: താരതമ്യം → */}
+              <button
+                type="button"
+                onClick={() => setShopperTab('compare')}
+                className="px-3.5 py-1.5 bg-[#173C2C] hover:bg-[#0E281D] text-white text-xs font-bold rounded-full cursor-pointer active:scale-95 shadow-xs flex items-center gap-1.5 transition-all shrink-0 font-malayalam"
+              >
+                <span>താരതമ്യം</span>
+                <span className="text-[13px] leading-none">→</span>
+              </button>
             </>
           ) : (
             <>
+              {/* Fallback when no comparison / shops registered */}
+              <div
+                onClick={() => setIsMobileBasketOpen(true)}
+                className="flex items-center gap-1.5 cursor-pointer pl-0.5 shrink-0"
+              >
+                <ShoppingCart className="w-4 h-4 text-slate-800 stroke-[2.2]" />
+                <span className="text-xs font-black text-slate-900 font-sans">
+                  {totalBasketCount} ഇനങ്ങൾ
+                </span>
+              </div>
+
               <div
                 onClick={() => setIsMobileLocationModalOpen(true)}
-                className="flex items-center gap-2.5 cursor-pointer flex-1 min-w-0 pr-2"
+                className="flex items-center gap-1.5 min-w-0 px-2 cursor-pointer border-l border-slate-200 ml-1.5"
               >
-                <div className="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-400/30 flex items-center justify-center shrink-0 shadow-xs">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div className="min-w-0">
-                  <div className="text-[11px] font-bold text-emerald-200/90 truncate">
-                    {totalBasketCount} സാധനങ്ങൾ ബാസ്കറ്റിൽ
-                  </div>
-                  <div className="text-xs font-black text-amber-300 truncate">
-                    ഈ പ്രദേശത്ത് കടകൾ ലഭ്യമല്ല
-                  </div>
-                </div>
+                <MapPin className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span className="text-[11px] font-semibold text-amber-600 truncate">
+                  കടകൾ ലഭ്യമല്ല
+                </span>
               </div>
-              <div className="flex items-center gap-1.5 shrink-0">
-                <button
-                  onClick={() => setIsMobileLocationModalOpen(true)}
-                  className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-900 text-xs font-black rounded-xl cursor-pointer active:scale-95 shadow-md flex items-center gap-1"
-                >
-                  <MapPin className="w-3.5 h-3.5" />
-                  <span>സ്ഥലം മാറ്റുക</span>
-                </button>
-                <button
-                  onClick={() => setIsMobileBasketOpen(true)}
-                  className="p-2 bg-white/10 hover:bg-white/20 text-white rounded-xl cursor-pointer active:scale-95 border border-white/10"
-                  title="ബാസ്ക്കറ്റ് കാണുക"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                </button>
-              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsMobileLocationModalOpen(true)}
+                className="px-3 py-1.5 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-full cursor-pointer active:scale-95 shadow-xs flex items-center gap-1 transition-all shrink-0 font-malayalam"
+              >
+                <span>മാറ്റുക</span>
+              </button>
             </>
           )}
         </div>
@@ -2368,22 +2378,6 @@ export const App: React.FC = () => {
         />
       )}
 
-      {/* Actual Flash Deals Modal */}
-      <FlashDealsModal
-        isOpen={isFlashDealsModalOpen}
-        onClose={() => setIsFlashDealsModalOpen(false)}
-        deals={flashDeals}
-        onAddDealToBasket={handleQuickAdd}
-        onOpenMerchantPortal={() => {
-          if (authUser?.role === 'merchant') {
-            window.history.pushState({}, '', '/merchant');
-            setAppView('merchant');
-          } else {
-            handleOpenAuthModal('merchant-login');
-          }
-        }}
-        isMerchant={authUser?.role === 'merchant'}
-      />
 
       {/* Consumer Chat with Merchant Modal */}
       {isChatModalOpen && (
@@ -2542,7 +2536,7 @@ export const App: React.FC = () => {
       {(appView === 'consumer' || appView === 'welcome') && !isChatModalOpen && (
         <div
           className={`lg:hidden fixed right-3.5 sm:right-6 z-30 transition-all duration-300 ${basket.length > 0 && !isMobileBasketOpen && shopperTab !== 'compare'
-            ? 'bottom-[140px]'
+            ? 'bottom-[116px]'
             : 'bottom-[66px]'
             }`}
         >

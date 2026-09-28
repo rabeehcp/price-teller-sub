@@ -471,6 +471,15 @@ export async function createFlashDealApi(dealData: Partial<FlashDeal>): Promise<
   throw new Error(json.error || 'Failed to create deal');
 }
 
+export async function deleteFlashDealApi(dealId: string): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/merchant/deals/${dealId}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+  });
+  const json = await res.json();
+  return !!json.success;
+}
+
 export async function delistMerchantProductApi(shopName: string, productId: string): Promise<boolean> {
   const res = await fetch(`${API_BASE}/merchant/products/${productId}/delist`, {
     method: 'POST',

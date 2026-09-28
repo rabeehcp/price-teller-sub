@@ -392,7 +392,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
       <div className="space-y-2">
         <div
           onClick={onOpenDeals || onViewAllProducts}
-          className="relative overflow-hidden rounded-3xl cursor-pointer group shadow-2xs hover:shadow-md transition-all active:scale-[0.99] border border-[#C5ECD8] bg-[#D5EDDF]"
+          className="relative overflow-hidden rounded-2xl cursor-pointer group shadow-xs hover:shadow-md transition-all active:scale-[0.99] border border-[#C5ECD8] bg-[#D8F3E5]"
         >
           <img
             src="/hero-banner-fresh.png"
@@ -412,37 +412,9 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
             ഓഫറുകൾ കാണുക
           </button>
         </div>
-
-        {/* Carousel Indicator Dots */}
-        <div className="flex items-center justify-center gap-1.5 pt-0.5 pb-1">
-          <span className="w-4 h-1.5 rounded-full bg-[#0D6344]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-          <span className="w-1.5 h-1.5 rounded-full bg-slate-300" />
-        </div>
       </div>
 
-      {/* 3. LIVE PRICE TICKER */}
-      <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 -mx-0.5 px-0.5">
-        <span className="text-[9px] font-black text-[#0D6344] bg-[#E8F5EE] px-2 py-1 rounded-lg shrink-0 border border-emerald-200 font-malayalam">
-          ഇന്ന്:
-        </span>
-        {TODAY_PRICES.map((item) => (
-          <div
-            key={item.name}
-            className="bg-white text-slate-800 text-[9px] font-bold px-2.5 py-1 rounded-full border border-[#E3ECE7] shadow-2xs shrink-0 flex items-center gap-1.5 whitespace-nowrap"
-          >
-            {item.image ? (
-              <img src={item.image} alt={item.name} className="w-3.5 h-3.5 object-contain rounded-xs shrink-0" />
-            ) : (
-              <span>{item.emoji}</span>
-            )}
-            <span className="font-malayalam">{item.name}</span>
-            <span className="font-sans font-black text-[#0D6344]">₹{item.price}</span>
-          </div>
-        ))}
-      </div>
-
-      {/* 4. CATEGORIES */}
+      {/* 3. CATEGORIES */}
       <div className="space-y-2">
         <div className="flex items-center justify-between px-0.5">
           <h2 className="text-sm font-black text-slate-900 font-malayalam m-0">കാറ്റഗറികൾ</h2>

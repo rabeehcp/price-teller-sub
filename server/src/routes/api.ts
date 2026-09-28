@@ -945,6 +945,18 @@ apiRouter.post('/merchant/deals', authenticateToken, requireMerchant, async (req
   }
 });
 
+// 19-delete. Merchant / Admin: Delete Flash Deal
+apiRouter.delete('/merchant/deals/:id', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    const shopName = req.user.role === 'merchant' ? (req.user.shopName || req.body.shopName) : req.body.shopName;
+    const ok = await db.deleteFlashDeal(id, shopName);
+    res.json({ success: ok, message: 'Flash deal ended' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 19b. Merchant: Delist Item from Store Catalog
 apiRouter.post('/merchant/products/:id/delist', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {

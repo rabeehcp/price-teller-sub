@@ -562,8 +562,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         </div>
 
         {/* Scrollable Content Area - Beautifully Proportioned on Mobile & iPad */}
-        <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar p-3.5 sm:p-5 md:p-6 space-y-3.5 sm:space-y-4 flex flex-col items-center">
-          <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl space-y-3.5 sm:space-y-4">
+        <div className="flex-1 min-h-0 overflow-y-auto no-scrollbar p-3 sm:p-5 md:p-6 flex flex-col items-center justify-between">
+          <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl flex-1 flex flex-col justify-between space-y-3">
             
             {/* Main Hero Card Container */}
             <div className="rounded-3xl overflow-hidden shadow-sm border border-[#CCE3D6] bg-white">
@@ -701,8 +701,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   </div>
                 </div>
 
-                {/* Tablet Quick Category Shortcuts (Fills iPad screen height gracefully) */}
-                <div className="pt-2 border-t border-gray-100 hidden sm:block">
+                {/* Quick Category Shortcuts (Fills mobile & tablet screen height gracefully without gap) */}
+                <div className="pt-2 border-t border-gray-100">
                   <div className="text-[11px] font-bold text-[#556F62] uppercase tracking-wider mb-2 font-['Baloo_Chettan_2',sans-serif]">
                     വിഭാഗങ്ങൾ തിരയൂ (Quick Categories)
                   </div>
@@ -737,7 +737,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             </div>
 
             {/* Trust / Brand Strip */}
-            <div className="py-2 text-center space-y-2">
+            <div className="pt-2 pb-1 text-center space-y-2 mt-auto">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#CCE3D6] shadow-2xs text-xs font-bold text-[#14231A]">
                 <span>PeediyaCart</span>
                 <span className="text-gray-300">•</span>
