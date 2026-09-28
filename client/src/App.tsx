@@ -31,7 +31,6 @@ import { WhatsAppExportModal } from './components/WhatsAppExportModal';
 import { ShopDetailModal } from './components/ShopDetailModal';
 import { ShopPriceCatalogueModal } from './components/ShopPriceCatalogueModal';
 import { ItemizedMatrixModal } from './components/ItemizedMatrixModal';
-import { FlashDealsBanner } from './components/FlashDealsBanner';
 import { FlashDealsPage } from './components/FlashDealsPage';
 import { StoreDuelModal } from './components/StoreDuelModal';
 import { AddProductModal } from './components/AddProductModal';
@@ -65,7 +64,6 @@ import { DesktopHomeView } from './components/DesktopHomeView';
 import { DesktopRightSidebar } from './components/DesktopRightSidebar';
 import { DesktopProfileView } from './components/DesktopProfileView';
 import { DesktopCompareView } from './components/DesktopCompareView';
-import { EnteBazaarLogo } from './components/EnteBazaarLogo';
 import { loadActiveBasket, persistActiveBasket, clearActiveBasket, rehydrateBasket } from './services/sessionManager';
 
 import { User, ConsumerData, ConsumerSavedList, ConsumerSavedListItem, SubscriptionStatusResponse } from './types';

@@ -15,7 +15,8 @@ export default defineConfig({
         'logo.png',
         'pwa-192x192.png',
         'pwa-512x512.png',
-        'hero-market.jpg',
+        'hero-banner-fresh.png',
+        'hero-groceries-fresh.jpg',
         'peediyacart-logo.png',
       ],
       manifest: {
