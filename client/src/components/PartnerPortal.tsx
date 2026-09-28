@@ -146,7 +146,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
     <div className="min-h-screen bg-[#F0F4F2] text-[#15231C] font-['Plus_Jakarta_Sans',sans-serif] flex flex-col selection:bg-[#0D4A36] selection:text-white pb-10">
       {/* 1. Header Bar */}
       <header className="bg-[#073827] text-white border-b border-emerald-900/60 sticky top-0 z-30 shadow-md backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-3.5 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3">
+        <div className="max-w-7xl 2xl:max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3">
           {/* Left: Back Button & Title */}
           <div className="flex items-center gap-2 sm:gap-3 min-w-0">
             <button
@@ -214,7 +214,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
       </header>
 
       {/* 2. Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-3.5 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
+      <main className="flex-1 max-w-7xl 2xl:max-w-[1400px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
         {/* ============================================================== */}
         {/* CASE A: No Partner Logged In -> Clean Landing & Code Entry     */}
         {/* ============================================================== */}
@@ -661,36 +661,43 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
             </div>
 
             {/* 4. Referral & Direct Merchant Invite Hub */}
-            <div className="bg-gradient-to-br from-[#073827] via-[#0D4A36] to-[#125841] text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 shadow-[0_8px_30px_rgba(13,74,54,0.18)] relative overflow-hidden">
-              <div className="max-w-2xl space-y-2.5 relative z-10">
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/15 text-[11px] font-bold text-emerald-100 backdrop-blur-xs font-['Baloo_Chettan_2',sans-serif]">
-                  <Sparkles className="w-3 h-3 text-amber-300" />
-                  <span>കടക്കാരെ ചേർക്കാനുള്ള റഫറൽ ലിങ്ക് (Referral Link)</span>
+            <div className="bg-gradient-to-br from-[#073827] via-[#0D4A36] to-[#125841] text-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 lg:p-7 shadow-[0_8px_30px_rgba(13,74,54,0.18)] relative overflow-hidden">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center relative z-10">
+                {/* Left Column: Heading & Explanation */}
+                <div className="lg:col-span-7 space-y-2 sm:space-y-2.5">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-[11px] font-bold text-emerald-100 backdrop-blur-xs font-['Baloo_Chettan_2',sans-serif]">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>കടക്കാരെ ചേർക്കാനുള്ള റഫറൽ ലിങ്ക് (Referral Link)</span>
+                  </div>
+
+                  <h3 className="text-base sm:text-xl lg:text-2xl font-black leading-snug font-['Baloo_Chettan_2',sans-serif]">
+                    കട ഉടമകളെ നേരിട്ട് ബന്ധപ്പെടാം, കമ്മീഷൻ സ്വന്തമാക്കാം
+                  </h3>
+
+                  <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-['Anek_Malayalam',sans-serif] max-w-xl">
+                    ഈ ലിങ്ക് വഴി കടക്കാർ രജിസ്റ്റർ ചെയ്യുമ്പോൾ ഓരോ തവണയും <b className="text-white font-bold">{partner.commissionRatePercent}% കമ്മീഷൻ</b> നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് എത്തും.
+                  </p>
                 </div>
 
-                <h3 className="text-base sm:text-xl font-black leading-snug font-['Baloo_Chettan_2',sans-serif]">
-                  കട ഉടമകളെ നേരിട്ട് ബന്ധപ്പെടാം, കമ്മീഷൻ സ്വന്തമാക്കാം
-                </h3>
-
-                <p className="text-xs text-emerald-100/90 leading-relaxed font-['Anek_Malayalam',sans-serif]">
-                  ഈ ലിങ്ക് വഴി കടക്കാർ രജിസ്റ്റർ ചെയ്യുമ്പോൾ ഓരോ തവണയും <b className="text-white">{partner.commissionRatePercent}% കമ്മീഷൻ</b> നിങ്ങളുടെ അക്കൗണ്ടിലേക്ക് എത്തും.
-                </p>
-
-                {/* Link & Action Buttons */}
-                <div className="space-y-2 pt-1">
+                {/* Right Column: Interactive Link Bar & Action Buttons */}
+                <div className="lg:col-span-5 space-y-2.5 bg-black/20 p-3.5 sm:p-4 rounded-2xl border border-white/10 backdrop-blur-xs">
                   <div className="bg-white/10 border border-white/20 rounded-xl px-3 py-2 text-xs font-mono truncate text-white/95 backdrop-blur-xs select-all">
                     {inviteUrl}
                   </div>
 
-                  <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     <button
                       type="button"
                       onClick={() => handleCopy(inviteUrl, 'invite-url')}
-                      className="py-2.5 px-3 bg-white text-[#073827] hover:bg-emerald-50 active:bg-emerald-100 font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 font-['Baloo_Chettan_2',sans-serif]"
+                      className={`py-2.5 px-3 rounded-xl font-bold text-xs transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 font-['Baloo_Chettan_2',sans-serif] ${
+                        copiedKey === 'invite-url'
+                          ? 'bg-emerald-400 text-slate-900'
+                          : 'bg-white text-[#073827] hover:bg-emerald-50'
+                      }`}
                     >
                       {copiedKey === 'invite-url' ? <CheckCheck className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
-                      <span className="text-xs sm:text-sm">
-                        {copiedKey === 'invite-url' ? 'കോപ്പി ചെയ്തു!' : 'ലിങ്ക് കോപ്പി (Copy)'}
+                      <span className="text-xs">
+                        {copiedKey === 'invite-url' ? 'കോപ്പി ചെയ്തു!' : 'ലിങ്ക് കോപ്പി'}
                       </span>
                     </button>
 
@@ -700,16 +707,16 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                       className="py-2.5 px-3 bg-[#25D366] hover:bg-[#20ba59] active:bg-[#1ca64f] text-white font-bold text-xs rounded-xl transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 font-['Baloo_Chettan_2',sans-serif]"
                     >
                       <Share2 className="w-4 h-4" />
-                      <span className="text-xs sm:text-sm">WhatsApp-ൽ അയക്കൂ</span>
+                      <span className="text-xs">WhatsApp</span>
                     </button>
 
                     <button
                       type="button"
                       onClick={() => setShowQrModal(true)}
-                      className="col-span-2 sm:col-span-1 py-2.5 px-3.5 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold text-xs rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 font-['Baloo_Chettan_2',sans-serif]"
+                      className="col-span-2 sm:col-span-1 py-2.5 px-3 bg-white/15 hover:bg-white/25 active:bg-white/30 text-white font-bold text-xs rounded-xl transition-all border border-white/20 flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 font-['Baloo_Chettan_2',sans-serif]"
                     >
                       <QrCode className="w-4 h-4" />
-                      <span className="text-xs sm:text-sm">QR കോഡ് കാണിക്കുക</span>
+                      <span className="text-xs">QR കോഡ്</span>
                     </button>
                   </div>
                 </div>
