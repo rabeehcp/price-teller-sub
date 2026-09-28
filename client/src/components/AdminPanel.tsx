@@ -43,6 +43,8 @@ import {
   deleteClientApi,
   recordClientPayoutApi,
   fetchClientOnboardedShopsApi,
+  fetchAdminUsers,
+  deleteAdminUser,
 } from '../services/api';
 import {
   ShieldCheck,
@@ -151,7 +153,21 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   onLogout,
   authUser,
 }) => {
-  const [activeTab, setActiveTab] = useState<'overview' | 'stores' | 'catalog' | 'locations' | 'moderation' | 'subscriptions' | 'clients'>('overview');
+  const [activeTab, setActiveTab] = useState<string>('overview');
+
+  const effectiveTab =
+    activeTab === 'dashboard' ? 'overview' :
+    activeTab === 'shops' ? 'stores' :
+    activeTab === 'products' ? 'catalog' :
+    activeTab;
+
+  // User Management State
+  const [usersList, setUsersList] = useState<User[]>([]);
+  const [usersLoading, setUsersLoading] = useState<boolean>(false);
+  const [userSearch, setUserSearch] = useState<string>('');
+  const [userRoleFilter, setUserRoleFilter] = useState<'all' | 'shopper' | 'consumer' | 'merchant' | 'admin'>('all');
+  const [deletingUserId, setDeletingUserId] = useState<string | null>(null);
+
   const [stats, setStats] = useState<any>(null);
   const [catalogSearch, setCatalogSearch] = useState('');
   const [catalogCategoryFilter, setCatalogCategoryFilter] = useState<string>('all');
@@ -311,11 +327,47 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
     }
   }, [products]);
 
+  const loadUsers = async () => {
+    if (!authUser?.token) return;
+    setUsersLoading(true);
+    try {
+      const data = await fetchAdminUsers(authUser.token);
+      setUsersList(data);
+    } catch (err) {
+      console.error('Failed to load users', err);
+    } finally {
+      setUsersLoading(false);
+    }
+  };
+
+  const handleDeleteUser = async (userToDelete: User) => {
+    if (!authUser?.token) return;
+    if (userToDelete.id === 'admin-1' || userToDelete.role === 'admin') {
+      alert('Cannot delete primary Administrator account.');
+      return;
+    }
+    if (!window.confirm(`Are you sure you want to permanently delete user "${userToDelete.name}" (${userToDelete.email}) from the database?`)) {
+      return;
+    }
+    setDeletingUserId(userToDelete.id);
+    try {
+      await deleteAdminUser(userToDelete.id, authUser.token);
+      setUsersList((prev) => prev.filter((u) => u.id !== userToDelete.id));
+    } catch (err: any) {
+      alert(err.message || 'Failed to delete user.');
+    } finally {
+      setDeletingUserId(null);
+    }
+  };
+
   useEffect(() => {
-    if (activeTab === 'subscriptions' && authUser?.token) {
+    if ((effectiveTab === 'subscriptions' || effectiveTab === 'audit' || effectiveTab === 'overview') && authUser?.token) {
       loadSubscriptionData();
     }
-  }, [activeTab, authUser?.token]);
+    if ((effectiveTab === 'users' || effectiveTab === 'overview') && authUser?.token) {
+      loadUsers();
+    }
+  }, [effectiveTab, authUser?.token]);
 
   const loadSubscriptionData = async () => {
     if (!authUser?.token) return;
@@ -572,9 +624,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
   const handleDeleteProduct = async (id: string, name: string) => {
     if (window.confirm(`Are you sure you want to delete "${name}" from master catalog?`)) {
-      await deleteProductApi(id);
-      setMasterProducts((prev) => prev.filter((p) => p.id !== id));
-      onProductsUpdated(products.filter((p) => p.id !== id));
+      try {
+        await deleteProductApi(id);
+        setMasterProducts((prev) => prev.filter((p) => p.id !== id));
+        onProductsUpdated(products.filter((p) => p.id !== id));
+      } catch (err: any) {
+        console.error('Failed to delete product:', err);
+        alert(err.message || 'Failed to delete product from database');
+      }
     }
   };
 
@@ -795,6 +852,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           <nav className="space-y-1">
             {[
               { id: 'overview', label: 'Dashboard', icon: LayoutGrid },
+              { id: 'users', label: 'Users', icon: Users, badge: usersList.length > 0 ? String(usersList.length) : undefined },
               { id: 'stores', label: 'Merchants', icon: Store, badge: String(shops.length) },
               { id: 'catalog', label: 'Products', icon: Package, badge: String(activeProductList.length) },
               {
@@ -805,12 +863,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   ? String(reports.filter((r) => r.status === 'pending').length)
                   : undefined,
               },
-              { id: 'subscriptions', label: 'Reports', icon: FileText },
+              { id: 'subscriptions', label: 'Subscriptions', icon: FileText },
               { id: 'clients', label: 'Field Clients', icon: Briefcase, badge: 'Partners' },
+              { id: 'audit', label: 'Audit Logs', icon: ShieldCheck, badge: auditLogs.length > 0 ? String(auditLogs.length) : undefined },
               { id: 'locations', label: 'Locations', icon: Settings, badge: String(locations.length) },
             ].map((item) => {
               const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              const isActive = effectiveTab === item.id;
 
               return (
                 <button
@@ -917,10 +976,20 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
             <button
               onClick={() => setIsMobileDrawerOpen(true)}
-              className="lg:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer shrink-0"
+              className="lg:hidden p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA]/50 border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-colors cursor-pointer shrink-0 flex items-center gap-1.5"
               title="Open Menu"
             >
-              <Menu className="w-4 h-4" />
+              <Menu className="w-4 h-4 text-[#0B8F68]" />
+              <span className="text-xs font-bold font-malayalam hidden xs:inline text-[#063B2A]">
+                {effectiveTab === 'overview' ? 'ഡാഷ്ബോർഡ്' :
+                 effectiveTab === 'users' ? 'ഉപയോക്താക്കൾ' :
+                 effectiveTab === 'stores' ? 'കടകൾ' :
+                 effectiveTab === 'catalog' ? 'ഉൽപ്പന്നങ്ങൾ' :
+                 effectiveTab === 'subscriptions' ? 'സബ്സ്ക്രിപ്ഷൻ' :
+                 effectiveTab === 'clients' ? 'ഫീൽഡ് ക്ലയന്റ്സ്' :
+                 effectiveTab === 'audit' ? 'ഓഡിറ്റ് ലോഗ്' :
+                 effectiveTab === 'locations' ? 'ഹബ്ബുകൾ' : 'മെനു'}
+              </span>
             </button>
 
             <div className="relative flex-1 min-w-[100px]">
@@ -935,9 +1004,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
             </div>
           </div>
 
-          {/* Right Header Quick Actions & Profile matching Image 2 */}
+          {/* Right Header Quick Actions & Profile */}
           <div className="flex items-center gap-3">
-            {activeTab === 'catalog' && onOpenAddProductModal && (
+            {effectiveTab === 'catalog' && onOpenAddProductModal && (
               <button
                 onClick={() => onOpenAddProductModal(catalogCategoryFilter !== 'all' ? catalogCategoryFilter : undefined)}
                 className="px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
@@ -947,7 +1016,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               </button>
             )}
 
-            {activeTab === 'stores' && (
+            {effectiveTab === 'stores' && (
               <button
                 onClick={() => setIsAddStoreOpen(true)}
                 className="px-3.5 py-2 bg-[#0B8F68] hover:bg-[#063B2A] active:scale-95 text-white rounded-xl text-xs font-black shadow-xs transition-all flex items-center gap-1.5 cursor-pointer"
@@ -967,7 +1036,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <span className="w-2 h-2 rounded-full bg-rose-500 absolute top-1.5 right-1.5 border border-white" />
             </button>
 
-            {/* Admin Profile Pill matching Image 2 */}
+            {/* Admin Profile Pill */}
             <div className="flex items-center gap-2 pl-2 border-l border-gray-200">
               <div className="w-8 h-8 rounded-full bg-[#063B2A] text-white flex items-center justify-center font-black text-xs">
                 A
@@ -980,71 +1049,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
           </div>
         </header>
 
-        {/* Mobile Navigation Bar */}
-        <div className="md:hidden flex items-center gap-1 p-2 bg-[#063B2A] border-b border-[#084D37] overflow-x-auto text-xs font-bold font-malayalam">
-          <button
-            onClick={() => setActiveTab('overview')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'overview' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            📊 അവലോകനം
-          </button>
-          <button
-            onClick={() => setActiveTab('stores')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'stores' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            🏪 സ്റ്റോറുകൾ ({shops.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('catalog')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'catalog' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            📦 കാറ്റലോഗ് ({activeProductList.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('locations')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'locations' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            📍 ഹബ്ബുകൾ ({locations.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('moderation')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'moderation' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            🛡️ മോഡറേഷൻ ({reports.filter((r) => r.status === 'pending').length})
-          </button>
-          <button
-            onClick={() => setActiveTab('subscriptions')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'subscriptions' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            💳 സബ്സ്ക്രിപ്ഷൻ
-          </button>
-          <button
-            onClick={() => setActiveTab('clients')}
-            className={`px-3 py-1.5 rounded-xl transition-all whitespace-nowrap ${
-              activeTab === 'clients' ? 'bg-[#0B8F68] text-white font-black' : 'text-[#DDF5EA]/70 hover:text-white'
-            }`}
-          >
-            🤝 ഫീൽഡ് ക്ലയന്റ്സ്
-          </button>
-        </div>
-
         {/* Content Container */}
         <div className="p-4 sm:p-6 max-w-7xl w-full mx-auto space-y-6">
 
       {/* 1. OVERVIEW TAB */}
-      {activeTab === 'overview' && (
+      {effectiveTab === 'overview' && (
         <>
           {/* Mobile Admin View */}
           <div className="md:hidden">
@@ -1077,7 +1086,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 2. STORES MANAGER TAB */}
-      {activeTab === 'stores' && (
+      {effectiveTab === 'stores' && (
         <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs animate-in fade-in duration-150">
           <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-gray-100 mb-4">
             <div>
@@ -1325,7 +1334,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 3. MASTER CATALOG TAB */}
-      {activeTab === 'catalog' && (
+      {effectiveTab === 'catalog' && (
         <div className="space-y-4 animate-in fade-in duration-150">
           {/* Quick Metrics Cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -2020,7 +2029,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 4. LOCATIONS MANAGER TAB */}
-      {activeTab === 'locations' && (
+      {effectiveTab === 'locations' && (
         <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs animate-in fade-in duration-150 space-y-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
             <div>
@@ -2264,7 +2273,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 5. MODERATION QUEUE TAB */}
-      {activeTab === 'moderation' && (
+      {effectiveTab === 'moderation' && (
         <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs animate-in fade-in duration-150">
           <div className="pb-4 border-b border-gray-100 mb-4">
             <h2 className="text-xl font-black text-slate-dark m-0">Crowd-Report Moderation Queue</h2>
@@ -2329,7 +2338,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 6. SUBSCRIPTIONS & MONETIZATION TAB */}
-      {activeTab === 'subscriptions' && (
+      {effectiveTab === 'subscriptions' && (
         <div className="space-y-6">
           {/* Subscriptions Revenue Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
@@ -2645,8 +2654,404 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       )}
 
       {/* 7. FIELD CLIENTS / ONBOARDING PARTNERS MANAGEMENT */}
-      {activeTab === 'clients' && (
+      {effectiveTab === 'clients' && (
         <ClientManagementTab token={authUser?.token} />
+      )}
+
+      {/* 8. USERS MANAGEMENT TAB */}
+      {effectiveTab === 'users' && (
+        <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 sm:p-6 shadow-xs animate-in fade-in duration-150 space-y-5">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+            <div>
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
+                  <Users className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-black text-slate-dark m-0">ഉപയോക്താക്കൾ (Users Management)</h2>
+                  <span className="text-xs text-gray-400 font-semibold">
+                    Manage registered shoppers, merchant store accounts, and platform administrators
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                type="button"
+                onClick={loadUsers}
+                disabled={usersLoading}
+                className="p-2 bg-gray-50 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 border border-gray-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                title="Refresh user list"
+              >
+                <RefreshCw className={`w-3.5 h-3.5 ${usersLoading ? 'animate-spin text-emerald-600' : ''}`} />
+                <span className="hidden xs:inline">Refresh</span>
+              </button>
+            </div>
+          </div>
+
+          {/* User Quick Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="bg-gray-50 rounded-2xl p-3.5 border border-gray-200">
+              <div className="text-[10px] uppercase font-bold text-gray-400">Total Users</div>
+              <div className="text-xl font-black text-slate-dark mt-0.5">{usersList.length}</div>
+            </div>
+            <div className="bg-sky-50/60 rounded-2xl p-3.5 border border-sky-200">
+              <div className="text-[10px] uppercase font-bold text-sky-600">Shoppers / Consumers</div>
+              <div className="text-xl font-black text-sky-800 mt-0.5">
+                {usersList.filter((u) => u.role === 'shopper' || u.role === 'consumer').length}
+              </div>
+            </div>
+            <div className="bg-emerald-50/60 rounded-2xl p-3.5 border border-emerald-200">
+              <div className="text-[10px] uppercase font-bold text-emerald-600">Merchant Accounts</div>
+              <div className="text-xl font-black text-emerald-800 mt-0.5">
+                {usersList.filter((u) => u.role === 'merchant').length}
+              </div>
+            </div>
+            <div className="bg-amber-50/60 rounded-2xl p-3.5 border border-amber-200">
+              <div className="text-[10px] uppercase font-bold text-amber-700">Administrators</div>
+              <div className="text-xl font-black text-amber-900 mt-0.5">
+                {usersList.filter((u) => u.role === 'admin').length}
+              </div>
+            </div>
+          </div>
+
+          {/* Search & Filters */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pt-1">
+            <div className="relative flex-1">
+              <Search className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+              <input
+                type="text"
+                value={userSearch}
+                onChange={(e) => setUserSearch(e.target.value)}
+                placeholder="Search user by name, email, phone, or shop name..."
+                className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
+              />
+            </div>
+
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 text-xs">
+              {(['all', 'shopper', 'consumer', 'merchant', 'admin'] as const).map((role) => (
+                <button
+                  key={role}
+                  type="button"
+                  onClick={() => setUserRoleFilter(role)}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap capitalize ${
+                    userRoleFilter === role
+                      ? 'bg-[#063B2A] text-white shadow-2xs'
+                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+                >
+                  {role === 'all' ? 'എല്ലാം (All)' :
+                   role === 'shopper' ? 'ഷോപ്പർ' :
+                   role === 'consumer' ? 'കൺസ്യൂമർ' :
+                   role === 'merchant' ? 'വ്യാപാരി' : 'അഡ്മിൻ'}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Users Table / List */}
+          {usersLoading && usersList.length === 0 ? (
+            <div className="py-16 text-center text-gray-400">
+              <RefreshCw className="w-8 h-8 animate-spin mx-auto text-emerald-600 mb-2" />
+              <p className="text-sm font-bold text-gray-600">ഉപയോക്താക്കളുടെ വിവരങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p>
+            </div>
+          ) : (
+            (() => {
+              const filteredUsers = usersList.filter((u) => {
+                const q = userSearch.toLowerCase().trim();
+                const matchesQuery =
+                  !q ||
+                  (u.name && u.name.toLowerCase().includes(q)) ||
+                  (u.email && u.email.toLowerCase().includes(q)) ||
+                  (u.phone && u.phone.toLowerCase().includes(q)) ||
+                  (u.shopName && u.shopName.toLowerCase().includes(q)) ||
+                  (u.username && u.username.toLowerCase().includes(q));
+
+                const matchesRole =
+                  userRoleFilter === 'all' ||
+                  u.role === userRoleFilter ||
+                  (userRoleFilter === 'shopper' && (u.role === 'shopper' || u.role === 'consumer'));
+
+                return matchesQuery && matchesRole;
+              });
+
+              if (filteredUsers.length === 0) {
+                return (
+                  <div className="py-12 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl">
+                    <p className="text-sm font-semibold">ഉപയോക്താക്കളെ കണ്ടെത്തിയില്ല (No users found)</p>
+                    <span className="text-xs">തിരച്ചിൽ വാക്ക് മാറ്റി വീണ്ടും ശ്രമിക്കുക.</span>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="space-y-3">
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block overflow-x-auto border border-gray-200 rounded-2xl">
+                    <table className="w-full text-left text-xs">
+                      <thead className="bg-[#FAF7F0] border-b border-gray-200 text-gray-600 font-bold uppercase tracking-wider text-[10px]">
+                        <tr>
+                          <th className="py-3 px-4">User</th>
+                          <th className="py-3 px-4">Contact</th>
+                          <th className="py-3 px-4">Role</th>
+                          <th className="py-3 px-4">Linked Shop / Details</th>
+                          <th className="py-3 px-4">Joined Date</th>
+                          <th className="py-3 px-4 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100 font-medium">
+                        {filteredUsers.map((u) => {
+                          const isProtectedAdmin = u.id === 'admin-1' || (u.role === 'admin' && u.email === 'admin@priceteller.com');
+                          return (
+                            <tr key={u.id} className="hover:bg-gray-50/60 transition-colors">
+                              <td className="py-3 px-4">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-8 h-8 rounded-full bg-emerald-800 text-white flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                                    {(u.name || u.email || 'U').charAt(0)}
+                                  </div>
+                                  <div>
+                                    <div className="font-bold text-slate-800">{u.name || 'Unnamed User'}</div>
+                                    <div className="text-[11px] text-gray-400 font-mono">{u.email}</div>
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="py-3 px-4 text-gray-600">
+                                <div>{u.phone || '—'}</div>
+                                {u.username && <div className="text-[10px] text-gray-400 font-mono">@{u.username}</div>}
+                              </td>
+                              <td className="py-3 px-4">
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase border ${
+                                    u.role === 'admin'
+                                      ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                      : u.role === 'merchant'
+                                      ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                      : 'bg-sky-50 text-sky-800 border-sky-200'
+                                  }`}
+                                >
+                                  {u.role === 'admin' ? '👑 Admin' : u.role === 'merchant' ? '🏪 Merchant' : '🛒 Shopper'}
+                                </span>
+                              </td>
+                              <td className="py-3 px-4 text-gray-600">
+                                {u.shopName ? (
+                                  <span className="font-bold text-emerald-700">{u.shopName}</span>
+                                ) : u.shopId ? (
+                                  <span className="font-mono text-[10px] text-gray-500">{u.shopId}</span>
+                                ) : (
+                                  <span className="text-gray-400">—</span>
+                                )}
+                              </td>
+                              <td className="py-3 px-4 text-gray-500 text-[11px]">
+                                {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : '—'}
+                              </td>
+                              <td className="py-3 px-4 text-right">
+                                {isProtectedAdmin ? (
+                                  <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
+                                    Protected
+                                  </span>
+                                ) : (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleDeleteUser(u)}
+                                    disabled={deletingUserId === u.id}
+                                    className="p-1.5 bg-rose-50 hover:bg-rose-100 text-rose-600 hover:text-rose-800 border border-rose-200 rounded-xl transition-all cursor-pointer inline-flex items-center gap-1 active:scale-95 disabled:opacity-50"
+                                    title={`Delete ${u.name || u.email} permanently from database`}
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5" />
+                                    <span className="text-[11px] font-bold">Delete</span>
+                                  </button>
+                                )}
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card List View */}
+                  <div className="md:hidden space-y-3">
+                    {filteredUsers.map((u) => {
+                      const isProtectedAdmin = u.id === 'admin-1' || (u.role === 'admin' && u.email === 'admin@priceteller.com');
+                      return (
+                        <div
+                          key={u.id}
+                          className="bg-gray-50/60 border border-gray-200 rounded-2xl p-3.5 space-y-2.5 transition-all"
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-9 h-9 rounded-full bg-[#063B2A] text-white flex items-center justify-center font-bold text-xs uppercase shrink-0">
+                                {(u.name || u.email || 'U').charAt(0)}
+                              </div>
+                              <div>
+                                <div className="font-bold text-slate-800 text-xs">{u.name || 'Unnamed User'}</div>
+                                <div className="text-[11px] text-gray-500 font-mono">{u.email}</div>
+                              </div>
+                            </div>
+
+                            <span
+                              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase border ${
+                                u.role === 'admin'
+                                  ? 'bg-rose-50 text-rose-700 border-rose-200'
+                                  : u.role === 'merchant'
+                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                                  : 'bg-sky-50 text-sky-800 border-sky-200'
+                              }`}
+                            >
+                              {u.role === 'admin' ? '👑 Admin' : u.role === 'merchant' ? '🏪 Merchant' : '🛒 Shopper'}
+                            </span>
+                          </div>
+
+                          <div className="text-xs text-gray-600 space-y-1 bg-white p-2.5 rounded-xl border border-gray-100">
+                            {u.phone && (
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Phone:</span>
+                                <span className="font-bold">{u.phone}</span>
+                              </div>
+                            )}
+                            {u.shopName && (
+                              <div className="flex justify-between">
+                                <span className="text-gray-400">Shop:</span>
+                                <span className="font-bold text-emerald-700">{u.shopName}</span>
+                              </div>
+                            )}
+                            {u.createdAt && (
+                              <div className="flex justify-between text-[11px]">
+                                <span className="text-gray-400">Joined:</span>
+                                <span>{new Date(u.createdAt).toLocaleDateString()}</span>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="flex justify-end pt-1">
+                            {isProtectedAdmin ? (
+                              <span className="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded-lg">
+                                Primary Admin (Protected)
+                              </span>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => handleDeleteUser(u)}
+                                disabled={deletingUserId === u.id}
+                                className="w-full py-2 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-50"
+                              >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span>Delete User from Database</span>
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()
+          )}
+        </div>
+      )}
+
+      {/* 9. AUDIT LOGS TAB */}
+      {effectiveTab === 'audit' && (
+        <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 sm:p-6 shadow-xs animate-in fade-in duration-150 space-y-5">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div>
+                <h2 className="text-xl font-black text-slate-dark m-0">ഓഡിറ്റ് ലോഗ് (Audit Logs Trail)</h2>
+                <span className="text-xs text-gray-400 font-semibold">
+                  Realtime immutable security trail of administrative actions, subscriptions & changes
+                </span>
+              </div>
+            </div>
+
+            <button
+              type="button"
+              onClick={loadSubscriptionData}
+              disabled={subLoading}
+              className="p-2 bg-gray-50 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 border border-gray-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+              title="Refresh audit logs"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${subLoading ? 'animate-spin text-emerald-600' : ''}`} />
+              <span className="hidden xs:inline">Refresh Logs</span>
+            </button>
+          </div>
+
+          {/* Quick Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div className="bg-gray-50 rounded-2xl p-3.5 border border-gray-200">
+              <div className="text-[10px] uppercase font-bold text-gray-400">Total Audit Events</div>
+              <div className="text-xl font-black text-slate-dark mt-0.5">{auditLogs.length}</div>
+            </div>
+            <div className="bg-emerald-50/60 rounded-2xl p-3.5 border border-emerald-200">
+              <div className="text-[10px] uppercase font-bold text-emerald-600">Active Subs Tracked</div>
+              <div className="text-xl font-black text-emerald-800 mt-0.5">{subList.length}</div>
+            </div>
+            <div className="bg-blue-50/60 rounded-2xl p-3.5 border border-blue-200 col-span-2 sm:col-span-1">
+              <div className="text-[10px] uppercase font-bold text-blue-600">Recorded Payments</div>
+              <div className="text-xl font-black text-blue-800 mt-0.5">{subPayments.length}</div>
+            </div>
+          </div>
+
+          {/* Logs List */}
+          <div className="space-y-2.5">
+            {auditLogs.map((log) => (
+              <div
+                key={log.id}
+                className="p-3.5 bg-gray-50 border border-gray-200/80 rounded-2xl text-xs hover:border-emerald-300 transition-all space-y-1.5"
+              >
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`font-black text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full ${
+                        log.action.includes('CREATE') || log.action.includes('PAYMENT')
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : log.action.includes('EXTEND')
+                          ? 'bg-blue-100 text-blue-800'
+                          : log.action.includes('CANCEL') || log.action.includes('DELETE')
+                          ? 'bg-rose-100 text-rose-800'
+                          : 'bg-gray-200 text-gray-800'
+                      }`}
+                    >
+                      {log.action}
+                    </span>
+                    <span className="font-mono text-gray-600 text-[11px]">
+                      {log.entityType}: <b className="text-slate-800">{log.entityId}</b>
+                    </span>
+                  </div>
+
+                  <span className="text-[11px] text-gray-400 font-medium">
+                    {new Date(log.createdAt).toLocaleString()}
+                  </span>
+                </div>
+
+                {log.actorId && (
+                  <div className="text-[11px] text-gray-500">
+                    Actor: <span className="font-mono text-gray-700">{log.actorId} ({log.actorRole || 'admin'})</span>
+                  </div>
+                )}
+
+                {log.metadata && Object.keys(log.metadata).length > 0 && (
+                  <div className="text-[10px] font-mono text-gray-600 bg-white p-2 rounded-xl border border-gray-200/80 overflow-x-auto">
+                    {JSON.stringify(log.metadata, null, 2)}
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {auditLogs.length === 0 && (
+              <div className="py-12 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl">
+                <ShieldCheck className="w-8 h-8 text-gray-300 mx-auto mb-2" />
+                <p className="text-sm font-semibold">ലോഗുകൾ ലഭ്യമല്ല (No audit logs recorded yet)</p>
+              </div>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Extend Subscription Modal */}
@@ -3344,7 +3749,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         onClose={() => setIsMobileDrawerOpen(false)}
         mode="admin"
         authUser={authUser || null}
-        adminTab={activeTab}
+        adminTab={effectiveTab}
         onSelectAdminTab={(tab) => {
           setActiveTab(tab as any);
           setIsMobileDrawerOpen(false);

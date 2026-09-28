@@ -1553,6 +1553,22 @@ if (!cleanToken) return null;
       }));
   }
 
+  public async getAllUsers(): Promise<Omit<User, 'password'>[]> {
+    const res = await query(
+      `SELECT id, email, username, name, role, shop_id AS "shopId", 
+              shop_name AS "shopName", phone, location_id AS "locationId", 
+              created_at AS "createdAt" 
+       FROM users 
+       ORDER BY created_at DESC NULLS LAST`
+    );
+    return res.rows;
+  }
+
+  public async deleteUser(id: string): Promise<boolean> {
+    const res = await query(`DELETE FROM users WHERE id = $1`, [id]);
+    return (res.rowCount ?? 0) > 0;
+  }
+
   public async registerConsumer(params: {
     name: string;
     email: string;

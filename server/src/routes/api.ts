@@ -873,6 +873,30 @@ apiRouter.delete('/admin/products/:id', authenticateToken, requireAdmin, async (
   }
 });
 
+// 16c. Admin: Get All Users
+apiRouter.get('/admin/users', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const users = await db.getAllUsers();
+    res.json({ success: true, data: users });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// 16d. Admin: Delete User
+apiRouter.delete('/admin/users/:id', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const { id } = req.params;
+    if (id === 'admin-1' || req.user?.id === id) {
+      return res.status(400).json({ success: false, error: 'Cannot delete primary super admin account' });
+    }
+    const ok = await db.deleteUser(id);
+    res.json({ success: ok, message: ok ? 'User deleted successfully' : 'User not found' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 17. Admin: Add Location
 apiRouter.post('/admin/locations', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
   try {

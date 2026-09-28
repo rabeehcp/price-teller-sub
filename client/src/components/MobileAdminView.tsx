@@ -18,9 +18,10 @@ interface MobileAdminViewProps {
   products: Product[];
   locations: Location[];
   reports?: PriceReport[];
+  usersCount?: number;
   onOpenDrawer: () => void;
   onBackToShopper?: () => void;
-  onNavigateTab: (tab: 'stores' | 'catalog' | 'locations' | 'moderation' | 'subscriptions') => void;
+  onNavigateTab: (tab: string) => void;
 }
 
 export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
@@ -28,6 +29,7 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
   products = [],
   locations = [],
   reports = [],
+  usersCount = 0,
   onOpenDrawer,
   onBackToShopper,
   onNavigateTab,
@@ -59,10 +61,11 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
           <button
             type="button"
             onClick={onOpenDrawer}
-            className="p-2 bg-white border border-slate-200 rounded-xl text-slate-800 shadow-2xs cursor-pointer"
+            className="p-2 bg-white border border-slate-200 rounded-xl text-slate-800 shadow-2xs cursor-pointer flex items-center gap-2"
             title="Open Menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-5 h-5 text-emerald-700" />
+            <span className="text-xs font-bold text-slate-700 hidden sm:inline">മെനു</span>
           </button>
           <div>
             <h1 className="text-lg font-black text-slate-950 font-malayalam tracking-tight m-0">
@@ -80,7 +83,10 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
       <div className="grid grid-cols-2 gap-2.5 font-malayalam">
         
         {/* Metric 1: Stores */}
-        <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
+        <div 
+          onClick={() => onNavigateTab('stores')}
+          className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs cursor-pointer hover:border-emerald-300 transition-colors"
+        >
           <span className="text-[10px] font-bold text-slate-400 block truncate">
             രജിസ്റ്റർ ചെയ്ത കടകൾ
           </span>
@@ -93,7 +99,10 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
         </div>
 
         {/* Metric 2: Master Products */}
-        <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
+        <div 
+          onClick={() => onNavigateTab('catalog')}
+          className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs cursor-pointer hover:border-emerald-300 transition-colors"
+        >
           <span className="text-[10px] font-bold text-slate-400 block truncate">
             കാറ്റലോഗ് ഉൽപ്പന്നങ്ങൾ
           </span>
@@ -106,7 +115,10 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
         </div>
 
         {/* Metric 3: Locations */}
-        <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
+        <div 
+          onClick={() => onNavigateTab('locations')}
+          className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs cursor-pointer hover:border-emerald-300 transition-colors"
+        >
           <span className="text-[10px] font-bold text-slate-400 block truncate">
             റീജിയണൽ ഹബ്ബുകൾ
           </span>
@@ -119,7 +131,10 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
         </div>
 
         {/* Metric 4: Moderation Queue */}
-        <div className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs">
+        <div 
+          onClick={() => onNavigateTab('moderation')}
+          className="p-4 bg-white border border-slate-200/90 rounded-2xl shadow-2xs cursor-pointer hover:border-emerald-300 transition-colors"
+        >
           <span className="text-[10px] font-bold text-slate-400 block truncate">
             വില റിപ്പോർട്ടുകൾ
           </span>
@@ -182,25 +197,66 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
         </div>
       </div>
 
-      {/* 5. QUICK MANAGEMENT BUTTONS */}
-      <div className="grid grid-cols-2 gap-2 font-malayalam">
-        <button
-          type="button"
-          onClick={() => onNavigateTab('stores')}
-          className="p-3 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-900 flex items-center justify-center gap-2 shadow-2xs"
-        >
-          <Store className="w-4 h-4 text-emerald-700" />
-          <span>കടകൾ ({shops.length})</span>
-        </button>
+      {/* 5. QUICK NAVIGATION TILES */}
+      <div className="p-4 bg-white border border-slate-200 rounded-3xl shadow-2xs space-y-2.5 font-malayalam">
+        <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">
+          ദ്രുത നാവിഗേഷൻ (Quick Navigation)
+        </div>
+        <div className="grid grid-cols-2 gap-2 text-xs">
+          <button
+            type="button"
+            onClick={() => onNavigateTab('users')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">👥</span>
+            <span>ഉപയോക്താക്കൾ</span>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => onNavigateTab('catalog')}
-          className="p-3 bg-white border border-slate-200 rounded-2xl text-xs font-black text-slate-900 flex items-center justify-center gap-2 shadow-2xs"
-        >
-          <Package className="w-4 h-4 text-emerald-700" />
-          <span>കാറ്റലോഗ് ({products.length})</span>
-        </button>
+          <button
+            type="button"
+            onClick={() => onNavigateTab('stores')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">🏪</span>
+            <span>കടകൾ ({shops.length})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('catalog')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">📦</span>
+            <span>കാറ്റലോഗ് ({products.length})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('subscriptions')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">💳</span>
+            <span>സബ്സ്ക്രിപ്ഷൻ</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('clients')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">🤝</span>
+            <span>ഫീൽഡ് ക്ലയന്റ്സ്</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => onNavigateTab('audit')}
+            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
+          >
+            <span className="text-base">📋</span>
+            <span>ഓഡിറ്റ് ലോഗ്</span>
+          </button>
+        </div>
       </div>
 
     </div>

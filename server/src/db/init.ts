@@ -98,14 +98,7 @@ export async function initDb(): Promise<boolean> {
         );
       `);
 
-      // Seed initial client partners with 50% commission and 50 shops milestone
-      await client.query(`
-        INSERT INTO client_partners (id, client_code, name, phone, upi_id, commission_rate_percent, min_shops_threshold, area, status, notes)
-        VALUES 
-          ('client-1', 'CL-101', 'Shoucky (Partner Lead)', '+91 80759 50428', '8075950428@fam', 50.0, 50, 'Tirur & Malappuram Commercial Belt', 'active', 'Founding field onboarding partner (50% commission on ₹119 plan)'),
-          ('client-2', 'CL-102', 'Rahul K (Field Agent)', '+91 98470 12345', 'rahul.k@upi', 50.0, 50, 'Kottakkal & Tanur Region', 'active', 'Local retail onboarding promoter (50% commission on ₹119 plan)')
-        ON CONFLICT (client_code) DO UPDATE SET commission_rate_percent = 50.0, min_shops_threshold = 50;
-      `);
+
 
       await client.query(`CREATE INDEX IF NOT EXISTS idx_messages_client_msg_id ON messages(conversation_id, client_msg_id);`);
       await client.query(`CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(conversation_id, is_read);`);

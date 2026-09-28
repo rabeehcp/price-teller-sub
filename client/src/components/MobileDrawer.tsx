@@ -373,19 +373,19 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             <button
               onClick={() => {
-                if (onSelectAdminTab) onSelectAdminTab('dashboard');
+                if (onSelectAdminTab) onSelectAdminTab('overview');
                 onClose();
               }}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
-                adminTab === 'dashboard'
+                adminTab === 'dashboard' || adminTab === 'overview'
                   ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
                   : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
               }`}
             >
-              {adminTab === 'dashboard' && (
+              {(adminTab === 'dashboard' || adminTab === 'overview') && (
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
-              <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+              <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' || adminTab === 'overview' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>അഡ്മിൻ ഡാഷ്‌ബോർഡ് (Dashboard)</span>
             </button>
 
@@ -409,37 +409,37 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             <button
               onClick={() => {
-                if (onSelectAdminTab) onSelectAdminTab('shops');
+                if (onSelectAdminTab) onSelectAdminTab('stores');
                 onClose();
               }}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
-                adminTab === 'shops'
+                adminTab === 'shops' || adminTab === 'stores'
                   ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
                   : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
               }`}
             >
-              {adminTab === 'shops' && (
+              {(adminTab === 'shops' || adminTab === 'stores') && (
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
-              <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+              <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' || adminTab === 'stores' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>കടകൾ (Shops Directory)</span>
             </button>
 
             <button
               onClick={() => {
-                if (onSelectAdminTab) onSelectAdminTab('products');
+                if (onSelectAdminTab) onSelectAdminTab('catalog');
                 onClose();
               }}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
-                adminTab === 'products'
+                adminTab === 'products' || adminTab === 'catalog'
                   ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
                   : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
               }`}
             >
-              {adminTab === 'products' && (
+              {(adminTab === 'products' || adminTab === 'catalog') && (
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
-              <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+              <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' || adminTab === 'catalog' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>മാസ്റ്റർ ഉൽപ്പന്നങ്ങൾ (Products)</span>
             </button>
 
@@ -495,6 +495,42 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
               )}
               <Layers className={`w-4 h-4 shrink-0 ${adminTab === 'audit' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
               <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                if (onSelectAdminTab) onSelectAdminTab('locations');
+                onClose();
+              }}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'locations'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
+            >
+              {adminTab === 'locations' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <Settings className={`w-4 h-4 shrink-0 ${adminTab === 'locations' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+              <span>റീജിയണൽ ഹബ്ബുകൾ (Locations)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                if (onSelectAdminTab) onSelectAdminTab('moderation');
+                onClose();
+              }}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                adminTab === 'moderation'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
+            >
+              {adminTab === 'moderation' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <ShieldCheck className={`w-4 h-4 shrink-0 ${adminTab === 'moderation' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+              <span>വില മോഡറേഷൻ (Price Reports)</span>
             </button>
 
             <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">

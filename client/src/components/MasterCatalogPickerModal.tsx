@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Category, Product } from '../types';
 import { ProductImage } from './ProductImage';
-import { relistMerchantProductApi } from '../services/api';
+import { relistMerchantProductApi, fetchProducts } from '../services/api';
 import {
   X,
   Search,
@@ -54,16 +54,13 @@ export const MasterCatalogPickerModal: React.FC<MasterCatalogPickerModalProps> =
     if (masterProducts && masterProducts.length >= 2000) {
       setLocalMasterProducts(masterProducts);
     } else {
-      relistMerchantProductApi; // keep import valid
-      import('../services/api').then(({ fetchProducts }) => {
-        fetchProducts({ includeMaster: true })
-          .then((fullList) => {
-            if (fullList && fullList.length > 0) {
-              setLocalMasterProducts(fullList);
-            }
-          })
-          .catch(console.error);
-      });
+      fetchProducts({ includeMaster: true })
+        .then((fullList) => {
+          if (fullList && fullList.length > 0) {
+            setLocalMasterProducts(fullList);
+          }
+        })
+        .catch(console.error);
     }
   }, [masterProducts]);
 

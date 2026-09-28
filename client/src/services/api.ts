@@ -29,6 +29,7 @@ import {
   ClientPayout,
   ClientSummaryMetrics,
   ClientOnboardedShop,
+  User,
 } from '../types';
 import { MALAPPURAM_LOCATIONS } from '../data/malappuramLocations';
 
@@ -416,7 +417,10 @@ export async function deleteShopApi(id: string): Promise<boolean> {
     headers: getAuthHeaders(),
   });
   const json = await res.json();
-  return !!json.success;
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to delete shop from database');
+  }
+  return true;
 }
 
 export async function updateProductApi(id: string, updates: Partial<Product>): Promise<Product> {
@@ -436,7 +440,30 @@ export async function deleteProductApi(id: string): Promise<boolean> {
     headers: getAuthHeaders(),
   });
   const json = await res.json();
-  return !!json.success;
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to delete product from database');
+  }
+  return true;
+}
+
+export async function fetchAdminUsers(token?: string): Promise<User[]> {
+  const headers = token ? { Authorization: `Bearer ${token}` } : getAuthHeaders();
+  const json = await safeFetchJson<{ success: boolean; data: User[] }>(`${API_BASE}/admin/users`, { headers });
+  if (json?.success && Array.isArray(json.data)) return json.data;
+  return [];
+}
+
+export async function deleteAdminUser(id: string, token?: string): Promise<boolean> {
+  const headers = token ? { Authorization: `Bearer ${token}` } : getAuthHeaders();
+  const res = await fetch(`${API_BASE}/admin/users/${id}`, {
+    method: 'DELETE',
+    headers,
+  });
+  const json = await res.json();
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to delete user');
+  }
+  return true;
 }
 
 export async function createLocationApi(locData: Partial<Location>): Promise<Location> {
@@ -477,7 +504,10 @@ export async function deleteFlashDealApi(dealId: string): Promise<boolean> {
     headers: getAuthHeaders(),
   });
   const json = await res.json();
-  return !!json.success;
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to delete deal from database');
+  }
+  return true;
 }
 
 export async function delistMerchantProductApi(shopName: string, productId: string): Promise<boolean> {
@@ -487,7 +517,10 @@ export async function delistMerchantProductApi(shopName: string, productId: stri
     body: JSON.stringify({ shopName }),
   });
   const json = await res.json();
-  return !!json.success;
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to unlist product from shop in database');
+  }
+  return true;
 }
 
 export async function relistMerchantProductApi(shopName: string, productId: string, price?: number): Promise<boolean> {
@@ -1311,12 +1344,16 @@ export async function updateClientApi(
 }
 
 export async function deleteClientApi(id: string, token?: string): Promise<boolean> {
+  const headers = token ? { Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/clients/${id}`, {
     method: 'DELETE',
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    headers,
   });
   const json = await res.json();
-  return !!json.success;
+  if (!res.ok || !json.success) {
+    throw new Error(json.error || 'Failed to delete client partner from database');
+  }
+  return true;
 }
 
 export async function recordClientPayoutApi(
