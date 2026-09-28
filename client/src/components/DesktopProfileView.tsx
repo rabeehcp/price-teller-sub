@@ -27,6 +27,8 @@ import {
   MessageCircle,
   Calendar,
   Sparkles,
+  Navigation,
+  Search,
 } from 'lucide-react';
 
 interface DesktopProfileViewProps {
@@ -66,6 +68,44 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
   const [bookings, setBookings] = useState<PreBooking[]>([]);
   const [isLoadingBookings, setIsLoadingBookings] = useState<boolean>(false);
   const [cancellingBookingId, setCancellingBookingId] = useState<string | null>(null);
+  const [orderFilterStatus, setOrderFilterStatus] = useState<string>('all');
+  const [orderSearchQuery, setOrderSearchQuery] = useState<string>('');
+
+  // Live polling every 5s for order status updates
+  useEffect(() => {
+    if (!authUser?.token) return;
+    const interval = setInterval(() => {
+      loadBookings(true);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [authUser?.token]);
+
+  const formatOrderDate = (dateStr: string) => {
+    try {
+      const d = new Date(dateStr);
+      if (isNaN(d.getTime())) return dateStr;
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  const filteredBookings = bookings.filter((b) => {
+    if (orderFilterStatus === 'pending' && b.status !== 'pending') return false;
+    if (orderFilterStatus === 'approved' && b.status !== 'approved') return false;
+    if (orderFilterStatus === 'completed' && b.status !== 'completed') return false;
+    if (orderSearchQuery.trim()) {
+      const q = orderSearchQuery.toLowerCase().trim();
+      const matchShop = b.shopName.toLowerCase().includes(q);
+      const matchItems = b.items?.some((it) => it.productName.toLowerCase().includes(q));
+      if (!matchShop && !matchItems) return false;
+    }
+    return true;
+  });
+
+  const pendingCount = bookings.filter((b) => b.status === 'pending').length;
+  const readyCount = bookings.filter((b) => b.status === 'approved').length;
+  const completedCount = bookings.filter((b) => b.status === 'completed').length;
 
   // Sync initial tab when switched from sidebar
   useEffect(() => {
@@ -109,41 +149,35 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
     switch (status) {
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-800 border border-amber-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            <Clock className="w-3 h-3 text-amber-600 animate-spin" />
-            <span>പ്രതീക്ഷിക്കുന്നു (Pending)</span>
+          <span className="inline-flex items-center bg-[#FEF3C7] text-[#92400E] border border-[#FDE68A] text-[11px] font-bold px-3 py-1 rounded-full font-sans shadow-2xs">
+            Pending Pickup
           </span>
         );
       case 'approved':
         return (
-          <span className="inline-flex items-center gap-1 bg-emerald-50 text-emerald-800 border border-emerald-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-            <span>അംഗീകരിച്ചു (Confirmed)</span>
+          <span className="inline-flex items-center bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] text-[11px] font-bold px-3 py-1 rounded-full font-sans shadow-2xs">
+            Confirmed
           </span>
         );
       case 'completed':
         return (
-          <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-800 border border-blue-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            <CheckCircle2 className="w-3 h-3 text-blue-600" />
-            <span>പൂർത്തിയായി (Completed)</span>
+          <span className="inline-flex items-center bg-[#D1FAE5] text-[#065F46] border border-[#A7F3D0] text-[11px] font-bold px-3 py-1 rounded-full font-sans">
+            Completed
           </span>
         );
       case 'rejected':
-        return (
-          <span className="inline-flex items-center gap-1 bg-rose-50 text-rose-800 border border-rose-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            <XCircle className="w-3 h-3 text-rose-600" />
-            <span>റദ്ദാക്കി (Rejected)</span>
-          </span>
-        );
       case 'cancelled':
         return (
-          <span className="inline-flex items-center gap-1 bg-gray-100 text-gray-700 border border-gray-300 text-[11px] font-bold px-2.5 py-0.5 rounded-full">
-            <AlertCircle className="w-3 h-3 text-gray-500" />
-            <span>റദ്ദാക്കി (Cancelled)</span>
+          <span className="inline-flex items-center bg-rose-50 text-rose-700 border border-rose-200 text-[11px] font-bold px-3 py-1 rounded-full font-sans">
+            Cancelled
           </span>
         );
       default:
-        return null;
+        return (
+          <span className="bg-slate-100 text-slate-700 text-[11px] font-bold px-3 py-1 rounded-full font-sans">
+            {status}
+          </span>
+        );
     }
   };
 
@@ -493,13 +527,14 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
 
         {/* TAB 2: MY ORDERS & PRE-BOOKINGS */}
         {activeTab === 'orders' && (
-          <div className="bg-white rounded-3xl p-6 border border-[#E3ECE7] shadow-2xs space-y-4 font-sans">
-            <div className="flex items-center justify-between border-b border-[#F0F4F2] pb-3">
+          <div className="space-y-5 font-sans">
+            {/* Top Bar: Title & Refresh */}
+            <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-base font-extrabold text-[#17221D] font-malayalam m-0">
-                  എന്റെ മുൻകൂട്ടി ബുക്കിംഗുകൾ (My Pre-Bookings)
-                </h3>
-                <p className="text-xs text-[#66756E] mt-0.5">
+                <h2 className="text-2xl font-black text-slate-900 tracking-tight m-0 font-sans">
+                  My Orders & Pre-Bookings
+                </h2>
+                <p className="text-xs text-slate-500 mt-1 font-malayalam">
                   നിങ്ങൾ അടുത്തുള്ള സൂപ്പർമാർക്കറ്റുകളിൽ ബുക്ക് ചെയ്ത സാധനങ്ങളുടെ തത്സമയ സ്റ്റാറ്റസ്.
                 </p>
               </div>
@@ -507,126 +542,222 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
               <button
                 type="button"
                 onClick={() => loadBookings()}
-                className="p-2 text-[#0B8F68] hover:bg-[#E8F5EE] rounded-xl transition-colors cursor-pointer flex items-center gap-1 text-xs font-bold font-malayalam"
-                title="Refresh"
+                disabled={isLoadingBookings}
+                className="p-2.5 text-[#0D6344] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+                title="Refresh orders"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${isLoadingBookings ? 'animate-spin' : ''}`} />
-                <span>പുതുക്കുക</span>
+                <RefreshCw className={`w-4 h-4 ${isLoadingBookings ? 'animate-spin' : ''}`} />
+                <span>Refresh</span>
               </button>
             </div>
 
-            {isLoadingBookings ? (
-              <div className="py-16 text-center space-y-3">
-                <div className="w-8 h-8 border-3 border-[#0B8F68] border-t-transparent rounded-full animate-spin mx-auto" />
-                <p className="text-xs text-slate-muted font-malayalam">ബുക്കിംഗുകൾ ലഭ്യമാക്കുന്നു...</p>
+            {/* Filter Pills & Search Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+              {/* Filter Pills */}
+              <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+                <button
+                  type="button"
+                  onClick={() => setOrderFilterStatus('all')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                    orderFilterStatus === 'all'
+                      ? 'bg-[#0D6344] text-white shadow-2xs'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  All Orders ({bookings.length})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOrderFilterStatus('pending')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                    orderFilterStatus === 'pending'
+                      ? 'bg-[#0D6344] text-white shadow-2xs'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  In Progress ({pendingCount})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOrderFilterStatus('approved')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                    orderFilterStatus === 'approved'
+                      ? 'bg-[#0D6344] text-white shadow-2xs'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  Ready for Pickup ({readyCount})
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setOrderFilterStatus('completed')}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
+                    orderFilterStatus === 'completed'
+                      ? 'bg-[#0D6344] text-white shadow-2xs'
+                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                  }`}
+                >
+                  Completed ({completedCount})
+                </button>
               </div>
-            ) : bookings.length === 0 ? (
-              <div className="py-16 text-center space-y-4">
-                <div className="w-16 h-16 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto text-2xl">
+
+              {/* Order Search Input */}
+              <div className="relative sm:w-64">
+                <input
+                  type="text"
+                  value={orderSearchQuery}
+                  onChange={(e) => setOrderSearchQuery(e.target.value)}
+                  placeholder="Order Search"
+                  className="w-full pl-3.5 pr-9 py-2 bg-white border border-slate-200 rounded-full text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0D6344] focus:ring-1 focus:ring-[#0D6344] shadow-2xs"
+                />
+                <Search className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Content Feed */}
+            {isLoadingBookings ? (
+              <div className="py-20 text-center space-y-3 bg-white rounded-3xl border border-slate-200 p-8 shadow-2xs">
+                <div className="w-8 h-8 border-3 border-[#0D6344] border-t-transparent rounded-full animate-spin mx-auto" />
+                <p className="text-xs text-slate-500 font-malayalam">ബുക്കിംഗുകൾ ലഭ്യമാക്കുന്നു...</p>
+              </div>
+            ) : filteredBookings.length === 0 ? (
+              <div className="py-16 text-center space-y-4 bg-white rounded-3xl border border-slate-200 shadow-2xs p-8">
+                <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-[#0D6344] border border-emerald-100 flex items-center justify-center mx-auto text-3xl shadow-2xs">
                   📦
                 </div>
                 <div>
-                  <h4 className="text-base font-bold text-[#17221D] font-malayalam">
-                    നിലവിൽ സജീവമായ ബുക്കിംഗുകൾ ഒന്നുമില്ല
+                  <h4 className="text-base font-bold text-slate-900 font-malayalam">
+                    {orderSearchQuery ? 'ഓർഡറുകൾ കണ്ടെത്തിയില്ല' : 'നിലവിൽ സജീവമായ ബുക്കിംഗുകൾ ഒന്നുമില്ല'}
                   </h4>
-                  <p className="text-xs text-[#66756E] max-w-md mx-auto mt-1 font-malayalam">
-                    സാധനങ്ങൾ തെരഞ്ഞെടുത്ത് അടുത്തുള്ള കടകളിൽ മുൻകൂട്ടി ബുക്ക് ചെയ്യുക. മികച്ച വിലയും ലാഭവും നേടൂ.
+                  <p className="text-xs text-slate-500 max-w-md mx-auto mt-1 font-malayalam">
+                    {orderSearchQuery
+                      ? `"${orderSearchQuery}" എന്നതിന് അനുയോജ്യമായ ഓർഡറുകൾ ലഭ്യമല്ല.`
+                      : 'സാധനങ്ങൾ തെരഞ്ഞെടുത്ത് അടുത്തുള്ള കടകളിൽ മുൻകൂട്ടി ബുക്ക് ചെയ്യുക. മികച്ച വിലയും ലാഭവും നേടൂ.'}
                   </p>
                 </div>
                 {onGoShopping && (
                   <button
                     type="button"
                     onClick={onGoShopping}
-                    className="px-5 py-2.5 bg-[#063B2A] hover:bg-[#0B8F68] text-white text-xs font-bold rounded-xl cursor-pointer transition-colors font-malayalam shadow-sm"
+                    className="px-5 py-2.5 bg-[#0D6344] hover:bg-[#084D37] text-white text-xs font-bold rounded-xl cursor-pointer transition-colors font-malayalam shadow-xs"
                   >
                     ഷോപ്പിംഗ് ആരംഭിക്കുക
                   </button>
                 )}
               </div>
             ) : (
-              <div className="space-y-4">
-                {bookings.map((booking) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {filteredBookings.map((booking) => (
                   <div
                     key={booking.id}
-                    className="border border-[#E3ECE7] rounded-2xl p-5 hover:border-[#C3EEDC] transition-all bg-white shadow-2xs space-y-4"
+                    className="bg-white rounded-2xl border border-slate-200 shadow-2xs hover:shadow-xs transition-all p-4 space-y-3.5 flex flex-col justify-between"
                   >
-                    {/* Header Row */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#F0F4F2] pb-3">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0B8F68] flex items-center justify-center shrink-0">
-                          <Store className="w-5 h-5" />
+                    {/* Header Row: Store Icon + Store Name + Date + Status Badge */}
+                    <div className="flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-8 h-8 rounded-full bg-[#0D6344] text-white flex items-center justify-center shrink-0 shadow-2xs">
+                          <Store className="w-4 h-4" />
                         </div>
-                        <div>
-                          <div className="text-sm font-black text-[#17221D]">{booking.shopName}</div>
-                          <div className="text-[11px] text-[#66756E] flex items-center gap-1.5 mt-0.5">
-                            <Calendar className="w-3 h-3" />
-                            <span>{formatChatDateTime(booking.createdAt)}</span>
-                          </div>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <h3 className="text-sm font-black text-slate-900 truncate m-0 font-sans">
+                            {booking.shopName}
+                          </h3>
+                          <span className="text-xs text-slate-400 font-sans shrink-0">
+                            {formatOrderDate(booking.createdAt)}
+                          </span>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="shrink-0">
                         {getStatusBadge(booking.status)}
                       </div>
                     </div>
 
-                    {/* Items List */}
-                    <div className="space-y-2">
-                      <div className="text-[11px] font-bold text-[#66756E] uppercase tracking-wider font-malayalam">
-                        ഉൽപ്പന്നങ്ങൾ ({booking.items.length})
-                      </div>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                        {booking.items.map((item, idx) => (
+                    {/* Items Thumbnails Row */}
+                    <div className="flex items-stretch gap-2 overflow-x-auto no-scrollbar py-1">
+                      {booking.items.map((item, idx) => {
+                        const matchedProduct = products.find(
+                          (p) => p.id === item.productId || p.name.toLowerCase() === item.productName.toLowerCase()
+                        );
+                        return (
                           <div
                             key={idx}
-                            className="flex items-center justify-between p-2.5 bg-[#F5F8F6] rounded-xl border border-[#E3ECE7] text-xs"
+                            className="shrink-0 w-24 bg-[#F8FAF9] border border-slate-200/80 rounded-xl p-2 flex flex-col justify-between shadow-2xs text-center relative"
                           >
-                            <div className="flex items-center gap-2 min-w-0">
-                              <span className="text-base shrink-0">{item.emoji || '📦'}</span>
-                              <div className="min-w-0">
-                                <div className="font-bold text-[#17221D] truncate">{item.productName}</div>
-                                <div className="text-[10px] text-[#66756E]">
-                                  {formatCartItemQuantity(item.quantity, item.unit)}
-                                </div>
+                            {/* Quantity Badge on Top-Right */}
+                            <span className="absolute top-1 right-1 w-4 h-4 rounded-full bg-slate-200/90 text-slate-700 font-bold text-[9px] flex items-center justify-center font-sans">
+                              {item.quantity}
+                            </span>
+
+                            {/* Thumbnail */}
+                            <div className="w-full aspect-square flex items-center justify-center p-1 my-1 overflow-hidden">
+                              <ProductImage
+                                productId={item.productId}
+                                image={(item as any).image || matchedProduct?.image}
+                                emoji={item.emoji || matchedProduct?.emoji || '📦'}
+                                alt={item.productName}
+                                className="w-full h-full flex items-center justify-center"
+                                imgClassName="max-h-full max-w-full object-contain"
+                                fallbackEmojiClassName="text-2xl"
+                              />
+                            </div>
+
+                            {/* Title & Price */}
+                            <div className="pt-1 border-t border-slate-200/60">
+                              <div className="text-[10px] font-bold text-slate-800 truncate font-sans" title={item.productName}>
+                                {item.productName}
+                              </div>
+                              <div className="text-[10px] font-black text-slate-900 font-sans mt-0.5">
+                                ₹{item.lineTotal || (item.unitPrice ? item.unitPrice * item.quantity : 125)}
                               </div>
                             </div>
-                            <div className="font-black text-[#0B8F68] shrink-0 font-sans ml-2">
-                              ₹{item.lineTotal}
-                            </div>
                           </div>
-                        ))}
-                      </div>
+                        );
+                      })}
                     </div>
 
-                    {/* Total & Action Footer */}
-                    <div className="flex items-center justify-between pt-3 border-t border-[#F0F4F2] flex-wrap gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#66756E] font-malayalam">ആകെ തുക:</span>
-                        <span className="text-base font-black text-[#063B2A] font-sans">
+                    {/* Card Footer: Total Amount + Buttons */}
+                    <div className="pt-3 border-t border-slate-100 flex items-center justify-between gap-2 flex-wrap">
+                      <div>
+                        <div className="text-[10px] text-slate-400 font-medium font-sans">Order total</div>
+                        <div className="text-base font-black text-slate-900 font-sans">
                           ₹{booking.totalAmount}
-                        </span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2 font-malayalam">
+                      <div className="flex items-center gap-1.5 font-sans flex-wrap">
                         {onOpenChat && (
                           <button
                             type="button"
                             onClick={() => onOpenChat(booking.shopName)}
-                            className="px-3 py-1.5 bg-[#E8F5EE] hover:bg-[#D5EFE3] text-[#063B2A] text-xs font-bold rounded-xl cursor-pointer transition-colors flex items-center gap-1.5"
+                            className="px-3 py-1.5 bg-[#0D6344] hover:bg-[#084D37] active:scale-95 text-white text-[11px] font-bold rounded-lg cursor-pointer transition-all flex items-center gap-1.5 shadow-2xs"
                           >
-                            <MessageCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
-                            <span>കടയുമായി ചാറ്റ് ചെയ്യുക</span>
+                            <MessageCircle className="w-3.5 h-3.5" />
+                            <span>Chat with Store</span>
                           </button>
                         )}
+
+                        <a
+                          href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.shopName)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2.5 py-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-[11px] font-bold rounded-lg cursor-pointer transition-all flex items-center gap-1"
+                        >
+                          <Navigation className="w-3 h-3 text-slate-500" />
+                          <span>Directions</span>
+                        </a>
 
                         {booking.status === 'pending' && (
                           <button
                             type="button"
                             onClick={() => handleCancelBooking(booking.id)}
                             disabled={cancellingBookingId === booking.id}
-                            className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold rounded-xl cursor-pointer transition-colors disabled:opacity-50"
+                            className="px-2.5 py-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-600 hover:text-rose-600 text-[11px] font-bold rounded-lg cursor-pointer transition-all disabled:opacity-50"
                           >
-                            {cancellingBookingId === booking.id ? 'റദ്ദാക്കുന്നു...' : 'റദ്ദാക്കുക'}
+                            {cancellingBookingId === booking.id ? 'Cancelling...' : 'Cancel Order'}
                           </button>
                         )}
                       </div>

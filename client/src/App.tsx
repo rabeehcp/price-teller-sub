@@ -58,6 +58,7 @@ import { MobileProductDetailModal } from './components/MobileProductDetailModal'
 import { MobileBasketView } from './components/MobileBasketView';
 import { MobileCompareView } from './components/MobileCompareView';
 import { MobileProfileView } from './components/MobileProfileView';
+import { MobileOrdersView } from './components/MobileOrdersView';
 import { DesktopHeader } from './components/DesktopHeader';
 import { DesktopLeftSidebar } from './components/DesktopLeftSidebar';
 import { DesktopHomeView } from './components/DesktopHomeView';
@@ -1769,6 +1770,7 @@ export const App: React.FC = () => {
               <MobileProfileView
                 authUser={authUser}
                 currentLocation={currentLocation}
+                consumerData={consumerData}
                 onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
                 onLogout={handleLogout}
@@ -1776,68 +1778,28 @@ export const App: React.FC = () => {
                 onSelectSubTab={(tabId) => {
                   if (tabId === 'orders') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
-                    else setIsConsumerPreBookingsOpen(true);
+                    else setShopperTab('orders');
                   } else if (tabId === 'chat') {
                     handleOpenChat();
                   } else if (tabId === 'lists') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
                     else setIsConsumerDashboardOpen(true);
+                  } else if (tabId === 'favorites') {
+                    if (!authUser) handleOpenAuthModal('consumer-login');
+                    else setShopperTab('profile');
                   }
                 }}
               />
             )}
 
             {shopperTab === 'orders' && (
-              <div className="p-4 space-y-3 font-sans pb-24">
-                <div className="flex items-center gap-2 pb-2 border-b border-[#F0F4F2]">
-                  <button
-                    type="button"
-                    onClick={() => setShopperTab('home')}
-                    className="p-1.5 bg-[#F5F8F6] hover:bg-[#E8F5EE] border border-[#E3ECE7] active:scale-95 rounded-xl text-[#17221D] transition-all cursor-pointer"
-                    title="ഹോമിലേക്ക് മടങ്ങുക (Back to Home)"
-                    aria-label="Back to Home"
-                  >
-                    <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
-                  </button>
-                  <h2 className="text-base font-extrabold text-[#17221D] font-malayalam m-0">എന്റെ ഓർഡറുകൾ</h2>
-                </div>
-                {authUser ? (
-                  <div className="p-6 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3 shadow-2xs">
-                    <div className="w-14 h-14 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto text-xl">
-                      📦
-                    </div>
-                    <h3 className="text-sm font-black text-[#17221D] font-malayalam">
-                      സജീവമായ ഓർഡറുകൾ ഇല്ല
-                    </h3>
-                    <p className="text-xs text-[#66756E] font-malayalam">
-                      നിങ്ങൾ ഓർഡർ ചെയ്ത സാധനങ്ങളുടെ വിവരങ്ങൾ ഇവിടെ കാണാം.
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => setShopperTab('home')}
-                      className="py-2.5 px-5 bg-[#063B2A] text-white text-xs font-bold rounded-xl cursor-pointer font-malayalam"
-                    >
-                      ഷോപ്പിംഗ് തുടരുക
-                    </button>
-                  </div>
-                ) : (
-                  <div className="p-8 bg-white border border-[#E3ECE7] rounded-3xl text-center space-y-3 shadow-2xs mt-4">
-                    <div className="w-16 h-16 rounded-full bg-[#E8F5EE] text-[#0B8F68] flex items-center justify-center mx-auto text-2xl">
-                      📦
-                    </div>
-                    <h3 className="text-base font-black text-[#17221D] font-malayalam">
-                      ഓർഡറുകൾ കാണാൻ ലോഗിൻ ചെയ്യുക
-                    </h3>
-                    <button
-                      type="button"
-                      onClick={() => handleOpenAuthModal('consumer-login')}
-                      className="py-3 px-6 bg-[#063B2A] text-white text-xs font-bold rounded-2xl cursor-pointer font-malayalam"
-                    >
-                      ലോഗിൻ / രജിസ്റ്റർ
-                    </button>
-                  </div>
-                )}
-              </div>
+              <MobileOrdersView
+                authUser={authUser}
+                onBack={() => setShopperTab('home')}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onGoShopping={() => setShopperTab('home')}
+                products={products}
+              />
             )}
 
             {shopperTab === 'deals' && (
