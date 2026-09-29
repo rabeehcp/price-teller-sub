@@ -41,8 +41,14 @@ export interface Shop {
   openingHours: string;
   phone: string;
   isVerified: boolean;
+  isDeliveryAvailable?: boolean;
   deliveryFee: number;
   freeDeliveryThreshold: number;
+  deliveryRadiusKm?: number;
+  minDeliveryOrderAmount?: number;
+  estimatedDeliveryTime?: string;
+  deliveryHours?: string;
+  deliveryNotes?: string;
   color: string;
   categories?: string[];
 }
@@ -240,6 +246,10 @@ export interface PreBooking {
   totalQuantity: number;
   totalAmount: number;
   status: PreBookingStatus;
+  fulfillmentType?: 'pickup' | 'delivery';
+  deliveryAddress?: string;
+  deliveryLandmark?: string;
+  deliveryFee?: number;
   pickupTime?: string;
   notes?: string;
   merchantNote?: string;
@@ -431,7 +441,13 @@ class Database {
                         distance_km::float AS "distanceKm", lat::float AS lat, lng::float AS lng, 
                         rating::float AS rating, review_count AS "reviewCount", shop_type AS "shopType", 
                         opening_hours AS "openingHours", phone, is_verified AS "isVerified", 
+                        COALESCE(is_delivery_available, true) AS "isDeliveryAvailable",
                         delivery_fee::float AS "deliveryFee", free_delivery_threshold::float AS "freeDeliveryThreshold", 
+                        COALESCE(delivery_radius_km::float, 8.0) AS "deliveryRadiusKm",
+                        COALESCE(min_delivery_order_amount::float, 0.0) AS "minDeliveryOrderAmount",
+                        COALESCE(estimated_delivery_time, '30-45 mins') AS "estimatedDeliveryTime",
+                        COALESCE(delivery_hours, '8:00 AM - 9:00 PM') AS "deliveryHours",
+                        COALESCE(delivery_notes, '') AS "deliveryNotes",
                         color, categories 
                  FROM shops 
                  WHERE 1=1`;
@@ -458,7 +474,13 @@ class Database {
                 distance_km::float AS "distanceKm", lat::float AS lat, lng::float AS lng, 
                 rating::float AS rating, review_count AS "reviewCount", shop_type AS "shopType", 
                 opening_hours AS "openingHours", phone, is_verified AS "isVerified", 
+                COALESCE(is_delivery_available, true) AS "isDeliveryAvailable",
                 delivery_fee::float AS "deliveryFee", free_delivery_threshold::float AS "freeDeliveryThreshold", 
+                COALESCE(delivery_radius_km::float, 8.0) AS "deliveryRadiusKm",
+                COALESCE(min_delivery_order_amount::float, 0.0) AS "minDeliveryOrderAmount",
+                COALESCE(estimated_delivery_time, '30-45 mins') AS "estimatedDeliveryTime",
+                COALESCE(delivery_hours, '8:00 AM - 9:00 PM') AS "deliveryHours",
+                COALESCE(delivery_notes, '') AS "deliveryNotes",
                 color, categories 
          FROM shops 
          ORDER BY name ASC`
@@ -517,8 +539,14 @@ const newShop: Shop = {
       const openingHours = updates.openingHours !== undefined ? updates.openingHours : current.opening_hours;
       const phone = updates.phone !== undefined ? updates.phone : current.phone;
       const isVerified = updates.isVerified !== undefined ? updates.isVerified : current.is_verified;
-      const deliveryFee = updates.deliveryFee !== undefined ? updates.deliveryFee : current.delivery_fee;
-      const freeDeliveryThreshold = updates.freeDeliveryThreshold !== undefined ? updates.freeDeliveryThreshold : current.free_delivery_threshold;
+      const isDeliveryAvailable = updates.isDeliveryAvailable !== undefined ? Boolean(updates.isDeliveryAvailable) : (current.is_delivery_available !== undefined ? Boolean(current.is_delivery_available) : true);
+      const deliveryFee = updates.deliveryFee !== undefined ? updates.deliveryFee : (current.delivery_fee ?? 30);
+      const freeDeliveryThreshold = updates.freeDeliveryThreshold !== undefined ? updates.freeDeliveryThreshold : (current.free_delivery_threshold ?? 500);
+      const deliveryRadiusKm = updates.deliveryRadiusKm !== undefined ? updates.deliveryRadiusKm : (current.delivery_radius_km ?? 8.0);
+      const minDeliveryOrderAmount = updates.minDeliveryOrderAmount !== undefined ? updates.minDeliveryOrderAmount : (current.min_delivery_order_amount ?? 0.0);
+      const estimatedDeliveryTime = updates.estimatedDeliveryTime !== undefined ? updates.estimatedDeliveryTime : (current.estimated_delivery_time || '30-45 mins');
+      const deliveryHours = updates.deliveryHours !== undefined ? updates.deliveryHours : (current.delivery_hours || '8:00 AM - 9:00 PM');
+      const deliveryNotes = updates.deliveryNotes !== undefined ? updates.deliveryNotes : (current.delivery_notes || '');
       const color = updates.color !== undefined ? updates.color : current.color;
       const categories = updates.categories !== undefined ? JSON.stringify(updates.categories) : JSON.stringify(current.categories || []);
       const lat = updates.lat !== undefined ? updates.lat : current.lat;
@@ -528,15 +556,26 @@ const newShop: Shop = {
         `UPDATE shops 
          SET name = $1, location_id = $2, address = $3, distance_km = $4, rating = $5, 
              review_count = $6, shop_type = $7, opening_hours = $8, phone = $9, 
-             is_verified = $10, delivery_fee = $11, free_delivery_threshold = $12, 
-             color = $13, categories = $14, lat = $15, lng = $16
-         WHERE id = $17
+             is_verified = $10, is_delivery_available = $11, delivery_fee = $12, 
+             free_delivery_threshold = $13, delivery_radius_km = $14, min_delivery_order_amount = $15, 
+             estimated_delivery_time = $16, delivery_hours = $17, delivery_notes = $18, 
+             color = $19, categories = $20, lat = $21, lng = $22
+         WHERE id = $23
          RETURNING id, name, location_id AS "locationId", address, distance_km::float AS "distanceKm", 
                    rating::float AS rating, review_count AS "reviewCount", shop_type AS "shopType", 
                    opening_hours AS "openingHours", phone, is_verified AS "isVerified", 
+                   is_delivery_available AS "isDeliveryAvailable",
                    delivery_fee::float AS "deliveryFee", free_delivery_threshold::float AS "freeDeliveryThreshold", 
+                   delivery_radius_km::float AS "deliveryRadiusKm", min_delivery_order_amount::float AS "minDeliveryOrderAmount",
+                   estimated_delivery_time AS "estimatedDeliveryTime", delivery_hours AS "deliveryHours",
+                   delivery_notes AS "deliveryNotes",
                    color, categories, lat::float AS lat, lng::float AS lng`,
-        [name, locationId, address, distanceKm, rating, reviewCount, shopType, openingHours, phone, isVerified, deliveryFee, freeDeliveryThreshold, color, categories, lat, lng, id]
+        [
+          name, locationId, address, distanceKm, rating, reviewCount, shopType, openingHours, phone, 
+          isVerified, isDeliveryAvailable, deliveryFee, freeDeliveryThreshold, deliveryRadiusKm, minDeliveryOrderAmount,
+          estimatedDeliveryTime, deliveryHours, deliveryNotes,
+          color, categories, lat, lng, id
+        ]
       );
 
       if (updates.name && updates.name !== oldName) {
@@ -866,7 +905,7 @@ const newProduct: Product = {
           'priceteller10',
           'Super Admin',
           'admin',
-          'password123',
+          await hashPassword('pcart3663'),
           '+91 99999 00000',
           new Date().toISOString(),
           'tok-admin-1',
@@ -1463,12 +1502,14 @@ const cleanId = (identifier || '').trim().toLowerCase();
 
 
       const res = await query(
-        `SELECT id, email, username, name, role, password, shop_id AS "shopId", 
-                shop_name AS "shopName", phone, location_id AS "locationId", 
-                created_at AS "createdAt", token 
-         FROM users 
-         WHERE LOWER(email) = $1 
-            OR LOWER(COALESCE(username, '')) = $1`,
+        `SELECT u.id, u.email, u.username, u.name, u.role, u.password, u.shop_id AS "shopId", 
+                u.shop_name AS "shopName", u.phone, 
+                COALESCE(u.location_id, c.preferred_location_id) AS "locationId", 
+                u.created_at AS "createdAt", u.token 
+         FROM users u
+         LEFT JOIN consumer_data c ON u.id = c.user_id
+         WHERE LOWER(u.email) = $1 
+            OR LOWER(COALESCE(u.username, '')) = $1`,
         [cleanId]
       );
 
@@ -1525,14 +1566,44 @@ if (!cleanToken) return null;
 
 
       const res = await query(
-        `SELECT id, email, username, name, role, password, shop_id AS "shopId", 
-                shop_name AS "shopName", phone, location_id AS "locationId", 
-                created_at AS "createdAt", token 
-         FROM users 
-         WHERE token = $1`,
+        `SELECT u.id, u.email, u.username, u.name, u.role, u.password, u.shop_id AS "shopId", 
+                u.shop_name AS "shopName", u.phone, 
+                COALESCE(u.location_id, c.preferred_location_id) AS "locationId", 
+                u.created_at AS "createdAt", u.token 
+         FROM users u
+         LEFT JOIN consumer_data c ON u.id = c.user_id
+         WHERE u.token = $1`,
         [cleanToken]
       );
       return res.rows[0] || null;
+  }
+
+  public async updateUserLocation(userId: string, locationId: string): Promise<User | null> {
+    if (!userId || !locationId) return null;
+    const cleanLocationId = String(locationId).trim();
+
+    // 1. Update users table location_id
+    const userRes = await query(
+      `UPDATE users 
+       SET location_id = $1 
+       WHERE id = $2 
+       RETURNING id, email, username, name, role, password, shop_id AS "shopId", 
+                 shop_name AS "shopName", phone, location_id AS "locationId", 
+                 created_at AS "createdAt", token`,
+      [cleanLocationId, userId]
+    );
+
+    // 2. Also ensure consumer_data has preferred_location_id synced
+    await query(
+      `INSERT INTO consumer_data (user_id, basket, saved_lists, favorites, trip_history, preferred_location_id, last_active)
+       VALUES ($1, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, '[]'::jsonb, $2, NOW())
+       ON CONFLICT (user_id) DO UPDATE SET
+         preferred_location_id = EXCLUDED.preferred_location_id,
+         last_active = NOW()`,
+      [userId, cleanLocationId]
+    );
+
+    return userRes.rows[0] || null;
   }
 
   public async getQuickConsumers(): Promise<{ id: string; name: string; email: string; phone?: string; locationId?: string; listCount: number; favoritesCount: number }[]> {
@@ -1625,11 +1696,13 @@ const expectedRole = params.expectedRole || 'consumer';
 
 
       const res = await query(
-        `SELECT id, email, username, name, role, password, shop_id AS "shopId", 
-                shop_name AS "shopName", phone, location_id AS "locationId", 
-                created_at AS "createdAt", token 
-         FROM users 
-         WHERE LOWER(email) = $1`,
+        `SELECT u.id, u.email, u.username, u.name, u.role, u.password, u.shop_id AS "shopId", 
+                u.shop_name AS "shopName", u.phone, 
+                COALESCE(u.location_id, c.preferred_location_id) AS "locationId", 
+                u.created_at AS "createdAt", u.token 
+         FROM users u
+         LEFT JOIN consumer_data c ON u.id = c.user_id
+         WHERE LOWER(u.email) = $1`,
         [cleanEmail]
       );
 
@@ -2273,6 +2346,10 @@ const now = new Date().toISOString();
     itemCount: number;
     totalQuantity: number;
     totalAmount: number;
+    fulfillmentType?: 'pickup' | 'delivery';
+    deliveryAddress?: string;
+    deliveryLandmark?: string;
+    deliveryFee?: number;
     pickupTime?: string;
     notes?: string;
   }): Promise<PreBooking> {
@@ -2291,6 +2368,10 @@ const newBooking: PreBooking = {
       totalQuantity: data.totalQuantity,
       totalAmount: data.totalAmount,
       status: 'pending',
+      fulfillmentType: data.fulfillmentType || 'pickup',
+      deliveryAddress: data.deliveryAddress,
+      deliveryLandmark: data.deliveryLandmark,
+      deliveryFee: data.deliveryFee || 0,
       pickupTime: data.pickupTime,
       notes: data.notes,
       createdAt: now,
@@ -2302,8 +2383,9 @@ const newBooking: PreBooking = {
         `INSERT INTO pre_bookings (
           id, consumer_id, consumer_name, consumer_phone, consumer_email,
           shop_id, shop_name, items, item_count, total_quantity, total_amount,
-          status, pickup_time, notes, created_at, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`,
+          status, fulfillment_type, delivery_address, delivery_landmark, delivery_fee,
+          pickup_time, notes, created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20)`,
         [
           newBooking.id,
           newBooking.consumerId,
@@ -2317,6 +2399,10 @@ const newBooking: PreBooking = {
           newBooking.totalQuantity,
           newBooking.totalAmount,
           newBooking.status,
+          newBooking.fulfillmentType || 'pickup',
+          newBooking.deliveryAddress || null,
+          newBooking.deliveryLandmark || null,
+          newBooking.deliveryFee || 0,
           newBooking.pickupTime || null,
           newBooking.notes || null,
           newBooking.createdAt,
@@ -2341,6 +2427,10 @@ const newBooking: PreBooking = {
                 total_quantity as "totalQuantity",
                 total_amount as "totalAmount",
                 status,
+                COALESCE(fulfillment_type, 'pickup') as "fulfillmentType",
+                delivery_address as "deliveryAddress",
+                delivery_landmark as "deliveryLandmark",
+                COALESCE(delivery_fee::float, 0) as "deliveryFee",
                 pickup_time as "pickupTime",
                 notes,
                 merchant_note as "merchantNote",
@@ -2372,6 +2462,10 @@ const newBooking: PreBooking = {
                 total_quantity as "totalQuantity",
                 total_amount as "totalAmount",
                 status,
+                COALESCE(fulfillment_type, 'pickup') as "fulfillmentType",
+                delivery_address as "deliveryAddress",
+                delivery_landmark as "deliveryLandmark",
+                COALESCE(delivery_fee::float, 0) as "deliveryFee",
                 pickup_time as "pickupTime",
                 notes,
                 merchant_note as "merchantNote",
@@ -2403,6 +2497,10 @@ const newBooking: PreBooking = {
                 total_quantity as "totalQuantity",
                 total_amount as "totalAmount",
                 status,
+                COALESCE(fulfillment_type, 'pickup') as "fulfillmentType",
+                delivery_address as "deliveryAddress",
+                delivery_landmark as "deliveryLandmark",
+                COALESCE(delivery_fee::float, 0) as "deliveryFee",
                 pickup_time as "pickupTime",
                 notes,
                 merchant_note as "merchantNote",
@@ -2432,6 +2530,10 @@ const newBooking: PreBooking = {
                 total_quantity as "totalQuantity",
                 total_amount as "totalAmount",
                 status,
+                COALESCE(fulfillment_type, 'pickup') as "fulfillmentType",
+                delivery_address as "deliveryAddress",
+                delivery_landmark as "deliveryLandmark",
+                COALESCE(delivery_fee::float, 0) as "deliveryFee",
                 pickup_time as "pickupTime",
                 notes,
                 merchant_note as "merchantNote",
@@ -2729,41 +2831,39 @@ const shopLower = (shopIdentifier || '').toLowerCase().trim();
   }
 
   public async getSubscriptionPlans(includeInactive = false): Promise<SubscriptionPlan[]> {
-
-      let q = `SELECT id, name, duration_days as "durationDays", price_paise as "pricePaise", currency, description, features, badge, is_active as "isActive", created_at as "createdAt", updated_at as "updatedAt" FROM subscription_plans`;
-      if (!includeInactive) {
-        q += ` WHERE is_active = true`;
-      }
-      q += ` ORDER BY price_paise ASC`;
-      const res = await query(q);
-      return res.rows.map((r: any) => ({
-        ...r,
-        durationDays: Number(r.durationDays),
-        pricePaise: Number(r.pricePaise),
-        features: Array.isArray(r.features) ? r.features : typeof r.features === 'string' ? JSON.parse(r.features) : [],
-      }));
+    let q = `SELECT id, name, duration_days as "durationDays", price_paise as "pricePaise", currency, description, features, badge, is_active as "isActive", created_at as "createdAt", updated_at as "updatedAt" FROM subscription_plans WHERE COALESCE(is_deleted, false) = false`;
+    if (!includeInactive) {
+      q += ` AND is_active = true`;
+    }
+    q += ` ORDER BY price_paise ASC`;
+    const res = await query(q);
+    return res.rows.map((r: any) => ({
+      ...r,
+      durationDays: Number(r.durationDays),
+      pricePaise: Number(r.pricePaise),
+      features: Array.isArray(r.features) ? r.features : typeof r.features === 'string' ? JSON.parse(r.features) : [],
+    }));
   }
 
   public async getSubscriptionPlanById(id: string): Promise<SubscriptionPlan | null> {
-
-      const res = await query(
-        `SELECT id, name, duration_days as "durationDays", price_paise as "pricePaise", currency, description, features, badge, is_active as "isActive", created_at as "createdAt", updated_at as "updatedAt"
-         FROM subscription_plans WHERE id = $1`,
-        [id]
-      );
-      if (res.rows.length === 0) return null;
-      const r = res.rows[0];
-      return {
-        ...r,
-        durationDays: Number(r.durationDays),
-        pricePaise: Number(r.pricePaise),
-        features: Array.isArray(r.features) ? r.features : typeof r.features === 'string' ? JSON.parse(r.features) : [],
-      };
+    const res = await query(
+      `SELECT id, name, duration_days as "durationDays", price_paise as "pricePaise", currency, description, features, badge, is_active as "isActive", created_at as "createdAt", updated_at as "updatedAt"
+       FROM subscription_plans WHERE id = $1 AND COALESCE(is_deleted, false) = false`,
+      [id]
+    );
+    if (res.rows.length === 0) return null;
+    const r = res.rows[0];
+    return {
+      ...r,
+      durationDays: Number(r.durationDays),
+      pricePaise: Number(r.pricePaise),
+      features: Array.isArray(r.features) ? r.features : typeof r.features === 'string' ? JSON.parse(r.features) : [],
+    };
   }
 
   public async createSubscriptionPlan(data: Partial<SubscriptionPlan>): Promise<SubscriptionPlan> {
-const id = data.id || `plan-${Date.now()}`;
-const newPlan: SubscriptionPlan = {
+    const id = data.id || `plan-${Date.now()}`;
+    const newPlan: SubscriptionPlan = {
       id,
       name: data.name || 'Custom Plan',
       durationDays: Number(data.durationDays) || 30,
@@ -2777,83 +2877,74 @@ const newPlan: SubscriptionPlan = {
       updatedAt: new Date().toISOString(),
     };
 
-
-      await query(
-        `INSERT INTO subscription_plans (id, name, duration_days, price_paise, currency, description, features, badge, is_active, created_at, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-        [
-          newPlan.id,
-          newPlan.name,
-          newPlan.durationDays,
-          newPlan.pricePaise,
-          newPlan.currency,
-          newPlan.description,
-          JSON.stringify(newPlan.features),
-          newPlan.badge || null,
-          newPlan.isActive,
-          newPlan.createdAt,
-          newPlan.updatedAt,
-        ]
-      );
-      return newPlan;
+    await query(
+      `INSERT INTO subscription_plans (id, name, duration_days, price_paise, currency, description, features, badge, is_active, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      [
+        newPlan.id,
+        newPlan.name,
+        newPlan.durationDays,
+        newPlan.pricePaise,
+        newPlan.currency,
+        newPlan.description,
+        JSON.stringify(newPlan.features),
+        newPlan.badge || null,
+        newPlan.isActive,
+        newPlan.createdAt,
+        newPlan.updatedAt,
+      ]
+    );
+    return newPlan;
   }
 
   public async updateSubscriptionPlan(id: string, updates: Partial<SubscriptionPlan>): Promise<SubscriptionPlan | null> {
+    const existing = await this.getSubscriptionPlanById(id);
+    if (!existing) return null;
 
-      const existing = await this.getSubscriptionPlanById(id);
-      if (!existing) return null;
+    const merged: SubscriptionPlan = {
+      ...existing,
+      ...updates,
+      durationDays: updates.durationDays !== undefined ? Number(updates.durationDays) : existing.durationDays,
+      pricePaise: updates.pricePaise !== undefined ? Number(updates.pricePaise) : existing.pricePaise,
+      features: updates.features !== undefined ? updates.features : existing.features,
+      updatedAt: new Date().toISOString(),
+    };
 
-      const merged: SubscriptionPlan = {
-        ...existing,
-        ...updates,
-        durationDays: updates.durationDays !== undefined ? Number(updates.durationDays) : existing.durationDays,
-        pricePaise: updates.pricePaise !== undefined ? Number(updates.pricePaise) : existing.pricePaise,
-        features: updates.features !== undefined ? updates.features : existing.features,
-        updatedAt: new Date().toISOString(),
-      };
-
-      await query(
-        `UPDATE subscription_plans
-         SET name = $1, duration_days = $2, price_paise = $3, currency = $4, description = $5, features = $6, badge = $7, is_active = $8, updated_at = $9
-         WHERE id = $10`,
-        [
-          merged.name,
-          merged.durationDays,
-          merged.pricePaise,
-          merged.currency,
-          merged.description,
-          JSON.stringify(merged.features),
-          merged.badge || null,
-          merged.isActive,
-          merged.updatedAt,
-          id,
-        ]
-      );
-      return merged;
+    await query(
+      `UPDATE subscription_plans
+       SET name = $1, duration_days = $2, price_paise = $3, currency = $4, description = $5, features = $6, badge = $7, is_active = $8, updated_at = $9
+       WHERE id = $10`,
+      [
+        merged.name,
+        merged.durationDays,
+        merged.pricePaise,
+        merged.currency,
+        merged.description,
+        JSON.stringify(merged.features),
+        merged.badge || null,
+        merged.isActive,
+        merged.updatedAt,
+        id,
+      ]
+    );
+    return merged;
   }
 
   public async deleteSubscriptionPlan(id: string): Promise<{ success: boolean; error?: string }> {
-    const checkSub = await query(
-      `SELECT count(*)::int as count FROM merchant_subscriptions WHERE plan_id = $1`,
-      [id]
-    );
-    const subCount = checkSub.rows[0]?.count || 0;
-
-    const checkPay = await query(
-      `SELECT count(*)::int as count FROM subscription_payments WHERE plan_id = $1`,
-      [id]
-    );
-    const payCount = checkPay.rows[0]?.count || 0;
-
-    if (subCount > 0 || payCount > 0) {
-      return {
-        success: false,
-        error: `Cannot delete plan: ${subCount} subscriptions and ${payCount} payments are linked to it. Please deactivate the tier instead.`,
-      };
+    try {
+      const res = await query(`DELETE FROM subscription_plans WHERE id = $1`, [id]);
+      if ((res.rowCount ?? 0) > 0) {
+        return { success: true };
+      }
+    } catch (err) {
+      // If foreign keys prevent hard delete, mark it soft-deleted and deactivated
     }
 
-    const res = await query(`DELETE FROM subscription_plans WHERE id = $1`, [id]);
-    return { success: (res.rowCount ?? 0) > 0 };
+    await query(
+      `UPDATE subscription_plans SET is_active = false, is_deleted = true, updated_at = $2 WHERE id = $1`,
+      [id, new Date().toISOString()]
+    );
+    return { success: true };
   }
 
   public async getMerchantActiveSubscription(merchantId: string): Promise<MerchantSubscription | null> {

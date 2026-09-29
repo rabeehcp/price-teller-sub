@@ -26,6 +26,7 @@ import {
   ArrowLeft,
   Briefcase,
   Zap,
+  Truck,
 } from 'lucide-react';
 import { User } from '../types';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
@@ -52,8 +53,8 @@ interface MobileDrawerProps {
   onOpenAdminPortal?: () => void;
 
   // Merchant Navigation Props
-  merchantTab?: 'dashboard' | 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals';
-  onSelectMerchantTab?: (tab: 'dashboard' | 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
+  merchantTab?: 'dashboard' | 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals';
+  onSelectMerchantTab?: (tab: 'dashboard' | 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
   onOpenSubscriptionModal?: () => void;
 
   // Admin Navigation Props
@@ -138,7 +139,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   {authUser.email || authUser.username || authUser.phone || 'Verified'}
                 </p>
                 <span className="inline-block mt-1 text-[9.5px] font-bold px-2 py-0.5 rounded-full bg-[#E8F5EE] text-[#0D6344] border border-[#C5ECD8]">
-                  {isMerchant ? '● വ്യാപാരി (MERCHANT)' : isAdmin ? '🛡️ അഡ്മിൻ (ADMIN)' : '🛒 ഉപഭോക്താവ് (SHOPPER)'}
+                  {isMerchant ? '● വ്യാപാരി (MERCHANT)' : isAdmin ? '🛡️ Admin' : '🛒 ഉപഭോക്താവ് (SHOPPER)'}
                 </span>
               </div>
             </div>
@@ -248,6 +249,27 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   {pendingOrdersCount}
                 </span>
               )}
+            </button>
+
+            {/* Delivery Hub */}
+            <button
+              onClick={() => {
+                if (onSelectMerchantTab) onSelectMerchantTab('delivery');
+                onClose();
+              }}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
+                merchantTab === 'delivery'
+                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
+                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
+              }`}
+            >
+              {merchantTab === 'delivery' && (
+                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
+              )}
+              <div className="flex items-center gap-3">
+                <Truck className={`w-4 h-4 shrink-0 ${merchantTab === 'delivery' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
+                <span>ഹോം ഡെലിവറി (Delivery Hub)</span>
+              </div>
             </button>
 
             {/* 5. Customer Chat */}
@@ -366,7 +388,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
         {/* ADMIN MODE NAVIGATION MENU */}
         {/* ============================================================ */}
         {isAdmin && (
-          <div className="p-3.5 space-y-1 flex-1 font-malayalam">
+          <div className="p-3.5 space-y-1 flex-1 font-sans">
             <div className="text-[10px] font-bold text-[#8C7E6E] uppercase tracking-wider px-3 mb-2 font-sans">
               Admin Navigation
             </div>
@@ -386,7 +408,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <LayoutGrid className={`w-4 h-4 shrink-0 ${adminTab === 'dashboard' || adminTab === 'overview' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>അഡ്മിൻ ഡാഷ്‌ബോർഡ് (Dashboard)</span>
+              <span>Admin Dashboard</span>
             </button>
 
             <button
@@ -404,7 +426,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Users className={`w-4 h-4 shrink-0 ${adminTab === 'users' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>ഉപയോക്താക്കൾ (Users)</span>
+              <span>Users</span>
             </button>
 
             <button
@@ -422,7 +444,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Store className={`w-4 h-4 shrink-0 ${adminTab === 'shops' || adminTab === 'stores' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>കടകൾ (Shops Directory)</span>
+              <span>Merchants</span>
             </button>
 
             <button
@@ -440,7 +462,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Package className={`w-4 h-4 shrink-0 ${adminTab === 'products' || adminTab === 'catalog' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>മാസ്റ്റർ ഉൽപ്പന്നങ്ങൾ (Products)</span>
+              <span>Master Products</span>
             </button>
 
             <button
@@ -458,7 +480,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <CreditCard className={`w-4 h-4 shrink-0 ${adminTab === 'subscriptions' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>സബ്‌സ്‌ക്രിപ്ഷനുകൾ (Subscriptions)</span>
+              <span>Subscriptions</span>
             </button>
 
             <button
@@ -476,7 +498,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Briefcase className={`w-4 h-4 shrink-0 ${adminTab === 'clients' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>ഫീൽഡ് ക്ലയന്റ്സ് (Field Clients / Agents)</span>
+              <span>Field Partners</span>
             </button>
 
             <button
@@ -494,7 +516,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Settings className={`w-4 h-4 shrink-0 ${adminTab === 'locations' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>റീജിയണൽ ഹബ്ബുകൾ (Locations)</span>
+              <span>Regional Hubs</span>
             </button>
 
             <button
@@ -512,7 +534,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <ShieldCheck className={`w-4 h-4 shrink-0 ${adminTab === 'moderation' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>വില മോഡറേഷൻ (Price Reports)</span>
+              <span>Price Reports</span>
             </button>
 
             <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">
@@ -526,7 +548,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                   className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-[#0D6344] bg-[#E8F5EE] hover:bg-[#D5EFE2] border border-[#C5ECD8] transition-all text-left cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4 text-[#0D6344] shrink-0" />
-                  <span>കസ്റ്റമർ ആപ്പിലേക്ക് മടങ്ങുക (Back to Shopper)</span>
+                  <span>Back to Shopper App</span>
                 </button>
               )}
             </div>
@@ -540,7 +562,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 className="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold text-rose-600 hover:bg-rose-50 border border-rose-200/80 transition-colors text-left cursor-pointer"
               >
                 <LogOut className="w-4 h-4 text-rose-600 shrink-0" />
-                <span>ലോഗൗട്ട് (Logout)</span>
+                <span>Logout</span>
               </button>
             )}
           </div>
@@ -723,7 +745,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 >
                   <div className="flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-[#334155]" />
-                    <span>അഡ്മിൻ പാനൽ (Admin)</span>
+                    <span>Admin Console</span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-[#334155]" />
                 </button>

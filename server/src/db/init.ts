@@ -48,12 +48,23 @@ export async function initDb(): Promise<boolean> {
       await client.query(`ALTER TABLE messages ADD COLUMN IF NOT EXISTS client_msg_id VARCHAR(100);`);
       await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS lat DOUBLE PRECISION;`);
       await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS lng DOUBLE PRECISION;`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS is_delivery_available BOOLEAN NOT NULL DEFAULT true;`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS delivery_radius_km DOUBLE PRECISION NOT NULL DEFAULT 8.0;`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS min_delivery_order_amount DOUBLE PRECISION NOT NULL DEFAULT 0.0;`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS estimated_delivery_time VARCHAR(100) NOT NULL DEFAULT '30-45 mins';`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS delivery_hours VARCHAR(100) NOT NULL DEFAULT '8:00 AM - 9:00 PM';`);
+      await client.query(`ALTER TABLE shops ADD COLUMN IF NOT EXISTS delivery_notes TEXT DEFAULT '';`);
+      await client.query(`ALTER TABLE pre_bookings ADD COLUMN IF NOT EXISTS fulfillment_type VARCHAR(50) NOT NULL DEFAULT 'pickup';`);
+      await client.query(`ALTER TABLE pre_bookings ADD COLUMN IF NOT EXISTS delivery_address TEXT;`);
+      await client.query(`ALTER TABLE pre_bookings ADD COLUMN IF NOT EXISTS delivery_landmark TEXT;`);
+      await client.query(`ALTER TABLE pre_bookings ADD COLUMN IF NOT EXISTS delivery_fee DOUBLE PRECISION NOT NULL DEFAULT 0.0;`);
       await client.query(`ALTER TABLE locations ADD COLUMN IF NOT EXISTS radius_km DOUBLE PRECISION NOT NULL DEFAULT 15.0;`);
       await client.query(`ALTER TABLE merchant_subscriptions ADD COLUMN IF NOT EXISTS client_id VARCHAR(100);`);
       await client.query(`ALTER TABLE merchant_subscriptions ADD COLUMN IF NOT EXISTS client_code VARCHAR(50);`);
       await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS client_id VARCHAR(100);`);
       await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS client_code VARCHAR(50);`);
       await client.query(`ALTER TABLE subscription_payments ADD COLUMN IF NOT EXISTS commission_paise INT DEFAULT 0;`);
+      await client.query(`ALTER TABLE subscription_plans ADD COLUMN IF NOT EXISTS is_deleted BOOLEAN NOT NULL DEFAULT false;`);
       await client.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS referred_by_client_code VARCHAR(50);`);
 
       // Ensure client_partners and client_payouts tables exist
@@ -107,7 +118,8 @@ export async function initDb(): Promise<boolean> {
         ON messages (conversation_id, client_msg_id)
         WHERE client_msg_id IS NOT NULL AND client_msg_id <> ''
       `);
-      // Ensure Super Admin account is always restored
+      // Ensure Super Admin account is always restored with secure bcrypt hash (pcart3663)
+      const adminPasswordHash = await hashSeedPassword('pcart3663');
       await client.query(
         `INSERT INTO users (id, email, username, name, role, password, phone, created_at, token)
          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
@@ -124,12 +136,27 @@ export async function initDb(): Promise<boolean> {
           'priceteller10',
           'Super Admin',
           'admin',
-          await hashSeedPassword('password123'),
+          adminPasswordHash,
           '+91 99999 00000',
           new Date().toISOString(),
           'tok-admin-1',
         ]
       );
+
+      // Explicitly guarantee all admin accounts have updated bcrypt hash
+      await client.query(
+        `UPDATE users SET password = $1 WHERE email = 'admin@priceteller.com' OR role = 'admin'`,
+        [adminPasswordHash]
+      );
+
+      // Security guarantee: hash any legacy unhashed passwords across all users in DB
+      const unhashedUsers = await client.query("SELECT id, password FROM users WHERE password NOT LIKE '$2%'");
+      for (const u of unhashedUsers.rows) {
+        if (u.password) {
+          const secureHash = await hashSeedPassword(u.password);
+          await client.query('UPDATE users SET password = $1 WHERE id = $2', [secureHash, u.id]);
+        }
+      }
 
       // Ensure merchant subscription plans exist (including the ₹119 official merchant partner plan)
       await client.query(

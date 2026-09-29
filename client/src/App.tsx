@@ -75,6 +75,7 @@ import {
   toggleConsumerFavoriteApi,
   fetchMerchantSubscriptionStatusApi,
   fetchCurrentUserApi,
+  updateUserLocationApi,
   getAuthToken,
 } from './services/api';
 import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale, MessageCircle, ArrowLeft, ShoppingBag } from 'lucide-react';
@@ -278,6 +279,9 @@ export const App: React.FC = () => {
             localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
             sessionStorage.setItem('priceteller_token', tokenToPersist);
             sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+            if (user.locationId) {
+              localStorage.setItem('priceteller_consumer_location_id', user.locationId);
+            }
           } catch { }
 
           const wantsAdmin = isExplicitAdminRoute();
@@ -637,14 +641,30 @@ export const App: React.FC = () => {
     }
   }, [products]);
 
-  // Location Selection Handler with Strict Persistence
+  // Location Selection Handler with Strict Persistence & Backend Profile Sync
   const handleSelectLocation = useCallback((loc: Location) => {
     setCurrentLocation(loc);
     try {
       localStorage.setItem('priceteller_consumer_location_id', loc.id);
       localStorage.setItem('priceteller_location_manually_selected', 'true');
     } catch { }
-  }, []);
+
+    // If user is logged in, sync location to user's backend profile so other computers automatically inherit it
+    if (authUser?.token) {
+      setAuthUser((prev) => {
+        if (!prev) return null;
+        const updated = { ...prev, locationId: loc.id };
+        try {
+          localStorage.setItem('priceteller_auth_user', JSON.stringify(updated));
+          sessionStorage.setItem('priceteller_auth_user', JSON.stringify(updated));
+        } catch { }
+        return updated;
+      });
+      updateUserLocationApi(loc.id, authUser.token).catch((err) => {
+        console.warn('Could not sync user location to cloud profile:', err);
+      });
+    }
+  }, [authUser?.token]);
 
   const [isDetectingGps, setIsDetectingGps] = useState<boolean>(false);
   const [gpsFeedback, setGpsFeedback] = useState<{ text: string; isWarning?: boolean } | null>(null);
@@ -735,22 +755,20 @@ export const App: React.FC = () => {
       setCategories(cats);
 
       // Determine Initial Consumer Hyperlocal Region:
-      // 1. Check saved location in LocalStorage (e.g. Areekode, Tirur)
+      // 1. Check logged-in user's saved account location (top priority across all devices)
       let chosenLoc: Location | null = null;
-      let hasExplicitSavedLoc = false;
-      try {
-        const savedLocId = localStorage.getItem('priceteller_consumer_location_id');
-        if (savedLocId) {
-          chosenLoc = locs.find((l) => l.id === savedLocId) || null;
-          if (chosenLoc) {
-            hasExplicitSavedLoc = true;
-          }
-        }
-      } catch { }
-
-      // 2. Or auth user preferred location
-      if (!chosenLoc && authUser?.locationId) {
+      if (authUser?.locationId) {
         chosenLoc = locs.find((l) => l.id === authUser.locationId) || null;
+      }
+
+      // 2. Check saved location in LocalStorage (e.g. Areekode, Tirur)
+      if (!chosenLoc) {
+        try {
+          const savedLocId = localStorage.getItem('priceteller_consumer_location_id');
+          if (savedLocId) {
+            chosenLoc = locs.find((l) => l.id === savedLocId) || null;
+          }
+        } catch { }
       }
 
       // 3. Fallback to first registered hub
@@ -761,11 +779,23 @@ export const App: React.FC = () => {
       if (chosenLoc) {
         setCurrentLocation(chosenLoc);
       }
-
-      // 4. Default to saved or first registered hub without auto-overriding via IP geolocation
     }
     loadInitialData();
   }, [authUser?.locationId]);
+
+  // Auto-switch to user's saved previous/default location whenever auth user or consumer data updates
+  useEffect(() => {
+    const targetLocId = authUser?.locationId || consumerData?.preferredLocationId;
+    if (targetLocId && locations.length > 0) {
+      const match = locations.find((l) => l.id === targetLocId);
+      if (match && currentLocation?.id !== match.id) {
+        setCurrentLocation(match);
+        try {
+          localStorage.setItem('priceteller_consumer_location_id', match.id);
+        } catch { }
+      }
+    }
+  }, [authUser?.locationId, consumerData?.preferredLocationId, locations, currentLocation?.id]);
 
   // Admin/merchant catalog loading is intentionally isolated from consumer loading.
   // This prevents consumer location/search changes from restarting protected catalog requests.
@@ -1026,6 +1056,18 @@ export const App: React.FC = () => {
       sessionStorage.setItem('priceteller_token', token);
       sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
     } catch { }
+
+    // Auto-switch to user's saved/previous default location when logging in from any computer!
+    if (user.locationId) {
+      try {
+        localStorage.setItem('priceteller_consumer_location_id', user.locationId);
+      } catch { }
+      const matchedLoc = locations.find((l) => l.id === user.locationId);
+      if (matchedLoc) {
+        setCurrentLocation(matchedLoc);
+      }
+    }
+
     setIsAuthModalOpen(false);
     if (user.role === 'admin') {
       window.history.pushState({}, '', '/admin');
