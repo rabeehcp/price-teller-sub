@@ -108,6 +108,7 @@ import { MobileDrawer } from './MobileDrawer';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 import { DesktopAdminOverview } from './DesktopAdminOverview';
 import { ClientManagementTab } from './ClientManagementTab';
+import { AdminSubscriptionTab } from './AdminSubscriptionTab';
 
 export const MASTER_CATALOG_CATEGORIES: { id: string; name: string; icon: string; description: string }[] = [
   { id: 'all', name: 'All Master Items', icon: '✨', description: 'Browse and manage all platform master products' },
@@ -1068,11 +1069,11 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 type="button"
                 onClick={onBackToShopper}
                 className="p-2 bg-[#F5F8F6] hover:bg-[#DDF5EA] border border-[#E3ECE7] active:scale-95 rounded-xl text-[#063B2A] transition-all cursor-pointer flex items-center gap-1 shrink-0 shadow-2xs"
-                title="കസ്റ്റമർ സ്റ്റോറിലേക്ക് മടങ്ങുക (Back to Shopper App)"
+                title="Back to Shopper App"
                 aria-label="Back to Shopper App"
               >
                 <ArrowLeft className="w-4 h-4 text-[#0B8F68]" />
-                <span className="text-xs font-bold font-malayalam hidden xs:inline">ഷോപ്പർ</span>
+                <span className="text-xs font-semibold hidden xs:inline">Shopper</span>
               </button>
             )}
 
@@ -1082,14 +1083,14 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               title="Open Menu"
             >
               <Menu className="w-4 h-4 text-[#0B8F68]" />
-              <span className="text-xs font-bold font-malayalam hidden xs:inline text-[#063B2A]">
-                {effectiveTab === 'overview' ? 'ഡാഷ്ബോർഡ്' :
-                 effectiveTab === 'users' ? 'ഉപയോക്താക്കൾ' :
-                 effectiveTab === 'stores' ? 'കടകൾ' :
-                 effectiveTab === 'catalog' ? 'ഉൽപ്പന്നങ്ങൾ' :
-                 effectiveTab === 'subscriptions' ? 'സബ്സ്ക്രിപ്ഷൻ' :
-                 effectiveTab === 'clients' ? 'ഫീൽഡ് ക്ലയന്റ്സ്' :
-                 effectiveTab === 'locations' ? 'ഹബ്ബുകൾ' : 'മെനു'}
+              <span className="text-xs font-semibold hidden xs:inline text-[#063B2A]">
+                {effectiveTab === 'overview' ? 'Dashboard' :
+                 effectiveTab === 'users' ? 'Users' :
+                 effectiveTab === 'stores' ? 'Merchants' :
+                 effectiveTab === 'catalog' ? 'Products' :
+                 effectiveTab === 'subscriptions' ? 'Subscriptions' :
+                 effectiveTab === 'clients' ? 'Field Partners' :
+                 effectiveTab === 'locations' ? 'Locations' : 'Menu'}
               </span>
             </button>
 
@@ -2692,334 +2693,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
       {/* 6. SUBSCRIPTIONS & MONETIZATION TAB */}
       {effectiveTab === 'subscriptions' && (
-        <div className="space-y-6">
-          {/* Subscriptions Revenue Cards */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">Total Revenue</span>
-                <span className="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-bold">₹</span>
-              </div>
-              <p className="text-2xl font-black text-white mt-2">
-                ₹{subStats ? Math.round(subStats.totalRevenuePaise / 100).toLocaleString() : '0'}
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1">Direct UPI & Gateway Collections</p>
-            </div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">Monthly Recurring (MRR)</span>
-                <span className="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs font-bold">📈</span>
-              </div>
-              <p className="text-2xl font-black text-indigo-300 mt-2">
-                ₹{subStats ? Math.round(subStats.monthlyRecurringPaise / 100).toLocaleString() : '0'}
-              </p>
-              <p className="text-[11px] text-slate-400 mt-1">Estimated normalized monthly run-rate</p>
-            </div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">Active Subscriptions</span>
-                <span className="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-bold">✓</span>
-              </div>
-              <p className="text-2xl font-black text-white mt-2">{subStats?.activeCount ?? 0}</p>
-              <p className="text-[11px] text-slate-400 mt-1">Unlocked merchant dashboards</p>
-            </div>
-
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold text-slate-400">Expired / Inactive</span>
-                <span className="p-1.5 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-bold">⚠️</span>
-              </div>
-              <p className="text-2xl font-black text-amber-400 mt-2">{subStats?.expiredCount ?? 0}</p>
-              <p className="text-[11px] text-slate-400 mt-1">Requires renewal / follow-up</p>
-            </div>
-          </div>
-
-          {/* Plan Configurations Section */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-            <div className="flex items-center justify-between mb-4">
-              <div>
-                <h3 className="text-base font-black text-slate-dark">Subscription Tier Offerings</h3>
-                <p className="text-xs text-gray-400">Public pricing and durations offered to registering shop partners</p>
-              </div>
-              <button
-                onClick={() => setIsNewPlanOpen(true)}
-                className="px-3.5 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm cursor-pointer"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>New Tier Plan</span>
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {subPlans.map((plan) => (
-                <div key={plan.id} className="p-4 rounded-2xl bg-gray-50 border border-gray-200/70 flex flex-col justify-between">
-                  <div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-slate-800">{plan.name}</span>
-                        {plan.badge && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">
-                            {plan.badge}
-                          </span>
-                        )}
-                      </div>
-                      <span
-                        className={`text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full ${
-                          plan.isActive ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-200 text-gray-600'
-                        }`}
-                      >
-                        {plan.isActive ? 'Active' : 'Disabled'}
-                      </span>
-                    </div>
-                    <div className="mt-2 text-xl font-black text-brand-700">
-                      ₹{Math.round(plan.pricePaise / 100)} <span className="text-xs font-normal text-gray-500">/ {plan.durationDays} days</span>
-                    </div>
-                    <p className="text-xs text-gray-500 mt-1">{plan.description}</p>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {plan.features.map((f, i) => (
-                        <span key={i} className="text-[11px] bg-white border border-gray-200 px-2 py-0.5 rounded-md text-gray-600">
-                          ✓ {f}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between gap-2">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => handleTogglePlanActive(plan)}
-                        className={`text-xs font-bold cursor-pointer transition-colors ${
-                          plan.isActive ? 'text-gray-500 hover:text-amber-600' : 'text-emerald-700 hover:text-emerald-800'
-                        }`}
-                      >
-                        {plan.isActive ? 'Deactivate Tier' : 'Activate Tier'}
-                      </button>
-                      <span className="text-gray-300">|</span>
-                      <button
-                        onClick={() => handleDeletePlan(plan)}
-                        disabled={deletingPlanId === plan.id}
-                        title={`Delete ${plan.name}`}
-                        className="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 disabled:opacity-50"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>{deletingPlanId === plan.id ? 'Deleting...' : 'Delete Tier'}</span>
-                      </button>
-                    </div>
-                    <span className="text-[10px] text-gray-400 font-mono truncate max-w-[120px]" title={plan.id}>
-                      ID: {plan.id}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Merchant Subscriptions Management Table */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
-              <div>
-                <h3 className="text-base font-black text-slate-dark">Active & Historical Store Subscriptions</h3>
-                <p className="text-xs text-gray-400">Manage merchant memberships, extend days, or cancel access</p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <input
-                  type="text"
-                  placeholder="Search store / email..."
-                  value={subSearch}
-                  onChange={(e) => setSubSearch(e.target.value)}
-                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none"
-                />
-                <select
-                  value={subStatusFilter}
-                  onChange={(e) => setSubStatusFilter(e.target.value as any)}
-                  className="px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none font-bold"
-                >
-                  <option value="all">All Status</option>
-                  <option value="ACTIVE">Active</option>
-                  <option value="EXPIRED">Expired</option>
-                  <option value="CANCELLED">Cancelled</option>
-                </select>
-                <button
-                  onClick={loadSubscriptionData}
-                  className="p-2 bg-gray-100 hover:bg-gray-200 rounded-xl text-gray-600 cursor-pointer"
-                  title="Refresh subscription data"
-                >
-                  <RotateCw className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            </div>
-
-            {subLoading ? (
-              <div className="py-12 text-center text-xs text-gray-400">Loading subscriptions list...</div>
-            ) : (
-              <div className="overflow-x-auto">
-                <table className="w-full text-xs text-left">
-                  <thead className="bg-gray-50 text-gray-500 uppercase font-bold text-[10px] border-b border-gray-200">
-                    <tr>
-                      <th className="px-4 py-3">Merchant / Store</th>
-                      <th className="px-4 py-3">Plan</th>
-                      <th className="px-4 py-3">Status</th>
-                      <th className="px-4 py-3">Remaining</th>
-                      <th className="px-4 py-3">Expires</th>
-                      <th className="px-4 py-3 text-right">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {subList
-                      .filter((s) => {
-                        const q = subSearch.toLowerCase().trim();
-                        const matchesSearch =
-                          !q ||
-                          s.merchantName?.toLowerCase().includes(q) ||
-                          s.merchantEmail?.toLowerCase().includes(q) ||
-                          s.shopName?.toLowerCase().includes(q);
-                        const matchesStatus = subStatusFilter === 'all' || s.status === subStatusFilter;
-                        return matchesSearch && matchesStatus;
-                      })
-                      .map((sub) => (
-                        <tr key={sub.id} className="hover:bg-gray-50/60">
-                          <td className="px-4 py-3">
-                            <div className="font-bold text-slate-800">{sub.shopName || sub.merchantName || 'Store Partner'}</div>
-                            <div className="text-[11px] text-gray-400">{sub.merchantEmail}</div>
-                          </td>
-                          <td className="px-4 py-3 font-medium text-slate-700">{sub.plan?.name || sub.planId}</td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                                sub.status === 'ACTIVE'
-                                  ? 'bg-emerald-100 text-emerald-800'
-                                  : sub.status === 'EXPIRED'
-                                  ? 'bg-amber-100 text-amber-800'
-                                  : 'bg-rose-100 text-rose-800'
-                              }`}
-                            >
-                              {sub.status}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3">
-                            {sub.status === 'ACTIVE' ? (
-                              <span className="font-bold text-slate-700">{sub.daysRemaining} days</span>
-                            ) : (
-                              <span className="text-gray-400">—</span>
-                            )}
-                          </td>
-                          <td className="px-4 py-3 text-gray-500">{new Date(sub.expiresAt).toLocaleDateString()}</td>
-                          <td className="px-4 py-3 text-right">
-                            <div className="flex items-center justify-end gap-1.5">
-                              <button
-                                onClick={() => setExtendingSub(sub)}
-                                className="px-2.5 py-1 bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-lg font-bold text-[11px] cursor-pointer"
-                              >
-                                Extend
-                              </button>
-                              {sub.status === 'ACTIVE' && (
-                                <button
-                                  onClick={() => handleCancelSubscription(sub.id)}
-                                  className="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-700 rounded-lg font-bold text-[11px] cursor-pointer"
-                                >
-                                  Cancel
-                                </button>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    {subList.length === 0 && (
-                      <tr>
-                        <td colSpan={6} className="px-4 py-8 text-center text-gray-400 text-xs">
-                          No merchant subscriptions found.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-
-          {/* Payment Ledger & Audit Logs */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Payment Ledger */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-base font-black text-slate-dark mb-1">Recent Subscription Payments</h3>
-              <p className="text-xs text-gray-400 mb-4">Complete log of UPI & simulated merchant activations</p>
-              <div className="overflow-y-auto max-h-[360px]">
-                <table className="w-full text-xs text-left">
-                  <thead className="bg-gray-50 text-gray-500 uppercase font-bold text-[10px] sticky top-0">
-                    <tr>
-                      <th className="px-3 py-2">Merchant</th>
-                      <th className="px-3 py-2">Amount</th>
-                      <th className="px-3 py-2">Status</th>
-                      <th className="px-3 py-2">Date</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {subPayments.map((p) => (
-                      <tr key={p.id}>
-                        <td className="px-3 py-2.5">
-                          <div className="font-bold text-slate-800">{p.merchantName || 'Merchant'}</div>
-                          <div className="text-[10px] text-gray-400 font-mono">{p.providerOrderId || p.id}</div>
-                        </td>
-                        <td className="px-3 py-2.5 font-bold text-slate-800">₹{Math.round(p.amountPaise / 100)}</td>
-                        <td className="px-3 py-2.5">
-                          <span
-                            className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
-                              p.status === 'SUCCESS'
-                                ? 'bg-emerald-100 text-emerald-800'
-                                : p.status === 'PENDING'
-                                ? 'bg-amber-100 text-amber-800'
-                                : 'bg-rose-100 text-rose-800'
-                            }`}
-                          >
-                            {p.status}
-                          </span>
-                        </td>
-                        <td className="px-3 py-2.5 text-gray-400">{new Date(p.createdAt).toLocaleDateString()}</td>
-                      </tr>
-                    ))}
-                    {subPayments.length === 0 && (
-                      <tr>
-                        <td colSpan={4} className="px-3 py-6 text-center text-gray-400 text-xs">
-                          No payment transactions recorded yet.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Audit Trail */}
-            <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-              <h3 className="text-base font-black text-slate-dark mb-1">Administrative Audit Logs</h3>
-              <p className="text-xs text-gray-400 mb-4">Realtime audit trail of subscription activations, modifications & extensions</p>
-              <div className="overflow-y-auto max-h-[360px] space-y-2">
-                {auditLogs.map((log) => (
-                  <div key={log.id} className="p-3 bg-gray-50 border border-gray-200/70 rounded-xl text-xs">
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-slate-800 uppercase text-[11px] tracking-wide">{log.action}</span>
-                      <span className="text-[10px] text-gray-400">{new Date(log.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                    </div>
-                    <p className="text-[11px] text-gray-600 mt-1">
-                      Entity: <span className="font-mono text-gray-800">{log.entityType} ({log.entityId})</span>
-                    </p>
-                    {log.metadata && Object.keys(log.metadata).length > 0 && (
-                      <div className="mt-1 text-[10px] font-mono text-gray-500 truncate bg-white p-1.5 rounded border border-gray-200">
-                        {JSON.stringify(log.metadata)}
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {auditLogs.length === 0 && (
-                  <div className="py-8 text-center text-gray-400 text-xs">No audit logs recorded yet.</div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <AdminSubscriptionTab token={authUser?.token} />
       )}
 
       {/* 7. FIELD CLIENTS / ONBOARDING PARTNERS MANAGEMENT */}
@@ -3038,8 +2712,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   <Users className="w-4 h-4" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-black text-slate-dark m-0">ഉപയോക്താക്കൾ (Users Management)</h2>
-                  <span className="text-xs text-gray-400 font-semibold">
+                  <h2 className="text-xl font-bold text-slate-900 m-0">Users Management</h2>
+                  <span className="text-xs text-slate-500 font-medium">
                     Manage registered shoppers, merchant store accounts, and platform administrators
                   </span>
                 </div>
@@ -3051,10 +2725,10 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 type="button"
                 onClick={loadUsers}
                 disabled={usersLoading}
-                className="p-2 bg-gray-50 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 border border-gray-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                className="p-2 bg-gray-50 hover:bg-slate-100 text-slate-700 border border-gray-200 rounded-xl text-xs font-semibold transition-all cursor-pointer flex items-center gap-1.5"
                 title="Refresh user list"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${usersLoading ? 'animate-spin text-emerald-600' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${usersLoading ? 'animate-spin' : ''}`} />
                 <span className="hidden xs:inline">Refresh</span>
               </button>
             </div>
@@ -3062,25 +2736,25 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           {/* User Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div className="bg-gray-50 rounded-2xl p-3.5 border border-gray-200">
-              <div className="text-[10px] uppercase font-bold text-gray-400">Total Users</div>
-              <div className="text-xl font-black text-slate-dark mt-0.5">{usersList.length}</div>
+            <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80">
+              <div className="text-[10px] uppercase font-bold text-slate-500">Total Users</div>
+              <div className="text-xl font-bold text-slate-900 mt-0.5">{usersList.length}</div>
             </div>
-            <div className="bg-sky-50/60 rounded-2xl p-3.5 border border-sky-200">
-              <div className="text-[10px] uppercase font-bold text-sky-600">Shoppers / Consumers</div>
-              <div className="text-xl font-black text-sky-800 mt-0.5">
+            <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80">
+              <div className="text-[10px] uppercase font-bold text-slate-500">Shoppers / Consumers</div>
+              <div className="text-xl font-bold text-slate-900 mt-0.5">
                 {usersList.filter((u) => u.role === 'shopper' || u.role === 'consumer').length}
               </div>
             </div>
-            <div className="bg-emerald-50/60 rounded-2xl p-3.5 border border-emerald-200">
-              <div className="text-[10px] uppercase font-bold text-emerald-600">Merchant Accounts</div>
-              <div className="text-xl font-black text-emerald-800 mt-0.5">
+            <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80">
+              <div className="text-[10px] uppercase font-bold text-slate-500">Merchant Accounts</div>
+              <div className="text-xl font-bold text-slate-900 mt-0.5">
                 {usersList.filter((u) => u.role === 'merchant').length}
               </div>
             </div>
-            <div className="bg-amber-50/60 rounded-2xl p-3.5 border border-amber-200">
-              <div className="text-[10px] uppercase font-bold text-amber-700">Administrators</div>
-              <div className="text-xl font-black text-amber-900 mt-0.5">
+            <div className="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80">
+              <div className="text-[10px] uppercase font-bold text-slate-500">Administrators</div>
+              <div className="text-xl font-bold text-slate-900 mt-0.5">
                 {usersList.filter((u) => u.role === 'admin').length}
               </div>
             </div>
@@ -3095,7 +2769,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                 value={userSearch}
                 onChange={(e) => setUserSearch(e.target.value)}
                 placeholder="Search user by name, email, phone, or shop name..."
-                className="w-full pl-9 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-slate-800 focus:outline-none focus:border-emerald-600 focus:bg-white transition-all"
+                className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-medium text-slate-800 outline-none transition-all"
               />
             </div>
 
@@ -3105,16 +2779,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   key={role}
                   type="button"
                   onClick={() => setUserRoleFilter(role)}
-                  className={`px-3 py-1.5 rounded-xl font-bold transition-all cursor-pointer whitespace-nowrap capitalize ${
+                  className={`px-3 py-1.5 rounded-xl font-semibold transition-all cursor-pointer whitespace-nowrap capitalize ${
                     userRoleFilter === role
-                      ? 'bg-[#063B2A] text-white shadow-2xs'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-slate-900 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
-                  {role === 'all' ? 'എല്ലാം (All)' :
-                   role === 'shopper' ? 'ഷോപ്പർ' :
-                   role === 'consumer' ? 'കൺസ്യൂമർ' :
-                   role === 'merchant' ? 'വ്യാപാരി' : 'അഡ്മിൻ'}
+                  {role === 'all' ? 'All Roles' :
+                   role === 'shopper' ? 'Shopper' :
+                   role === 'consumer' ? 'Consumer' :
+                   role === 'merchant' ? 'Merchant' : 'Admin'}
                 </button>
               ))}
             </div>
@@ -3122,9 +2796,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
           {/* Users Table / List */}
           {usersLoading && usersList.length === 0 ? (
-            <div className="py-16 text-center text-gray-400">
-              <RefreshCw className="w-8 h-8 animate-spin mx-auto text-emerald-600 mb-2" />
-              <p className="text-sm font-bold text-gray-600">ഉപയോക്താക്കളുടെ വിവരങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p>
+            <div className="py-16 text-center text-slate-400">
+              <RefreshCw className="w-6 h-6 animate-spin mx-auto text-slate-600 mb-2" />
+              <p className="text-xs font-medium text-slate-600">Loading users...</p>
             </div>
           ) : (
             (() => {
@@ -3148,9 +2822,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
               if (filteredUsers.length === 0) {
                 return (
-                  <div className="py-12 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl">
-                    <p className="text-sm font-semibold">ഉപയോക്താക്കളെ കണ്ടെത്തിയില്ല (No users found)</p>
-                    <span className="text-xs">തിരച്ചിൽ വാക്ക് മാറ്റി വീണ്ടും ശ്രമിക്കുക.</span>
+                  <div className="py-12 text-center text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+                    <p className="text-sm font-semibold text-slate-700">No users found</p>
+                    <span className="text-xs text-slate-500">Try adjusting your search query or filter.</span>
                   </div>
                 );
               }
@@ -3322,134 +2996,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         </div>
       )}
 
-      {/* Extend Subscription Modal */}
-      {extendingSub && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-gray-100">
-            <h3 className="text-base font-black text-slate-dark mb-1">Extend Subscription</h3>
-            <p className="text-xs text-gray-400 mb-4">
-              Grant additional active validity to <span className="font-bold text-slate-800">{extendingSub.shopName || extendingSub.merchantName}</span>
-            </p>
-            <div className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Days to Add</label>
-                <input
-                  type="number"
-                  min="1"
-                  value={extendDays}
-                  onChange={(e) => setExtendDays(Number(e.target.value))}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-bold outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Reason / Note</label>
-                <input
-                  type="text"
-                  value={extendReason}
-                  onChange={(e) => setExtendReason(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none"
-                />
-              </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setExtendingSub(null)}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="button"
-                  onClick={handleExtendSubscription}
-                  className="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-bold cursor-pointer"
-                >
-                  Confirm Extension
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Create Plan Modal */}
-      {isNewPlanOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100">
-            <h3 className="text-base font-black text-slate-dark mb-3">Create Subscription Plan Tier</h3>
-            <form onSubmit={handleCreatePlan} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Plan Name</label>
-                <input
-                  type="text"
-                  required
-                  placeholder="e.g. Annual Growth Tier"
-                  value={newPlanName}
-                  onChange={(e) => setNewPlanName(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none font-bold"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Duration (Days)</label>
-                  <input
-                    type="number"
-                    required
-                    min="1"
-                    value={newPlanDuration}
-                    onChange={(e) => setNewPlanDuration(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">Price (₹ INR)</label>
-                  <input
-                    type="number"
-                    required
-                    min="0"
-                    value={newPlanPriceRs}
-                    onChange={(e) => setNewPlanPriceRs(Number(e.target.value))}
-                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none font-bold text-brand-700"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Highlight Badge (Optional)</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Most Popular, 30% Off"
-                  value={newPlanBadge}
-                  onChange={(e) => setNewPlanBadge(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Features (One per line)</label>
-                <textarea
-                  rows={3}
-                  value={newPlanFeatures}
-                  onChange={(e) => setNewPlanFeatures(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none resize-none"
-                />
-              </div>
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setIsNewPlanOpen(false)}
-                  className="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl text-xs font-bold cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-brand-600 text-white rounded-xl text-xs font-bold cursor-pointer"
-                >
-                  Publish Plan
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       {/* Add Store Modal */}
       {isAddStoreOpen && (

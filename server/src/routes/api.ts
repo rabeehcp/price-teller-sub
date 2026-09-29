@@ -778,8 +778,11 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
     );
 
     const allowedFields = [
-      'name', 'address', 'phone', 'shopType', 'openingHours', 'deliveryFee',
-      'freeDeliveryThreshold', 'categories', 'lat', 'lng',
+      'name', 'address', 'phone', 'shopType', 'openingHours',
+      'isDeliveryAvailable', 'deliveryFee', 'freeDeliveryThreshold',
+      'deliveryRadiusKm', 'minDeliveryOrderAmount', 'estimatedDeliveryTime',
+      'deliveryHours', 'deliveryNotes',
+      'categories', 'lat', 'lng',
     ];
     const updates = Object.fromEntries(
       allowedFields
@@ -1275,6 +1278,43 @@ apiRouter.post('/auth/logout', async (req: Request, res: Response) => {
   }
 });
 
+// 22c. Auth: Update User Default Location (Syncs seamlessly across devices)
+apiRouter.put('/auth/location', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user.id;
+    const { locationId } = req.body;
+    if (!locationId) {
+      return res.status(400).json({ success: false, error: 'locationId is required' });
+    }
+    const updatedUser = await db.updateUserLocation(userId, locationId);
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    const { password: _, ...safeUser } = updatedUser;
+    res.json({ success: true, user: safeUser, message: 'Default location updated successfully' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+apiRouter.post('/auth/location', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user.id;
+    const { locationId } = req.body;
+    if (!locationId) {
+      return res.status(400).json({ success: false, error: 'locationId is required' });
+    }
+    const updatedUser = await db.updateUserLocation(userId, locationId);
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    const { password: _, ...safeUser } = updatedUser;
+    res.json({ success: true, user: safeUser, message: 'Default location updated successfully' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 23. Auth: Quick Merchant Accounts for easy demo
 apiRouter.get('/auth/quick-merchants', async (req: Request, res: Response) => {
   try {
@@ -1669,6 +1709,10 @@ apiRouter.post('/pre-bookings', authenticateToken, async (req: AuthenticatedRequ
       itemCount,
       totalQuantity,
       totalAmount,
+      fulfillmentType,
+      deliveryAddress,
+      deliveryLandmark,
+      deliveryFee,
       pickupTime,
       notes,
       consumerPhone,
@@ -1693,6 +1737,10 @@ apiRouter.post('/pre-bookings', authenticateToken, async (req: AuthenticatedRequ
       itemCount: Number(itemCount) || items.length,
       totalQuantity: Number(totalQuantity) || items.reduce((acc: number, it: any) => acc + (it.quantity || 1), 0),
       totalAmount: Number(totalAmount) || items.reduce((acc: number, it: any) => acc + (it.lineTotal || 0), 0),
+      fulfillmentType: fulfillmentType || 'pickup',
+      deliveryAddress,
+      deliveryLandmark,
+      deliveryFee: Number(deliveryFee) || 0,
       pickupTime,
       notes,
     });

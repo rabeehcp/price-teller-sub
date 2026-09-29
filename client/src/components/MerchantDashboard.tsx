@@ -86,6 +86,7 @@ import {
   Boxes,
 } from 'lucide-react';
 import { MerchantBillingWorkspace } from './MerchantBillingWorkspace';
+import { MerchantDeliveryWorkspace } from './MerchantDeliveryWorkspace';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileMerchantView } from './MobileMerchantView';
 import { MobileDrawer } from './MobileDrawer';
@@ -143,7 +144,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 }) => {
   const initialShopName = authUser?.shopName || shops[0]?.name || 'Green Mart';
   const [selectedShopName, setSelectedShopName] = useState<string>(initialShopName);
-  const [merchantTab, setMerchantTab] = useState<'dashboard' | 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals'>('dashboard');
+  const [merchantTab, setMerchantTab] = useState<'dashboard' | 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals'>('dashboard');
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>('all');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
@@ -1220,6 +1221,12 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                 badge: preBookings.filter((b) => b.status === 'pending').length > 0
                   ? String(preBookings.filter((b) => b.status === 'pending').length)
                   : undefined,
+              },
+              {
+                id: 'delivery',
+                label: 'Delivery Hub',
+                icon: Truck,
+                badge: currentShop?.isDeliveryAvailable !== false ? 'LIVE' : 'OFF',
               },
               { id: 'billing', label: 'Billing & POS', icon: Receipt },
               { id: 'profile', label: 'Shop Profile', icon: Store },
@@ -3097,6 +3104,31 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
           shopCategories={shopCategories}
           authUser={authUser}
           onBack={() => setMerchantTab('dashboard')}
+        />
+      )}
+
+      {/* TAB: DELIVERY HUB */}
+      {merchantTab === 'delivery' && (
+        <MerchantDeliveryWorkspace
+          shop={currentShop}
+          token={authUser?.token}
+          preBookings={preBookings}
+          onShopUpdated={(updatedShop) => {
+            const updated = shops.map((s) => (s.id === updatedShop.id ? updatedShop : s));
+            onShopsUpdated(updated);
+          }}
+          onPreBookingUpdated={(updatedBooking) => {
+            setPreBookings((prev) =>
+              prev.map((b) => (b.id === updatedBooking.id ? updatedBooking : b))
+            );
+          }}
+          onRefreshOrders={() => {
+            if (authUser?.token) {
+              fetchPreBookingsApi(authUser.token)
+                .then((data) => setPreBookings(data))
+                .catch(() => {});
+            }
+          }}
         />
       )}
 

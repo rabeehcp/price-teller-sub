@@ -400,10 +400,14 @@ export async function updateShopApi(id: string, updates: Partial<Shop>): Promise
   throw new Error(json.error || 'Failed to update shop');
 }
 
-export async function updateMerchantShopApi(updates: Partial<Shop>): Promise<Shop> {
+export async function updateMerchantShopApi(updates: Partial<Shop>, token?: string): Promise<Shop> {
+  const headers: Record<string, string> = {
+    ...getAuthHeaders(),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
   const res = await fetch(`${API_BASE}/merchant/shop`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
+    headers,
     body: JSON.stringify(updates),
   });
   const json = await res.json();
@@ -610,6 +614,20 @@ export async function fetchCurrentUserApi(token: string) {
   const json = await res.json();
   if (json.success) return json.user;
   throw new Error(json.error || 'Failed to fetch user');
+}
+
+export async function updateUserLocationApi(locationId: string, token: string) {
+  const res = await fetch(`${API_BASE}/auth/location`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ locationId }),
+  });
+  const json = await res.json();
+  if (json.success) return json.user;
+  throw new Error(json.error || 'Failed to update location');
 }
 
 export async function fetchQuickMerchantsApi() {
@@ -876,6 +894,10 @@ export async function createPreBookingApi(
     itemCount: number;
     totalQuantity: number;
     totalAmount: number;
+    fulfillmentType?: 'pickup' | 'delivery';
+    deliveryAddress?: string;
+    deliveryLandmark?: string;
+    deliveryFee?: number;
     pickupTime?: string;
     notes?: string;
     consumerPhone?: string;
@@ -926,9 +948,18 @@ export async function fetchPreBookingByIdApi(
 export async function updatePreBookingStatusApi(
   bookingId: string,
   status: PreBookingStatus,
-  merchantNote?: string,
-  token?: string
+  merchantNoteOrToken?: string,
+  tokenArg?: string
 ): Promise<PreBooking> {
+  let merchantNote = merchantNoteOrToken;
+  let token = tokenArg;
+
+  // Handle case where token was passed as 3rd argument without merchantNote
+  if (!token && merchantNoteOrToken && (merchantNoteOrToken.startsWith('eyJ') || merchantNoteOrToken.includes('.'))) {
+    token = merchantNoteOrToken;
+    merchantNote = undefined;
+  }
+
   const res = await fetch(`${API_BASE}/pre-bookings/${bookingId}/status`, {
     method: 'PATCH',
     headers: {

@@ -105,12 +105,6 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
     }
   };
 
-  const handleQuickFillDemo = () => {
-    setUsername('admin');
-    setPassword('admin123');
-    setError('');
-  };
-
   return (
     <div className="min-h-screen bg-[#F8FAF9] flex selection:bg-[#0D6344] selection:text-white font-sans text-gray-900">
       {/* ===================================================================== */}
@@ -379,20 +373,8 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
               </button>
             </form>
 
-            {/* Quick Demo Helper & Security Badges */}
+            {/* Security Badges */}
             <div className="pt-2 border-t border-gray-100 space-y-3">
-              <div className="flex items-center justify-center gap-2 text-[10px] text-gray-500 font-medium">
-                <button
-                  type="button"
-                  onClick={handleQuickFillDemo}
-                  className="text-xs text-[#0D6344] hover:text-[#094831] font-bold hover:underline cursor-pointer flex items-center gap-1 bg-[#EAF5F0] px-2.5 py-1 rounded-lg border border-emerald-200/80 transition-colors"
-                  title="Click to auto-fill default admin credentials"
-                >
-                  <Sparkles className="w-3 h-3 text-[#0D6344]" />
-                  <span>Quick Demo Fill (admin / admin123)</span>
-                </button>
-              </div>
-
               <div className="flex items-center justify-center gap-3 text-[10px] text-gray-400 font-semibold uppercase tracking-wider pt-1">
                 <span className="flex items-center gap-1">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
@@ -401,7 +383,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
                 <span>•</span>
                 <span className="flex items-center gap-1">
                   <Lock className="w-3 h-3 text-gray-400" />
-                  TWO-FACTOR ENABLED
+                  BCRYPT ENCRYPTED
                 </span>
               </div>
             </div>

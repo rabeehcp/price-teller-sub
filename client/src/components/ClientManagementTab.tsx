@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
   ClientPartner,
-  ClientPayout,
   ClientSummaryMetrics,
   ClientOnboardedShop,
 } from '../types';
@@ -12,13 +11,10 @@ import {
   deleteClientApi,
   recordClientPayoutApi,
   fetchClientOnboardedShopsApi,
-  fetchClientPayoutsApi,
 } from '../services/api';
 import {
-  Users,
   Briefcase,
   Store,
-  DollarSign,
   Plus,
   Search,
   Check,
@@ -29,13 +25,11 @@ import {
   Trash2,
   RefreshCw,
   Wallet,
-  ShieldCheck,
-  QrCode,
   X,
-  Share2,
-  AlertCircle,
   Clock,
-  ArrowRight,
+  TrendingUp,
+  Send,
+  Users,
 } from 'lucide-react';
 
 interface ClientManagementTabProps {
@@ -47,7 +41,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   const [summary, setSummary] = useState<ClientSummaryMetrics | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending_payout' | 'target_reached'>('all');
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Modals state
@@ -63,6 +57,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   const [viewingShopsClient, setViewingShopsClient] = useState<ClientPartner | null>(null);
   const [shopsList, setShopsList] = useState<ClientOnboardedShop[]>([]);
   const [shopsLoading, setShopsLoading] = useState<boolean>(false);
+  const [shopSearch, setShopSearch] = useState<string>('');
 
   // Form State
   const [formData, setFormData] = useState({
@@ -103,11 +98,12 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   };
 
   const handleOpenAdd = () => {
+    const randomCode = `CL-${Math.floor(100 + Math.random() * 900)}`;
     setFormData({
       name: '',
       phone: '+91 ',
       upiId: '',
-      clientCode: `CL-${Math.floor(100 + Math.random() * 900)}`,
+      clientCode: randomCode,
       commissionRatePercent: 50,
       minShopsThreshold: 50,
       area: '',
@@ -148,7 +144,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       setEditingClient(null);
       loadClients();
     } catch (err: any) {
-      alert(err.message || 'Failed to save client partner');
+      alert(err.message || 'Failed to save field client');
     }
   };
 
@@ -196,16 +192,24 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
 
   const handleOpenShops = async (client: ClientPartner) => {
     setViewingShopsClient(client);
+    setShopSearch('');
     setShopsLoading(true);
     try {
       const list = await fetchClientOnboardedShopsApi(client.id, token);
-      setShopsList(list);
+      setShopsList(list || []);
     } catch (err) {
       console.error('Failed to load client shops:', err);
       setShopsList([]);
     } finally {
       setShopsLoading(false);
     }
+  };
+
+  const handleWhatsAppShare = (client: ClientPartner) => {
+    const refUrl = `${window.location.origin}/merchant?ref=${client.clientCode}`;
+    const text = `Hello! Register your shop on Ente Bazaar using our partner link:\n\nLink: ${refUrl}\nReferral Code: ${client.clientCode}\nOnboarding Partner: ${client.name} (${client.phone})`;
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(waUrl, '_blank');
   };
 
   // Filtered clients
@@ -219,79 +223,110 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       (c.area && c.area.toLowerCase().includes(q)) ||
       c.upiId.toLowerCase().includes(q);
 
-    const matchesStatus = statusFilter === 'all' || c.status === statusFilter;
+    let matchesStatus = true;
+    if (statusFilter === 'active') {
+      matchesStatus = c.status === 'active';
+    } else if (statusFilter === 'inactive') {
+      matchesStatus = c.status === 'inactive';
+    } else if (statusFilter === 'pending_payout') {
+      matchesStatus = (c.pendingPayoutPaise || 0) > 0;
+    } else if (statusFilter === 'target_reached') {
+      matchesStatus = (c.totalShopsCount || 0) >= (c.minShopsThreshold || 50);
+    }
+
     return matchesSearch && matchesStatus;
   });
 
+  const totalClients = summary?.totalClients ?? clients.length;
+  const totalActive = summary?.totalActiveClients ?? clients.filter((c) => c.status === 'active').length;
+  const totalShops = summary?.totalShopsOnboarded ?? clients.reduce((acc, c) => acc + (c.totalShopsCount || 0), 0);
+  const totalEarnings = summary ? Math.round(summary.totalEarningsPaise / 100) : 0;
+  const pendingPayout = summary ? Math.round(summary.pendingPayoutPaise / 100) : 0;
+
   return (
-    <div className="space-y-6">
-      {/* 1. Header & Summary Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+    <div className="space-y-6 font-sans">
+      
+      {/* 1. TOP STATS CARDS */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        {/* Metric 1: Total Field Partners */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400 font-malayalam">ആകെ ക്ലയന്റുകൾ / ഏജന്റുകൾ</span>
-            <span className="p-1.5 bg-emerald-500/10 text-emerald-400 rounded-lg text-xs font-bold">
+            <span className="text-xs font-semibold text-slate-500">Field Partners</span>
+            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
               <Briefcase className="w-4 h-4" />
-            </span>
+            </div>
           </div>
-          <p className="text-2xl font-black text-white mt-2">
-            {summary?.totalClients ?? clients.length}
-          </p>
-          <p className="text-[11px] text-slate-400 mt-1 font-malayalam">
-            {summary?.totalActiveClients ?? clients.filter((c) => c.status === 'active').length} സജീവ Field Partners
-          </p>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 font-sans">
+            {totalClients}
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span>{totalActive} active partners</span>
+          </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+        {/* Metric 2: Onboarded Stores */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400 font-malayalam">ചേർത്ത കടകൾ (Onboarded)</span>
-            <span className="p-1.5 bg-blue-500/10 text-blue-400 rounded-lg text-xs font-bold">
+            <span className="text-xs font-semibold text-slate-500">Onboarded Stores</span>
+            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
               <Store className="w-4 h-4" />
-            </span>
+            </div>
           </div>
-          <p className="text-2xl font-black text-blue-400 mt-2">
-            {summary?.totalShopsOnboarded ?? clients.reduce((acc, c) => acc + (c.totalShopsCount || 0), 0)}
-          </p>
-          <p className="text-[11px] text-slate-400 mt-1 font-malayalam">പ്ലാറ്റ്‌ഫോമിൽ സബ്‌സ്‌ക്രൈബ് ചെയ്ത സ്റ്റോറുകൾ</p>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 font-sans">
+            {totalShops}
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
+            <span>Verified merchant network</span>
+          </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+        {/* Metric 3: Total Commission Earned */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400 font-malayalam">ആകെ ഏജന്റ് കമ്മീഷൻ</span>
-            <span className="p-1.5 bg-indigo-500/10 text-indigo-400 rounded-lg text-xs font-bold">₹</span>
+            <span className="text-xs font-semibold text-slate-500">Total Commission</span>
+            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-2xl font-black text-indigo-300 mt-2">
-            ₹{summary ? Math.round(summary.totalEarningsPaise / 100).toLocaleString('en-IN') : '0'}
-          </p>
-          <p className="text-[11px] text-slate-400 mt-1 font-malayalam">ക്ലയന്റുകൾ നേടിയ ആകെ വരുമാനം</p>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 font-sans">
+            ₹{totalEarnings.toLocaleString('en-IN')}
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
+            <span>Cumulative partner earnings</span>
+          </div>
         </div>
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 sm:p-5">
+        {/* Metric 4: Pending Payouts */}
+        <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400 font-malayalam">നൽകാനുള്ള തുക (Pending Payout)</span>
-            <span className="p-1.5 bg-amber-500/10 text-amber-400 rounded-lg text-xs font-bold">
+            <span className="text-xs font-semibold text-slate-500">Pending Payouts</span>
+            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
               <Wallet className="w-4 h-4" />
-            </span>
+            </div>
           </div>
-          <p className="text-2xl font-black text-amber-400 mt-2">
-            ₹{summary ? Math.round(summary.pendingPayoutPaise / 100).toLocaleString('en-IN') : '0'}
-          </p>
-          <p className="text-[11px] text-slate-400 mt-1 font-malayalam">UPI വഴി നൽകാൻ ബാക്കിയുള്ള കമ്മീഷൻ</p>
+          <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-2 font-sans">
+            ₹{pendingPayout.toLocaleString('en-IN')}
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
+            <Clock className="w-3.5 h-3.5 text-slate-400" />
+            <span>Ready for UPI disbursement</span>
+          </div>
         </div>
       </div>
 
-      {/* 2. Action Toolbar */}
-      <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 sm:p-5 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+      {/* 2. ACTION & FILTER TOOLBAR */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl p-3 sm:p-4 shadow-xs flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
         <div className="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
           {/* Search Box */}
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="പേര്, കോഡ് (CL-101), ഫോൺ അല്ലെങ്കിൽ ഏരിയ തിരയുക..."
+              placeholder="Search by name, code (CL-101), phone, or territory..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs text-[#17221D] outline-none font-medium placeholder-slate-400"
+              className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none transition-colors placeholder:text-slate-400"
             />
           </div>
 
@@ -299,11 +334,13 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="px-3 py-2 bg-[#F5F8F6] border border-[#E3ECE7] rounded-xl text-xs font-bold text-[#17221D] outline-none cursor-pointer"
+            className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none cursor-pointer"
           >
-            <option value="all">എല്ലാ സ്റ്റാറ്റസും (All Status)</option>
-            <option value="active">സജീവം (Active Only)</option>
-            <option value="inactive">നിഷ്ക്രിയം (Inactive)</option>
+            <option value="all">All Partners ({clients.length})</option>
+            <option value="active">Active Only</option>
+            <option value="pending_payout">Pending Payouts</option>
+            <option value="target_reached">Milestone Reached (50+)</option>
+            <option value="inactive">Inactive</option>
           </select>
         </div>
 
@@ -311,8 +348,8 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
           <button
             type="button"
             onClick={loadClients}
-            title="റീഫ്രഷ് ചെയ്യുക"
-            className="p-2.5 rounded-xl border border-[#E3ECE7] hover:bg-[#F5F8F6] text-[#66756E] hover:text-[#17221D] transition-colors cursor-pointer"
+            title="Refresh"
+            className="p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors cursor-pointer"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -320,269 +357,452 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
           <button
             type="button"
             onClick={handleOpenAdd}
-            className="py-2.5 px-4 bg-[#0B8F68] hover:bg-[#087353] text-white text-xs font-bold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+            className="py-2 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
           >
-            <Plus className="w-4 h-4 stroke-[3]" />
-            <span className="font-malayalam">പുതിയ ക്ലയന്റിനെ ചേർക്കൂ</span>
+            <Plus className="w-4 h-4" />
+            <span>Add Field Partner</span>
           </button>
         </div>
       </div>
 
-      {/* 3. Clients List Table */}
-      <div className="bg-white border border-[#E3ECE7] rounded-3xl overflow-hidden shadow-xs">
-        <div className="px-5 py-4 border-b border-[#E3ECE7] flex items-center justify-between">
+      {/* 3. CLIENTS LIST (TABLE ON DESKTOP, CARDS ON MOBILE) */}
+      <div className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden shadow-xs">
+        <div className="px-5 py-4 border-b border-slate-200/90 flex items-center justify-between">
           <div>
-            <h3 className="text-base font-black text-[#17221D] font-malayalam">
-              ഫീൽഡ് ക്ലയന്റുകൾ & ഓൺബോർഡിംഗ് ഏജന്റുകൾ ({filteredClients.length})
+            <h3 className="text-sm font-bold text-slate-900">
+              Field Partners & Onboarding Agents ({filteredClients.length})
             </h3>
-            <p className="text-xs text-[#66756E] font-medium font-malayalam mt-0.5">
-              കടകൾ ചേർക്കുന്ന ക്ലയന്റുകളുടെ വിവരങ്ങൾ, കമ്മീഷൻ, ബാക്കി തുക പേഔട്ട്
+            <p className="text-xs text-slate-500 mt-0.5">
+              Manage client codes, store registrations, commissions, and UPI payouts
             </p>
           </div>
         </div>
 
         {loading ? (
-          <div className="py-16 text-center text-[#66756E] space-y-2">
-            <div className="w-7 h-7 border-2 border-[#0B8F68] border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs font-medium font-malayalam">വിവരങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p>
+          <div className="py-16 text-center text-slate-500 space-y-2">
+            <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto" />
+            <p className="text-xs">Loading partners...</p>
           </div>
         ) : filteredClients.length === 0 ? (
           <div className="py-16 text-center space-y-3">
-            <div className="w-12 h-12 rounded-2xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center mx-auto text-xl">
+            <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mx-auto text-xl">
               <Briefcase className="w-6 h-6" />
             </div>
-            <p className="text-sm font-bold text-[#17221D] font-malayalam">ക്ലയന്റുകളെ കണ്ടെത്തിയില്ല</p>
-            <p className="text-xs text-[#66756E] max-w-sm mx-auto font-malayalam">
-              പുതിയ ഫീൽഡ് പാർട്ണറെ ചേർക്കാൻ മുകളിലെ &quot;പുതിയ ക്ലയന്റിനെ ചേർക്കൂ&quot; ബട്ടൺ ക്ലിക്ക് ചെയ്യുക.
+            <p className="text-sm font-semibold text-slate-900">No field partners found</p>
+            <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              Add your first partner to start tracking store onboardings and commissions.
             </p>
             <button
               type="button"
               onClick={handleOpenAdd}
-              className="py-2 px-4 bg-[#0B8F68] hover:bg-[#087353] text-white text-xs font-bold rounded-xl transition-all shadow-xs inline-flex items-center gap-1.5 cursor-pointer font-malayalam"
+              className="py-2 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
-              <span>ആദ്യ ക്ലയന്റിനെ ചേർക്കൂ</span>
+              <span>Add Field Partner</span>
             </button>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-[#3A4C43]">
-              <thead className="bg-[#F5F8F6] border-b border-[#E3ECE7] text-[#66756E] uppercase text-[10px] font-bold tracking-wider">
-                <tr>
-                  <th className="px-4 py-3">ക്ലയന്റ് / ഏജന്റ്</th>
-                  <th className="px-4 py-3">റഫറൽ കോഡ്</th>
-                  <th className="px-4 py-3">UPI ID (പേഔട്ട്)</th>
-                  <th className="px-4 py-3 text-center">കമ്മീഷൻ %</th>
-                  <th className="px-4 py-3 text-center">കടകൾ</th>
-                  <th className="px-4 py-3 text-right">നേടിയത്</th>
-                  <th className="px-4 py-3 text-right">നൽകിയത്</th>
-                  <th className="px-4 py-3 text-right">ബാക്കി (Pending)</th>
-                  <th className="px-4 py-3 text-center">നടപടികൾ</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#E3ECE7]">
-                {filteredClients.map((client) => {
-                  const pendingPaise = client.pendingPayoutPaise || 0;
-                  const refUrl = `${window.location.origin}/merchant?ref=${client.clientCode}`;
+          <>
+            {/* Desktop View Table */}
+            <div className="hidden lg:block overflow-x-auto">
+              <table className="w-full text-left text-xs text-slate-700">
+                <thead className="bg-slate-50 border-b border-slate-200/90 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
+                  <tr>
+                    <th className="px-4 py-3">Partner / Agent</th>
+                    <th className="px-4 py-3">Referral Code</th>
+                    <th className="px-4 py-3">Payout UPI ID</th>
+                    <th className="px-4 py-3 text-center">Commission</th>
+                    <th className="px-4 py-3 text-center">Progress (50 Goal)</th>
+                    <th className="px-4 py-3 text-right">Earned</th>
+                    <th className="px-4 py-3 text-right">Paid</th>
+                    <th className="px-4 py-3 text-right">Pending</th>
+                    <th className="px-4 py-3 text-center">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {filteredClients.map((client) => {
+                    const pendingPaise = client.pendingPayoutPaise || 0;
+                    const shopsCount = client.totalShopsCount || 0;
+                    const minTarget = client.minShopsThreshold || 50;
+                    const isTargetReached = shopsCount >= minTarget;
+                    const targetProgress = Math.min(100, Math.round((shopsCount / minTarget) * 100));
 
-                  return (
-                    <tr key={client.id} className="hover:bg-[#F5F8F6]/60 transition-colors">
-                      {/* Name & Area */}
-                      <td className="px-4 py-3">
-                        <div className="font-bold text-[#17221D]">{client.name}</div>
-                        <div className="text-[11px] text-[#66756E] flex items-center gap-1 mt-0.5">
-                          <span>{client.phone}</span>
-                          {client.area && (
-                            <>
-                              <span>•</span>
-                              <span className="truncate max-w-[120px]">{client.area}</span>
-                            </>
-                          )}
-                        </div>
-                      </td>
+                    return (
+                      <tr key={client.id} className="hover:bg-slate-50/70 transition-colors">
+                        {/* Name & Contact */}
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center shrink-0">
+                              {client.name ? client.name.charAt(0).toUpperCase() : 'C'}
+                            </div>
+                            <div>
+                              <div className="font-semibold text-slate-900">{client.name}</div>
+                              <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+                                <span className="font-mono">{client.phone}</span>
+                                {client.area && (
+                                  <>
+                                    <span>•</span>
+                                    <span className="truncate max-w-[110px] text-slate-500">{client.area}</span>
+                                  </>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        </td>
 
-                      {/* Code */}
-                      <td className="px-4 py-3">
-                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[#F5F8F6] border border-[#E3ECE7] font-mono font-bold text-xs text-[#17221D]">
-                          <span>{client.clientCode}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleCopy(client.clientCode, `code-${client.id}`)}
-                            title="Copy Client Code"
-                            className="text-[#66756E] hover:text-[#0B8F68] transition-colors cursor-pointer"
-                          >
-                            {copiedKey === `code-${client.id}` ? (
-                              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                        {/* Referral Code */}
+                        <td className="px-4 py-3">
+                          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200 font-mono font-semibold text-xs text-slate-800">
+                            <span>{client.clientCode}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleCopy(client.clientCode, `code-${client.id}`)}
+                              title="Copy Code"
+                              className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                            >
+                              {copiedKey === `code-${client.id}` ? (
+                                <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                              ) : (
+                                <Copy className="w-3.5 h-3.5" />
+                              )}
+                            </button>
+                          </div>
+                        </td>
+
+                        {/* UPI ID */}
+                        <td className="px-4 py-3">
+                          <div className="inline-flex items-center gap-1.5 font-mono text-xs text-slate-800 bg-slate-50 px-2 py-0.5 rounded-lg border border-slate-200">
+                            <span>{client.upiId}</span>
+                            <button
+                              type="button"
+                              onClick={() => handleCopy(client.upiId, `upi-${client.id}`)}
+                              title="Copy UPI ID"
+                              className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                            >
+                              {copiedKey === `upi-${client.id}` ? (
+                                <CheckCheck className="w-3 h-3 text-emerald-600" />
+                              ) : (
+                                <Copy className="w-3 h-3" />
+                              )}
+                            </button>
+                          </div>
+                        </td>
+
+                        {/* Commission % */}
+                        <td className="px-4 py-3 text-center">
+                          <span className="px-2 py-0.5 rounded-full font-semibold text-xs bg-slate-100 text-slate-700">
+                            {client.commissionRatePercent}%
+                          </span>
+                        </td>
+
+                        {/* Target Progress Bar & Shops Count */}
+                        <td className="px-4 py-3 text-center">
+                          <div className="flex flex-col items-center gap-1 min-w-[110px]">
+                            <button
+                              type="button"
+                              onClick={() => handleOpenShops(client)}
+                              className="px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 font-semibold text-xs inline-flex items-center gap-1 transition-colors cursor-pointer"
+                              title="View Onboarded Stores"
+                            >
+                              <Store className="w-3 h-3 text-slate-500" />
+                              <span>{shopsCount} / {minTarget}</span>
+                            </button>
+
+                            {/* Progress bar */}
+                            <div className="w-20 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                              <div
+                                className={`h-full rounded-full ${isTargetReached ? 'bg-emerald-600' : 'bg-slate-400'}`}
+                                style={{ width: `${targetProgress}%` }}
+                              />
+                            </div>
+
+                            {isTargetReached ? (
+                              <span className="text-[10px] font-semibold text-emerald-700">
+                                Milestone Met
+                              </span>
                             ) : (
-                              <Copy className="w-3.5 h-3.5" />
+                              <span className="text-[10px] text-slate-400">
+                                {minTarget - shopsCount} remaining
+                              </span>
                             )}
-                          </button>
-                        </div>
-                      </td>
+                          </div>
+                        </td>
 
-                      {/* UPI ID */}
-                      <td className="px-4 py-3">
-                        <div className="inline-flex items-center gap-1.5 font-mono text-xs text-[#063B2A] font-bold bg-[#EDFAF3] px-2 py-0.5 rounded-lg border border-[#C3EEDC]">
-                          <span>{client.upiId}</span>
-                          <button
-                            type="button"
-                            onClick={() => handleCopy(client.upiId, `upi-${client.id}`)}
-                            title="Copy Payee UPI ID"
-                            className="text-[#0B8F68] hover:text-[#063B2A] cursor-pointer"
-                          >
-                            {copiedKey === `upi-${client.id}` ? (
-                              <CheckCheck className="w-3 h-3 text-emerald-600" />
-                            ) : (
-                              <Copy className="w-3 h-3" />
-                            )}
-                          </button>
-                        </div>
-                      </td>
+                        {/* Total Earned */}
+                        <td className="px-4 py-3 text-right font-medium text-slate-900">
+                          ₹{Math.round((client.totalEarningsPaise || 0) / 100).toLocaleString('en-IN')}
+                        </td>
 
-                      {/* Commission % */}
-                      <td className="px-4 py-3 text-center">
-                        <span className="px-2 py-0.5 rounded-full font-bold text-[11px] bg-indigo-50 text-indigo-700 border border-indigo-200">
-                          {client.commissionRatePercent}%
-                        </span>
-                      </td>
+                        {/* Paid */}
+                        <td className="px-4 py-3 text-right text-slate-500">
+                          ₹{Math.round((client.totalPaidPaise || 0) / 100).toLocaleString('en-IN')}
+                        </td>
 
-                      {/* Shops & Target (Min 50) */}
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex flex-col items-center gap-1">
-                          <button
-                            type="button"
-                            onClick={() => handleOpenShops(client)}
-                            className="px-2.5 py-1 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs inline-flex items-center gap-1 transition-colors cursor-pointer"
-                            title="ചേർത്ത കടകൾ കാണുക"
-                          >
-                            <Store className="w-3 h-3" />
-                            <span>{client.totalShopsCount || 0}</span>
-                            <span className="text-[10px] text-blue-400 font-normal">/ {client.minShopsThreshold || 50}</span>
-                          </button>
-                          {(client.totalShopsCount || 0) >= (client.minShopsThreshold || 50) ? (
-                            <span className="text-[9px] font-black px-1.5 py-0.2 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
-                              ✓ 50+ അൺലോക്ക്ഡ്
-                            </span>
-                          ) : (
-                            <span className="text-[9px] font-bold px-1.5 py-0.2 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
-                              🔒 {(client.minShopsThreshold || 50) - (client.totalShopsCount || 0)} ബാക്കി
-                            </span>
-                          )}
-                        </div>
-                      </td>
-
-                      {/* Earned */}
-                      <td className="px-4 py-3 text-right font-bold text-[#17221D]">
-                        ₹{Math.round((client.totalEarningsPaise || 0) / 100).toLocaleString('en-IN')}
-                      </td>
-
-                      {/* Paid */}
-                      <td className="px-4 py-3 text-right text-[#66756E] font-medium">
-                        ₹{Math.round((client.totalPaidPaise || 0) / 100).toLocaleString('en-IN')}
-                      </td>
-
-                      {/* Pending */}
-                      <td className="px-4 py-3 text-right">
-                        <span
-                          className={`font-black ${
-                            pendingPaise > 0
-                              ? 'text-amber-700 bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-200'
-                              : 'text-emerald-700'
-                          }`}
-                        >
-                          ₹{Math.round(pendingPaise / 100).toLocaleString('en-IN')}
-                        </span>
-                      </td>
-
-                      {/* Actions */}
-                      <td className="px-4 py-3 text-center">
-                        <div className="flex items-center justify-center gap-1.5">
-                          {/* Record Payout Button */}
-                          <button
-                            type="button"
-                            onClick={() => handleOpenPayout(client)}
-                            disabled={pendingPaise <= 0}
-                            title={
+                        {/* Pending Payout */}
+                        <td className="px-4 py-3 text-right">
+                          <span
+                            className={`font-semibold ${
                               pendingPaise > 0
-                                ? `നൽകാൻ ₹${Math.round(pendingPaise / 100)} ബാക്കിയുണ്ട്. പേഔട്ട് നൽകുക`
-                                : 'ബാക്കി തുകയില്ല'
-                            }
-                            className={`p-1.5 rounded-lg border text-xs font-bold transition-all flex items-center gap-1 cursor-pointer ${
-                              pendingPaise > 0
-                                ? 'bg-[#0B8F68] hover:bg-[#087353] text-white border-transparent shadow-2xs'
-                                : 'bg-slate-100 text-slate-400 border-slate-200 opacity-60 cursor-not-allowed'
+                                ? 'text-slate-900 font-bold'
+                                : 'text-slate-400'
                             }`}
                           >
-                            <Wallet className="w-3.5 h-3.5" />
-                            <span className="hidden sm:inline">Pay</span>
-                          </button>
+                            ₹{Math.round(pendingPaise / 100).toLocaleString('en-IN')}
+                          </span>
+                        </td>
 
-                          {/* Copy Share Link */}
-                          <button
-                            type="button"
-                            onClick={() => handleCopy(refUrl, `share-${client.id}`)}
-                            title="കടകൾക്ക് അയക്കാനുള്ള റഫറൽ ലിങ്ക് കോപ്പി ചെയ്യുക"
-                            className="p-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 rounded-lg transition-colors cursor-pointer"
-                          >
-                            {copiedKey === `share-${client.id}` ? (
-                              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-                            ) : (
-                              <Share2 className="w-3.5 h-3.5" />
-                            )}
-                          </button>
+                        {/* Actions */}
+                        <td className="px-4 py-3 text-center">
+                          <div className="flex items-center justify-center gap-1">
+                            {/* Pay Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenPayout(client)}
+                              disabled={pendingPaise <= 0}
+                              title={pendingPaise > 0 ? `Disburse Payout (₹${Math.round(pendingPaise / 100)})` : 'No pending balance'}
+                              className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all flex items-center gap-1 cursor-pointer ${
+                                pendingPaise > 0
+                                  ? 'bg-slate-900 hover:bg-slate-800 text-white'
+                                  : 'bg-slate-100 text-slate-400 opacity-60 cursor-not-allowed'
+                              }`}
+                            >
+                              <Wallet className="w-3 h-3" />
+                              <span>Pay</span>
+                            </button>
 
-                          {/* Edit */}
-                          <button
-                            type="button"
-                            onClick={() => handleOpenEdit(client)}
-                            title="എഡിറ്റ് ചെയ്യുക"
-                            className="p-1.5 bg-white hover:bg-slate-50 border border-slate-200 text-slate-600 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Pencil className="w-3.5 h-3.5" />
-                          </button>
+                            {/* WhatsApp Share */}
+                            <button
+                              type="button"
+                              onClick={() => handleWhatsAppShare(client)}
+                              title="Share referral link on WhatsApp"
+                              className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Send className="w-3.5 h-3.5" />
+                            </button>
 
-                          {/* Delete */}
-                          <button
-                            type="button"
-                            onClick={() => handleDeleteClient(client)}
-                            title="ഡിലീറ്റ് ചെയ്യുക"
-                            className="p-1.5 bg-white hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
+                            {/* Edit */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEdit(client)}
+                              title="Edit Partner"
+                              className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Pencil className="w-3.5 h-3.5" />
+                            </button>
+
+                            {/* Delete */}
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteClient(client)}
+                              title="Delete Partner"
+                              className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile View Cards */}
+            <div className="lg:hidden divide-y divide-slate-100">
+              {filteredClients.map((client) => {
+                const pendingPaise = client.pendingPayoutPaise || 0;
+                const shopsCount = client.totalShopsCount || 0;
+                const minTarget = client.minShopsThreshold || 50;
+                const isTargetReached = shopsCount >= minTarget;
+                const targetProgress = Math.min(100, Math.round((shopsCount / minTarget) * 100));
+
+                return (
+                  <div key={client.id} className="p-4 space-y-3">
+                    {/* Header */}
+                    <div className="flex items-start justify-between gap-2">
+                      <div className="flex items-center gap-2.5 min-w-0">
+                        <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center shrink-0">
+                          {client.name ? client.name.charAt(0).toUpperCase() : 'C'}
                         </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                        <div className="min-w-0">
+                          <h4 className="font-semibold text-sm text-slate-900 truncate">{client.name}</h4>
+                          <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
+                            <span className="font-mono">{client.phone}</span>
+                            {client.area && (
+                              <>
+                                <span>•</span>
+                                <span className="truncate max-w-[120px]">{client.area}</span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200 font-mono font-semibold text-xs text-slate-800 shrink-0">
+                        <span>{client.clientCode}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(client.clientCode, `code-mob-${client.id}`)}
+                          className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                        >
+                          {copiedKey === `code-mob-${client.id}` ? (
+                            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Progress Towards 50 Shops Milestone */}
+                    <div className="p-2.5 bg-slate-50 rounded-xl border border-slate-200/80 space-y-1.5">
+                      <div className="flex items-center justify-between text-xs">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenShops(client)}
+                          className="font-semibold text-slate-800 hover:underline flex items-center gap-1 cursor-pointer"
+                        >
+                          <Store className="w-3.5 h-3.5 text-slate-500" />
+                          <span>Onboarded: {shopsCount} stores</span>
+                        </button>
+                        <span className="text-xs text-slate-500">
+                          Goal: {minTarget} ({targetProgress}%)
+                        </span>
+                      </div>
+
+                      <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full rounded-full ${isTargetReached ? 'bg-emerald-600' : 'bg-slate-400'}`}
+                          style={{ width: `${targetProgress}%` }}
+                        />
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-500 pt-0.5">
+                        <span>
+                          {isTargetReached ? 'Milestone Reached' : `${minTarget - shopsCount} more needed`}
+                        </span>
+                        <span className="font-semibold text-slate-700">
+                          {client.commissionRatePercent}% Commission
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Financial Summary Grid */}
+                    <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                      <div className="p-2 bg-slate-50 rounded-xl border border-slate-200/80">
+                        <span className="text-[10px] text-slate-500 block">Earned</span>
+                        <span className="font-semibold text-slate-900">
+                          ₹{Math.round((client.totalEarningsPaise || 0) / 100)}
+                        </span>
+                      </div>
+                      <div className="p-2 bg-slate-50 rounded-xl border border-slate-200/80">
+                        <span className="text-[10px] text-slate-500 block">Paid</span>
+                        <span className="text-slate-600">
+                          ₹{Math.round((client.totalPaidPaise || 0) / 100)}
+                        </span>
+                      </div>
+                      <div className="p-2 bg-slate-50 rounded-xl border border-slate-200/80">
+                        <span className="text-[10px] text-slate-500 block font-semibold">Pending</span>
+                        <span className="font-bold text-slate-900">
+                          ₹{Math.round(pendingPaise / 100)}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Payee UPI ID */}
+                    <div className="flex items-center justify-between px-3 py-1.5 bg-slate-50 rounded-xl border border-slate-200/80 text-xs">
+                      <span className="text-xs text-slate-500">Payee UPI:</span>
+                      <div className="flex items-center gap-1.5 font-mono font-semibold text-slate-800">
+                        <span>{client.upiId}</span>
+                        <button
+                          type="button"
+                          onClick={() => handleCopy(client.upiId, `upi-mob-${client.id}`)}
+                          className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                        >
+                          {copiedKey === `upi-mob-${client.id}` ? (
+                            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Actions Toolbar */}
+                    <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-100">
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(client)}
+                          className="p-2 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-600 cursor-pointer"
+                          title="Edit"
+                        >
+                          <Pencil className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteClient(client)}
+                          className="p-2 hover:bg-rose-50 border border-slate-200 hover:border-rose-200 text-slate-400 hover:text-rose-600 rounded-xl cursor-pointer"
+                          title="Delete"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleWhatsAppShare(client)}
+                          className="py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-semibold cursor-pointer flex items-center gap-1"
+                        >
+                          <Send className="w-3 h-3" />
+                          <span>Share</span>
+                        </button>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => handleOpenPayout(client)}
+                        disabled={pendingPaise <= 0}
+                        className={`py-2 px-4 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                          pendingPaise > 0
+                            ? 'bg-slate-900 hover:bg-slate-800 text-white'
+                            : 'bg-slate-100 text-slate-400 opacity-60 cursor-not-allowed'
+                        }`}
+                      >
+                        <Wallet className="w-3.5 h-3.5" />
+                        <span>Disburse Payout</span>
+                      </button>
+                    </div>
+
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 
-      {/* 4. Modal: Add / Edit Client Partner */}
+      {/* 4. MODAL: ADD / EDIT CLIENT PARTNER */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white border border-[#E3ECE7] rounded-3xl max-w-lg w-full p-5 sm:p-6 shadow-2xl relative max-h-[92vh] overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-5 sm:p-6 shadow-xl relative max-h-[92vh] overflow-y-auto">
             <button
               type="button"
               onClick={() => setIsAddModalOpen(false)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-2xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center text-lg">
-                <Briefcase className="w-5 h-5 text-[#0B8F68]" />
+              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-lg">
+                <Briefcase className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-black text-[#17221D] font-malayalam">
-                  {editingClient ? 'ക്ലയന്റ് വിവരങ്ങൾ മാറ്റുക' : 'പുതിയ ഫീൽഡ് ക്ലയന്റിനെ ചേർക്കൂ'}
+                <h3 className="text-base font-bold text-slate-900">
+                  {editingClient ? 'Edit Field Partner' : 'Add New Field Partner'}
                 </h3>
-                <p className="text-xs text-[#66756E] font-medium font-malayalam">
-                  കടകൾ ചേർക്കാനും സബ്‌സ്‌ക്രിപ്ഷൻ കമ്മീഷൻ നേടാനും ഏജന്റ് അക്കൗണ്ട്
+                <p className="text-xs text-slate-500">
+                  Configure partner account details, referral code, and commission parameters
                 </p>
               </div>
             </div>
@@ -590,22 +810,22 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
             <form onSubmit={handleSaveClient} className="space-y-3.5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    ക്ലയന്റ് / ഏജന്റ് പേര് *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Partner Name *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="ഉദാ: Shoucky"
+                    placeholder="e.g. Shoucky"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-[#17221D] outline-none"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    ഫോൺ നമ്പർ *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Phone Number *
                   </label>
                   <input
                     type="tel"
@@ -613,29 +833,29 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                     placeholder="+91 80759 50428"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-[#17221D] outline-none font-mono"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    പേഔട്ട് UPI ID (കമ്മീഷൻ സ്വീകരിക്കാൻ) *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Payout UPI ID *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="ഉദാ: 8075950428@fam"
+                    placeholder="e.g. 8075950428@fam"
                     value={formData.upiId}
                     onChange={(e) => setFormData({ ...formData, upiId: e.target.value })}
-                    className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-[#063B2A] outline-none font-mono"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    യൂണിക് റഫറൽ കോഡ് (Client Code) *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Referral Code (Client Code) *
                   </label>
                   <input
                     type="text"
@@ -643,15 +863,15 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                     placeholder="CL-101"
                     value={formData.clientCode}
                     onChange={(e) => setFormData({ ...formData, clientCode: e.target.value.toUpperCase().trim() })}
-                    className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-[#17221D] outline-none font-mono uppercase tracking-wider"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono uppercase tracking-wider"
                   />
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    കമ്മീഷൻ നിരക്ക് (%) *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Commission Rate (%) *
                   </label>
                   <div className="relative">
                     <input
@@ -661,18 +881,32 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                       max="100"
                       value={formData.commissionRatePercent}
                       onChange={(e) => setFormData({ ...formData, commissionRatePercent: Number(e.target.value) })}
-                      className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-indigo-700 outline-none"
+                      className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none"
                     />
-                    <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-bold">%</span>
+                    <span className="absolute right-3 top-2.5 text-xs text-slate-400 font-semibold">%</span>
                   </div>
-                  <span className="text-[10px] text-slate-400 font-malayalam">
-                    സ്ഥിരമായി 50% (₹119 പ്ലാനിൽ നിന്ന് ₹59.50)
-                  </span>
+                  {/* Quick percentage buttons */}
+                  <div className="flex gap-1 mt-1.5">
+                    {[30, 40, 50, 60].map((pct) => (
+                      <button
+                        key={pct}
+                        type="button"
+                        onClick={() => setFormData({ ...formData, commissionRatePercent: pct })}
+                        className={`px-2 py-0.5 rounded text-[10px] font-semibold border transition-colors cursor-pointer ${
+                          formData.commissionRatePercent === pct
+                            ? 'bg-slate-900 text-white border-slate-900'
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        {pct}%
+                      </button>
+                    ))}
+                  </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                    മിനിമം കടകൾ ടാർഗറ്റ് (Min Shops Goal) *
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Min Store Target (Milestone) *
                   </label>
                   <input
                     type="number"
@@ -680,83 +914,84 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                     min="1"
                     value={formData.minShopsThreshold}
                     onChange={(e) => setFormData({ ...formData, minShopsThreshold: Number(e.target.value) })}
-                    className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-bold text-slate-800 outline-none"
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none"
                   />
-                  <span className="text-[10px] text-slate-400 font-malayalam">
-                    കുറഞ്ഞത് 50 കടകൾ പൂർത്തിയായാൽ പേഔട്ട് അൺലോക്ക് ആകും
+                  <span className="text-[10px] text-slate-500 block mt-1">
+                    Standard onboarding goal before full payout release
                   </span>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  പ്രവർത്തന മേഖല / ഏരിയ (Territory)
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Territory / Area
                 </label>
                 <input
                   type="text"
-                  placeholder="ഉദാ: Tirur Town, Kottakkal"
+                  placeholder="e.g. Tirur Town, Kottakkal, Malappuram"
                   value={formData.area}
                   onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-medium text-[#17221D] outline-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  സ്റ്റാറ്റസ് (Status)
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Status
                 </label>
                 <div className="flex gap-2">
-                  <label className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-[#E3ECE7] bg-[#F5F8F6] cursor-pointer text-xs font-bold">
+                  <label className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer text-xs font-semibold text-slate-800">
                     <input
                       type="radio"
                       name="status"
                       value="active"
                       checked={formData.status === 'active'}
                       onChange={() => setFormData({ ...formData, status: 'active' })}
-                      className="text-[#0B8F68]"
+                      className="accent-slate-900"
                     />
-                    <span>സജീവം (Active)</span>
+                    <span>Active</span>
                   </label>
-                  <label className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-[#E3ECE7] bg-[#F5F8F6] cursor-pointer text-xs font-bold">
+                  <label className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl border border-slate-200 bg-slate-50 cursor-pointer text-xs font-semibold text-slate-800">
                     <input
                       type="radio"
                       name="status"
                       value="inactive"
                       checked={formData.status === 'inactive'}
                       onChange={() => setFormData({ ...formData, status: 'inactive' })}
-                      className="text-[#0B8F68]"
+                      className="accent-slate-900"
                     />
-                    <span>നിഷ്ക്രിയം (Inactive)</span>
+                    <span>Inactive</span>
                   </label>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  കുറിപ്പുകൾ (Notes - Optional)
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Notes (Optional)
                 </label>
                 <input
                   type="text"
-                  placeholder="ബാങ്ക് അക്കൗണ്ട് അല്ലെങ്കിൽ മറ്റ് വിവരങ്ങൾ"
+                  placeholder="Bank details or administrative comments"
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs text-[#17221D] outline-none font-medium"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none font-medium"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E3ECE7]">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setIsAddModalOpen(false)}
-                  className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                  className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                 >
-                  റദ്ദാക്കുക (Cancel)
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="py-2.5 px-5 bg-[#0B8F68] hover:bg-[#087353] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer font-malayalam"
+                  className="py-2.5 px-5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
-                  {editingClient ? 'മാറ്റങ്ങൾ സൂക്ഷിക്കുക' : 'ക്ലയന്റിനെ ചേർക്കുക'}
+                  <Check className="w-4 h-4 stroke-[2.5]" />
+                  <span>{editingClient ? 'Save Changes' : 'Create Partner'}</span>
                 </button>
               </div>
             </form>
@@ -764,47 +999,47 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
         </div>
       )}
 
-      {/* 5. Modal: Record Payout to Client */}
+      {/* 5. MODAL: RECORD PAYOUT TO CLIENT */}
       {payoutClient && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white border border-[#E3ECE7] rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-5 sm:p-6 shadow-xl relative">
             <button
               type="button"
               onClick={() => setPayoutClient(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
             <div className="text-center pt-1 mb-4">
-              <div className="w-11 h-11 rounded-2xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center mx-auto mb-2 shadow-2xs">
-                <Wallet className="w-6 h-6 text-[#0B8F68]" />
+              <div className="w-11 h-11 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center mx-auto mb-2">
+                <Wallet className="w-6 h-6" />
               </div>
-              <h3 className="text-base font-black text-[#17221D] font-malayalam">
-                കമ്മീഷൻ പേഔട്ട് നൽകുക (Record Payout)
+              <h3 className="text-base font-bold text-slate-900">
+                Record Commission Payout
               </h3>
-              <p className="text-xs text-[#66756E] font-medium font-malayalam mt-0.5">
+              <p className="text-xs text-slate-500 mt-0.5">
                 {payoutClient.name} ({payoutClient.clientCode})
               </p>
             </div>
 
             {/* Client Payee Box */}
-            <div className="p-3 bg-[#F0FAF5] border border-[#C5ECD9] rounded-2xl text-center mb-4 space-y-1">
-              <span className="text-[10px] uppercase font-bold text-[#063B2A] tracking-wider font-malayalam">
-                സ്വീകർത്താവിന്റെ UPI വിലാസം
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl text-center mb-4 space-y-1.5">
+              <span className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">
+                Payee UPI ID
               </span>
-              <div className="text-sm font-mono font-bold text-[#063B2A] flex items-center justify-center gap-1.5">
+              <div className="text-sm font-mono font-bold text-slate-900 flex items-center justify-center gap-1.5">
                 <span>{payoutClient.upiId}</span>
                 <button
                   type="button"
                   onClick={() => handleCopy(payoutClient.upiId, 'payout-upi')}
                   title="Copy UPI ID"
-                  className="p-1 hover:bg-white rounded-lg transition-colors cursor-pointer"
+                  className="p-1 hover:bg-white rounded-lg transition-colors cursor-pointer text-slate-500 hover:text-slate-900"
                 >
                   {copiedKey === 'payout-upi' ? (
                     <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
                   ) : (
-                    <Copy className="w-3.5 h-3.5 text-[#0B8F68]" />
+                    <Copy className="w-3.5 h-3.5" />
                   )}
                 </button>
               </div>
@@ -812,40 +1047,34 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               {/* Direct UPI App launcher */}
               <a
                 href={`upi://pay?pa=${encodeURIComponent(payoutClient.upiId)}&pn=${encodeURIComponent(payoutClient.name)}&am=${payoutAmountRs}&cu=INR&tn=PriceTeller%20Commission%20Payout`}
-                className="inline-flex items-center gap-1.5 mt-1 px-3 py-1.5 rounded-xl bg-[#063B2A] text-white text-[11px] font-bold shadow-2xs hover:bg-[#04281C] transition-all cursor-pointer"
+                className="inline-flex items-center gap-1.5 mt-1 px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-semibold shadow-xs hover:bg-slate-800 transition-all cursor-pointer"
               >
-                <span>UPI ആപ്പിൽ നേരിട്ട് അടയ്ക്കാം (GPay / PhonePe)</span>
-                <ExternalLink className="w-3 h-3 text-slate-300" />
+                <span>Launch UPI App (GPay / PhonePe)</span>
+                <ExternalLink className="w-3 h-3 text-slate-400" />
               </a>
             </div>
 
             {/* Milestone Threshold Notice */}
             {(payoutClient.totalShopsCount || 0) < (payoutClient.minShopsThreshold || 50) ? (
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-2xl text-xs text-amber-900 space-y-1 mb-3">
-                <div className="flex items-center gap-1.5 font-bold text-amber-800">
-                  <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-                  <span>മുന്നറിയിപ്പ്: കുറഞ്ഞത് 50 കടകൾ തികച്ചിട്ടില്ല</span>
-                </div>
-                <p className="text-[11px] text-amber-700 font-malayalam leading-relaxed">
-                  ഈ Partner ഇതുവരെ {payoutClient.totalShopsCount || 0}/50 കടകൾ മാത്രമേ ചേർത്തിട്ടുള്ളൂ. (50 കടകൾ പൂർത്തിയാകുമ്പോഴാണ് സാധാരണ പേഔട്ട് നൽകുന്നത്). അഡ്മിൻ എന്ന നിലയിൽ നിങ്ങൾക്ക് വേണമെങ്കിൽ തുക നൽകാം.
+              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-0.5 mb-3">
+                <span className="font-semibold block text-amber-800">Note: Milestone Target Incomplete</span>
+                <p className="text-[11px] text-amber-700">
+                  This partner has onboarded {payoutClient.totalShopsCount || 0}/50 stores. You may still disburse early payouts as an admin.
                 </p>
               </div>
             ) : (
-              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-2xl text-xs text-emerald-900 space-y-1 mb-3">
-                <div className="flex items-center gap-1.5 font-bold text-emerald-800">
-                  <Check className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>50+ കടകൾ ലക്ഷ്യം പൂർത്തിയായി! (50% കമ്മീഷൻ അൺലോക്ക്ഡ്)</span>
-                </div>
-                <p className="text-[11px] text-emerald-700 font-malayalam leading-relaxed">
-                  ഈ Partner {payoutClient.totalShopsCount} കടകൾ വിജയകരമായി ഓൺബോർഡ് ചെയ്തു. പേഔട്ട് സുരക്ഷിതമായി നൽകാം.
+              <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 space-y-0.5 mb-3">
+                <span className="font-semibold block text-emerald-800">✓ Target Milestone Completed</span>
+                <p className="text-[11px] text-emerald-700">
+                  Partner has onboarded {payoutClient.totalShopsCount} stores. Ready for full commission release.
                 </p>
               </div>
             )}
 
             <form onSubmit={handleSubmitPayout} className="space-y-3">
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  നൽകുന്ന തുക (Amount in ₹) *
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Payout Amount (₹ INR) *
                 </label>
                 <div className="relative">
                   <span className="absolute left-3.5 top-2.5 text-xs text-slate-500 font-bold">₹</span>
@@ -855,65 +1084,65 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                     min="1"
                     value={payoutAmountRs}
                     onChange={(e) => setPayoutAmountRs(Number(e.target.value))}
-                    className="w-full pl-8 pr-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-sm font-black text-[#17221D] outline-none"
+                    className="w-full pl-8 pr-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-sm font-bold text-slate-900 outline-none"
                   />
                 </div>
-                <div className="flex items-center justify-between mt-1 text-[10px] text-slate-500 font-medium">
-                  <span>ആകെ ബാക്കിയുള്ളത്: ₹{Math.round((payoutClient.pendingPayoutPaise || 0) / 100)}</span>
+                <div className="flex items-center justify-between mt-1 text-[11px] text-slate-500">
+                  <span>Total Pending: ₹{Math.round((payoutClient.pendingPayoutPaise || 0) / 100)}</span>
                   <button
                     type="button"
                     onClick={() => setPayoutAmountRs(Math.round((payoutClient.pendingPayoutPaise || 0) / 100))}
-                    className="text-[#0B8F68] font-bold hover:underline cursor-pointer"
+                    className="text-slate-800 font-semibold hover:underline cursor-pointer"
                   >
-                    മുഴുവൻ നൽകുക
+                    Set Full Balance
                   </button>
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  UPI UTR / ബാങ്ക് റഫറൻസ് നമ്പർ (Optional)
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  UPI UTR / Reference ID (Optional)
                 </label>
                 <input
                   type="text"
-                  placeholder="ഉദാ: 423987123456"
+                  placeholder="e.g. 423987123456"
                   value={payoutUpiRef}
                   onChange={(e) => setPayoutUpiRef(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs font-mono text-[#17221D] outline-none"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-mono text-slate-900 outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-[#17221D] mb-1 font-malayalam">
-                  കുറിപ്പ് (Notes)
+                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                  Notes
                 </label>
                 <input
                   type="text"
                   value={payoutNotes}
                   onChange={(e) => setPayoutNotes(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-[#F5F8F6] border border-[#E3ECE7] focus:border-[#0B8F68] rounded-xl text-xs text-[#17221D] outline-none font-medium"
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none font-medium"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#E3ECE7]">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
                 <button
                   type="button"
                   onClick={() => setPayoutClient(null)}
-                  className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                  className="py-2.5 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                 >
-                  റദ്ദാക്കുക
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={payoutSubmitting}
-                  className="py-2.5 px-5 bg-[#0B8F68] hover:bg-[#087353] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5 font-malayalam"
+                  className="py-2.5 px-5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
                   {payoutSubmitting ? (
                     <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <Check className="w-4 h-4 stroke-[3]" />
-                      <span>പേഔട്ട് സ്ഥിരീകരിക്കുക</span>
+                      <Check className="w-4 h-4 stroke-[2.5]" />
+                      <span>Confirm Payout</span>
                     </>
                   )}
                 </button>
@@ -923,86 +1152,117 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
         </div>
       )}
 
-      {/* 6. Modal: View Onboarded Shops for Client */}
+      {/* 6. MODAL: VIEW ONBOARDED SHOPS */}
       {viewingShopsClient && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-150">
-          <div className="bg-white border border-[#E3ECE7] rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl relative max-h-[90vh] flex flex-col">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/50 backdrop-blur-xs animate-in fade-in duration-150">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-2xl w-full p-5 sm:p-6 shadow-xl relative max-h-[90vh] flex flex-col">
             <button
               type="button"
               onClick={() => setViewingShopsClient(null)}
-              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors cursor-pointer"
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
 
-            <div className="flex items-center gap-3 pb-3 border-b border-[#E3ECE7] mb-4">
-              <div className="w-10 h-10 rounded-2xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center text-lg">
-                <Store className="w-5 h-5 text-[#0B8F68]" />
+            <div className="flex items-center gap-3 pb-3 border-b border-slate-200 mb-4">
+              <div className="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center text-lg">
+                <Store className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-base font-black text-[#17221D] font-malayalam">
-                  {viewingShopsClient.name} ചേർത്ത കടകൾ ({shopsList.length})
+                <h3 className="text-base font-bold text-slate-900">
+                  {viewingShopsClient.name} - Onboarded Stores ({shopsList.length})
                 </h3>
-                <p className="text-xs text-[#66756E] font-medium font-malayalam">
-                  കോഡ്: <b className="font-mono">{viewingShopsClient.clientCode}</b> · കമ്മീഷൻ: <b>{viewingShopsClient.commissionRatePercent}%</b>
+                <p className="text-xs text-slate-500">
+                  Client Code: <b className="font-mono text-slate-700">{viewingShopsClient.clientCode}</b> · Commission: <b>{viewingShopsClient.commissionRatePercent}%</b>
                 </p>
               </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto">
+            {/* Shop Search Filter */}
+            {shopsList.length > 0 && (
+              <div className="mb-3">
+                <div className="relative">
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <input
+                    type="text"
+                    placeholder="Search store name..."
+                    value={shopSearch}
+                    onChange={(e) => setShopSearch(e.target.value)}
+                    className="w-full pl-8 pr-3 py-1.5 bg-slate-50 border border-slate-200 rounded-xl text-xs outline-none"
+                  />
+                </div>
+              </div>
+            )}
+
+            <div className="flex-1 overflow-y-auto pr-1">
               {shopsLoading ? (
-                <div className="py-16 text-center text-[#66756E]">
-                  <div className="w-7 h-7 border-2 border-[#0B8F68] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-                  <p className="text-xs font-medium font-malayalam">കടകളുടെ വിവരങ്ങൾ ലോഡ് ചെയ്യുന്നു...</p>
+                <div className="py-16 text-center text-slate-500">
+                  <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+                  <p className="text-xs">Loading store list...</p>
                 </div>
               ) : shopsList.length === 0 ? (
                 <div className="py-16 text-center space-y-2">
-                  <p className="text-sm font-bold text-[#17221D] font-malayalam">ഈ ക്ലയന്റ് ഇതുവരെ കടകളെ ചേർത്തിട്ടില്ല</p>
-                  <p className="text-xs text-[#66756E] max-w-xs mx-auto font-malayalam">
-                    കടകൾ ക്യുആർ കോഡ് സ്കാൻ ചെയ്യുമ്പോൾ <b className="font-mono">{viewingShopsClient.clientCode}</b> നൽകിയാൽ ഇവിടെ കാണാം.
+                  <Store className="w-8 h-8 text-slate-300 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-900">No stores onboarded yet</p>
+                  <p className="text-xs text-slate-500 max-w-xs mx-auto">
+                    Stores registering with code <b className="font-mono">{viewingShopsClient.clientCode}</b> will appear here.
                   </p>
                 </div>
               ) : (
-                <div className="divide-y divide-[#E3ECE7]">
-                  {shopsList.map((shop, idx) => (
-                    <div key={idx} className="py-3 flex items-center justify-between gap-3">
-                      <div>
-                        <div className="font-bold text-sm text-[#17221D]">{shop.shopName || shop.merchantName}</div>
-                        <div className="text-xs text-[#66756E] flex items-center gap-2 mt-0.5">
-                          <span>{shop.merchantEmail || shop.merchantPhone}</span>
-                          <span>•</span>
-                          <span className="font-bold text-[#0B8F68]">{shop.planName || 'Plan'}</span>
-                          <span>•</span>
-                          <span>{new Date(shop.subscribedAt).toLocaleDateString()}</span>
+                <div className="divide-y divide-slate-100">
+                  {shopsList
+                    .filter((s) => {
+                      const q = shopSearch.toLowerCase().trim();
+                      return (
+                        !q ||
+                        (s.shopName && s.shopName.toLowerCase().includes(q)) ||
+                        (s.merchantName && s.merchantName.toLowerCase().includes(q))
+                      );
+                    })
+                    .map((shop, idx) => (
+                      <div key={idx} className="py-3 flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <div className="font-semibold text-sm text-slate-900 truncate">
+                            {shop.shopName || shop.merchantName}
+                          </div>
+                          <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5 flex-wrap">
+                            <span className="font-mono">{shop.merchantEmail || shop.merchantPhone}</span>
+                            <span>•</span>
+                            <span className="font-semibold text-slate-700 bg-slate-100 px-1.5 py-0.2 rounded">
+                              {shop.planName || 'Plan'}
+                            </span>
+                            <span>•</span>
+                            <span>{new Date(shop.subscribedAt).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="text-right">
-                        <div className="text-xs font-bold text-[#17221D]">
-                          ₹{Math.round(shop.amountPaise / 100).toLocaleString('en-IN')}
-                        </div>
-                        <div className="text-xs font-black text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg inline-flex items-center gap-0.5 mt-0.5">
-                          <span>+ ₹{Math.round((shop.commissionPaise || 0) / 100)} കമ്മീഷൻ</span>
+                        <div className="text-right shrink-0">
+                          <div className="text-xs font-bold text-slate-900">
+                            ₹{Math.round(shop.amountPaise / 100).toLocaleString('en-IN')}
+                          </div>
+                          <div className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-lg inline-flex items-center gap-0.5 mt-0.5">
+                            <span>+ ₹{Math.round((shop.commissionPaise || 0) / 100)} comm</span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               )}
             </div>
 
-            <div className="pt-3 border-t border-[#E3ECE7] flex justify-end">
+            <div className="pt-3 border-t border-slate-200 flex justify-end">
               <button
                 type="button"
                 onClick={() => setViewingShopsClient(null)}
-                className="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                className="py-2 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
               >
-                അടയ്ക്കുക (Close)
+                Close
               </button>
             </div>
           </div>
         </div>
       )}
+
     </div>
   );
 };
