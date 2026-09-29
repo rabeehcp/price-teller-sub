@@ -2122,6 +2122,36 @@ apiRouter.put('/subscription/plans/:id', authenticateToken, requireAdmin, async 
   }
 });
 
+// 4b. Admin: Delete subscription plan
+apiRouter.delete('/subscription/plans/:id', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+    const existing = await db.getSubscriptionPlanById(id);
+    if (!existing) {
+      return res.status(404).json({ success: false, error: 'Subscription plan not found' });
+    }
+
+    const result = await db.deleteSubscriptionPlan(id);
+    if (!result.success) {
+      return res.status(400).json({ success: false, error: result.error || 'Failed to delete plan' });
+    }
+
+    await db.logAuditAction({
+      actorId: user.id,
+      actorRole: 'admin',
+      action: 'PLAN_DELETED',
+      entityType: 'subscription_plan',
+      entityId: id,
+      metadata: { planName: existing.name, pricePaise: existing.pricePaise },
+    });
+
+    res.json({ success: true, message: `Plan "${existing.name}" deleted successfully` });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 5. Merchant: Get active subscription status
 apiRouter.get('/subscription/merchant/status', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {

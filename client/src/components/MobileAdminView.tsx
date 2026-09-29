@@ -247,15 +247,6 @@ export const MobileAdminView: React.FC<MobileAdminViewProps> = ({
             <span className="text-base">🤝</span>
             <span>ഫീൽഡ് ക്ലയന്റ്സ്</span>
           </button>
-
-          <button
-            type="button"
-            onClick={() => onNavigateTab('audit')}
-            className="p-3 bg-slate-50 hover:bg-emerald-50 hover:text-emerald-900 border border-slate-200 rounded-2xl text-xs font-black text-slate-800 flex items-center justify-start gap-2.5 transition-colors cursor-pointer"
-          >
-            <span className="text-base">📋</span>
-            <span>ഓഡിറ്റ് ലോഗ്</span>
-          </button>
         </div>
       </div>
 

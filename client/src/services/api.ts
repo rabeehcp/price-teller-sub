@@ -1077,6 +1077,18 @@ export async function updateSubscriptionPlanApi(planId: string, planData: Partia
   throw new Error(json.error || 'Failed to update plan');
 }
 
+export async function deleteSubscriptionPlanApi(planId: string, token: string): Promise<boolean> {
+  const res = await fetch(`${API_BASE}/subscription/plans/${planId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const json = await res.json();
+  if (json.success) return true;
+  throw new Error(json.error || 'Failed to delete plan');
+}
+
 export async function fetchMerchantSubscriptionStatusApi(token?: string): Promise<SubscriptionStatusResponse> {
   try {
     const res = await fetch(`${API_BASE}/subscription/merchant/status`, {

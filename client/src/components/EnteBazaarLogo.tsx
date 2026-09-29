@@ -50,7 +50,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
         title="PeediyaCart"
       >
         <img
-          src="/logo-icon.png"
+          src="/pwa-192x192.png"
           alt={alt}
           className="w-full h-full object-contain"
         />
@@ -75,7 +75,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
         } ${onClick ? 'cursor-pointer hover:scale-102 active:scale-98 transition-transform' : ''} ${className}`}
       >
         <img
-          src="/peediyacart-logo.png"
+          src="/logo.png"
           alt={alt}
           className="w-full h-auto object-contain"
         />
@@ -92,7 +92,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
       } ${className}`}
     >
       <img
-        src="/peediyacart-logo.png"
+        src="/logo.png"
         alt={alt}
         className={`w-auto object-contain transition-transform group-hover:scale-102 ${
           isDark ? 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] brightness-[1.08]' : ''

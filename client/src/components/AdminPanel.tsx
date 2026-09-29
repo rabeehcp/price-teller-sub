@@ -31,6 +31,7 @@ import {
   fetchSubscriptionPlansApi,
   createSubscriptionPlanApi,
   updateSubscriptionPlanApi,
+  deleteSubscriptionPlanApi,
   fetchAdminSubscriptionsApi,
   extendAdminSubscriptionApi,
   cancelAdminSubscriptionApi,
@@ -93,8 +94,13 @@ import {
   Wallet,
   Copy,
   CheckCheck,
-  ExternalLink,
   Briefcase,
+  Star,
+  Phone,
+  Truck,
+  Navigation,
+  BadgeCheck,
+  X,
 } from 'lucide-react';
 import { LocationMapPickerModal } from './LocationMapPickerModal';
 import { MobileAdminView } from './MobileAdminView';
@@ -179,6 +185,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [isBatchDeleting, setIsBatchDeleting] = useState<boolean>(false);
   const [storeSearch, setStoreSearch] = useState('');
   const [storeRegionFilter, setStoreRegionFilter] = useState<string>('all');
+  const [storeTypeFilter, setStoreTypeFilter] = useState<string>('all');
+  const [storeVerificationFilter, setStoreVerificationFilter] = useState<'all' | 'verified' | 'unverified'>('all');
+  const [showAllHubs, setShowAllHubs] = useState<boolean>(false);
   const [locationSearch, setLocationSearch] = useState<string>('');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
@@ -447,6 +456,27 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       loadSubscriptionData();
     } catch (err: any) {
       alert(err.message || 'Failed to toggle plan status');
+    }
+  };
+
+  const [deletingPlanId, setDeletingPlanId] = useState<string | null>(null);
+
+  const handleDeletePlan = async (plan: SubscriptionPlan) => {
+    if (!authUser?.token) return;
+    const confirmed = window.confirm(
+      `Are you sure you want to permanently delete plan "${plan.name}" (ID: ${plan.id})?\n\nThis will remove it from the database.`
+    );
+    if (!confirmed) return;
+
+    setDeletingPlanId(plan.id);
+    try {
+      await deleteSubscriptionPlanApi(plan.id, authUser.token);
+      setSubPlans((prev) => prev.filter((p) => p.id !== plan.id));
+    } catch (err: any) {
+      console.error('Failed to delete plan:', err);
+      alert(err.message || 'Failed to delete plan');
+    } finally {
+      setDeletingPlanId(null);
     }
   };
 
@@ -811,10 +841,83 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         (loc && loc.state && loc.state.toLowerCase().includes(q));
 
       const matchesRegion = storeRegionFilter === 'all' || s.locationId === storeRegionFilter;
+      const matchesType = storeTypeFilter === 'all' || (s.shopType || 'supermarket') === storeTypeFilter;
+      const matchesVerification =
+        storeVerificationFilter === 'all' ||
+        (storeVerificationFilter === 'verified' ? s.isVerified : !s.isVerified);
 
-      return matchesSearch && matchesRegion;
+      return matchesSearch && matchesRegion && matchesType && matchesVerification;
     });
-  }, [shops, storeSearch, storeRegionFilter, locations]);
+  }, [shops, storeSearch, storeRegionFilter, storeTypeFilter, storeVerificationFilter, locations]);
+
+  const storeMetrics = useMemo(() => {
+    const total = shops.length;
+    const verified = shops.filter((s) => s.isVerified).length;
+    const activeHubIds = new Set(shops.map((s) => s.locationId).filter(Boolean));
+    const activeHubCount = activeHubIds.size;
+    const totalRatings = shops.reduce((acc, s) => acc + (s.rating || 0), 0);
+    const avgRating = total > 0 ? (totalRatings / total).toFixed(1) : '5.0';
+    const totalReviews = shops.reduce((acc, s) => acc + (s.reviewCount || 0), 0);
+    const avgDeliveryFee = total > 0 ? Math.round(shops.reduce((acc, s) => acc + (s.deliveryFee || 0), 0) / total) : 30;
+    const avgThreshold = total > 0 ? Math.round(shops.reduce((acc, s) => acc + (s.freeDeliveryThreshold || 0), 0) / total) : 500;
+
+    const activeLocations = locations.filter((loc) => activeHubIds.has(loc.id));
+    const emptyLocations = locations.filter((loc) => !activeHubIds.has(loc.id));
+
+    return {
+      total,
+      verified,
+      activeHubCount,
+      avgRating,
+      totalReviews,
+      avgDeliveryFee,
+      avgThreshold,
+      activeLocations,
+      emptyLocations,
+    };
+  }, [shops, locations]);
+
+  const getShopInitials = (name: string) => {
+    const parts = name.trim().split(/\s+/);
+    if (parts.length >= 2) {
+      return (parts[0][0] + parts[1][0]).toUpperCase();
+    }
+    return name.slice(0, 2).toUpperCase();
+  };
+
+  const getShopAvatarGradient = (id: string) => {
+    const gradients = [
+      'from-emerald-600 to-teal-700',
+      'from-blue-600 to-indigo-700',
+      'from-amber-600 to-orange-700',
+      'from-violet-600 to-purple-800',
+      'from-rose-600 to-pink-700',
+      'from-teal-600 to-cyan-800',
+    ];
+    let sum = 0;
+    for (let i = 0; i < id.length; i++) {
+      sum += id.charCodeAt(i);
+    }
+    return gradients[sum % gradients.length];
+  };
+
+  const getShopTypeBadge = (shopType?: string) => {
+    const type = shopType || 'supermarket';
+    switch (type) {
+      case 'supermarket':
+        return { label: 'Supermarket', bg: 'bg-emerald-50 text-emerald-800 border-emerald-200' };
+      case 'local_mart':
+        return { label: 'Local Mart', bg: 'bg-amber-50 text-amber-800 border-amber-200' };
+      case 'organic':
+        return { label: 'Organic Store', bg: 'bg-lime-50 text-lime-800 border-lime-200' };
+      case 'wholesale':
+        return { label: 'Wholesale', bg: 'bg-indigo-50 text-indigo-800 border-indigo-200' };
+      case 'quick_commerce':
+        return { label: 'Quick Mart', bg: 'bg-purple-50 text-purple-800 border-purple-200' };
+      default:
+        return { label: type.replace('_', ' '), bg: 'bg-slate-50 text-slate-800 border-slate-200' };
+    }
+  };
 
   return (
     <div className="min-h-screen flex bg-[#F5F8F6] text-[#17221D] font-sans">
@@ -865,7 +968,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               },
               { id: 'subscriptions', label: 'Subscriptions', icon: FileText },
               { id: 'clients', label: 'Field Clients', icon: Briefcase, badge: 'Partners' },
-              { id: 'audit', label: 'Audit Logs', icon: ShieldCheck, badge: auditLogs.length > 0 ? String(auditLogs.length) : undefined },
               { id: 'locations', label: 'Locations', icon: Settings, badge: String(locations.length) },
             ].map((item) => {
               const Icon = item.icon;
@@ -987,7 +1089,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                  effectiveTab === 'catalog' ? 'ഉൽപ്പന്നങ്ങൾ' :
                  effectiveTab === 'subscriptions' ? 'സബ്സ്ക്രിപ്ഷൻ' :
                  effectiveTab === 'clients' ? 'ഫീൽഡ് ക്ലയന്റ്സ്' :
-                 effectiveTab === 'audit' ? 'ഓഡിറ്റ് ലോഗ്' :
                  effectiveTab === 'locations' ? 'ഹബ്ബുകൾ' : 'മെനു'}
               </span>
             </button>
@@ -1087,248 +1188,500 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
 
       {/* 2. STORES MANAGER TAB */}
       {effectiveTab === 'stores' && (
-        <div className="bg-white border border-[#E3ECE7] rounded-3xl p-6 shadow-xs animate-in fade-in duration-150">
-          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 pb-4 border-b border-gray-100 mb-4">
-            <div>
-              <h2 className="text-xl font-black text-slate-dark m-0">Store Directory & Regional Management</h2>
-              <span className="text-xs text-gray-400 font-semibold">
-                View which region every shop belongs to, filter by location hub, and configure delivery settings
-              </span>
+        <div className="space-y-6 animate-in fade-in duration-150">
+          {/* Top Quick Metrics Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            {/* 1. Total Merchants */}
+            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-4 shadow-2xs hover:shadow-xs transition-shadow">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500">Total Merchants</span>
+                <div className="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center justify-center text-emerald-700 shadow-2xs">
+                  <Store className="w-4.5 h-4.5" />
+                </div>
+              </div>
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-2xl font-black text-slate-900 tracking-tight">{storeMetrics.total}</span>
+                <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200/60">
+                  {storeMetrics.verified} verified
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-medium mt-1 truncate">
+                Active registered shops on network
+              </p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto">
-              {/* Region Filter Selector */}
-              <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 rounded-xl px-2.5 py-1.5 text-xs font-bold text-gray-700">
-                <MapPin className="w-3.5 h-3.5 text-brand-600 shrink-0" />
-                <span className="text-gray-400 font-medium">Region:</span>
-                <select
-                  value={storeRegionFilter}
-                  onChange={(e) => setStoreRegionFilter(e.target.value)}
-                  className="bg-transparent text-xs font-bold outline-none cursor-pointer pr-1 text-slate-dark"
-                >
-                  <option value="all">All Regions ({shops.length} stores)</option>
-                  {locations.map((loc) => {
-                    const count = shops.filter((s) => s.locationId === loc.id).length;
-                    return (
-                      <option key={loc.id} value={loc.id}>
-                        {loc.name} ({count} {count === 1 ? 'store' : 'stores'})
-                      </option>
-                    );
-                  })}
-                </select>
+            {/* 2. Regional Footprint */}
+            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-4 shadow-2xs hover:shadow-xs transition-shadow">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500">Active Hubs</span>
+                <div className="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200/80 flex items-center justify-center text-indigo-700 shadow-2xs">
+                  <MapPin className="w-4.5 h-4.5" />
+                </div>
               </div>
-
-              {/* Quick Search */}
-              <div className="relative flex-1 sm:w-56">
-                <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                <input
-                  type="text"
-                  value={storeSearch}
-                  onChange={(e) => setStoreSearch(e.target.value)}
-                  placeholder="Search store, region, address..."
-                  className="w-full pl-8 pr-3 py-1.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-none"
-                />
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-2xl font-black text-slate-900 tracking-tight">{storeMetrics.activeHubCount}</span>
+                <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full border border-indigo-200/60">
+                  of {locations.length} regions
+                </span>
               </div>
+              <p className="text-[11px] text-slate-400 font-medium mt-1 truncate">
+                Locations with live merchant stores
+              </p>
+            </div>
 
-              {/* Reset filter button if active */}
-              {(storeRegionFilter !== 'all' || storeSearch) && (
-                <button
-                  onClick={() => {
-                    setStoreRegionFilter('all');
-                    setStoreSearch('');
-                  }}
-                  className="px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl text-xs font-bold transition-colors cursor-pointer"
-                >
-                  Reset
-                </button>
-              )}
+            {/* 3. Rating & Reputation */}
+            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-4 shadow-2xs hover:shadow-xs transition-shadow">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500">Platform Rating</span>
+                <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center text-amber-600 shadow-2xs">
+                  <Star className="w-4.5 h-4.5 fill-amber-400" />
+                </div>
+              </div>
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-2xl font-black text-slate-900 tracking-tight">★ {storeMetrics.avgRating}</span>
+                <span className="text-[11px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200/60">
+                  {storeMetrics.totalReviews} reviews
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-medium mt-1 truncate">
+                Average consumer store satisfaction
+              </p>
+            </div>
 
-              <button
-                onClick={() => handleOpenAddStoreWithLocation(storeRegionFilter !== 'all' ? storeRegionFilter : undefined)}
-                className="flex items-center gap-1 px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-black shadow-xs transition-colors cursor-pointer shrink-0"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add Store</span>
-              </button>
+            {/* 4. Delivery Standard */}
+            <div className="bg-white border border-[#E3ECE7] rounded-2xl p-4 shadow-2xs hover:shadow-xs transition-shadow">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-bold text-slate-500">Avg Delivery Fee</span>
+                <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-200/80 flex items-center justify-center text-teal-700 shadow-2xs">
+                  <Truck className="w-4.5 h-4.5" />
+                </div>
+              </div>
+              <div className="mt-2 flex items-baseline gap-2">
+                <span className="text-2xl font-black text-slate-900 tracking-tight">₹{storeMetrics.avgDeliveryFee}</span>
+                <span className="text-[11px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200/60">
+                  Free &gt; ₹{storeMetrics.avgThreshold}
+                </span>
+              </div>
+              <p className="text-[11px] text-slate-400 font-medium mt-1 truncate">
+                Default localized doorstep fulfillment
+              </p>
             </div>
           </div>
 
-          {/* Quick Region Filter Chips */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-3 border-b border-gray-100 text-xs">
-            <span className="text-[11px] font-extrabold text-gray-400 uppercase tracking-wider shrink-0 mr-1">
-              Filter Hub:
-            </span>
-            <button
-              onClick={() => setStoreRegionFilter('all')}
-              className={`px-3 py-1 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer ${
-                storeRegionFilter === 'all'
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              All Regions ({shops.length})
-            </button>
-            {locations.map((loc) => {
-              const locCount = shops.filter((s) => s.locationId === loc.id).length;
-              const isSelected = storeRegionFilter === loc.id;
-              return (
+          {/* Main Store Management Card */}
+          <div className="bg-white border border-[#E3ECE7] rounded-3xl p-5 sm:p-6 shadow-xs space-y-5">
+            {/* Header Section */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2.5">
+                  <h2 className="text-xl font-black text-slate-900 m-0 tracking-tight">
+                    Store Directory & Regional Management
+                  </h2>
+                  <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100/70 text-emerald-800 border border-emerald-200">
+                    {filteredShops.length} {filteredShops.length === 1 ? 'Store' : 'Stores'}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 font-medium m-0">
+                  View which region every shop belongs to, manage merchant profiles, filter by location hub, and configure delivery parameters.
+                </p>
+              </div>
+
+              {/* Action Toolbar */}
+              <div className="flex flex-wrap items-center gap-2">
+                {/* Search Bar with clear button */}
+                <div className="relative min-w-[220px] sm:min-w-[260px] flex-1 sm:flex-initial">
+                  <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input
+                    type="text"
+                    value={storeSearch}
+                    onChange={(e) => setStoreSearch(e.target.value)}
+                    placeholder="Search store, phone, region, address..."
+                    className="w-full pl-8.5 pr-8 py-2 bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 placeholder:text-slate-400 focus:outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-500/10 transition-all"
+                  />
+                  {storeSearch && (
+                    <button
+                      onClick={() => setStoreSearch('')}
+                      className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-0.5 rounded-full hover:bg-slate-200 transition-colors"
+                      title="Clear search"
+                    >
+                      <X className="w-3.5 h-3.5" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Region Selector Dropdown */}
+                <div className="flex items-center gap-1.5 bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 transition-colors">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <select
+                    value={storeRegionFilter}
+                    onChange={(e) => setStoreRegionFilter(e.target.value)}
+                    className="bg-transparent text-xs font-bold outline-none cursor-pointer pr-1 text-slate-800"
+                  >
+                    <option value="all">All Regions ({shops.length} stores)</option>
+                    {locations.map((loc) => {
+                      const count = shops.filter((s) => s.locationId === loc.id).length;
+                      return (
+                        <option key={loc.id} value={loc.id}>
+                          {loc.name} ({count} {count === 1 ? 'store' : 'stores'})
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+
+                {/* Store Type Filter */}
+                <select
+                  value={storeTypeFilter}
+                  onChange={(e) => setStoreTypeFilter(e.target.value)}
+                  className="bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none cursor-pointer transition-colors"
+                >
+                  <option value="all">All Store Types</option>
+                  <option value="supermarket">Supermarket</option>
+                  <option value="local_mart">Local Mart</option>
+                  <option value="organic">Organic Store</option>
+                  <option value="wholesale">Wholesale</option>
+                  <option value="quick_commerce">Quick Mart</option>
+                </select>
+
+                {/* Verification Filter */}
+                <select
+                  value={storeVerificationFilter}
+                  onChange={(e) => setStoreVerificationFilter(e.target.value as any)}
+                  className="bg-slate-50 hover:bg-slate-100/80 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none cursor-pointer transition-colors"
+                >
+                  <option value="all">All Status</option>
+                  <option value="verified">Verified Only</option>
+                  <option value="unverified">Unverified Only</option>
+                </select>
+
+                {/* Reset Filters CTA */}
+                {(storeRegionFilter !== 'all' || storeSearch || storeTypeFilter !== 'all' || storeVerificationFilter !== 'all') && (
+                  <button
+                    onClick={() => {
+                      setStoreRegionFilter('all');
+                      setStoreSearch('');
+                      setStoreTypeFilter('all');
+                      setStoreVerificationFilter('all');
+                    }}
+                    className="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black transition-colors cursor-pointer flex items-center gap-1"
+                    title="Reset all active filters"
+                  >
+                    <RotateCw className="w-3.5 h-3.5" />
+                    <span>Reset</span>
+                  </button>
+                )}
+
+                {/* Primary Add Store CTA */}
                 <button
-                  key={loc.id}
-                  onClick={() => setStoreRegionFilter(loc.id)}
-                  className={`px-3 py-1 rounded-xl font-bold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-brand-600 text-white shadow-xs'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  onClick={() => handleOpenAddStoreWithLocation(storeRegionFilter !== 'all' ? storeRegionFilter : undefined)}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white rounded-xl text-xs font-black shadow-xs hover:shadow-sm active:scale-95 transition-all cursor-pointer shrink-0"
+                >
+                  <Plus className="w-4 h-4 stroke-[2.5]" />
+                  <span>Add Store</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Smart Regional Hub Filter Chips */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                  <span className="text-[11px] font-black uppercase tracking-wider text-slate-500">
+                    Filter by Hub:
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShowAllHubs(!showAllHubs)}
+                  className="text-xs font-extrabold text-emerald-700 hover:text-emerald-800 hover:underline cursor-pointer flex items-center gap-1"
+                >
+                  <span>{showAllHubs ? 'Show Active Hubs Only' : `Show All Hubs (${locations.length})`}</span>
+                </button>
+              </div>
+
+              <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin text-xs">
+                {/* All Regions Pill */}
+                <button
+                  onClick={() => setStoreRegionFilter('all')}
+                  className={`px-3.5 py-1.5 rounded-xl font-black whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                    storeRegionFilter === 'all'
+                      ? 'bg-slate-900 text-white shadow-xs'
+                      : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
                   }`}
                 >
-                  <span>📍 {loc.name}</span>
+                  <span>All Regions</span>
                   <span
-                    className={`px-1.5 py-0.2 rounded-full text-[10px] font-black ${
-                      isSelected ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-700'
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-black ${
+                      storeRegionFilter === 'all' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-800'
                     }`}
                   >
-                    {locCount}
+                    {shops.length}
                   </span>
                 </button>
-              );
-            })}
-          </div>
 
-          {/* Stores Table */}
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs border-collapse">
-              <thead>
-                <tr className="border-b border-gray-200 bg-gray-50 text-gray-500 font-bold uppercase tracking-wider">
-                  <th className="py-3 px-3 rounded-l-xl">Store Name</th>
-                  <th className="py-3 px-3">Region / Location Hub</th>
-                  <th className="py-3 px-3">Street Address</th>
-                  <th className="py-3 px-3">Type</th>
-                  <th className="py-3 px-3">Rating</th>
-                  <th className="py-3 px-3">Delivery Policy</th>
-                  <th className="py-3 px-3 rounded-r-xl text-right">Verification & Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {filteredShops.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="py-8 text-center text-gray-400">
-                      <Store className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                      <div className="font-bold text-sm text-gray-600">No stores found</div>
-                      <div className="text-xs mt-0.5">
-                        {storeRegionFilter !== 'all'
-                          ? `No shops registered in ${locations.find((l) => l.id === storeRegionFilter)?.name || 'this region'}.`
-                          : 'Try adjusting your search or region filter.'}
-                      </div>
-                      {storeRegionFilter !== 'all' && (
-                        <button
-                          onClick={() => handleOpenAddStoreWithLocation(storeRegionFilter)}
-                          className="mt-3 px-3 py-1.5 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-bold inline-flex items-center gap-1 cursor-pointer"
-                        >
-                          <Plus className="w-3.5 h-3.5" />
-                          <span>Add First Store to {locations.find((l) => l.id === storeRegionFilter)?.name}</span>
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ) : (
-                  filteredShops.map((shop) => {
-                    const loc = locations.find((l) => l.id === shop.locationId);
-                    return (
-                      <tr key={shop.id} className="hover:bg-gray-50/80 transition-colors">
-                        {/* 1. Store Name */}
-                        <td className="py-3.5 px-3">
-                          <b className="font-extrabold text-slate-dark text-sm block">{shop.name}</b>
-                          <span className="text-[11px] text-gray-400 font-semibold">{shop.phone || 'No phone'}</span>
-                        </td>
+                {/* Hub Pills (Active hubs first, or all if toggled) */}
+                {(showAllHubs ? locations : (storeMetrics.activeLocations.length > 0 ? storeMetrics.activeLocations : locations.slice(0, 10))).map((loc) => {
+                  const locCount = shops.filter((s) => s.locationId === loc.id).length;
+                  const isSelected = storeRegionFilter === loc.id;
+                  return (
+                    <button
+                      key={loc.id}
+                      onClick={() => setStoreRegionFilter(loc.id)}
+                      className={`px-3 py-1.5 rounded-xl font-extrabold whitespace-nowrap transition-all cursor-pointer flex items-center gap-1.5 ${
+                        isSelected
+                          ? 'bg-emerald-600 text-white shadow-xs'
+                          : locCount > 0
+                          ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/60'
+                          : 'bg-slate-100 hover:bg-slate-200 text-slate-600'
+                      }`}
+                    >
+                      <span>📍 {loc.name}</span>
+                      <span
+                        className={`px-1.5 py-0.5 rounded-full text-[10px] font-black ${
+                          isSelected
+                            ? 'bg-white/25 text-white'
+                            : locCount > 0
+                            ? 'bg-emerald-200/80 text-emerald-900'
+                            : 'bg-slate-200 text-slate-700'
+                        }`}
+                      >
+                        {locCount}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-                        {/* 2. Region / Location Hub */}
-                        <td className="py-3.5 px-3">
-                          {loc ? (
-                            <div>
-                              <button
-                                onClick={() => setStoreRegionFilter(loc.id)}
-                                title={`Filter stores in ${loc.name}`}
-                                className="inline-flex items-center gap-1 px-2.5 py-1 bg-brand-50 hover:bg-brand-100 border border-brand-200 text-brand-800 rounded-lg text-xs font-extrabold cursor-pointer transition-colors"
-                              >
-                                <MapPin className="w-3 h-3 text-brand-600 shrink-0" />
-                                <span>{loc.name}</span>
-                              </button>
-                              <span className="text-[10px] text-gray-500 font-semibold block mt-0.5">
-                                {loc.subArea ? `${loc.subArea}, ` : ''}{loc.state}
-                              </span>
+            {/* Modern Stores Table */}
+            <div className="overflow-hidden rounded-2xl border border-slate-200/90 shadow-2xs">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr className="border-b border-slate-200/80 bg-slate-50/90 text-slate-500 font-extrabold uppercase tracking-wider text-[11px]">
+                      <th className="py-3.5 px-4">Merchant / Store</th>
+                      <th className="py-3.5 px-4">Location Hub</th>
+                      <th className="py-3.5 px-4">Street Address</th>
+                      <th className="py-3.5 px-4">Type</th>
+                      <th className="py-3.5 px-4">Rating</th>
+                      <th className="py-3.5 px-4">Delivery Policy</th>
+                      <th className="py-3.5 px-4 text-right">Status & Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 bg-white">
+                    {filteredShops.length === 0 ? (
+                      <tr>
+                        <td colSpan={7} className="py-12 px-4 text-center">
+                          <div className="max-w-md mx-auto space-y-3">
+                            <div className="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-2xs">
+                              <Store className="w-6 h-6 opacity-80" />
                             </div>
-                          ) : (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-semibold">
-                              <MapPin className="w-3 h-3 text-amber-500 shrink-0" />
-                              <span>{shop.locationId || 'Unassigned'}</span>
-                            </span>
-                          )}
-                        </td>
-
-                        {/* 3. Street Address */}
-                        <td className="py-3.5 px-3 max-w-xs">
-                          <span className="text-slate-dark font-medium block truncate">{shop.address}</span>
-                          <span className="text-[10px] text-gray-400">📍 {shop.distanceKm} km from hub center</span>
-                        </td>
-
-                        {/* 4. Type */}
-                        <td className="py-3.5 px-3">
-                          <span className="capitalize px-2 py-0.5 bg-gray-100 text-gray-700 rounded-md font-bold text-[10px]">
-                            {shop.shopType?.replace('_', ' ') || 'Supermarket'}
-                          </span>
-                        </td>
-
-                        {/* 5. Rating */}
-                        <td className="py-3.5 px-3">
-                          <span className="font-bold text-amber-700">★ {shop.rating}</span>{' '}
-                          <span className="text-gray-400">({shop.reviewCount})</span>
-                        </td>
-
-                        {/* 6. Delivery Policy */}
-                        <td className="py-3.5 px-3">
-                          <span className="font-semibold text-slate-dark">₹{shop.deliveryFee} fee</span>
-                          <span className="text-[10px] text-emerald-600 block">
-                            Free over ₹{shop.freeDeliveryThreshold}
-                          </span>
-                        </td>
-
-                        {/* 7. Verification & Actions */}
-                        <td className="py-3.5 px-3 text-right">
-                          <div className="flex items-center justify-end gap-1.5">
-                            <button
-                              onClick={() => handleToggleStoreVerify(shop)}
-                              title="Toggle store verification"
-                              className={`px-2.5 py-1.5 rounded-xl font-bold text-xs transition-colors cursor-pointer ${
-                                shop.isVerified
-                                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100'
-                                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                              }`}
-                            >
-                              {shop.isVerified ? '✓ Verified' : 'Unverified'}
-                            </button>
-                            <button
-                              onClick={() => handleStartEditShop(shop)}
-                              title="Edit store details & region"
-                              className="p-1.5 bg-gray-100 hover:bg-brand-50 text-gray-600 hover:text-brand-700 border border-gray-200 rounded-xl transition-colors cursor-pointer"
-                            >
-                              <Pencil className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteStore(shop)}
-                              disabled={deletingShopId === shop.id}
-                              title={`Delete ${shop.name}`}
-                              className="p-1.5 bg-gray-100 hover:bg-red-50 text-gray-400 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-xl transition-colors cursor-pointer disabled:opacity-50"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
+                            <div>
+                              <div className="font-black text-base text-slate-800">No matching stores found</div>
+                              <div className="text-xs text-slate-500 mt-1">
+                                {storeRegionFilter !== 'all'
+                                  ? `No stores currently registered in ${locations.find((l) => l.id === storeRegionFilter)?.name || 'the selected region'}.`
+                                  : 'Try adjusting your search query, store type, or region filter.'}
+                              </div>
+                            </div>
+                            <div className="flex items-center justify-center gap-2 pt-2">
+                              {(storeRegionFilter !== 'all' || storeSearch || storeTypeFilter !== 'all' || storeVerificationFilter !== 'all') && (
+                                <button
+                                  onClick={() => {
+                                    setStoreRegionFilter('all');
+                                    setStoreSearch('');
+                                    setStoreTypeFilter('all');
+                                    setStoreVerificationFilter('all');
+                                  }}
+                                  className="px-3.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-colors cursor-pointer"
+                                >
+                                  Reset Filters
+                                </button>
+                              )}
+                              <button
+                                onClick={() => handleOpenAddStoreWithLocation(storeRegionFilter !== 'all' ? storeRegionFilter : undefined)}
+                                className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black inline-flex items-center gap-1.5 shadow-2xs cursor-pointer transition-colors"
+                              >
+                                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                                <span>Add Store Here</span>
+                              </button>
+                            </div>
                           </div>
                         </td>
                       </tr>
-                    );
-                  })
-                )}
-              </tbody>
-            </table>
+                    ) : (
+                      filteredShops.map((shop) => {
+                        const loc = locations.find((l) => l.id === shop.locationId);
+                        const typeBadge = getShopTypeBadge(shop.shopType);
+                        const avatarGradient = getShopAvatarGradient(shop.id);
+                        const initials = getShopInitials(shop.name);
+
+                        return (
+                          <tr key={shop.id} className="hover:bg-slate-50/80 transition-colors group">
+                            {/* 1. Store Avatar & Name */}
+                            <td className="py-3.5 px-4">
+                              <div className="flex items-center gap-3">
+                                <div
+                                  className={`w-10 h-10 rounded-2xl flex items-center justify-center text-white font-black text-xs shrink-0 shadow-2xs bg-gradient-to-br ${avatarGradient}`}
+                                  title={shop.name}
+                                >
+                                  {initials}
+                                </div>
+                                <div className="min-w-0">
+                                  <div className="flex items-center gap-1.5">
+                                    <span className="font-black text-slate-900 text-sm group-hover:text-emerald-700 transition-colors truncate">
+                                      {shop.name}
+                                    </span>
+                                    {shop.isVerified && (
+                                      <span title="Verified Store" className="inline-flex items-center">
+                                        <BadgeCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                                      </span>
+                                    )}
+                                  </div>
+                                  <div className="flex items-center gap-2 mt-0.5">
+                                    {shop.phone ? (
+                                      <a
+                                        href={`tel:${shop.phone}`}
+                                        className="text-[11px] text-slate-500 hover:text-emerald-700 font-semibold flex items-center gap-1 transition-colors"
+                                      >
+                                        <Phone className="w-2.5 h-2.5" />
+                                        <span>{shop.phone}</span>
+                                      </a>
+                                    ) : (
+                                      <span className="text-[11px] text-slate-400 font-medium">No phone added</span>
+                                    )}
+                                    <span className="text-[10px] text-slate-300 font-mono">#{shop.id.slice(0, 8)}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+
+                            {/* 2. Region / Location Hub */}
+                            <td className="py-3.5 px-4">
+                              {loc ? (
+                                <div className="space-y-1">
+                                  <button
+                                    onClick={() => setStoreRegionFilter(loc.id)}
+                                    title={`Filter stores in ${loc.name}`}
+                                    className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100/90 border border-emerald-200 text-emerald-800 rounded-lg text-xs font-black cursor-pointer transition-all hover:scale-102 shadow-2xs"
+                                  >
+                                    <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
+                                    <span>{loc.name}</span>
+                                  </button>
+                                  <span className="text-[10px] text-slate-500 font-semibold block truncate max-w-[200px]" title={loc.subArea ? `${loc.subArea}, ${loc.state}` : loc.state}>
+                                    {loc.subArea ? `${loc.subArea}, ` : ''}{loc.state}
+                                  </span>
+                                </div>
+                              ) : (
+                                <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-lg text-xs font-bold">
+                                  <MapPin className="w-3 h-3 text-amber-500 shrink-0" />
+                                  <span>{shop.locationId || 'Unassigned'}</span>
+                                </span>
+                              )}
+                            </td>
+
+                            {/* 3. Street Address */}
+                            <td className="py-3.5 px-4 max-w-xs">
+                              <span className="text-slate-800 font-medium block truncate text-xs" title={shop.address}>
+                                {shop.address}
+                              </span>
+                              <div className="flex items-center gap-1 text-[10px] text-slate-400 font-semibold mt-0.5">
+                                <Navigation className="w-2.5 h-2.5 text-slate-400" />
+                                <span>{shop.distanceKm} km from hub center</span>
+                              </div>
+                            </td>
+
+                            {/* 4. Type */}
+                            <td className="py-3.5 px-4">
+                              <span className={`inline-flex items-center px-2.5 py-1 rounded-full font-bold text-[10px] border shadow-2xs ${typeBadge.bg}`}>
+                                {typeBadge.label}
+                              </span>
+                            </td>
+
+                            {/* 5. Rating */}
+                            <td className="py-3.5 px-4">
+                              <div className="inline-flex items-center gap-1.5 bg-amber-50 border border-amber-200/80 px-2.5 py-1 rounded-xl">
+                                <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-500" />
+                                <span className="font-black text-xs text-amber-900">{shop.rating || 4.8}</span>
+                                <span className="text-[10px] text-amber-700/80 font-bold">
+                                  ({shop.reviewCount || 1})
+                                </span>
+                              </div>
+                            </td>
+
+                            {/* 6. Delivery Policy */}
+                            <td className="py-3.5 px-4">
+                              <div className="space-y-0.5">
+                                <div className="inline-flex items-center gap-1 text-xs font-black text-slate-800">
+                                  <Truck className="w-3 h-3 text-slate-500" />
+                                  <span>₹{shop.deliveryFee}</span>
+                                  <span className="text-[10px] font-normal text-slate-400">fee</span>
+                                </div>
+                                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.2 rounded-md border border-emerald-200/60 block w-fit">
+                                  Free over ₹{shop.freeDeliveryThreshold}
+                                </span>
+                              </div>
+                            </td>
+
+                            {/* 7. Verification & Actions */}
+                            <td className="py-3.5 px-4 text-right">
+                              <div className="flex items-center justify-end gap-1.5">
+                                <button
+                                  onClick={() => handleToggleStoreVerify(shop)}
+                                  title="Toggle verification status"
+                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl font-bold text-xs transition-all cursor-pointer shadow-2xs ${
+                                    shop.isVerified
+                                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100'
+                                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'
+                                  }`}
+                                >
+                                  <span className={`w-1.5 h-1.5 rounded-full ${shop.isVerified ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}`} />
+                                  <span>{shop.isVerified ? 'Verified' : 'Unverified'}</span>
+                                </button>
+                                <button
+                                  onClick={() => handleStartEditShop(shop)}
+                                  title="Edit store details & region"
+                                  className="p-1.5 bg-white hover:bg-emerald-50 text-slate-600 hover:text-emerald-700 border border-slate-200 hover:border-emerald-300 rounded-xl transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95"
+                                >
+                                  <Pencil className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteStore(shop)}
+                                  disabled={deletingShopId === shop.id}
+                                  title={`Delete ${shop.name}`}
+                                  className="p-1.5 bg-white hover:bg-rose-50 text-slate-400 hover:text-rose-600 border border-slate-200 hover:border-rose-300 rounded-xl transition-all cursor-pointer shadow-2xs hover:scale-105 active:scale-95 disabled:opacity-50"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Table Footer with Summary Info */}
+              {filteredShops.length > 0 && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 px-4 py-3 bg-slate-50 border-t border-slate-200/80 text-xs text-slate-500 font-semibold">
+                  <div className="flex items-center gap-2">
+                    <span>
+                      Showing <b className="text-slate-800">{filteredShops.length}</b> of <b className="text-slate-800">{shops.length}</b> total stores
+                    </span>
+                    {storeRegionFilter !== 'all' && (
+                      <span className="bg-emerald-100/70 text-emerald-800 px-2 py-0.5 rounded-full text-[10px] font-black border border-emerald-200">
+                        📍 Region: {locations.find((l) => l.id === storeRegionFilter)?.name || storeRegionFilter}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-[11px] text-slate-400">
+                    Click any hub pill to filter stores by geographic delivery region
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -2433,14 +2786,30 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                     </div>
                   </div>
 
-                  <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between">
-                    <button
-                      onClick={() => handleTogglePlanActive(plan)}
-                      className="text-xs font-bold text-gray-600 hover:text-brand-600 cursor-pointer"
-                    >
-                      {plan.isActive ? 'Deactivate Tier' : 'Activate Tier'}
-                    </button>
-                    <span className="text-[10px] text-gray-400 font-mono">ID: {plan.id}</span>
+                  <div className="mt-4 pt-3 border-t border-gray-200/60 flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => handleTogglePlanActive(plan)}
+                        className={`text-xs font-bold cursor-pointer transition-colors ${
+                          plan.isActive ? 'text-gray-500 hover:text-amber-600' : 'text-emerald-700 hover:text-emerald-800'
+                        }`}
+                      >
+                        {plan.isActive ? 'Deactivate Tier' : 'Activate Tier'}
+                      </button>
+                      <span className="text-gray-300">|</span>
+                      <button
+                        onClick={() => handleDeletePlan(plan)}
+                        disabled={deletingPlanId === plan.id}
+                        title={`Delete ${plan.name}`}
+                        className="text-xs font-bold text-rose-600 hover:text-rose-700 hover:bg-rose-50 px-2 py-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 disabled:opacity-50"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        <span>{deletingPlanId === plan.id ? 'Deleting...' : 'Delete Tier'}</span>
+                      </button>
+                    </div>
+                    <span className="text-[10px] text-gray-400 font-mono truncate max-w-[120px]" title={plan.id}>
+                      ID: {plan.id}
+                    </span>
                   </div>
                 </div>
               ))}
@@ -2950,107 +3319,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               );
             })()
           )}
-        </div>
-      )}
-
-      {/* 9. AUDIT LOGS TAB */}
-      {effectiveTab === 'audit' && (
-        <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 sm:p-6 shadow-xs animate-in fade-in duration-150 space-y-5">
-          {/* Header */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-bold">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <div>
-                <h2 className="text-xl font-black text-slate-dark m-0">ഓഡിറ്റ് ലോഗ് (Audit Logs Trail)</h2>
-                <span className="text-xs text-gray-400 font-semibold">
-                  Realtime immutable security trail of administrative actions, subscriptions & changes
-                </span>
-              </div>
-            </div>
-
-            <button
-              type="button"
-              onClick={loadSubscriptionData}
-              disabled={subLoading}
-              className="p-2 bg-gray-50 hover:bg-emerald-50 text-gray-600 hover:text-emerald-700 border border-gray-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
-              title="Refresh audit logs"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${subLoading ? 'animate-spin text-emerald-600' : ''}`} />
-              <span className="hidden xs:inline">Refresh Logs</span>
-            </button>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-            <div className="bg-gray-50 rounded-2xl p-3.5 border border-gray-200">
-              <div className="text-[10px] uppercase font-bold text-gray-400">Total Audit Events</div>
-              <div className="text-xl font-black text-slate-dark mt-0.5">{auditLogs.length}</div>
-            </div>
-            <div className="bg-emerald-50/60 rounded-2xl p-3.5 border border-emerald-200">
-              <div className="text-[10px] uppercase font-bold text-emerald-600">Active Subs Tracked</div>
-              <div className="text-xl font-black text-emerald-800 mt-0.5">{subList.length}</div>
-            </div>
-            <div className="bg-blue-50/60 rounded-2xl p-3.5 border border-blue-200 col-span-2 sm:col-span-1">
-              <div className="text-[10px] uppercase font-bold text-blue-600">Recorded Payments</div>
-              <div className="text-xl font-black text-blue-800 mt-0.5">{subPayments.length}</div>
-            </div>
-          </div>
-
-          {/* Logs List */}
-          <div className="space-y-2.5">
-            {auditLogs.map((log) => (
-              <div
-                key={log.id}
-                className="p-3.5 bg-gray-50 border border-gray-200/80 rounded-2xl text-xs hover:border-emerald-300 transition-all space-y-1.5"
-              >
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="flex items-center gap-2">
-                    <span
-                      className={`font-black text-[10px] tracking-wider uppercase px-2 py-0.5 rounded-full ${
-                        log.action.includes('CREATE') || log.action.includes('PAYMENT')
-                          ? 'bg-emerald-100 text-emerald-800'
-                          : log.action.includes('EXTEND')
-                          ? 'bg-blue-100 text-blue-800'
-                          : log.action.includes('CANCEL') || log.action.includes('DELETE')
-                          ? 'bg-rose-100 text-rose-800'
-                          : 'bg-gray-200 text-gray-800'
-                      }`}
-                    >
-                      {log.action}
-                    </span>
-                    <span className="font-mono text-gray-600 text-[11px]">
-                      {log.entityType}: <b className="text-slate-800">{log.entityId}</b>
-                    </span>
-                  </div>
-
-                  <span className="text-[11px] text-gray-400 font-medium">
-                    {new Date(log.createdAt).toLocaleString()}
-                  </span>
-                </div>
-
-                {log.actorId && (
-                  <div className="text-[11px] text-gray-500">
-                    Actor: <span className="font-mono text-gray-700">{log.actorId} ({log.actorRole || 'admin'})</span>
-                  </div>
-                )}
-
-                {log.metadata && Object.keys(log.metadata).length > 0 && (
-                  <div className="text-[10px] font-mono text-gray-600 bg-white p-2 rounded-xl border border-gray-200/80 overflow-x-auto">
-                    {JSON.stringify(log.metadata, null, 2)}
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {auditLogs.length === 0 && (
-              <div className="py-12 text-center text-gray-400 border border-dashed border-gray-200 rounded-2xl">
-                <ShieldCheck className="w-8 h-8 text-gray-300 mx-auto mb-2" />
-                <p className="text-sm font-semibold">ലോഗുകൾ ലഭ്യമല്ല (No audit logs recorded yet)</p>
-              </div>
-            )}
-          </div>
         </div>
       )}
 

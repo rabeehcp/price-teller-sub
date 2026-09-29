@@ -11,13 +11,11 @@ export default defineConfig({
       injectRegister: 'script',
       includeAssets: [
         'favicon.ico',
-        'favicon.png',
         'logo.png',
         'pwa-192x192.png',
         'pwa-512x512.png',
         'hero-banner-fresh.png',
         'hero-groceries-fresh.jpg',
-        'peediyacart-logo.png',
       ],
       manifest: {
         id: '/',

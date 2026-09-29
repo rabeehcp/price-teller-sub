@@ -2832,6 +2832,30 @@ const newPlan: SubscriptionPlan = {
       return merged;
   }
 
+  public async deleteSubscriptionPlan(id: string): Promise<{ success: boolean; error?: string }> {
+    const checkSub = await query(
+      `SELECT count(*)::int as count FROM merchant_subscriptions WHERE plan_id = $1`,
+      [id]
+    );
+    const subCount = checkSub.rows[0]?.count || 0;
+
+    const checkPay = await query(
+      `SELECT count(*)::int as count FROM subscription_payments WHERE plan_id = $1`,
+      [id]
+    );
+    const payCount = checkPay.rows[0]?.count || 0;
+
+    if (subCount > 0 || payCount > 0) {
+      return {
+        success: false,
+        error: `Cannot delete plan: ${subCount} subscriptions and ${payCount} payments are linked to it. Please deactivate the tier instead.`,
+      };
+    }
+
+    const res = await query(`DELETE FROM subscription_plans WHERE id = $1`, [id]);
+    return { success: (res.rowCount ?? 0) > 0 };
+  }
+
   public async getMerchantActiveSubscription(merchantId: string): Promise<MerchantSubscription | null> {
     const now = new Date().toISOString();
 

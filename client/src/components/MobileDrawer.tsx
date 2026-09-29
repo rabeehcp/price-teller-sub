@@ -481,24 +481,6 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             <button
               onClick={() => {
-                if (onSelectAdminTab) onSelectAdminTab('audit');
-                onClose();
-              }}
-              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all text-left cursor-pointer relative ${
-                adminTab === 'audit'
-                  ? 'bg-[#F8E7CD] text-[#1F1A14] shadow-2xs font-bold'
-                  : 'text-[#4A3F35] hover:bg-[#F3ECE0] hover:text-[#1F1A14]'
-              }`}
-            >
-              {adminTab === 'audit' && (
-                <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
-              )}
-              <Layers className={`w-4 h-4 shrink-0 ${adminTab === 'audit' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>ഓഡിറ്റ് ലോഗ് (Audit Logs)</span>
-            </button>
-
-            <button
-              onClick={() => {
                 if (onSelectAdminTab) onSelectAdminTab('locations');
                 onClose();
               }}
