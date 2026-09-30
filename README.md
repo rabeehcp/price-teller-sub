@@ -21,3 +21,6 @@ The production stack uses the normal Docker bridge network:
 Open `http://localhost:8080`. The frontend proxies `/api` to the backend container. The backend port is intentionally not published publicly.
 
 Do not use `compose.dev.yaml` for a normal Docker host. It is only a Codespaces development workaround.
+## DevOps
+
+PediaCart deployment and monitoring workflow.
