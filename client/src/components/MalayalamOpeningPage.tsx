@@ -128,7 +128,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         <header className="w-full bg-white/95 backdrop-blur-xl border-b border-[#0D4A36]/10 shrink-0 px-6 lg:px-8 py-2.5 z-40 transition-all shadow-[0_2px_12px_-3px_rgba(13,74,54,0.06)] font-['Plus_Jakarta_Sans',sans-serif]">
           <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-6">
 
-            {/* Official PeediyaCart Logo & Primary Navigation */}
+            {/* Official PeediaCart Logo & Primary Navigation */}
             <div className="flex items-center gap-6 lg:gap-8 shrink-0">
               <div className="hover:opacity-95 transition-transform active:scale-98 cursor-pointer shrink-0">
                 <EnteBazaarLogo
@@ -459,7 +459,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         <footer className="w-full bg-white/90 backdrop-blur-md border-t border-[#E3ECE7] py-2 px-8 text-center text-[11px] text-[#66756E] font-['Outfit','Inter',sans-serif] shrink-0">
           <div className="w-full max-w-[1720px] mx-auto flex items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <span className="font-bold text-[#17221D]">PeediyaCart</span>
+              <span className="font-bold text-[#17221D]">PeediaCart</span>
               <span>·</span>
               <span className="font-malayalam">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
             </div>
@@ -488,7 +488,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         {/* Header Bar */}
         <header className="w-full bg-white border-b border-[#E3ECE7] px-3.5 sm:px-6 md:px-8 py-2.5 sm:py-3 shrink-0 z-30 shadow-2xs">
           <div className="max-w-3xl mx-auto w-full flex items-center justify-between gap-3">
-            {/* PeediyaCart Official Logo */}
+            {/* PeediaCart Official Logo */}
             <div className="shrink-0 active:scale-98 transition-transform cursor-pointer">
               <EnteBazaarLogo size="sm" withTagline={false} onClick={onEnterAsConsumer} />
             </div>
@@ -739,7 +739,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Trust / Brand Strip */}
             <div className="pt-2 pb-1 text-center space-y-2 mt-auto">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#CCE3D6] shadow-2xs text-xs font-bold text-[#14231A]">
-                <span>PeediyaCart</span>
+                <span>PeediaCart</span>
                 <span className="text-gray-300">•</span>
                 <span className="text-[#3D564A] font-['Anek_Malayalam',sans-serif]">“നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത്”</span>
               </div>

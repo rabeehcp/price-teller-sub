@@ -174,7 +174,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                     </div>
                   ) : (
                     <div className="p-3 bg-emerald-50/60 rounded-xl border border-emerald-100 mb-1.5 text-center">
-                      <p className="text-xs font-bold text-slate-700 font-malayalam mb-2">PeediyaCart-ലേക്ക് സ്വാഗതം</p>
+                      <p className="text-xs font-bold text-slate-700 font-malayalam mb-2">PeediaCart-ലേക്ക് സ്വാഗതം</p>
                       <button
                         onClick={() => {
                           setIsProfileDropdownOpen(false);

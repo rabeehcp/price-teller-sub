@@ -1301,7 +1301,7 @@ export const App: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PeediyaCart Session...</span>
+            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PeediaCart Session...</span>
           </div>
           <p className="text-xs text-gray-500 font-medium">Validating credentials with secure server authority</p>
         </div>
@@ -2124,8 +2124,8 @@ export const App: React.FC = () => {
               <div className="w-6 h-6 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center text-xs">
                 🛒
               </div>
-              <span className="font-bold text-slate-dark">PeediyaCart</span>
-              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PeediyaCart”</span>
+              <span className="font-bold text-slate-dark">PeediaCart</span>
+              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PeediaCart”</span>
             </div>
             <div className="flex items-center gap-3 text-[11px] font-medium text-slate-muted">
               <span>📍 Serving Kerala Supermarkets</span>

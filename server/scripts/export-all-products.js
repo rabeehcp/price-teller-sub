@@ -99,7 +99,7 @@ async function exportAllProducts() {
     console.log('✅ JSON written to c:/Users/hp/price-teller-sub/all_products_by_category.json');
 
     // 3. Build Detailed Markdown Artifact
-    let md = `# Complete PeediyaCart Product Catalog by Category\n\n`;
+    let md = `# Complete PeediaCart Product Catalog by Category\n\n`;
     md += `**Total Catalog Products:** ${products.length} items across ${Object.keys(byCategory).length} categories.\n\n`;
     md += `> [!NOTE]\n`;
     md += `> This report lists every single product currently in the database along with its assigned category.\n`;

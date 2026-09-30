@@ -351,7 +351,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-black text-base sm:text-lg tracking-tight text-[#17221D]">
-                  PeediyaCart <span className="text-[#0B8F68]">Merchant Portal</span>
+                  PeediaCart <span className="text-[#0B8F68]">Merchant Portal</span>
                 </span>
                 <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200">
                   Partner Access
@@ -563,7 +563,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
               <div className="flex items-center gap-2 mb-4">
                 <ShieldCheck className="w-5 h-5 text-[#0B8F68]" />
                 <h4 className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#063B2A]">
-                  PeediyaCart Partner ആയാലുള്ള നേട്ടങ്ങൾ (Merchant Benefits)
+                  PeediaCart Partner ആയാലുള്ള നേട്ടങ്ങൾ (Merchant Benefits)
                 </h4>
               </div>
 

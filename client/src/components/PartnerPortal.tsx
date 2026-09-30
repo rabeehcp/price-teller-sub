@@ -125,7 +125,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
 
   const handleShareWhatsApp = () => {
     if (!partner) return;
-    const msg = `നമസ്കാരം, നിങ്ങളുടെ കടയിലെ ഉൽപന്നങ്ങളും ലൈവ് വിലകളും ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കാൻ PeediyaCart Partner ആയി രജിസ്റ്റർ ചെയ്യൂ!\n\nഓൺബോർഡിംഗ് ലിങ്ക്: ${inviteUrl}\nPartner Code: ${partner.clientCode}`;
+    const msg = `നമസ്കാരം, നിങ്ങളുടെ കടയിലെ ഉൽപന്നങ്ങളും ലൈവ് വിലകളും ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കാൻ PeediaCart Partner ആയി രജിസ്റ്റർ ചെയ്യൂ!\n\nഓൺബോർഡിംഗ് ലിങ്ക്: ${inviteUrl}\nPartner Code: ${partner.clientCode}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -162,11 +162,11 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
             <div className="h-4 w-px bg-emerald-800/80 hidden sm:block" />
 
             <div className="flex items-center gap-2.5 min-w-0">
-              {/* Official PeediyaCart Logo */}
+              {/* Official PeediaCart Logo */}
               <div className="bg-white/95 backdrop-blur-xs px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl shadow-xs border border-white/20 flex items-center shrink-0">
                 <img
                   src="/logo.png"
-                  alt="PeediyaCart"
+                  alt="PeediaCart"
                   className="h-5 sm:h-6.5 w-auto object-contain"
                 />
               </div>
@@ -223,7 +223,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
             {/* Hero Banner */}
             <div className="text-center space-y-2.5 sm:space-y-3">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-white border border-emerald-200/80 shadow-2xs">
-                <img src="/logo.png" alt="PeediyaCart" className="h-5 w-auto object-contain" />
+                <img src="/logo.png" alt="PeediaCart" className="h-5 w-auto object-contain" />
                 <span className="h-3.5 w-px bg-emerald-200" />
                 <span className="font-black text-xs text-[#0D4A36] font-['Plus_Jakarta_Sans',sans-serif]">Partner Hub</span>
                 <span className="h-3.5 w-px bg-emerald-200" />
@@ -238,7 +238,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
               </h2>
 
               <p className="text-xs sm:text-sm text-[#4E6359] max-w-md mx-auto leading-relaxed font-['Anek_Malayalam',sans-serif]">
-                നിങ്ങളുടെ പ്രദേശത്തെ കടകളെ PeediyaCart-ലേക്ക് കൊണ്ടുവരൂ. വ്യാപാരികൾ അടയ്ക്കുന്ന ഓരോ സബ്‌സ്‌ക്രിപ്ഷനും 50% വിഹിതം നേരിട്ട് നിങ്ങളുടെ UPI വഴി അക്കൗണ്ടിലേക്ക് എത്തും.
+                നിങ്ങളുടെ പ്രദേശത്തെ കടകളെ PeediaCart-ലേക്ക് കൊണ്ടുവരൂ. വ്യാപാരികൾ അടയ്ക്കുന്ന ഓരോ സബ്‌സ്‌ക്രിപ്ഷനും 50% വിഹിതം നേരിട്ട് നിങ്ങളുടെ UPI വഴി അക്കൗണ്ടിലേക്ക് എത്തും.
               </p>
             </div>
 

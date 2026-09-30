@@ -659,7 +659,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
       if (onDealsUpdated && created) {
         onDealsUpdated([created, ...flashDeals]);
       }
-      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on PeediyaCart!`);
+      setDealSuccessMsg(`Flash deal for ${prod.name} is now live on PeediaCart!`);
       setTimeout(() => setDealSuccessMsg(''), 4000);
     } catch (err) {
       console.error(err);

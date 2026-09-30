@@ -31,7 +31,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   return (
     <header className="lg:hidden sticky top-0 z-30 bg-white backdrop-blur-sm px-5 py-3.5 border-b border-[#EAEFF0] font-sans">
       <div className="flex items-center justify-between gap-2">
-        {/* Left: PeediyaCart Brand Logo */}
+        {/* Left: PeediaCart Brand Logo */}
         <EnteBazaarLogo size="md" className="h-7 sm:h-8" />
 
         {/* Right Controls: Location Pill, Chat, Bell, Avatar */}

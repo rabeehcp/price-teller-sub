@@ -76,7 +76,7 @@ export function isValidKeralaCoord(lat: number, lng: number): boolean {
 /**
  * Robust browser GPS location requester with high-accuracy attempt and instant low-accuracy fallback
  */
-export const MAX_ACCEPTABLE_ACCURACY_METERS = 10000; // 10 km maximum acceptable accuracy for PeediyaCart
+export const MAX_ACCEPTABLE_ACCURACY_METERS = 10000; // 10 km maximum acceptable accuracy for PeediaCart
 
 /**
  * Robust browser GPS location requester with accuracy validation
