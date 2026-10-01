@@ -1365,6 +1365,8 @@ export const App: React.FC = () => {
             categories={categories}
             shops={shops}
             initialCategoryId={addProductInitialCategory}
+            token={authUser?.token}
+            shopName={authUser?.shopName}
             onClose={() => {
               setIsAddProductModalOpen(false);
               setAddProductInitialCategory(undefined);
@@ -1547,6 +1549,8 @@ export const App: React.FC = () => {
             categories={categories}
             shops={shops}
             initialCategoryId={addProductInitialCategory}
+            token={authUser?.token}
+            shopName={authUser?.shopName}
             onClose={() => {
               setIsAddProductModalOpen(false);
               setAddProductInitialCategory(undefined);
@@ -2332,6 +2336,8 @@ export const App: React.FC = () => {
         <AddProductModal
           categories={categories}
           shops={shops}
+          token={authUser?.token}
+          shopName={authUser?.shopName}
           onClose={() => setIsAddProductModalOpen(false)}
           onProductCreated={(newProd, andAddToBasket) => {
             setProducts((prev) => [newProd, ...prev]);

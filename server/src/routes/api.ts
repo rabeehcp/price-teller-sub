@@ -446,17 +446,46 @@ apiRouter.post('/products', authenticateToken, requireMerchant, async (req: Auth
     const cleanPrices: Record<string, number> = {};
     const cleanStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
 
+    let merchantShopName = req.user.role === 'merchant' ? (req.user.shopName || '') : '';
+    if (req.user.role === 'merchant' && !merchantShopName && req.user.shopId) {
+      const allShops = await db.getAllShopsAdmin();
+      const matched = allShops.find((s) => s.id.toLowerCase() === String(req.user.shopId).toLowerCase());
+      if (matched) merchantShopName = matched.name;
+    }
+
     if (prices && typeof prices === 'object') {
-      for (const [sName, pVal] of Object.entries(prices)) {
-        const num = Number(pVal);
-        if (!Number.isFinite(num) || num <= 0) continue;
-        const targetShop = req.user.role === 'merchant' ? req.user.shopName : sName;
-        if (!targetShop) continue;
-        cleanPrices[targetShop] = num;
-        const requestedStock = stockStatus && stockStatus[sName];
-        cleanStock[targetShop] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
-          ? requestedStock
-          : 'in_stock';
+      if (req.user.role === 'merchant') {
+        const targetShop = merchantShopName || req.user.shopName || req.body.shopName || Object.keys(prices)[0];
+        if (targetShop) {
+          let priceVal = Number(prices[targetShop]);
+          if (!Number.isFinite(priceVal) || priceVal <= 0) {
+            for (const val of Object.values(prices)) {
+              const n = Number(val);
+              if (Number.isFinite(n) && n > 0) {
+                priceVal = n;
+                break;
+              }
+            }
+          }
+          if (Number.isFinite(priceVal) && priceVal > 0) {
+            cleanPrices[targetShop] = priceVal;
+            const requestedStock = (stockStatus && (stockStatus[targetShop] || Object.values(stockStatus)[0])) as any;
+            cleanStock[targetShop] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
+              ? requestedStock
+              : 'in_stock';
+          }
+        }
+      } else {
+        // Admin: can populate prices for multiple shops
+        for (const [sName, pVal] of Object.entries(prices)) {
+          const num = Number(pVal);
+          if (!Number.isFinite(num) || num <= 0) continue;
+          cleanPrices[sName] = num;
+          const requestedStock = stockStatus && stockStatus[sName];
+          cleanStock[sName] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
+            ? requestedStock
+            : 'in_stock';
+        }
       }
     }
 
