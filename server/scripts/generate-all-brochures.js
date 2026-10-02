@@ -225,12 +225,22 @@ async function captureAllScreens() {
   ];
 
   for (const tab of consumerTabs) {
-    console.log(`📸 Capturing Consumer Screen: ${tab.id} (${tab.label})...`);
-    const filePath = path.join(OUTPUT_DIR, `screen_consumer_${tab.id}.png`);
-    await consumerPage.goto(`${BASE_URL}/consumer?tab=${tab.id}`, { waitUntil: 'domcontentloaded' });
-    await sleep(3200);
-    await consumerPage.screenshot({ path: filePath });
-    screenshots[`consumer_${tab.id}`] = filePath;
+    const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
+    if (tab.id === 'categories' && fs.existsSync(customCatPath)) {
+      screenshots[`consumer_${tab.id}`] = customCatPath;
+    } else {
+      console.log(`📸 Capturing Consumer Screen: ${tab.id} (${tab.label})...`);
+      const filePath = path.join(OUTPUT_DIR, `screen_consumer_${tab.id}.png`);
+      await consumerPage.goto(`${BASE_URL}/consumer?tab=${tab.id}`, { waitUntil: 'domcontentloaded' });
+      await sleep(3200);
+      await consumerPage.screenshot({ path: filePath });
+      screenshots[`consumer_${tab.id}`] = filePath;
+    }
+  }
+
+  const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
+  if (fs.existsSync(customCatPath)) {
+    screenshots['consumer_categories'] = customCatPath;
   }
 
   await browser.close();
@@ -1303,55 +1313,57 @@ function generateConsumerBrochureHtml(screenshots, imgLogo) {
     <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Smart Basket Comparison</div><div>Page 03 / 08</div></div>
   </div>
 
-  <!-- PAGE 4: CATEGORIES -->
+  <!-- PAGE 4: CATEGORIES & PRODUCT FEED -->
   <div class="page">
     <div class="page-header">
       <div class="brand-logo-badge">
         <img src="${imgLogo}" alt="PeediaCart" class="brand-logo-img" />
-        <span class="brand-sub">Categories</span>
+        <span class="brand-sub">Categories & Feed</span>
       </div>
-      <div class="page-badge">SCREEN 03 • DEPARTMENTS</div>
+      <div class="page-badge">SCREEN 03 • CATALOGUE & DEPARTMENTS</div>
     </div>
     <div class="content-grid">
       <div class="left-col">
-        <div class="feature-tag">🥦 CURATED DEPARTMENTS</div>
-        <h2 class="page-title">Department Categories & Malayalam Index</h2>
-        <div class="page-title-ml">വിഭാഗങ്ങൾ അനുസരിച്ച് ഉൽപ്പന്നങ്ങൾ തിരയൂ</div>
-        <p class="page-desc">Browse effortlessly through organized grocery departments: Fresh Vegetables, Farm Fruits, Staples & Rice, Bakery, Dairy & Kerala Snacks.</p>
+        <div class="feature-tag">🥦 LIVE PRODUCT FEED & CATEGORIES</div>
+        <h2 class="page-title">Curated Department Categories & Lowest Store Rates</h2>
+        <div class="page-title-ml">കാറ്റഗറികളും ഏറ്റവും കുറഞ്ഞ വിലയുള്ള കടകളും</div>
+        <p class="page-desc">Browse through 2,200+ local products across Kerala departments. Every item highlights the cheapest nearby supermarket name with 1-tap add to cart.</p>
         <div class="features-list">
           <div class="feature-item">
             <div class="feature-icon">🏷️</div>
             <div>
-              <div class="feature-text-title">Sub-Category Filtering</div>
-              <div class="feature-text-desc">Filter by Leafy Greens, Tubers, Organic, Kerala Brand Staples.</div>
+              <div class="feature-text-title">Lowest Store Name Badge</div>
+              <div class="feature-text-desc">Transparently indicates which local store (e.g. Al-Iqwan) offers the lowest price.</div>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">🛒</div>
+            <div class="feature-icon">⚡</div>
             <div>
-              <div class="feature-text-title">Quick Add with Quantity Increment</div>
-              <div class="feature-text-desc">Add 1kg, 2kg, or custom units directly into your smart comparison cart.</div>
+              <div class="feature-text-title">Flash Deals & Department Icons</div>
+              <div class="feature-text-desc">Quickly browse Veg, Fruits, Staples, Dairy, Oils, and Kerala snacks.</div>
             </div>
           </div>
           <div class="feature-item">
-            <div class="feature-icon">🌾</div>
+            <div class="feature-icon">➕</div>
             <div>
-              <div class="feature-text-title">Direct Local Sourcing Indicators</div>
-              <div class="feature-text-desc">Clear badges for local farm produce and certified fresh arrivals.</div>
+              <div class="feature-text-title">1-Tap '+ ചേർക്കുക' Instant Add</div>
+              <div class="feature-text-desc">Add essentials into your smart shopping basket with zero friction.</div>
             </div>
           </div>
         </div>
         <div class="stat-pills-row">
-          <div class="stat-pill"><div class="stat-val">10+</div><div class="stat-lbl">Departments</div></div>
-          <div class="stat-pill"><div class="stat-val">Bilingual</div><div class="stat-lbl">Search</div></div>
-          <div class="stat-pill"><div class="stat-val">Instant</div><div class="stat-lbl">Filter</div></div>
+          <div class="stat-pill"><div class="stat-val">2,200+</div><div class="stat-lbl">Live Items</div></div>
+          <div class="stat-pill"><div class="stat-val">Instant</div><div class="stat-lbl">Lowest Tag</div></div>
+          <div class="stat-pill"><div class="stat-val">1-Tap</div><div class="stat-lbl">Cart Add</div></div>
         </div>
       </div>
       <div class="right-col">
-        <div class="phone-mockup"><div class="phone-notch"></div><div class="phone-screen-container"><img src="${base64Image(screenshots.consumer_categories)}" class="phone-screenshot" /></div></div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <img src="${base64Image(screenshots.consumer_categories)}" style="max-height: 555px; width: auto; max-width: 275px; object-fit: contain; filter: drop-shadow(0 20px 45px rgba(13, 74, 54, 0.22));" />
+        </div>
       </div>
     </div>
-    <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Department Directory</div><div>Page 04 / 08</div></div>
+    <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Live Product Feed & Categories</div><div>Page 04 / 08</div></div>
   </div>
 
   <!-- PAGE 5: SHOP CATALOGUE -->
