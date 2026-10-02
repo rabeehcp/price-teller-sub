@@ -226,9 +226,12 @@ async function captureAllScreens() {
 
   for (const tab of consumerTabs) {
     const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
+    const customShopsPath = path.join(OUTPUT_DIR, 'screen_consumer_shops_custom.png');
     const customOrdersPath = path.join(OUTPUT_DIR, 'screen_consumer_orders_custom.png');
     if (tab.id === 'categories' && fs.existsSync(customCatPath)) {
       screenshots[`consumer_${tab.id}`] = customCatPath;
+    } else if (tab.id === 'shops' && fs.existsSync(customShopsPath)) {
+      screenshots[`consumer_${tab.id}`] = customShopsPath;
     } else if (tab.id === 'orders' && fs.existsSync(customOrdersPath)) {
       screenshots[`consumer_${tab.id}`] = customOrdersPath;
     } else {
@@ -244,6 +247,10 @@ async function captureAllScreens() {
   const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
   if (fs.existsSync(customCatPath)) {
     screenshots['consumer_categories'] = customCatPath;
+  }
+  const customShopsPath = path.join(OUTPUT_DIR, 'screen_consumer_shops_custom.png');
+  if (fs.existsSync(customShopsPath)) {
+    screenshots['consumer_shops'] = customShopsPath;
   }
   const customOrdersPath = path.join(OUTPUT_DIR, 'screen_consumer_orders_custom.png');
   if (fs.existsSync(customOrdersPath)) {
@@ -1373,55 +1380,57 @@ function generateConsumerBrochureHtml(screenshots, imgLogo) {
     <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Live Product Feed & Categories</div><div>Page 04 / 08</div></div>
   </div>
 
-  <!-- PAGE 5: SHOP CATALOGUE -->
+  <!-- PAGE 5: SHOP CATALOGUE & LIVE CHAT -->
   <div class="page">
     <div class="page-header">
       <div class="brand-logo-badge">
         <img src="${imgLogo}" alt="PeediaCart" class="brand-logo-img" />
-        <span class="brand-sub">Store Directory</span>
+        <span class="brand-sub">Shops & Chat</span>
       </div>
-      <div class="page-badge">SCREEN 04 • SHOP CATALOGUE</div>
+      <div class="page-badge">SCREEN 04 • NEARBY SHOPS & CHAT</div>
     </div>
     <div class="content-grid">
       <div class="left-col">
-        <div class="feature-tag">🏪 DIGITAL STOREFRONTS</div>
-        <h2 class="page-title">Supermarket Profiles & Complete Store Catalogues</h2>
-        <div class="page-title-ml">കടകളുടെ മുഴുവൻ കാറ്റലോഗും നേരിട്ട് കാണാം</div>
-        <p class="page-desc">Explore the exact inventory of Kalyan Hypermarket, Lulu Daily, Bismi, and town stores. View store hours, driving distances, and contact details.</p>
+        <div class="feature-tag">🏪 NEARBY SUPERMARKETS & LIVE CHAT</div>
+        <h2 class="page-title">Nearby Stores, Full Catalogues & 1-Tap Direct Chat</h2>
+        <div class="page-title-ml">സമീപത്തെ കടകൾ, മുഴുവൻ കാറ്റലോഗും തത്സമയ ചാറ്റും</div>
+        <p class="page-desc">Discover verified supermarkets around your town, browse complete store catalogues with 2,200+ items, check delivery rules, and chat or call directly with the store counter.</p>
         <div class="features-list">
           <div class="feature-item">
-            <div class="feature-icon">⭐</div>
+            <div class="feature-icon">💬</div>
             <div>
-              <div class="feature-text-title">Verified Customer Ratings</div>
-              <div class="feature-text-desc">Transparent review scores based on genuine shopper experiences.</div>
-            </div>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon">📍</div>
-            <div>
-              <div class="feature-text-title">Live Distance & Route Directions</div>
-              <div class="feature-text-desc">Calculated km from your GPS location for easy in-store pickup.</div>
+              <div class="feature-text-title">1-Tap Direct Store Chat & Call</div>
+              <div class="feature-text-desc">Message the counter or call store managers in 1 click for instant support and inquiries.</div>
             </div>
           </div>
           <div class="feature-item">
             <div class="feature-icon">📦</div>
             <div>
-              <div class="feature-text-title">Full Catalogue Browse</div>
-              <div class="feature-text-desc">Search specifically within one store's stock without distractions.</div>
+              <div class="feature-text-title">Full Store Catalogue & Live Prices</div>
+              <div class="feature-text-desc">Browse 2,214+ stocked items with live prices, verified ratings (4.8 ★), and timings.</div>
+            </div>
+          </div>
+          <div class="feature-item">
+            <div class="feature-icon">🗺️</div>
+            <div>
+              <div class="feature-text-title">Interactive Town Map & Free Delivery</div>
+              <div class="feature-text-desc">Pinpoint stores on the map with free delivery thresholds (e.g. ₹2000+ Free Delivery).</div>
             </div>
           </div>
         </div>
         <div class="stat-pills-row">
-          <div class="stat-pill"><div class="stat-val">Verified</div><div class="stat-lbl">Partners</div></div>
-          <div class="stat-pill"><div class="stat-val">GPS</div><div class="stat-lbl">Accurate</div></div>
-          <div class="stat-pill"><div class="stat-val">Full</div><div class="stat-lbl">Catalogue</div></div>
+          <div class="stat-pill"><div class="stat-val">1-Tap</div><div class="stat-lbl">Direct Chat</div></div>
+          <div class="stat-pill"><div class="stat-val">2,200+</div><div class="stat-lbl">Catalogue</div></div>
+          <div class="stat-pill"><div class="stat-val">Live</div><div class="stat-lbl">Store Status</div></div>
         </div>
       </div>
       <div class="right-col">
-        <div class="phone-mockup"><div class="phone-notch"></div><div class="phone-screen-container"><img src="${base64Image(screenshots.consumer_shops)}" class="phone-screenshot" /></div></div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <img src="${base64Image(screenshots.consumer_shops)}" style="max-height: 555px; width: auto; max-width: 275px; object-fit: contain; filter: drop-shadow(0 20px 45px rgba(13, 74, 54, 0.22));" />
+        </div>
       </div>
     </div>
-    <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Supermarket Catalogues</div><div>Page 05 / 08</div></div>
+    <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Nearby Supermarkets & Live Chat</div><div>Page 05 / 08</div></div>
   </div>
 
   <!-- PAGE 6: FLASH DEALS -->
