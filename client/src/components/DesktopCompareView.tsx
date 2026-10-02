@@ -99,14 +99,14 @@ export const DesktopCompareView: React.FC<DesktopCompareViewProps> = ({
       {/* 1. TOP DARK GREEN HEADER (Matches price_comparison_desktop mockup)        */}
       {/* ========================================================================= */}
       <header className="w-full bg-[#173C2C] text-white px-6 sm:px-10 py-3.5 flex items-center justify-between shadow-sm">
-        {/* Left: PeediyaCart Logo */}
+        {/* Left: PeediaCart Logo */}
         <div
           onClick={onBack}
           className="flex items-center gap-2 cursor-pointer hover:opacity-95 transition-opacity select-none"
         >
           <ShoppingCart className="w-5 h-5 text-white stroke-[2.4]" />
           <span className="text-lg font-bold tracking-tight text-white font-sans">
-            PeediyaCart
+            PeediaCart
           </span>
         </div>
 

@@ -205,7 +205,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
         {/* Footer info */}
         <div className="relative z-10 text-[11px] text-emerald-100/50 flex items-center justify-between">
-          <span>PeediyaCart Core Subsystem</span>
+          <span>PeediaCart Core Subsystem</span>
           <span>Zero-Trust Architecture</span>
         </div>
       </div>
@@ -392,7 +392,7 @@ export const AdminLoginPage: React.FC<AdminLoginPageProps> = ({
 
         {/* Bottom Footer */}
         <div className="text-center text-[11px] text-gray-400 py-2">
-          <span>PeediyaCart Administrative Subsystem · Zero-Trust Environment · v2.4.0</span>
+          <span>PeediaCart Administrative Subsystem · Zero-Trust Environment · v2.4.0</span>
         </div>
       </div>
     </div>

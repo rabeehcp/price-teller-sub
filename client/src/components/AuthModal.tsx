@@ -324,7 +324,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
           <div className="flex items-start justify-between gap-3 pb-3 mb-4 border-b border-slate-100">
             <div className="min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <img src="/logo.png" alt="PeediyaCart" className="h-5 sm:h-6 w-auto object-contain md:hidden" />
+                <img src="/logo.png" alt="PeediaCart" className="h-5 sm:h-6 w-auto object-contain md:hidden" />
                 <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-sans">
                   {persona === 'merchant' ? 'Partner Portal' : 'Shopper'}
                 </span>
