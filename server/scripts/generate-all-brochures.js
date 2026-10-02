@@ -133,6 +133,26 @@ async function captureAllScreens() {
   const screenshots = {};
 
   // -------------------------------------------------------------
+  // PART 0: CAPTURE NEW OPENING LANDING SCREEN (MalayalamOpeningPage)
+  // -------------------------------------------------------------
+  const openingPage = await browser.newPage();
+  await openingPage.setViewport({ width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true });
+  await openingPage.evaluateOnNewDocument(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+    localStorage.setItem(
+      'priceteller_current_location',
+      JSON.stringify({ id: 'loc-areekode', name: 'Areekode', district: 'Malappuram' })
+    );
+  });
+  console.log('📸 Capturing Live Opening Screen (MalayalamOpeningPage)...');
+  const openingFilePath = path.join(OUTPUT_DIR, 'screen_opening_page.png');
+  await openingPage.goto(`${BASE_URL}/`, { waitUntil: 'domcontentloaded' });
+  await sleep(3500);
+  await openingPage.screenshot({ path: openingFilePath });
+  screenshots['opening_page'] = openingFilePath;
+
+  // -------------------------------------------------------------
   // PART A: CAPTURE ALL MERCHANT TABS (Including Delivery Hub!)
   // -------------------------------------------------------------
   const merchantPage = await browser.newPage();
@@ -1226,7 +1246,7 @@ function generateConsumerBrochureHtml(screenshots, imgLogo) {
         </div>
       </div>
       <div class="right-col">
-        <div class="phone-mockup"><div class="phone-notch"></div><div class="phone-screen-container"><img src="${base64Image(screenshots.consumer_home)}" class="phone-screenshot" /></div></div>
+        <div class="phone-mockup"><div class="phone-notch"></div><div class="phone-screen-container"><img src="${base64Image(screenshots.opening_page || screenshots.consumer_home)}" class="phone-screenshot" /></div></div>
       </div>
     </div>
     <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Live Home Discovery</div><div>Page 02 / 08</div></div>
