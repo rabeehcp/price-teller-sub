@@ -226,8 +226,11 @@ async function captureAllScreens() {
 
   for (const tab of consumerTabs) {
     const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
+    const customOrdersPath = path.join(OUTPUT_DIR, 'screen_consumer_orders_custom.png');
     if (tab.id === 'categories' && fs.existsSync(customCatPath)) {
       screenshots[`consumer_${tab.id}`] = customCatPath;
+    } else if (tab.id === 'orders' && fs.existsSync(customOrdersPath)) {
+      screenshots[`consumer_${tab.id}`] = customOrdersPath;
     } else {
       console.log(`📸 Capturing Consumer Screen: ${tab.id} (${tab.label})...`);
       const filePath = path.join(OUTPUT_DIR, `screen_consumer_${tab.id}.png`);
@@ -241,6 +244,10 @@ async function captureAllScreens() {
   const customCatPath = path.join(OUTPUT_DIR, 'screen_consumer_categories_custom.png');
   if (fs.existsSync(customCatPath)) {
     screenshots['consumer_categories'] = customCatPath;
+  }
+  const customOrdersPath = path.join(OUTPUT_DIR, 'screen_consumer_orders_custom.png');
+  if (fs.existsSync(customOrdersPath)) {
+    screenshots['consumer_orders'] = customOrdersPath;
   }
 
   await browser.close();
@@ -1513,7 +1520,9 @@ function generateConsumerBrochureHtml(screenshots, imgLogo) {
         </div>
       </div>
       <div class="right-col">
-        <div class="phone-mockup"><div class="phone-notch"></div><div class="phone-screen-container"><img src="${base64Image(screenshots.consumer_orders)}" class="phone-screenshot" /></div></div>
+        <div style="display: flex; align-items: center; justify-content: center;">
+          <img src="${base64Image(screenshots.consumer_orders)}" style="max-height: 555px; width: auto; max-width: 275px; object-fit: contain; filter: drop-shadow(0 20px 45px rgba(13, 74, 54, 0.22));" />
+        </div>
       </div>
     </div>
     <div class="page-footer"><div class="footer-left"><span class="footer-highlight">PeediaCart</span> • Orders & Delivery Status</div><div>Page 07 / 08</div></div>
