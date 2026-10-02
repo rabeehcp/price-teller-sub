@@ -393,7 +393,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
           <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DDF5EA] border border-[#C3EEDC] text-[#063B2A] text-xs font-black mb-3.5 shadow-2xs font-malayalam">
               <Sparkles className="w-3.5 h-3.5 text-[#0B8F68]" />
-              കേരളത്തിലെ പ്രമുഖ സൂപ്പർമാർക്കറ്റ് Partner നെറ്റ്‌വർക്ക്
+              കേരളത്തിലെ പ്രമുഖ വ്യാപാര Partner നെറ്റ്‌വർക്ക്
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-[#17221D] tracking-tight leading-tight font-malayalam">
               കടയുടെ വിൽപന ഉയർത്താൻ അനുയോജ്യമായ പ്ലാൻ തിരഞ്ഞെടുക്കൂ

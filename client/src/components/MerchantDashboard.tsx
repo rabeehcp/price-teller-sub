@@ -144,7 +144,16 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
 }) => {
   const initialShopName = authUser?.shopName || shops[0]?.name || 'Green Mart';
   const [selectedShopName, setSelectedShopName] = useState<string>(initialShopName);
-  const [merchantTab, setMerchantTab] = useState<'dashboard' | 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals'>('dashboard');
+  const [merchantTab, setMerchantTab] = useState<'dashboard' | 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals'>(() => {
+    try {
+      const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+      const tab = params.get('tab') || params.get('merchantTab');
+      if (tab && ['dashboard', 'inventory', 'billing', 'delivery', 'prebookings', 'chats', 'profile', 'deals'].includes(tab)) {
+        return tab as any;
+      }
+    } catch {}
+    return 'dashboard';
+  });
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>('all');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 

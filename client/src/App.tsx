@@ -192,7 +192,16 @@ export const App: React.FC = () => {
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
   // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals')
-  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals'>('home');
+  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals'>(() => {
+    try {
+      const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+      const tab = params.get('tab') || params.get('shopperTab');
+      if (tab && ['home', 'search', 'cart', 'compare', 'orders', 'profile', 'shops', 'map', 'favorites', 'categories', 'deals'].includes(tab)) {
+        return tab as any;
+      }
+    } catch {}
+    return 'home';
+  });
 
   // App View State ('welcome' | 'consumer' | 'merchant' | 'admin' | 'partner')
   const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin' | 'partner'>(() => {

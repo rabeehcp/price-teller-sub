@@ -17,6 +17,7 @@
     "postinstall": "npm --prefix server install && npm --prefix client install"
   },
   "devDependencies": {
-    "concurrently": "^9.2.4"
+    "concurrently": "^9.2.4",
+    "puppeteer-core": "^25.12.0"
   }
 }
