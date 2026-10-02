@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Location } from '../types';
-import { Search, Bell, Heart, ChevronDown, ChevronRight, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag, Zap } from 'lucide-react';
+import { Search, Bell, Heart, ChevronDown, ChevronRight, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag, Zap, Briefcase } from 'lucide-react';
 
 interface DesktopHeaderProps {
   searchQuery: string;
@@ -13,6 +13,7 @@ interface DesktopHeaderProps {
   onOpenOrders: () => void;
   onOpenProfile: () => void;
   onOpenFlashDeals?: () => void;
+  onOpenPartnerPortal?: () => void;
   onSelectRole: (role: 'shopper' | 'merchant' | 'admin') => void;
   onLogout: () => void;
   basketCount?: number;
@@ -32,6 +33,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onOpenOrders,
   onOpenProfile,
   onOpenFlashDeals,
+  onOpenPartnerPortal,
   onSelectRole,
   onLogout,
   basketCount = 0,
@@ -86,6 +88,20 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
 
         {/* Right Controls: Cart Pill, Bell, Heart, Profile Dropdown */}
         <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+
+          {/* Quick Agent Hub Navigation Pill */}
+          {onOpenPartnerPortal && (
+            <button
+              type="button"
+              onClick={onOpenPartnerPortal}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-amber-300 bg-amber-50/90 hover:bg-amber-100 text-amber-900 transition-all cursor-pointer font-sans shadow-2xs active:scale-95 text-xs font-black"
+              title="Field Agent Hub (50% Cut)"
+            >
+              <Briefcase className="w-3.5 h-3.5 text-amber-700" />
+              <span>Agent</span>
+              <span className="text-[10px] bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded-full font-bold">50%</span>
+            </button>
+          )}
 
           {/* Quick-Commerce Cart & Comparison Trigger */}
           {onToggleRightSidebar && (
@@ -247,6 +263,28 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                       </div>
                       <ChevronRight className="w-3.5 h-3.5 text-emerald-600/70 group-hover:text-emerald-800 group-hover:translate-x-0.5 transition-all" />
                     </button>
+
+                    {onOpenPartnerPortal && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsProfileDropdownOpen(false);
+                          onOpenPartnerPortal();
+                        }}
+                        className="w-full group flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-bold text-amber-900 hover:bg-amber-50/90 transition-all text-left cursor-pointer border border-amber-200/80 bg-amber-50/50 mt-1"
+                      >
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 group-hover:bg-amber-600 group-hover:text-white transition-all">
+                            <Briefcase className="w-3.5 h-3.5" />
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-malayalam whitespace-nowrap">ഏജന്റ് ഹബ്ബ്</span>
+                            <span className="text-[10px] font-sans text-amber-800 font-bold px-1.5 py-0.2 bg-amber-200/80 rounded">50% Cut</span>
+                          </div>
+                        </div>
+                        <ChevronRight className="w-3.5 h-3.5 text-amber-600 group-hover:text-amber-800 group-hover:translate-x-0.5 transition-all" />
+                      </button>
+                    )}
 
                     {authUser && (
                       <>

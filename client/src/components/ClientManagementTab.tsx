@@ -30,6 +30,10 @@ import {
   TrendingUp,
   Send,
   Users,
+  Lock,
+  Eye,
+  EyeOff,
+  Key,
 } from 'lucide-react';
 
 interface ClientManagementTabProps {
@@ -60,11 +64,13 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   const [shopSearch, setShopSearch] = useState<string>('');
 
   // Form State
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '+91 ',
     upiId: '',
     clientCode: '',
+    password: '',
     commissionRatePercent: 50,
     minShopsThreshold: 50,
     area: '',
@@ -80,7 +86,17 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
     setLoading(true);
     try {
       const res = await fetchClientsApi(token);
-      setClients(res.clients || []);
+      let localPassMap: Record<string, string> = {};
+      try {
+        localPassMap = JSON.parse(localStorage.getItem('priceteller_agent_passwords') || '{}');
+      } catch {}
+
+      const mergedClients = (res.clients || []).map((c) => ({
+        ...c,
+        password: c.password || localPassMap[c.clientCode.toUpperCase().trim()] || 'Agent@123',
+      }));
+
+      setClients(mergedClients);
       setSummary(res.summary || null);
     } catch (err) {
       console.error('Failed to load clients data:', err);
@@ -104,6 +120,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       phone: '+91 ',
       upiId: '',
       clientCode: randomCode,
+      password: 'Agent@123',
       commissionRatePercent: 50,
       minShopsThreshold: 50,
       area: '',
@@ -111,6 +128,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       notes: '',
     });
     setEditingClient(null);
+    setShowPassword(false);
     setIsAddModalOpen(true);
   };
 
@@ -120,6 +138,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       phone: client.phone,
       upiId: client.upiId,
       clientCode: client.clientCode,
+      password: client.password || 'Agent@123',
       commissionRatePercent: client.commissionRatePercent || 50,
       minShopsThreshold: client.minShopsThreshold || 50,
       area: client.area || '',
@@ -127,6 +146,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       notes: client.notes || '',
     });
     setEditingClient(client);
+    setShowPassword(false);
     setIsAddModalOpen(true);
   };
 
@@ -135,6 +155,14 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
     if (!formData.name.trim() || !formData.phone.trim() || !formData.upiId.trim()) return;
 
     try {
+      if (formData.clientCode && formData.password) {
+        try {
+          const passMap = JSON.parse(localStorage.getItem('priceteller_agent_passwords') || '{}');
+          passMap[formData.clientCode.toUpperCase().trim()] = formData.password.trim();
+          localStorage.setItem('priceteller_agent_passwords', JSON.stringify(passMap));
+        } catch {}
+      }
+
       if (editingClient) {
         await updateClientApi(editingClient.id, formData, token);
       } else {
@@ -206,8 +234,14 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   };
 
   const handleWhatsAppShare = (client: ClientPartner) => {
+    const portalUrl = `${window.location.origin}/partner`;
     const refUrl = `${window.location.origin}/merchant?ref=${client.clientCode}`;
-    const text = `Hello! Register your shop on Ente Bazaar using our partner link:\n\nLink: ${refUrl}\nReferral Code: ${client.clientCode}\nOnboarding Partner: ${client.name} (${client.phone})`;
+    const text = `PeediaCart Agent Login Credentials:\n\n` +
+      `Agent Portal: ${portalUrl}\n` +
+      `Username / Code: ${client.clientCode}\n` +
+      `Password: ${client.password || 'Agent@123'}\n\n` +
+      `Shop Onboarding Link: ${refUrl}\n` +
+      `Agent: ${client.name} (${client.phone})`;
     const waUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
     window.open(waUrl, '_blank');
   };
@@ -248,10 +282,10 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
       
       {/* 1. TOP STATS CARDS */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        {/* Metric 1: Total Field Partners */}
+        {/* Metric 1: Total Field Agents */}
         <div className="bg-white border border-slate-200/90 rounded-2xl p-4 sm:p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-500">Field Partners</span>
+            <span className="text-xs font-semibold text-slate-500">Field Agents</span>
             <div className="w-8 h-8 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center">
               <Briefcase className="w-4 h-4" />
             </div>
@@ -261,7 +295,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
           </div>
           <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            <span>{totalActive} active partners</span>
+            <span>{totalActive} active agents</span>
           </div>
         </div>
 
@@ -293,7 +327,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
             ₹{totalEarnings.toLocaleString('en-IN')}
           </div>
           <div className="flex items-center gap-1.5 mt-1.5 text-xs text-slate-500">
-            <span>Cumulative partner earnings</span>
+            <span>Cumulative agent earnings</span>
           </div>
         </div>
 
@@ -336,7 +370,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
             onChange={(e) => setStatusFilter(e.target.value as any)}
             className="px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none cursor-pointer"
           >
-            <option value="all">All Partners ({clients.length})</option>
+            <option value="all">All Agents ({clients.length})</option>
             <option value="active">Active Only</option>
             <option value="pending_payout">Pending Payouts</option>
             <option value="target_reached">Milestone Reached (50+)</option>
@@ -360,7 +394,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
             className="py-2 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
           >
             <Plus className="w-4 h-4" />
-            <span>Add Field Partner</span>
+            <span>Add Field Agent</span>
           </button>
         </div>
       </div>
@@ -370,10 +404,10 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
         <div className="px-5 py-4 border-b border-slate-200/90 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-bold text-slate-900">
-              Field Partners & Onboarding Agents ({filteredClients.length})
+              Field Agents & Onboarding Specialists ({filteredClients.length})
             </h3>
             <p className="text-xs text-slate-500 mt-0.5">
-              Manage client codes, store registrations, commissions, and UPI payouts
+              Manage agent codes, store registrations, commissions, and UPI payouts
             </p>
           </div>
         </div>
@@ -381,16 +415,16 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
         {loading ? (
           <div className="py-16 text-center text-slate-500 space-y-2">
             <div className="w-6 h-6 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mx-auto" />
-            <p className="text-xs">Loading partners...</p>
+            <p className="text-xs">Loading agents...</p>
           </div>
         ) : filteredClients.length === 0 ? (
           <div className="py-16 text-center space-y-3">
             <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-600 flex items-center justify-center mx-auto text-xl">
               <Briefcase className="w-6 h-6" />
             </div>
-            <p className="text-sm font-semibold text-slate-900">No field partners found</p>
+            <p className="text-sm font-semibold text-slate-900">No field agents found</p>
             <p className="text-xs text-slate-500 max-w-sm mx-auto">
-              Add your first partner to start tracking store onboardings and commissions.
+              Add your first agent to start tracking store onboardings and commissions.
             </p>
             <button
               type="button"
@@ -398,7 +432,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               className="py-2 px-4 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs inline-flex items-center gap-1.5 cursor-pointer"
             >
               <Plus className="w-4 h-4" />
-              <span>Add Field Partner</span>
+              <span>Add Field Agent</span>
             </button>
           </div>
         ) : (
@@ -408,7 +442,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               <table className="w-full text-left text-xs text-slate-700">
                 <thead className="bg-slate-50 border-b border-slate-200/90 text-slate-500 uppercase text-[10px] font-bold tracking-wider">
                   <tr>
-                    <th className="px-4 py-3">Partner / Agent</th>
+                    <th className="px-4 py-3">Agent</th>
                     <th className="px-4 py-3">Referral Code</th>
                     <th className="px-4 py-3">Payout UPI ID</th>
                     <th className="px-4 py-3 text-center">Commission</th>
@@ -450,22 +484,41 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                           </div>
                         </td>
 
-                        {/* Referral Code */}
+                        {/* Referral Code & Password */}
                         <td className="px-4 py-3">
-                          <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200 font-mono font-semibold text-xs text-slate-800">
-                            <span>{client.clientCode}</span>
-                            <button
-                              type="button"
-                              onClick={() => handleCopy(client.clientCode, `code-${client.id}`)}
-                              title="Copy Code"
-                              className="text-slate-400 hover:text-slate-800 cursor-pointer"
-                            >
-                              {copiedKey === `code-${client.id}` ? (
-                                <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-                              ) : (
-                                <Copy className="w-3.5 h-3.5" />
-                              )}
-                            </button>
+                          <div className="flex flex-col gap-1">
+                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 font-mono font-bold text-xs text-slate-800">
+                              <span className="text-[10px] text-slate-400 font-sans font-normal">User:</span>
+                              <span>{client.clientCode}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(client.clientCode, `code-${client.id}`)}
+                                title="Copy Username"
+                                className="text-slate-400 hover:text-slate-800 cursor-pointer ml-auto"
+                              >
+                                {copiedKey === `code-${client.id}` ? (
+                                  <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                ) : (
+                                  <Copy className="w-3.5 h-3.5" />
+                                )}
+                              </button>
+                            </div>
+                            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200/80 font-mono text-[11px] text-slate-600">
+                              <span className="text-[10px] text-slate-400 font-sans">Pass:</span>
+                              <span>{client.password || 'Agent@123'}</span>
+                              <button
+                                type="button"
+                                onClick={() => handleCopy(client.password || 'Agent@123', `pass-${client.id}`)}
+                                title="Copy Password"
+                                className="text-slate-400 hover:text-slate-800 cursor-pointer ml-auto"
+                              >
+                                {copiedKey === `pass-${client.id}` ? (
+                                  <CheckCheck className="w-3 h-3 text-emerald-600" />
+                                ) : (
+                                  <Copy className="w-3 h-3" />
+                                )}
+                              </button>
+                            </div>
                           </div>
                         </td>
 
@@ -584,7 +637,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                             <button
                               type="button"
                               onClick={() => handleOpenEdit(client)}
-                              title="Edit Partner"
+                              title="Edit Agent"
                               className="p-1.5 hover:bg-slate-100 text-slate-600 rounded-lg transition-colors cursor-pointer"
                             >
                               <Pencil className="w-3.5 h-3.5" />
@@ -594,7 +647,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                             <button
                               type="button"
                               onClick={() => handleDeleteClient(client)}
-                              title="Delete Partner"
+                              title="Delete Agent"
                               className="p-1.5 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-lg transition-colors cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -639,19 +692,37 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                         </div>
                       </div>
 
-                      <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200 font-mono font-semibold text-xs text-slate-800 shrink-0">
-                        <span>{client.clientCode}</span>
-                        <button
-                          type="button"
-                          onClick={() => handleCopy(client.clientCode, `code-mob-${client.id}`)}
-                          className="text-slate-400 hover:text-slate-800 cursor-pointer"
-                        >
-                          {copiedKey === `code-mob-${client.id}` ? (
-                            <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                        </button>
+                      <div className="flex flex-col gap-1 items-end shrink-0">
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-100 border border-slate-200 font-mono font-bold text-xs text-slate-800">
+                          <span className="text-[10px] text-slate-400 font-sans font-normal">User:</span>
+                          <span>{client.clientCode}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(client.clientCode, `code-mob-${client.id}`)}
+                            className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                          >
+                            {copiedKey === `code-mob-${client.id}` ? (
+                              <CheckCheck className="w-3.5 h-3.5 text-emerald-600" />
+                            ) : (
+                              <Copy className="w-3.5 h-3.5" />
+                            )}
+                          </button>
+                        </div>
+                        <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg bg-slate-50 border border-slate-200/80 font-mono text-[11px] text-slate-600">
+                          <span className="text-[10px] text-slate-400 font-sans">Pass:</span>
+                          <span>{client.password || 'Agent@123'}</span>
+                          <button
+                            type="button"
+                            onClick={() => handleCopy(client.password || 'Agent@123', `pass-mob-${client.id}`)}
+                            className="text-slate-400 hover:text-slate-800 cursor-pointer"
+                          >
+                            {copiedKey === `pass-mob-${client.id}` ? (
+                              <CheckCheck className="w-3 h-3 text-emerald-600" />
+                            ) : (
+                              <Copy className="w-3 h-3" />
+                            )}
+                          </button>
+                        </div>
                       </div>
                     </div>
 
@@ -799,10 +870,10 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               </div>
               <div>
                 <h3 className="text-base font-bold text-slate-900">
-                  {editingClient ? 'Edit Field Partner' : 'Add New Field Partner'}
+                  {editingClient ? 'Edit Field Agent' : 'Add New Field Agent'}
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Configure partner account details, referral code, and commission parameters
+                  Configure agent account details, referral code, and commission parameters
                 </p>
               </div>
             </div>
@@ -811,7 +882,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Partner Name *
+                    Agent Name *
                   </label>
                   <input
                     type="text"
@@ -838,6 +909,57 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                 </div>
               </div>
 
+              {/* Row 2: Username / Agent Code & Password */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Username / Agent Code *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="CL-101"
+                    value={formData.clientCode}
+                    onChange={(e) => setFormData({ ...formData, clientCode: e.target.value.toUpperCase().trim() })}
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono uppercase tracking-wider"
+                  />
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs font-semibold text-slate-700">
+                      Password *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, password: `Agent@${Math.floor(100 + Math.random() * 900)}` })}
+                      className="text-[10px] text-emerald-700 font-bold hover:underline cursor-pointer"
+                    >
+                      Generate
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      placeholder="Agent@123"
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      className="w-full pl-3.5 pr-10 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 cursor-pointer"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Row 3: Payout UPI ID & Territory */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -855,19 +977,19 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
 
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
-                    Referral Code (Client Code) *
+                    Territory / Area
                   </label>
                   <input
                     type="text"
-                    required
-                    placeholder="CL-101"
-                    value={formData.clientCode}
-                    onChange={(e) => setFormData({ ...formData, clientCode: e.target.value.toUpperCase().trim() })}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs font-semibold text-slate-900 outline-none font-mono uppercase tracking-wider"
+                    placeholder="e.g. Tirur Town, Kottakkal"
+                    value={formData.area}
+                    onChange={(e) => setFormData({ ...formData, area: e.target.value })}
+                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none font-medium"
                   />
                 </div>
               </div>
 
+              {/* Row 4: Commission Rate & Milestone Goal */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-semibold text-slate-700 mb-1">
@@ -920,19 +1042,6 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                     Standard onboarding goal before full payout release
                   </span>
                 </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Territory / Area
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Tirur Town, Kottakkal, Malappuram"
-                  value={formData.area}
-                  onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 focus:border-slate-400 focus:bg-white rounded-xl text-xs text-slate-900 outline-none font-medium"
-                />
               </div>
 
               <div>
@@ -991,7 +1100,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
                   className="py-2.5 px-5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
                 >
                   <Check className="w-4 h-4 stroke-[2.5]" />
-                  <span>{editingClient ? 'Save Changes' : 'Create Partner'}</span>
+                  <span>{editingClient ? 'Save Changes' : 'Create Agent'}</span>
                 </button>
               </div>
             </form>
@@ -1059,14 +1168,14 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900 space-y-0.5 mb-3">
                 <span className="font-semibold block text-amber-800">Note: Milestone Target Incomplete</span>
                 <p className="text-[11px] text-amber-700">
-                  This partner has onboarded {payoutClient.totalShopsCount || 0}/50 stores. You may still disburse early payouts as an admin.
+                  This agent has onboarded {payoutClient.totalShopsCount || 0}/50 stores. You may still disburse early payouts as an admin.
                 </p>
               </div>
             ) : (
               <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-900 space-y-0.5 mb-3">
                 <span className="font-semibold block text-emerald-800">✓ Target Milestone Completed</span>
                 <p className="text-[11px] text-emerald-700">
-                  Partner has onboarded {payoutClient.totalShopsCount} stores. Ready for full commission release.
+                  Agent has onboarded {payoutClient.totalShopsCount} stores. Ready for full commission release.
                 </p>
               </div>
             )}

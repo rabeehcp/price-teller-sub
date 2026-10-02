@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import { Category, Product, Shop } from '../types';
 import { updateProductApi, uploadProductImageApi } from '../services/api';
 import { ProductImage } from './ProductImage';
@@ -67,8 +67,6 @@ const STANDARD_UNITS = [
   '1 roll',
 ];
 
-const KNOWN_SHOPS = ['Al-Iqwan', 'Malabar supermarker', 'HP STORE'];
-
 export const EditProductModal: React.FC<EditProductModalProps> = ({
   product,
   categories,
@@ -86,14 +84,17 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
   const [isOrganic, setIsOrganic] = useState(!!product.isOrganic);
   const [isSeasonal, setIsSeasonal] = useState(!!product.isSeasonal);
 
-  // Store Pricing & Stock States
-  const allShopNames = Array.from(
-    new Set([
-      ...KNOWN_SHOPS,
-      ...shops.map((s) => s.name),
-      ...Object.keys(product.prices || {}).filter((k) => k !== 'Master Catalog'),
-    ])
-  );
+  // Store Pricing & Stock States: Only display active stores from current shops list
+  const allShopNames = useMemo(() => {
+    if (shops && shops.length > 0) {
+      return Array.from(new Set(shops.map((s) => s.name).filter(Boolean)));
+    }
+    return Array.from(
+      new Set(
+        Object.keys(product.prices || {}).filter((k) => k && k !== 'Master Catalog')
+      )
+    );
+  }, [shops, product.prices]);
 
   const initialCommonPrice = (() => {
     const vals = Object.values(product.prices || {}).filter((v) => typeof v === 'number' && v > 0);
@@ -176,9 +177,10 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
     setIsSubmitting(true);
     setErrorMsg('');
     try {
-      // Build clean final prices map
+      // Build clean final prices map (only for active stores)
       const finalPrices: Record<string, number> = {};
-      for (const [s, pStr] of Object.entries(storePrices)) {
+      for (const s of allShopNames) {
+        const pStr = storePrices[s];
         const pNum = parseFloat(pStr);
         if (!isNaN(pNum) && pNum > 0) {
           finalPrices[s] = pNum;
@@ -189,6 +191,11 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
         for (const s of allShopNames) {
           finalPrices[s] = uNum;
         }
+      }
+
+      const cleanStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
+      for (const s of allShopNames) {
+        cleanStock[s] = storeStock[s] || 'in_stock';
       }
 
       const updates: Partial<Product> = {
@@ -202,7 +209,7 @@ export const EditProductModal: React.FC<EditProductModalProps> = ({
         isOrganic,
         isSeasonal,
         prices: finalPrices,
-        stockStatus: storeStock,
+        stockStatus: cleanStock,
       };
 
       const updated = await updateProductApi(product.id, updates);

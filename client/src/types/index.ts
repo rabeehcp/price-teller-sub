@@ -532,6 +532,7 @@ export interface SubscriptionStats {
 export interface ClientPartner {
   id: string;
   clientCode: string;
+  password?: string;
   name: string;
   phone: string;
   upiId: string;

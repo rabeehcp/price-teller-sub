@@ -1650,6 +1650,10 @@ export const App: React.FC = () => {
           onOpenDrawer={() => setIsMobileDrawerOpen(true)}
           onOpenProfile={() => setShopperTab('profile')}
           onOpenChat={() => handleOpenChat()}
+          onOpenPartnerPortal={() => {
+            window.history.pushState({}, '', '/partner');
+            setAppView('partner');
+          }}
           authUser={authUser}
           unreadNotificationsCount={1}
         />
@@ -1677,6 +1681,10 @@ export const App: React.FC = () => {
                 else setShopperTab('profile');
               }}
               onOpenFlashDeals={() => setShopperTab('deals')}
+              onOpenPartnerPortal={() => {
+                window.history.pushState({}, '', '/partner');
+                setAppView('partner');
+              }}
               onSelectRole={(r) => {
                 if (r === 'shopper') {
                   setAppView('consumer');
@@ -1826,6 +1834,10 @@ export const App: React.FC = () => {
                 consumerData={consumerData}
                 onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onOpenPartnerPortal={() => {
+                  window.history.pushState({}, '', '/partner');
+                  setAppView('partner');
+                }}
                 onLogout={handleLogout}
                 onBack={() => setShopperTab('home')}
                 onSelectSubTab={(tabId) => {
@@ -2506,6 +2518,11 @@ export const App: React.FC = () => {
             handleOpenAuthModal('merchant-login');
           }
         }}
+        onOpenPartnerPortal={() => {
+          setIsMobileDrawerOpen(false);
+          window.history.pushState({}, '', '/partner');
+          setAppView('partner');
+        }}
         onOpenAdminPortal={() => {
           if (authUser?.role === 'admin') {
             window.history.pushState({}, '', '/admin');
@@ -2560,12 +2577,12 @@ export const App: React.FC = () => {
           <button
             type="button"
             onClick={() => handleOpenChat()}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#063B2A] hover:bg-[#0B8F68] text-white rounded-full shadow-[0_4px_16px_rgba(6,59,42,0.3)] border border-[#10A978]/40 active:scale-95 transition-all cursor-pointer font-malayalam ring-2 ring-black/5"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-[0_4px_16px_rgba(4,120,87,0.3)] border border-emerald-500/40 active:scale-95 transition-all cursor-pointer font-malayalam ring-2 ring-black/5"
             title="കടകളുമായി ചാറ്റ് ചെയ്യുക (Chat with Store)"
             aria-label="Chat with Store"
           >
-            <div className="relative w-5 h-5 rounded-full bg-[#10A978] flex items-center justify-center text-[#063B2A] shrink-0 shadow-xs">
-              <MessageCircle className="w-3 h-3 text-[#063B2A]" />
+            <div className="relative w-5 h-5 rounded-full bg-emerald-400 flex items-center justify-center text-emerald-950 shrink-0 shadow-xs">
+              <MessageCircle className="w-3 h-3 text-emerald-950" />
             </div>
             <span className="text-xs font-black text-white tracking-tight">ചാറ്റ്</span>
           </button>

@@ -968,7 +968,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                   : undefined,
               },
               { id: 'subscriptions', label: 'Subscriptions', icon: FileText },
-              { id: 'clients', label: 'Field Clients', icon: Briefcase, badge: 'Partners' },
+              { id: 'clients', label: 'Field Agents', icon: Briefcase, badge: 'Agents' },
               { id: 'locations', label: 'Locations', icon: Settings, badge: String(locations.length) },
             ].map((item) => {
               const Icon = item.icon;
@@ -1089,7 +1089,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                  effectiveTab === 'stores' ? 'Merchants' :
                  effectiveTab === 'catalog' ? 'Products' :
                  effectiveTab === 'subscriptions' ? 'Subscriptions' :
-                 effectiveTab === 'clients' ? 'Field Partners' :
+                 effectiveTab === 'clients' ? 'Field Agents' :
                  effectiveTab === 'locations' ? 'Locations' : 'Menu'}
               </span>
             </button>

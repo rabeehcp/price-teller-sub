@@ -107,21 +107,21 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
   return (
     <aside className="w-[360px] xl:w-[395px] 2xl:w-[430px] shrink-0 space-y-3.5 xl:space-y-4 font-sans select-none sticky top-16 xl:top-20 max-h-[calc(100vh-80px)] overflow-y-auto no-scrollbar pb-8 animate-in fade-in slide-in-from-right-2 duration-150">
       {/* 0. TOP TAB SWITCHER (കാർട്ട് vs കടകളുടെ താരതമ്യം) & CLOSE BUTTON */}
-      <div className="bg-white border border-[#E3ECE7] rounded-2xl px-3 py-1 flex items-center justify-between font-malayalam shadow-2xs">
-        <div className="flex items-center gap-3">
+      <div className="bg-slate-100/70 border border-slate-200/80 rounded-2xl p-1 flex items-center justify-between font-malayalam shadow-2xs">
+        <div className="flex items-center gap-1 flex-1">
           <button
             type="button"
             onClick={() => setActiveRightTab('cart')}
-            className={`py-2.5 px-2.5 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 rounded-xl ${
+            className={`flex-1 py-2 px-2.5 text-xs font-bold transition-all relative cursor-pointer flex items-center justify-center gap-1.5 rounded-xl ${
               activeRightTab === 'cart'
-                ? 'text-[#0D6344] bg-[#E8F5EE] font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                ? 'text-slate-900 bg-white shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
-            <ShoppingBag className="w-3.5 h-3.5" />
+            <ShoppingBag className="w-3.5 h-3.5 text-slate-700" />
             <span>കാർട്ട് ഇനങ്ങൾ</span>
             {totalBasketCount > 0 && (
-              <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-[#0D6344] text-white">
+              <span className="text-[10px] px-1.5 py-0.2 rounded-full font-bold bg-emerald-600 text-white">
                 {totalBasketCount}
               </span>
             )}
@@ -130,10 +130,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           <button
             type="button"
             onClick={() => setActiveRightTab('compare')}
-            className={`py-2.5 px-2.5 text-xs font-bold transition-all relative cursor-pointer flex items-center gap-1.5 rounded-xl ${
+            className={`flex-1 py-2 px-2.5 text-xs font-bold transition-all relative cursor-pointer flex items-center justify-center gap-1.5 rounded-xl ${
               activeRightTab === 'compare'
-                ? 'text-[#0D6344] bg-[#E8F5EE] font-black'
-                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                ? 'text-slate-900 bg-white shadow-xs font-black'
+                : 'text-slate-600 hover:text-slate-900 hover:bg-white/50'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-amber-500" />
@@ -148,7 +148,7 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer shrink-0"
+            className="p-1.5 text-slate-400 hover:text-slate-800 hover:bg-white rounded-lg transition-colors cursor-pointer shrink-0 ml-1"
             title="പാനൽ അടയ്ക്കുക"
           >
             <X className="w-4 h-4" />
@@ -394,84 +394,76 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
         </div>
       )}
 
-      {/* VIEW 2: FULL PRICE COMPARISON ENGINE (Spacious, Clean & 100% Malayalam) */}
+      {/* VIEW 2: FULL PRICE COMPARISON ENGINE */}
       {activeRightTab === 'compare' && (
-        <div className="bg-white border border-[#E3ECE7] rounded-3xl p-4 sm:p-5 shadow-sm space-y-4 animate-in fade-in duration-150 font-malayalam">
+        <div className="bg-white border border-slate-200/80 rounded-3xl p-4 sm:p-5 shadow-xs space-y-3.5 animate-in fade-in duration-150 font-malayalam">
           {/* Header Row */}
-          <div className="flex items-center justify-between gap-2 pb-1">
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#E8F5EE] border border-[#C3EEDC] rounded-full text-[11px] font-bold text-[#0D6344]">
-              <Sparkles className="w-3 h-3 text-[#0D6344]" />
-              <span>വില താരതമ്യ എൻജിൻ</span>
+          <div className="flex items-center justify-between pb-1 border-b border-slate-100">
+            <div>
+              <h3 className="text-sm font-black text-slate-900 m-0">
+                കടകളുടെ താരതമ്യം
+              </h3>
+              <p className="text-[11px] text-slate-500 m-0">
+                തത്സമയ കട നിരക്കുകൾ
+              </p>
             </div>
             {hasItems && onOpenWhatsAppExport && (
               <button
                 type="button"
                 onClick={onOpenWhatsAppExport}
-                className="flex items-center gap-1.5 text-xs font-bold text-[#063B2A] bg-slate-50 hover:bg-slate-100 border border-slate-200 px-3 py-1 rounded-xl transition-colors cursor-pointer active:scale-95"
+                className="flex items-center gap-1.5 text-xs font-semibold text-slate-700 bg-slate-50 hover:bg-slate-100 border border-slate-200/80 px-2.5 py-1 rounded-xl transition-colors cursor-pointer active:scale-95 shadow-2xs"
                 title="വാട്സ്ആപ്പിൽ ഷെയർ ചെയ്യുക"
               >
-                <Share2 className="w-3.5 h-3.5" />
+                <Share2 className="w-3.5 h-3.5 text-slate-500" />
                 <span>ഷെയർ</span>
               </button>
             )}
           </div>
 
-          <div>
-            <h3 className="text-base sm:text-lg font-black text-slate-900 leading-tight m-0">
-              ഏത് കടയിലാണ് ഏറ്റവും ലാഭം?
-            </h3>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              തിരഞ്ഞെടുത്ത ഇനങ്ങളുടെ തത്സമയ കട നിരക്കുകൾ താരതമ്യം ചെയ്യുന്നു
-            </p>
-          </div>
-
           {/* Sub-Tabs: Single Store vs Split Optimizer */}
           {hasItems && sortedShops.length > 0 && (
-            <div className="space-y-3 pt-1">
+            <div className="space-y-2.5">
               {/* Segmented Mode Control */}
-              <div className="grid grid-cols-2 gap-1.5 bg-[#F2F6F4] p-1.5 rounded-2xl text-xs font-bold border border-[#E0ECE5]">
+              <div className="grid grid-cols-2 gap-1 bg-slate-100/70 p-1 rounded-xl text-xs font-bold border border-slate-200/60">
                 <button
                   type="button"
                   onClick={() => setComparisonSubTab('single')}
-                  className={`py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
+                  className={`py-1.5 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all cursor-pointer ${
                     comparisonSubTab === 'single'
                       ? 'bg-white text-slate-900 shadow-xs font-black'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <Award className="w-4 h-4 text-[#0B8F68] shrink-0" />
+                  <Award className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                   <span>ഒറ്റക്കട താരതമ്യം</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setComparisonSubTab('split')}
-                  className={`py-2 px-2.5 rounded-xl flex items-center justify-center gap-1.5 transition-all relative cursor-pointer ${
+                  className={`py-1.5 px-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-all relative cursor-pointer ${
                     comparisonSubTab === 'split'
                       ? 'bg-white text-slate-900 shadow-xs font-black'
                       : 'text-slate-600 hover:text-slate-900'
                   }`}
                 >
-                  <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 shrink-0" />
                   <span>സ്പ്ലിറ്റ് ഒപ്റ്റിമൈസർ</span>
                   {splitOpt?.isWorthSplitting && (
-                    <span className="w-2 h-2 rounded-full bg-[#10A978] absolute top-1.5 right-1.5" />
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 absolute top-1.5 right-1.5" />
                   )}
                 </button>
               </div>
 
               {/* Sort By Filter Chips */}
               {comparisonSubTab === 'single' && (
-                <div className="flex items-center gap-1.5 text-xs font-medium text-slate-600 overflow-x-auto pb-1 no-scrollbar">
-                  <span className="flex items-center gap-1 shrink-0 text-slate-400 font-bold text-[11px]">
-                    <Compass className="w-3.5 h-3.5" /> തരംതിരിക്കുക:
-                  </span>
+                <div className="flex items-center gap-1.5 text-xs font-medium overflow-x-auto pb-0.5 no-scrollbar">
                   <button
                     type="button"
                     onClick={() => setSortBy('value')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
+                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                       sortBy === 'value'
-                        ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-2xs'
-                        : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                        : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
                     }`}
                   >
                     ⚡ സ്മാർട്ട് വാല്യൂ
@@ -479,10 +471,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                   <button
                     type="button"
                     onClick={() => setSortBy('price')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
+                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                       sortBy === 'price'
-                        ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-2xs'
-                        : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                        : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
                     }`}
                   >
                     ₹ കുറഞ്ഞ നിരക്ക്
@@ -490,10 +482,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                   <button
                     type="button"
                     onClick={() => setSortBy('distance')}
-                    className={`px-3 py-1 rounded-xl text-xs font-bold transition-colors cursor-pointer shrink-0 border ${
+                    className={`px-3 py-1 rounded-full text-xs font-bold transition-all cursor-pointer shrink-0 border ${
                       sortBy === 'distance'
-                        ? 'bg-[#063B2A] text-white border-[#063B2A] shadow-2xs'
-                        : 'bg-white hover:bg-slate-100 text-slate-700 border-slate-200'
+                        ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                        : 'bg-white hover:bg-slate-50 text-slate-700 border-slate-200/80'
                     }`}
                   >
                     📍 സമീപമുള്ളവ
@@ -505,101 +497,101 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
 
           {/* Comparison Cards Content */}
           {!hasItems ? (
-            <div className="text-center text-slate-400 py-10 px-4 border border-dashed border-gray-200 rounded-3xl bg-gray-50/50 space-y-2">
-              <div className="text-3xl">⚖️</div>
-              <b className="block text-sm text-slate-800">
+            <div className="text-center text-slate-400 py-8 px-4 border border-dashed border-gray-200 rounded-2xl bg-gray-50/50 space-y-1.5">
+              <div className="text-2xl">⚖️</div>
+              <b className="block text-xs font-bold text-slate-700">
                 താരതമ്യം ചെയ്യാൻ സാധനങ്ങൾ ചേർക്കൂ
               </b>
-              <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
-                ഉൽപ്പന്നങ്ങൾ ബാസ്ക്കറ്റിൽ ചേർത്താൽ നിങ്ങളുടെ പ്രദേശത്തെ ഏറ്റവും കുറഞ്ഞ നിരക്കുള്ള കട കണ്ടെത്താം.
+              <p className="text-[11px] text-slate-500 max-w-xs mx-auto leading-relaxed">
+                ഉൽപ്പന്നങ്ങൾ ബാസ്ക്കറ്റിൽ ചേർത്താൽ ഏറ്റവും കുറഞ്ഞ നിരക്കുള്ള കട കണ്ടെത്താം.
               </p>
             </div>
           ) : isLoadingComparison ? (
-            <div className="py-6 space-y-3">
-              <div className="h-32 bg-slate-100 animate-pulse rounded-2xl" />
+            <div className="py-4 space-y-2.5">
               <div className="h-28 bg-slate-100 animate-pulse rounded-2xl" />
+              <div className="h-24 bg-slate-100 animate-pulse rounded-2xl" />
             </div>
           ) : sortedShops.length === 0 ? (
-            <div className="text-center text-slate-500 py-8 px-4 border border-dashed border-gray-200 rounded-3xl bg-[#F5F8F6] space-y-2">
-              <div className="text-3xl mb-1">🏪</div>
-              <b className="block text-sm text-slate-800">
+            <div className="text-center text-slate-500 py-6 px-4 border border-dashed border-gray-200 rounded-2xl bg-[#F5F8F6] space-y-1.5">
+              <div className="text-2xl mb-1">🏪</div>
+              <b className="block text-xs font-bold text-slate-800">
                 {currentLocation ? `${currentLocation.name}-ൽ` : 'ഈ പ്രദേശത്ത്'} കടകൾ ലഭ്യമല്ല
               </b>
-              <p className="text-xs text-slate-500 max-w-xs mx-auto leading-relaxed">
+              <p className="text-[11px] text-slate-500 max-w-xs mx-auto leading-relaxed">
                 വില താരതമ്യം ചെയ്യാൻ നിലവിൽ കടകൾ രജിസ്റ്റർ ചെയ്തിട്ടുള്ള പ്രദേശം തിരഞ്ഞെടുക്കൂ.
               </p>
             </div>
           ) : comparisonSubTab === 'single' ? (
             /* Single Store Cards (Spacious, Clean & Professional) */
-            <div className="space-y-3.5 max-h-[520px] overflow-y-auto pr-1">
+            <div className="space-y-3 max-h-[520px] overflow-y-auto pr-1">
               {sortedShops.map((shop: ShopComparisonResult) => {
                 const isBest = shop.shopName === bestShop?.shopName;
                 return (
                   <div
                     key={shop.shopId || shop.shopName}
-                    className={`rounded-2xl sm:rounded-3xl p-4 transition-all ${
+                    className={`rounded-2xl p-3.5 transition-all ${
                       isBest
-                        ? 'border-2 border-[#0B8F68] bg-[#F4FAF6] shadow-xs'
-                        : 'border border-[#E3ECE7] bg-white hover:border-slate-300 shadow-2xs'
+                        ? 'border border-emerald-300 bg-emerald-50/40 shadow-2xs'
+                        : 'border border-slate-200/80 bg-white hover:border-slate-300 shadow-2xs'
                     }`}
                   >
                     {/* Store Header & Best Deal Badge */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
                       <div className="flex items-center gap-2 min-w-0">
-                        <div className="w-8 h-8 rounded-xl bg-white border border-[#E3ECE7] flex items-center justify-center shrink-0 shadow-2xs">
-                          <Store className="w-4 h-4 text-[#0D6344]" />
+                        <div className="w-7 h-7 rounded-lg bg-slate-50 border border-slate-200/70 flex items-center justify-center shrink-0">
+                          <Store className="w-3.5 h-3.5 text-emerald-700" />
                         </div>
-                        <b className="text-sm sm:text-base font-black text-slate-900 truncate">
+                        <b className="text-sm font-bold text-slate-900 truncate">
                           {shop.shopName}
                         </b>
                       </div>
 
                       {isBest && (
-                        <span className="text-[10px] font-black tracking-wide bg-[#0B8F68] text-white px-2.5 py-1 rounded-full uppercase shadow-2xs shrink-0">
-                          ഏറ്റവും മികച്ച വില
+                        <span className="text-[10px] font-bold bg-emerald-600 text-white px-2 py-0.5 rounded-full shadow-2xs shrink-0">
+                          മികച്ച വില
                         </span>
                       )}
                     </div>
 
                     {/* Total Price Display */}
                     <div className="flex items-baseline gap-2 mb-2">
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900 font-sans tracking-tight">
+                      <span className="text-2xl font-black text-slate-900 font-sans tracking-tight">
                         ₹{shop.total}
                       </span>
-                      <span className="text-xs text-slate-400 font-medium">
+                      <span className="text-[11px] text-slate-400 font-medium">
                         ആകെ തുക
                       </span>
                     </div>
 
                     {/* Distance & Stock Meta Pills */}
-                    <div className="flex flex-wrap items-center gap-2 text-xs mb-3">
-                      <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white border border-slate-200/80 px-2.5 py-1 rounded-lg text-xs shadow-2xs">
-                        <MapPin className="w-3.5 h-3.5 text-[#0B8F68] shrink-0" />
+                    <div className="flex flex-wrap items-center gap-1.5 text-xs mb-2.5">
+                      <span className="inline-flex items-center gap-1 font-semibold text-slate-700 bg-white border border-slate-200/80 px-2 py-0.5 rounded-md text-[11px]">
+                        <MapPin className="w-3 h-3 text-emerald-600 shrink-0" />
                         <span>{formatDistanceMalayalam(shop.distanceKm)}</span>
                       </span>
 
                       {shop.isAllAvailable ? (
-                        <span className="inline-flex items-center gap-1 font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-lg text-xs">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>എല്ലാം ലഭ്യമാണ്</span>
+                        <span className="inline-flex items-center gap-1 font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md text-[11px]">
+                          <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
+                          <span>എല്ലാം ലഭ്യം</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2.5 py-1 rounded-lg text-xs">
-                          <AlertCircle className="w-3.5 h-3.5 text-rose-600 shrink-0" />
-                          <span>{shop.outOfStockCount} ഇനങ്ങൾ ലഭ്യമല്ല</span>
+                        <span className="inline-flex items-center gap-1 font-bold text-rose-700 bg-rose-50 border border-rose-200 px-2 py-0.5 rounded-md text-[11px]">
+                          <AlertCircle className="w-3 h-3 text-rose-600 shrink-0" />
+                          <span>{shop.outOfStockCount} ലഭ്യമല്ല</span>
                         </span>
                       )}
                     </div>
 
                     {/* Missing Products Alert Box */}
                     {!shop.isAllAvailable && shop.missingProducts && shop.missingProducts.length > 0 && (
-                      <div className="mb-3 p-2.5 bg-rose-50/80 border border-rose-200 rounded-xl text-xs text-rose-950">
+                      <div className="mb-2.5 p-2 bg-rose-50/80 border border-rose-200 rounded-xl text-[11px] text-rose-950">
                         <span className="font-bold block mb-1">ഇവിടെ ലഭ്യമല്ലാത്തവ:</span>
                         <div className="flex flex-wrap gap-1">
                           {shop.missingProducts.map((p) => (
                             <span
                               key={p.productId}
-                              className="inline-flex items-center gap-1 bg-white border border-rose-200 px-2 py-0.5 rounded-md font-bold text-rose-700 text-[11px]"
+                              className="inline-flex items-center gap-1 bg-white border border-rose-200 px-1.5 py-0.5 rounded font-medium text-rose-700 text-[10px]"
                             >
                               <span>{getMalayalamName(p.productName)}</span>
                             </span>
@@ -609,10 +601,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                     )}
 
                     {/* Savings or Price Difference */}
-                    <div className="text-xs font-bold mb-3">
+                    <div className="text-[11px] font-bold mb-2.5">
                       {isBest ? (
-                        <span className="text-[#0B8F68] flex items-center gap-1">
-                          <Sparkles className="w-3.5 h-3.5" />
+                        <span className="text-emerald-700 flex items-center gap-1">
+                          <Sparkles className="w-3 h-3" />
                           <span>ബാസ്ക്കറ്റിലെ ഏറ്റവും കുറഞ്ഞ നിരക്ക്</span>
                         </span>
                       ) : (
@@ -622,48 +614,48 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                       )}
                     </div>
 
-                    {/* PRIMARY ACTION BUTTON (Spacious & Clean) */}
-                    <div className="space-y-2 pt-1 border-t border-slate-100">
+                    {/* PRIMARY ACTION BUTTON */}
+                    <div className="space-y-1.5 pt-1 border-t border-slate-100">
                       <button
                         type="button"
                         onClick={() => onPreBookBasket && onPreBookBasket(shop.shopName)}
-                        className={`w-full py-2.5 px-4 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs active:scale-98 ${
+                        className={`w-full py-2 px-3 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs active:scale-98 ${
                           isBest
-                            ? 'bg-[#0B8F68] hover:bg-[#063B2A] text-white'
-                            : 'bg-[#063B2A] hover:bg-[#0B8F68] text-white'
+                            ? 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                            : 'bg-slate-800 hover:bg-slate-900 text-white'
                         }`}
                       >
-                        <CalendarCheck className="w-4 h-4" />
+                        <CalendarCheck className="w-3.5 h-3.5" />
                         <span>ഈ കടയിൽ നിന്നും ബുക്കിംഗ് ചെയ്യുക</span>
                       </button>
 
-                      {/* Secondary Actions: കട വിവരങ്ങൾ, വിളിക്കുക, ചാറ്റ് */}
-                      <div className="grid grid-cols-3 gap-1.5 pt-1">
+                      {/* Secondary Actions */}
+                      <div className="grid grid-cols-3 gap-1.5 pt-0.5">
                         <button
                           type="button"
                           onClick={() => onOpenShopDetails && onOpenShopDetails(shop.shopName)}
-                          className="py-1.5 px-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+                          className="py-1 px-1.5 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/80 rounded-lg font-medium text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer"
                         >
-                          <Store className="w-3.5 h-3.5 text-slate-500" />
+                          <Store className="w-3 h-3 text-slate-500" />
                           <span>വിവരങ്ങൾ</span>
                         </button>
 
                         {shop.phone ? (
                           <a
                             href={`tel:${shop.phone.replace(/[^0-9+]/g, '')}`}
-                            className="py-1.5 px-2 bg-white hover:bg-emerald-50 text-[#064E3B] border border-slate-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+                            className="py-1 px-1.5 bg-white hover:bg-emerald-50 text-emerald-800 border border-slate-200/80 rounded-lg font-medium text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer"
                             title={`${shop.shopName} ഫോൺ വിളിക്കുക (${shop.phone})`}
                           >
-                            <Phone className="w-3.5 h-3.5 text-[#0B8F68]" />
+                            <Phone className="w-3 h-3 text-emerald-600" />
                             <span>വിളിക്കുക</span>
                           </a>
                         ) : (
                           <button
                             type="button"
                             disabled
-                            className="py-1.5 px-2 bg-slate-50 text-slate-400 border border-slate-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 opacity-60 cursor-not-allowed"
+                            className="py-1 px-1.5 bg-slate-50 text-slate-400 border border-slate-200/80 rounded-lg font-medium text-[11px] flex items-center justify-center gap-1 opacity-60 cursor-not-allowed"
                           >
-                            <Phone className="w-3.5 h-3.5" />
+                            <Phone className="w-3 h-3" />
                             <span>വിളിക്കുക</span>
                           </button>
                         )}
@@ -671,10 +663,10 @@ export const DesktopRightSidebar: React.FC<DesktopRightSidebarProps> = ({
                         <button
                           type="button"
                           onClick={() => onOpenChat && onOpenChat(shop.shopName)}
-                          className="py-1.5 px-2 bg-white hover:bg-emerald-50 text-[#063B2A] border border-slate-200 rounded-xl font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer"
+                          className="py-1 px-1.5 bg-white hover:bg-emerald-50 text-emerald-900 border border-slate-200/80 rounded-lg font-medium text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer"
                           title={`${shop.shopName} കടയുമായി ചാറ്റ് ചെയ്യുക`}
                         >
-                          <MessageCircle className="w-3.5 h-3.5 text-[#0B8F68]" />
+                          <MessageCircle className="w-3 h-3 text-emerald-600" />
                           <span>ചാറ്റ്</span>
                         </button>
                       </div>

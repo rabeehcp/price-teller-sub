@@ -34,6 +34,10 @@ import {
   Calendar,
   CreditCard,
   IndianRupee,
+  Eye,
+  EyeOff,
+  User,
+  LogOut,
 } from 'lucide-react';
 
 interface PartnerPortalProps {
@@ -52,6 +56,16 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
     }
   });
 
+  const [passwordInput, setPasswordInput] = useState<string>(() => {
+    try {
+      return localStorage.getItem('priceteller_partner_login_pass') || '';
+    } catch {
+      return '';
+    }
+  });
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   const [partnerData, setPartnerData] = useState<{
     partner: ClientPartner;
     onboardedShops: ClientOnboardedShop[];
@@ -67,13 +81,14 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
   const [showQrModal, setShowQrModal] = useState<boolean>(false);
 
   useEffect(() => {
-    if (partnerInput && partnerInput.trim().length >= 3) {
-      loadPartnerDashboard(partnerInput.trim());
+    if (partnerInput && partnerInput.trim().length >= 3 && passwordInput.trim()) {
+      loadPartnerDashboard(partnerInput.trim(), passwordInput.trim());
     }
   }, []);
 
-  const loadPartnerDashboard = async (code: string, isRefresh: boolean = false) => {
+  const loadPartnerDashboard = async (code: string, passAttempt?: string, isRefresh: boolean = false) => {
     if (!code.trim()) return;
+    const currentPass = passAttempt !== undefined ? passAttempt : passwordInput;
     if (isRefresh) {
       setRefreshing(true);
     } else {
@@ -82,11 +97,35 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
     setErrorMsg(null);
     try {
       const data = await fetchClientPortalDataApi(code.trim());
-      if (data) {
+      if (data && data.partner) {
+        // Resolve expected password strictly (custom set password, server password, or default Agent@123)
+        let expectedPass = 'Agent@123';
+        try {
+          const localPassMap = JSON.parse(localStorage.getItem('priceteller_agent_passwords') || '{}');
+          if (localPassMap[data.partner.clientCode.toUpperCase().trim()]) {
+            expectedPass = localPassMap[data.partner.clientCode.toUpperCase().trim()];
+          } else if (data.partner.password?.trim()) {
+            expectedPass = data.partner.password.trim();
+          }
+        } catch {
+          if (data.partner.password?.trim()) {
+            expectedPass = data.partner.password.trim();
+          }
+        }
+
+        // Strict validation: password must match
+        if (!currentPass || currentPass.trim() !== expectedPass.trim()) {
+          setErrorMsg('തെറ്റായ പാസ്‌വേഡ്! ശരിയായ പാസ്‌വേഡ് നൽകുക. (Incorrect Password)');
+          setPartnerData(null);
+          localStorage.removeItem('priceteller_partner_login_pass');
+          return;
+        }
+
         setPartnerData(data);
         localStorage.setItem('priceteller_partner_login_code', data.partner.clientCode);
+        localStorage.setItem('priceteller_partner_login_pass', currentPass.trim());
       } else {
-        setErrorMsg('ഈ കോഡിൽ Partner അക്കൗണ്ട് കണ്ടെത്താനായില്ല. ശരിയായ കോഡ് നൽകുക.');
+        setErrorMsg('ഈ Agent Code / Username കണ്ടെത്താനായില്ല. ശരിയായ കോഡ് നൽകുക.');
         setPartnerData(null);
       }
     } catch (err: any) {
@@ -108,14 +147,21 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (partnerInput.trim()) {
-      loadPartnerDashboard(partnerInput.trim());
+    if (!partnerInput.trim()) {
+      setErrorMsg('ദയവായി നിങ്ങളുടെ Username / Agent Code നൽകുക');
+      return;
     }
+    if (!passwordInput.trim()) {
+      setErrorMsg('ദയവായി നിങ്ങളുടെ Password നൽകുക');
+      return;
+    }
+    loadPartnerDashboard(partnerInput.trim(), passwordInput.trim());
   };
 
-  const handleQuickDemoClick = (code: string) => {
+  const handleQuickDemoClick = (code: string, pass: string = 'Agent@123') => {
     setPartnerInput(code);
-    loadPartnerDashboard(code);
+    setPasswordInput(pass);
+    loadPartnerDashboard(code, pass);
   };
 
   const partner = partnerData?.partner;
@@ -125,7 +171,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
 
   const handleShareWhatsApp = () => {
     if (!partner) return;
-    const msg = `നമസ്കാരം, നിങ്ങളുടെ കടയിലെ ഉൽപന്നങ്ങളും ലൈവ് വിലകളും ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കാൻ PeediaCart Partner ആയി രജിസ്റ്റർ ചെയ്യൂ!\n\nഓൺബോർഡിംഗ് ലിങ്ക്: ${inviteUrl}\nPartner Code: ${partner.clientCode}`;
+    const msg = `നമസ്കാരം, നിങ്ങളുടെ കടയിലെ ഉൽപന്നങ്ങളും ലൈവ് വിലകളും ഉപഭോക്താക്കളിലേക്ക് എത്തിക്കാൻ PeediaCart Agent വഴി രജിസ്റ്റർ ചെയ്യൂ!\n\nഓൺബോർഡിംഗ് ലിങ്ക്: ${inviteUrl}\nAgent Code: ${partner.clientCode}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
   };
 
@@ -175,10 +221,10 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
               <div className="flex items-center gap-2 min-w-0">
                 <h1 className="text-sm sm:text-base font-black tracking-tight flex items-center gap-1.5 truncate text-white">
                   <span className="font-['Plus_Jakarta_Sans',sans-serif] font-black text-sm sm:text-base leading-tight truncate tracking-tight text-white">
-                    Partner Hub
+                    Agent Hub
                   </span>
                   <span className="text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 tracking-wider hidden md:inline-block">
-                    Field Partner Portal
+                    Field Agent Portal
                   </span>
                 </h1>
               </div>
@@ -190,7 +236,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
             <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
               <button
                 type="button"
-                onClick={() => loadPartnerDashboard(partner.clientCode, true)}
+                onClick={() => loadPartnerDashboard(partner.clientCode, passwordInput, true)}
                 disabled={refreshing}
                 className="p-2 rounded-xl text-emerald-200/90 hover:text-white hover:bg-white/10 active:bg-white/20 transition-all cursor-pointer"
                 title="Refresh Dashboard"
@@ -202,11 +248,15 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                 type="button"
                 onClick={() => {
                   setPartnerData(null);
+                  setPasswordInput('');
                   localStorage.removeItem('priceteller_partner_login_code');
+                  localStorage.removeItem('priceteller_partner_login_pass');
                 }}
-                className="text-xs text-emerald-200 hover:text-white px-2.5 py-1.5 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all cursor-pointer font-bold border border-emerald-700/50 font-['Baloo_Chettan_2',sans-serif]"
+                className="text-xs text-emerald-200 hover:text-white px-2.5 py-1.5 rounded-xl hover:bg-white/10 active:bg-white/20 transition-all cursor-pointer font-bold border border-emerald-700/50 flex items-center gap-1.5 font-['Baloo_Chettan_2',sans-serif]"
+                title="Logout from Agent Hub"
               >
-                Switch Account
+                <LogOut className="w-3.5 h-3.5" />
+                <span>Logout</span>
               </button>
             </div>
           )}
@@ -225,7 +275,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-2xl bg-white border border-emerald-200/80 shadow-2xs">
                 <img src="/logo.png" alt="PeediaCart" className="h-5 w-auto object-contain" />
                 <span className="h-3.5 w-px bg-emerald-200" />
-                <span className="font-black text-xs text-[#0D4A36] font-['Plus_Jakarta_Sans',sans-serif]">Partner Hub</span>
+                <span className="font-black text-xs text-[#0D4A36] font-['Plus_Jakarta_Sans',sans-serif]">Agent Hub</span>
                 <span className="h-3.5 w-px bg-emerald-200" />
                 <span className="text-[11px] text-emerald-700 font-bold font-['Baloo_Chettan_2',sans-serif]">Field Program</span>
               </div>
@@ -250,24 +300,55 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-[#0A3022] leading-none font-['Plus_Jakarta_Sans',sans-serif]">
-                    Partner Login
+                    Agent Login
                   </h3>
                   <p className="text-xs text-gray-500 font-medium mt-1">
-                    നിങ്ങളുടെ Partner Code നൽകുക (ഉദാ: <span className="font-mono font-bold text-emerald-700">CL-101</span>)
+                    ലോഗിൻ ചെയ്യാൻ Username (Agent Code)-ഉം Password-ഉം നൽകുക
                   </p>
                 </div>
               </div>
 
               <form onSubmit={handleSearchSubmit} className="space-y-3.5">
-                <div className="relative">
-                  <Search className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    placeholder="Partner Code നൽകുക (ഉദാ: CL-101)"
-                    value={partnerInput}
-                    onChange={(e) => setPartnerInput(e.target.value.toUpperCase())}
-                    className="w-full pl-11 pr-4 py-3 bg-[#F6FAF8] border border-emerald-900/15 focus:border-[#0D4A36] focus:bg-white rounded-2xl text-sm font-mono uppercase font-black text-[#0A3022] placeholder-gray-400 outline-none transition-all shadow-inner tracking-wider"
-                  />
+                {/* Username / Agent Code */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Username / Agent Code
+                  </label>
+                  <div className="relative">
+                    <User className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="ഉദാ: CL-101"
+                      value={partnerInput}
+                      onChange={(e) => setPartnerInput(e.target.value.toUpperCase().trim())}
+                      className="w-full pl-11 pr-4 py-3 bg-[#F6FAF8] border border-emerald-900/15 focus:border-[#0D4A36] focus:bg-white rounded-2xl text-sm font-mono uppercase font-black text-[#0A3022] placeholder-gray-400 outline-none transition-all shadow-inner tracking-wider"
+                    />
+                  </div>
+                </div>
+
+                {/* Password Field */}
+                <div>
+                  <label className="block text-xs font-semibold text-slate-700 mb-1">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-gray-400 absolute left-4 top-1/2 -translate-y-1/2" />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="നിങ്ങളുടെ Password നൽകുക"
+                      value={passwordInput}
+                      onChange={(e) => setPasswordInput(e.target.value)}
+                      className="w-full pl-11 pr-11 py-3 bg-[#F6FAF8] border border-emerald-900/15 focus:border-[#0D4A36] focus:bg-white rounded-2xl text-sm font-medium text-[#0A3022] placeholder-gray-400 outline-none transition-all shadow-inner"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 cursor-pointer"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                 </div>
 
                 {errorMsg && (
@@ -279,14 +360,14 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
 
                 <button
                   type="submit"
-                  disabled={loading || !partnerInput.trim()}
+                  disabled={loading || !partnerInput.trim() || !passwordInput.trim()}
                   className="w-full py-3 sm:py-3.5 bg-gradient-to-r from-[#0D4A36] to-[#125841] hover:from-[#093527] hover:to-[#0D4A36] text-white font-bold rounded-2xl text-sm transition-all shadow-[0_4px_16px_rgba(13,74,54,0.25)] flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 active:scale-98 font-['Baloo_Chettan_2',sans-serif]"
                 >
                   {loading ? (
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span className="text-base leading-none">ഡാഷ്‌ബോർഡ് തുറക്കുക (Open Dashboard)</span>
+                      <span className="text-base leading-none">ഡാഷ്‌ബോർഡ് തുറക്കുക (Login)</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -301,25 +382,27 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={() => handleQuickDemoClick('CL-101')}
+                    onClick={() => handleQuickDemoClick('CL-101', 'Agent@123')}
                     className="p-2 sm:px-3 sm:py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-950 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-2xs"
                   >
                     <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                     <div className="text-left truncate">
-                      <div className="font-mono leading-none">CL-101</div>
+                      <div className="font-mono leading-none font-bold">CL-101</div>
                       <div className="text-emerald-700 text-[10px] font-medium truncate font-['Baloo_Chettan_2',sans-serif]">ഷാഫി (Areacode)</div>
+                      <div className="text-slate-400 text-[9px] font-mono">Pass: Agent@123</div>
                     </div>
                   </button>
 
                   <button
                     type="button"
-                    onClick={() => handleQuickDemoClick('CL-102')}
+                    onClick={() => handleQuickDemoClick('CL-102', 'Agent@123')}
                     className="p-2 sm:px-3 sm:py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200/80 text-emerald-950 text-xs font-bold transition-all flex items-center gap-2 cursor-pointer active:scale-95 shadow-2xs"
                   >
                     <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0"></span>
                     <div className="text-left truncate">
-                      <div className="font-mono leading-none">CL-102</div>
+                      <div className="font-mono leading-none font-bold">CL-102</div>
                       <div className="text-emerald-700 text-[10px] font-medium truncate font-['Baloo_Chettan_2',sans-serif]">അനസ് (Kondotty)</div>
+                      <div className="text-slate-400 text-[9px] font-mono">Pass: Agent@123</div>
                     </div>
                   </button>
                 </div>
@@ -389,7 +472,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                       </h2>
                       <span className="px-2 py-0.5 rounded-full font-bold text-[10px] bg-emerald-100 text-emerald-800 border border-emerald-200/80 flex items-center gap-1 shrink-0">
                         <BadgeCheck className="w-3 h-3 text-emerald-600" />
-                        <span>{partner.status === 'active' ? 'Active Partner' : 'Inactive'}</span>
+                        <span>{partner.status === 'active' ? 'Active Agent' : 'Inactive'}</span>
                       </span>
                     </div>
 
@@ -398,7 +481,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                         type="button"
                         onClick={() => handleCopy(partner.clientCode, 'partner-code')}
                         className="inline-flex items-center gap-1 font-mono font-bold text-[#0D4A36] bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200 transition-all cursor-pointer"
-                        title="Click to copy partner code"
+                        title="Click to copy agent code"
                       >
                         <span>{partner.clientCode}</span>
                         {copiedKey === 'partner-code' ? <Check className="w-3 h-3 text-emerald-600" /> : <Copy className="w-3 h-3 text-emerald-500" />}
@@ -456,7 +539,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                       <div>
                         <div className="flex items-center gap-2 flex-wrap">
                           <h3 className="text-sm sm:text-base font-black text-slate-800 leading-tight font-['Baloo_Chettan_2',sans-serif]">
-                            Partner ലക്ഷ്യം: കുറഞ്ഞത് 50 കടകൾ (50% Share)
+                            Agent ലക്ഷ്യം: കുറഞ്ഞത് 50 കടകൾ (50% Share)
                           </h3>
                           {isEligible ? (
                             <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 font-['Baloo_Chettan_2',sans-serif]">
@@ -471,7 +554,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                           )}
                         </div>
                         <p className="text-[11px] sm:text-xs text-slate-500 mt-0.5 font-['Anek_Malayalam',sans-serif]">
-                          ഓരോ കടയും ₹119 അടയ്ക്കുമ്പോൾ 50% (₹59.50) Partner-ക്ക് ലഭിക്കുന്നു.
+                          ഓരോ കടയും ₹119 അടയ്ക്കുമ്പോൾ 50% (₹59.50) Agent-ക്ക് ലഭിക്കുന്നു.
                         </p>
                       </div>
                     </div>
@@ -571,7 +654,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
                       <p className="text-[11px] text-slate-600 leading-relaxed font-['Anek_Malayalam',sans-serif]">
                         {shopCount >= 100 ? (
                           <span className="text-indigo-800 font-bold">
-                            🏆 Super Partner Achievement! 100 കടകൾ പൂർത്തിയായി.
+                            🏆 Super Agent Achievement! 100 കടകൾ പൂർത്തിയായി.
                           </span>
                         ) : (
                           <span>
@@ -1009,7 +1092,7 @@ export const PartnerPortal: React.FC<PartnerPortalProps> = ({ onBackToApp, initi
             <div className="bg-white p-3 rounded-2xl border-2 border-emerald-500/20 inline-block shadow-inner">
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(inviteUrl)}`}
-                alt="Partner Referral QR Code"
+                alt="Agent Referral QR Code"
                 className="w-44 h-44 sm:w-48 sm:h-48 mx-auto rounded-lg"
               />
             </div>

@@ -145,23 +145,25 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 
               {/* Brochures */}
               <a
-                href="/PeediaCart_Merchant_Brochure.pdf"
+                href="/PeediaCart_Merchant_Brochure.pdf?v=20261002"
+                download="PeediaCart_Merchant_Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-[#D5E5DC] text-[#064E3B] text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95"
               >
                 <Store className="w-3.5 h-3.5 text-emerald-700" />
-                <span>വ്യാപാരി ബ്രോഷർ</span>
+                <span>Merchant Brochure</span>
               </a>
 
               <a
-                href="/PeediaCart_Consumer_Brochure.pdf"
+                href="/PeediaCart_Consumer_Brochure.pdf?v=20261002"
+                download="PeediaCart_Consumer_Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-[#D5E5DC] text-[#064E3B] text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95"
               >
                 <Download className="w-3.5 h-3.5 text-[#064E3B]" />
-                <span>ഷോപ്പർ ബ്രോഷർ</span>
+                <span>Shopper Brochure</span>
               </a>
 
               {/* Partner Portal */}
@@ -171,7 +173,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   onClick={onOpenPartnerPortal}
                   className="px-3 py-1.5 rounded-full text-xs font-bold text-gray-600 hover:text-[#064E3B] hover:bg-[#F3EFE6] transition-all cursor-pointer"
                 >
-                  🤝 പാർട്ണർ
+                  🤝 Agent
                 </button>
               )}
 
@@ -183,7 +185,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                     onClick={authUser.role === 'merchant' ? onOpenMerchantPortal : onEnterAsConsumer}
                     className="flex items-center gap-1.5 px-4 py-1.5 bg-[#064E3B] hover:bg-[#043327] text-white text-xs font-bold rounded-full transition-all shadow-xs cursor-pointer active:scale-95"
                   >
-                    <span>{authUser.role === 'merchant' ? (authUser.shopName || 'ഡാഷ്‌ബോർഡ്') : 'എന്റെ അക്കൗണ്ട്'}</span>
+                    <span>{authUser.role === 'merchant' ? (authUser.shopName || 'Dashboard') : 'My Account'}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                   {onLogout && (
@@ -203,7 +205,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   onClick={onOpenConsumerLogin || onEnterAsConsumer}
                   className="px-5 py-1.5 rounded-full text-xs font-extrabold text-[#064E3B] bg-[#E7F3EC] hover:bg-[#D7EBDD] border border-[#BCDDC8] transition-all cursor-pointer shadow-2xs active:scale-95"
                 >
-                  ലോഗിൻ
+                  Login
                 </button>
               )}
             </div>
@@ -431,17 +433,28 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               <EnteBazaarLogo size="sm" />
             </div>
 
-            {/* Right Cluster: Location + Login */}
-            <div className="flex items-center gap-2 shrink-0 font-['Baloo_Chettan_2',sans-serif]">
+            {/* Right Cluster: Location + Agent + Login */}
+            <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 font-['Baloo_Chettan_2',sans-serif]">
               <button
                 type="button"
                 onClick={() => setIsMobileLocationModalOpen(true)}
-                className="flex items-center gap-1.5 bg-[#F3EFE6] text-[#064E3B] px-2.5 py-1 rounded-full text-xs font-bold border border-[#E0D8C7] active:scale-95"
+                className="flex items-center gap-1 bg-[#F3EFE6] text-[#064E3B] px-2 py-1 rounded-full text-xs font-bold border border-[#E0D8C7] active:scale-95"
               >
                 <MapPin className="w-3 h-3 text-[#064E3B]" />
-                <span className="truncate max-w-[90px]">{locationName}</span>
+                <span className="truncate max-w-[70px] xs:max-w-[90px]">{locationName}</span>
                 <ChevronDown className="w-3 h-3 text-gray-500" />
               </button>
+
+              {onOpenPartnerPortal && (
+                <button
+                  type="button"
+                  onClick={onOpenPartnerPortal}
+                  className="px-2.5 py-1 rounded-full text-xs font-bold text-[#064E3B] bg-[#E8F5EE] border border-[#C5ECD8] active:scale-95 flex items-center gap-1 cursor-pointer"
+                >
+                  <span>🤝</span>
+                  <span>Agent</span>
+                </button>
+              )}
 
               {authUser ? (
                 <button
@@ -449,15 +462,15 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
                   onClick={authUser.role === 'merchant' ? onOpenMerchantPortal : onEnterAsConsumer}
                   className="px-3 py-1 bg-[#064E3B] text-white text-xs font-bold rounded-full active:scale-95"
                 >
-                  {authUser.role === 'merchant' ? (authUser.shopName || 'ഡാഷ്‌ബോർഡ്') : 'അക്കൗണ്ട്'}
+                  {authUser.role === 'merchant' ? (authUser.shopName || 'Dashboard') : 'Account'}
                 </button>
               ) : (
                 <button
                   type="button"
                   onClick={onOpenConsumerLogin || onEnterAsConsumer}
-                  className="px-3.5 py-1 bg-[#064E3B] text-white text-xs font-bold rounded-full active:scale-95"
+                  className="px-3 py-1 bg-[#064E3B] text-white text-xs font-bold rounded-full active:scale-95"
                 >
-                  ലോഗിൻ
+                  Login
                 </button>
               )}
             </div>
@@ -601,25 +614,52 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Mobile Quick Action Strip (Brochures) */}
             <div className="grid grid-cols-2 gap-3 pt-1 font-['Baloo_Chettan_2',sans-serif]">
               <a
-                href="/PeediaCart_Merchant_Brochure.pdf"
+                href="/PeediaCart_Merchant_Brochure.pdf?v=20261002"
+                download="PeediaCart_Merchant_Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-3 px-3 rounded-2xl bg-white border border-[#E2DDD0] text-center text-xs font-bold text-[#064E3B] flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs active:scale-95"
               >
                 <Store className="w-3.5 h-3.5 text-emerald-700" />
-                <span>വ്യാപാരി ബ്രോഷർ</span>
+                <span>Merchant Brochure</span>
               </a>
 
               <a
-                href="/PeediaCart_Consumer_Brochure.pdf"
+                href="/PeediaCart_Consumer_Brochure.pdf?v=20261002"
+                download="PeediaCart_Consumer_Brochure.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-3 px-3 rounded-2xl bg-white border border-[#E2DDD0] text-center text-xs font-bold text-[#064E3B] flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs active:scale-95"
               >
                 <Download className="w-3.5 h-3.5 text-[#064E3B]" />
-                <span>ഷോപ്പർ ബ്രോഷർ</span>
+                <span>Shopper Brochure</span>
               </a>
             </div>
+
+            {/* Mobile Agent Hub Banner */}
+            {onOpenPartnerPortal && (
+              <button
+                type="button"
+                onClick={onOpenPartnerPortal}
+                className="w-full p-3.5 rounded-2xl bg-gradient-to-r from-[#073827] to-[#0D593E] text-white flex items-center justify-between shadow-xs active:scale-98 transition-all font-['Baloo_Chettan_2',sans-serif] text-left cursor-pointer border border-emerald-800"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-lg shrink-0">
+                    🤝
+                  </div>
+                  <div className="min-w-0">
+                    <div className="text-xs font-black flex items-center gap-1.5">
+                      <span>Field Agent Hub</span>
+                      <span className="text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-400 text-emerald-950 rounded-md">50% Cut</span>
+                    </div>
+                    <p className="text-[11px] text-emerald-200/90 truncate m-0 font-['Anek_Malayalam',sans-serif]">
+                      കടകളെ ചേർത്ത് 50% പ്രതിമാസ കമ്മീഷൻ നേടൂ
+                    </p>
+                  </div>
+                </div>
+                <ArrowRight className="w-4 h-4 text-emerald-300 shrink-0" />
+              </button>
+            )}
 
             {/* Mobile Trust Strip */}
             <div className="py-3 text-center font-['Baloo_Chettan_2',sans-serif] text-xs text-[#526B5F] font-bold flex items-center justify-center gap-3 border-t border-[#E8E4D8]">

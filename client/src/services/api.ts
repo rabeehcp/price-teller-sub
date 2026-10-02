@@ -1351,6 +1351,7 @@ export async function fetchClientsApi(
 export async function createClientApi(
   data: {
     clientCode?: string;
+    password?: string;
     name: string;
     phone: string;
     upiId: string;

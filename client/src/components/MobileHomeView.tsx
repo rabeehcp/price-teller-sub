@@ -127,8 +127,8 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
   return (
     <div
       onClick={() => onSelectProductForDetail(product)}
-      className={`bg-white border rounded-2xl p-2 sm:p-2.5 shadow-2xs hover:shadow-md hover:border-[#0D6344]/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
-        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E5ECE8]'
+      className={`bg-white border rounded-2xl p-2 sm:p-2.5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-md hover:border-emerald-500/40 transition-all duration-200 cursor-pointer flex flex-col justify-between group relative ${
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E2ECE6]'
       }`}
     >
       {/* Top Section: Side-by-side Image (Left) + Info & Wishlist (Right) */}
@@ -150,8 +150,8 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
           />
         </button>
 
-        {/* Product Thumbnail (Left) - Fixed compact size to prevent layout explosion & maximize text room */}
-        <div className="w-14 h-14 min-w-[56px] min-h-[56px] max-w-[56px] max-h-[56px] sm:w-16 sm:h-16 sm:min-w-[64px] sm:min-h-[64px] flex items-center justify-center p-1 relative bg-[#F5F8F6] rounded-xl border border-slate-100 shrink-0 overflow-hidden">
+        {/* Product Thumbnail (Left) */}
+        <div className="w-14 h-14 min-w-[56px] min-h-[56px] max-w-[56px] max-h-[56px] sm:w-16 sm:h-16 sm:min-w-[64px] sm:min-h-[64px] flex items-center justify-center p-1 relative bg-[#F4F9F6] rounded-xl border border-emerald-950/5 shrink-0 overflow-hidden">
           <ProductImage
             productId={product.id}
             image={product.image}
@@ -168,7 +168,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
         {/* Right Info: Malayalam Name, Subtitle, Lowest Store Pill */}
         <div className="flex-1 min-w-0 pr-3">
           <h3
-            className="text-xs sm:text-[13px] font-bold text-slate-900 font-malayalam leading-snug line-clamp-2 group-hover:text-[#0D6344] transition-colors m-0 break-words"
+            className="text-xs sm:text-[13px] font-bold text-slate-900 font-malayalam leading-snug line-clamp-2 group-hover:text-emerald-700 transition-colors m-0 break-words"
             title={mlName || product.name}
           >
             {mlName || product.name}
@@ -188,8 +188,8 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
           ) : null}
 
           {/* Lowest Store Badge */}
-          <div className="mt-1 inline-block bg-[#EAF7EE] text-[#0D6344] px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] leading-tight font-medium max-w-full">
-            <span className="block text-[8px] sm:text-[8.5px] text-[#0D6344]/80 font-normal">Lowest store:</span>
+          <div className="mt-1 inline-block bg-emerald-50/90 text-emerald-800 border border-emerald-200/70 px-1.5 py-0.5 rounded-md text-[9px] sm:text-[10px] leading-tight font-medium max-w-full">
+            <span className="block text-[8px] sm:text-[8.5px] text-emerald-700 font-normal">Lowest store:</span>
             <span className="font-bold line-clamp-1 block truncate" title={`${shopInfo?.name || lowestShopName || 'ABC Mart'}: ₹${price}`}>
               {shopInfo?.name || lowestShopName || 'ABC Mart'}
             </span>
@@ -198,7 +198,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
       </div>
 
       {/* Bottom Section: Price & Action Stepper/Button */}
-      <div className="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-50">
+      <div className="flex items-center justify-between mt-2.5 pt-1.5 border-t border-slate-100">
         <div className="min-w-0">
           {price > 0 ? (
             <span className="text-sm sm:text-base font-black text-slate-900 font-sans tracking-tight leading-none">
@@ -215,7 +215,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
               തീർന്നു
             </span>
           ) : qty > 0 ? (
-            <div className="flex items-center bg-[#0D6344] text-white rounded-lg px-2 py-1 gap-2 shadow-xs">
+            <div className="flex items-center bg-emerald-600 text-white rounded-lg px-2 py-1 gap-2 shadow-xs">
               <button
                 type="button"
                 onClick={() => onQuantityChange(product.id, -1)}
@@ -244,7 +244,7 @@ const MobileProductCard: React.FC<MobileProductCardProps> = React.memo(({
             <button
               type="button"
               onClick={() => onAddToBasket(product, product.defaultUnit)}
-              className="px-2.5 sm:px-3 py-1.5 bg-[#0D6344] hover:bg-[#064E3B] text-white text-[11px] sm:text-xs font-bold rounded-lg shadow-2xs transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer whitespace-nowrap"
+              className="px-2.5 sm:px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] sm:text-xs font-bold rounded-xl shadow-[0_2px_8px_rgba(5,150,105,0.25)] transition-all active:scale-95 font-malayalam flex items-center gap-1 cursor-pointer whitespace-nowrap"
               aria-label="ചേർക്കുക"
             >
               <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -441,15 +441,15 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 onClick={() => onSelectCategory(cat.id)}
                 className={`shrink-0 w-[74px] sm:w-[82px] h-[86px] sm:h-[94px] flex flex-col items-center justify-between p-2 rounded-2xl transition-all cursor-pointer text-center group border relative ${
                   isSelected
-                    ? 'bg-white border-2 border-[#0D6344] shadow-xs'
+                    ? 'bg-white border-2 border-emerald-600 shadow-xs'
                     : 'bg-white border border-slate-200 hover:border-slate-300 shadow-2xs'
                 }`}
               >
                 {isSelected && (
-                  <span className="w-2 h-2 rounded-full bg-[#0D6344] absolute top-1.5 right-1.5" />
+                  <span className="w-2 h-2 rounded-full bg-emerald-600 absolute top-1.5 right-1.5" />
                 )}
                 <div
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-1 overflow-hidden transition-transform group-hover:scale-105 p-1 bg-[#F5F8F6] border border-slate-100"
+                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-1 overflow-hidden transition-transform group-hover:scale-105 p-1 bg-[#F4F9F6] border border-emerald-950/5"
                 >
                   <img
                     src={cat.image}
@@ -460,7 +460,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                 </div>
                 <span
                   className={`text-[10px] sm:text-[10.5px] font-bold leading-tight line-clamp-1 w-full text-center ${
-                    isSelected ? 'text-[#0D6344] font-black' : 'text-slate-800'
+                    isSelected ? 'text-emerald-700 font-black' : 'text-slate-800'
                   }`}
                 >
                   {cat.label}
@@ -488,7 +488,7 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
                     currentCategoryObj?.name ||
                     'ഉൽപ്പന്നങ്ങൾ'}
                 </span>
-                <span className="text-[10px] font-bold text-[#0B8F68] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full font-sans">
+                <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-full font-sans">
                   {popularProducts.length} ഇനങ്ങൾ
                 </span>
               </h2>

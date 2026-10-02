@@ -17,6 +17,7 @@ import {
   Heart,
   ShoppingBag,
   List,
+  Briefcase,
 } from 'lucide-react';
 import {
   ConsumerAddressModal,
@@ -31,6 +32,7 @@ interface MobileProfileViewProps {
   onOpenAuthModal: () => void;
   onLogout: () => void;
   onSelectSubTab?: (tab: string) => void;
+  onOpenPartnerPortal?: () => void;
   onBack?: () => void;
   currentLocation?: Location | null;
   onOpenLocationModal?: () => void;
@@ -42,6 +44,7 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
   onOpenAuthModal,
   onLogout,
   onSelectSubTab,
+  onOpenPartnerPortal,
   onBack,
   currentLocation,
   onOpenLocationModal,
@@ -299,6 +302,34 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
           </div>
           <ChevronRight className="w-4 h-4 text-slate-400 group-hover:translate-x-0.5 transition-transform" />
         </button>
+
+        {onOpenPartnerPortal && (
+          <button
+            type="button"
+            onClick={onOpenPartnerPortal}
+            className="w-full flex items-center justify-between p-3.5 bg-emerald-50/40 hover:bg-emerald-50/80 transition-all text-left cursor-pointer group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-2xl bg-emerald-100/80 border border-emerald-200 flex items-center justify-center text-emerald-800">
+                <Briefcase className="w-4 h-4 text-[#0D6344]" />
+              </div>
+              <div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs sm:text-sm font-bold text-slate-900 block font-sans">
+                    Field Agent Hub
+                  </span>
+                  <span className="text-[9px] font-black uppercase px-1.5 py-0.2 bg-emerald-600 text-white rounded font-sans">
+                    50% Cut
+                  </span>
+                </div>
+                <span className="text-[10.5px] text-emerald-700 font-malayalam block">
+                  ഏജന്റ് പോർട്ടൽ ലോഗിൻ & വരുമാനം
+                </span>
+              </div>
+            </div>
+            <ChevronRight className="w-4 h-4 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+          </button>
+        )}
 
         <button
           type="button"

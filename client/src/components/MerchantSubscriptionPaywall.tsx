@@ -817,7 +817,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
               <div className="space-y-1 text-left">
                 <div className="flex items-center justify-between">
                   <label className="text-[11px] font-bold text-[#17221D] font-malayalam">
-                    പരിചയപ്പെടുത്തിയ ഏജന്റ് / ക്ലയന്റ് കോഡ് (Partner Code)
+                    പരിചയപ്പെടുത്തിയ ഏജന്റ് കോഡ് (Agent Code)
                   </label>
                   <span className="text-[10px] text-slate-400 font-medium">Optional</span>
                 </div>
@@ -837,7 +837,7 @@ export const MerchantSubscriptionPaywall: React.FC<MerchantSubscriptionPaywallPr
                   <div className="text-[11px] text-[#063B2A] bg-[#EDFAF3] border border-[#C3EEDC] px-2.5 py-1 rounded-lg flex items-center gap-1.5 animate-in fade-in">
                     <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                     <span>
-                      Partner: <b>{verifiedClientInfo.name}</b> {verifiedClientInfo.area ? `(${verifiedClientInfo.area})` : ''}
+                      Agent: <b>{verifiedClientInfo.name}</b> {verifiedClientInfo.area ? `(${verifiedClientInfo.area})` : ''}
                     </span>
                   </div>
                 ) : clientCode && clientCode.length >= 3 && !isValidatingClient ? (

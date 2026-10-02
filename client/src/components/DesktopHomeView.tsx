@@ -84,12 +84,12 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
     <div
       onClick={() => onSelectProductForDetail(product)}
       className={`bg-white border rounded-2xl p-3.5 shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group relative ${
-        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E5ECE8] hover:border-[#0D6344]/40'
+        isOutOfStock ? 'border-red-200 opacity-90' : 'border-[#E2ECE6] hover:border-emerald-500/40'
       }`}
     >
       {/* Top: Distance / Shop Pill & Wishlist Button */}
       <div className="flex items-center justify-between gap-1 mb-1">
-        <span className="text-[10px] font-bold text-[#0D6344] bg-[#E8F5EE] border border-[#C3EEDC] px-2 py-0.5 rounded-full truncate max-w-[130px] font-sans flex items-center gap-1">
+        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/70 px-2 py-0.5 rounded-full truncate max-w-[130px] font-sans flex items-center gap-1">
           <span>📍</span>
           <span>0.5 km</span>
         </span>
@@ -129,7 +129,7 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
       {/* Middle Info: Name, Price, Rating */}
       <div className="space-y-1 pt-1">
         <div className="flex items-center gap-1">
-          <h3 className="text-xs font-bold text-[#17221D] font-sans line-clamp-2 leading-snug m-0 break-words" title={product.name}>
+          <h3 className="text-xs font-bold text-[#17221D] font-sans line-clamp-2 leading-snug m-0 break-words group-hover:text-emerald-700 transition-colors" title={product.name}>
             {product.name}
           </h3>
           {isOutOfStock && (
@@ -178,7 +178,7 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
             <span>{isOutOfStock ? 'Out of stock' : 'Unavailable'}</span>
           </button>
         ) : qty > 0 ? (
-          <div className="flex items-center justify-between bg-[#0D6344] text-white rounded-xl p-1 shadow-xs">
+          <div className="flex items-center justify-between bg-emerald-600 text-white rounded-xl p-1 shadow-xs">
             <button
               type="button"
               onClick={() => onQuantityChange(product.id, -1)}
@@ -199,7 +199,7 @@ const DesktopProductCard: React.FC<DesktopProductCardProps> = React.memo(({
           <button
             type="button"
             onClick={() => onAddToBasket(product, product.defaultUnit)}
-            className="w-full py-2 px-3 bg-[#0D6344] hover:bg-[#094E35] active:scale-95 text-white text-[11px] font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-1.5 font-sans cursor-pointer"
+            className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-[11px] font-bold rounded-xl shadow-[0_2px_8px_rgba(5,150,105,0.25)] transition-all flex items-center justify-center gap-1.5 font-sans cursor-pointer"
           >
             <ShoppingBag className="w-3.5 h-3.5" />
             <span>Add to Cart</span>

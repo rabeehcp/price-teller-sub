@@ -50,6 +50,7 @@ interface MobileDrawerProps {
   onOpenChat?: () => void;
   onOpenFlashDeals?: () => void;
   onOpenMerchantPortal?: () => void;
+  onOpenPartnerPortal?: () => void;
   onOpenAdminPortal?: () => void;
 
   // Merchant Navigation Props
@@ -81,6 +82,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
   onOpenChat,
   onOpenFlashDeals,
   onOpenMerchantPortal,
+  onOpenPartnerPortal,
   onOpenAdminPortal,
   merchantTab = 'dashboard',
   onSelectMerchantTab,
@@ -352,6 +354,23 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 </button>
               )}
 
+              {onOpenPartnerPortal && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onClose();
+                    onOpenPartnerPortal();
+                  }}
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#E8F5EE] hover:bg-[#D5EFE2] rounded-xl text-xs font-bold text-[#0D6344] border border-[#C5ECD8] transition-colors cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-[#0D6344]" />
+                    <span>ഏജന്റ് പോർട്ടൽ (Agent Hub)</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-[#0D6344]" />
+                </button>
+              )}
+
               {onOpenSubscriptionModal && (
                 <button
                   onClick={() => {
@@ -498,7 +517,7 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
                 <span className="absolute left-0 top-1 bottom-1 w-1 bg-[#10A978] rounded-r" />
               )}
               <Briefcase className={`w-4 h-4 shrink-0 ${adminTab === 'clients' ? 'text-[#0D6344]' : 'text-[#7C6E5E]'}`} />
-              <span>Field Partners</span>
+              <span>Field Agents</span>
             </button>
 
             <button
@@ -719,19 +738,40 @@ export const MobileDrawer: React.FC<MobileDrawerProps> = ({
 
             {/* Direct Role Switching */}
             <div className="pt-3 pb-1 border-t border-[#ECE6DA] my-2 space-y-1.5">
+              {onOpenPartnerPortal && (
+                <button
+                  onClick={() => {
+                    onClose();
+                    onOpenPartnerPortal();
+                  }}
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#E8F5EE] hover:bg-[#D5EFE2] rounded-xl text-xs font-bold text-[#0D6344] border border-[#C5ECD8] transition-colors cursor-pointer shadow-2xs"
+                >
+                  <div className="flex items-center gap-2">
+                    <Briefcase className="w-4 h-4 text-[#0D6344]" />
+                    <span>ഏജന്റ് ഹബ്ബ് (Agent Hub)</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-600 text-white rounded font-sans">
+                      50% Cut
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-[#0D6344]" />
+                  </div>
+                </button>
+              )}
+
               {onOpenMerchantPortal && (
                 <button
                   onClick={() => {
                     onClose();
                     onOpenMerchantPortal();
                   }}
-                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-[#E8F5EE] hover:bg-[#D5EFE2] rounded-xl text-xs font-bold text-[#0D6344] border border-[#C5ECD8] transition-colors cursor-pointer shadow-2xs"
+                  className="w-full flex items-center justify-between px-3.5 py-2.5 bg-white hover:bg-slate-50 rounded-xl text-xs font-bold text-[#4A3F35] border border-[#ECE6DA] transition-colors cursor-pointer shadow-2xs"
                 >
                   <div className="flex items-center gap-2">
                     <Store className="w-4 h-4 text-[#0D6344]" />
                     <span>വ്യാപാരി പാനൽ (Merchant)</span>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-[#0D6344]" />
+                  <ChevronRight className="w-4 h-4 text-slate-400" />
                 </button>
               )}
 
