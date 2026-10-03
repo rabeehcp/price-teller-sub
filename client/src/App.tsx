@@ -1699,6 +1699,7 @@ export const App: React.FC = () => {
               basketSubtotal={basketSubtotal}
               isRightSidebarOpen={isDesktopRightSidebarOpen}
               onToggleRightSidebar={() => setIsDesktopRightSidebarOpen((prev) => !prev)}
+              onToggleLeftSidebar={handleToggleLeftSidebar}
             />
           </div>
         )}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { User, Location } from '../types';
-import { Search, Bell, Heart, ChevronDown, ChevronRight, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag, Zap, Briefcase } from 'lucide-react';
+import { Search, Bell, Heart, ChevronDown, ChevronRight, User as UserIcon, LogOut, Store, X, MapPin, ShoppingBag, Zap, Briefcase, Menu } from 'lucide-react';
 
 interface DesktopHeaderProps {
   searchQuery: string;
@@ -20,6 +20,7 @@ interface DesktopHeaderProps {
   basketSubtotal?: number;
   isRightSidebarOpen?: boolean;
   onToggleRightSidebar?: () => void;
+  onToggleLeftSidebar?: () => void;
 }
 
 export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
@@ -40,6 +41,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   basketSubtotal = 0,
   isRightSidebarOpen = false,
   onToggleRightSidebar,
+  onToggleLeftSidebar,
 }) => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const avatarLetter = authUser?.name ? authUser.name.charAt(0).toUpperCase() : 'R';
@@ -49,19 +51,33 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md px-4 sm:px-6 py-2.5 sm:py-3 border-b border-[#F0F4F2] shadow-2xs font-sans">
       <div className="flex items-center justify-between gap-2.5 sm:gap-4 w-full max-w-[1720px] mx-auto">
 
-        {/* Left: Location Selector Pill in Header */}
-        {onOpenLocationModal && (
-          <button
-            type="button"
-            onClick={onOpenLocationModal}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F8F6] hover:bg-[#E8F8F0] border border-[#E3ECE7] hover:border-[#10A978]/40 rounded-full text-xs font-bold text-[#17221D] transition-all cursor-pointer shrink-0 shadow-2xs font-malayalam"
-            title="സ്ഥലം മാറ്റുക (Change Location Hub)"
-          >
-            <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" />
-            <span className="truncate max-w-[80px] sm:max-w-[120px] xl:max-w-[160px]">{locationName}</span>
-            <ChevronDown className="w-3 h-3 text-[#66756E]" />
-          </button>
-        )}
+        {/* Left: Sidebar Toggle Button (Three Lines Icon) & Location Selector */}
+        <div className="flex items-center gap-2 shrink-0">
+          {onToggleLeftSidebar && (
+            <button
+              type="button"
+              onClick={onToggleLeftSidebar}
+              className="flex items-center justify-center w-9 h-9 rounded-xl bg-[#F5F8F6] hover:bg-[#E8F8F0] border border-[#E3ECE7] hover:border-[#10A978]/40 text-[#0D6344] transition-all cursor-pointer shrink-0 shadow-2xs active:scale-95"
+              title="Toggle Sidebar Navigation (മെനു)"
+              aria-label="Toggle Sidebar"
+            >
+              <Menu className="w-5 h-5 text-[#0D6344] stroke-[2.2]" />
+            </button>
+          )}
+
+          {onOpenLocationModal && (
+            <button
+              type="button"
+              onClick={onOpenLocationModal}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F8F6] hover:bg-[#E8F8F0] border border-[#E3ECE7] hover:border-[#10A978]/40 rounded-full text-xs font-bold text-[#17221D] transition-all cursor-pointer shrink-0 shadow-2xs font-malayalam"
+              title="സ്ഥലം മാറ്റുക (Change Location Hub)"
+            >
+              <MapPin className="w-3.5 h-3.5 text-[#0B8F68]" />
+              <span className="truncate max-w-[80px] sm:max-w-[120px] xl:max-w-[160px]">{locationName}</span>
+              <ChevronDown className="w-3 h-3 text-[#66756E]" />
+            </button>
+          )}
+        </div>
 
         {/* Middle: Integrated Search Bar (Matching Mockup) */}
         <div className="flex-1 max-w-xl xl:max-w-2xl">
@@ -108,11 +124,10 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
             <button
               type="button"
               onClick={onToggleRightSidebar}
-              className={`flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-sans shadow-2xs ${
-                isRightSidebarOpen
+              className={`flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 rounded-full border transition-all cursor-pointer font-sans shadow-2xs ${isRightSidebarOpen
                   ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs'
                   : 'bg-[#E8F5EE] hover:bg-[#DCF0E4] border-[#C3EEDC] text-[#0D6344]'
-              }`}
+                }`}
               title={isRightSidebarOpen ? 'കാർട്ട് പാനൽ മറയ്ക്കുക (Hide Cart)' : 'കാർട്ട് & താരതമ്യം കാണുക (View Cart & Compare)'}
             >
               <ShoppingBag className={`w-3.5 h-3.5 ${isRightSidebarOpen ? 'text-white' : 'text-[#0D6344]'}`} />
@@ -178,11 +193,10 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
                         <p className="text-xs font-black text-slate-800 truncate leading-snug">{authUser.name}</p>
                         <p className="text-[11px] text-slate-500 truncate font-sans">{authUser.email}</p>
                         <div className="mt-1">
-                          <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md font-sans ${
-                            authUser.role === 'merchant'
+                          <span className={`inline-flex items-center text-[10px] font-bold px-2 py-0.5 rounded-md font-sans ${authUser.role === 'merchant'
                               ? 'bg-emerald-100/70 text-emerald-800 border border-emerald-300/60'
                               : 'bg-white text-slate-600 border border-slate-200'
-                          }`}>
+                            }`}>
                             {authUser.role === 'merchant' ? '🏪 Partner Merchant' : '👤 Shopper'}
                           </span>
                         </div>

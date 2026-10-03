@@ -1,6 +1,6 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { Home, Zap, Store, MapPin, FileText, User as UserIcon, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Zap, Store, MapPin, FileText, User as UserIcon, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface DesktopLeftSidebarProps {
@@ -73,15 +73,26 @@ export const DesktopLeftSidebar: React.FC<DesktopLeftSidebarProps> = React.memo(
     >
       {/* Top Section: Logo & Menu Items */}
       <div className="space-y-6">
-        {/* Brand Logo */}
-        <div className={`flex items-center ${isCollapsed ? 'justify-center' : 'px-5'}`}>
+        {/* Brand Logo & 3-Lines Menu Toggle */}
+        <div className={`flex items-center ${isCollapsed ? 'justify-center flex-col gap-3' : 'justify-between px-5'}`}>
           <EnteBazaarLogo
-            size={isCollapsed ? 'sm' : 'sm'}
+            size="sm"
             variant={isCollapsed ? 'icon' : 'horizontal'}
             theme="light"
             withTagline={false}
             onClick={() => onSelectTab('home')}
           />
+          {onToggleCollapse && (
+            <button
+              type="button"
+              onClick={onToggleCollapse}
+              className="flex items-center justify-center w-8 h-8 rounded-lg bg-black/5 hover:bg-black/10 text-[#4C4136] hover:text-[#17221D] transition-colors cursor-pointer active:scale-95"
+              title={isCollapsed ? 'സൈഡ്ബാർ വികസിപ്പിക്കുക (Expand Sidebar)' : 'സൈഡ്ബാർ ചുരുക്കുക (Collapse Sidebar)'}
+              aria-label="Toggle Sidebar"
+            >
+              <Menu className="w-4.5 h-4.5 stroke-[2.2]" />
+            </button>
+          )}
         </div>
 
         {/* Navigation List */}

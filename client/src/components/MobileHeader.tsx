@@ -1,6 +1,6 @@
 import React from 'react';
 import { Location, User } from '../types';
-import { MapPin, ChevronDown, Bell, MessageCircle, Briefcase } from 'lucide-react';
+import { MapPin, ChevronDown, Bell, MessageCircle, Briefcase, Menu } from 'lucide-react';
 import { EnteBazaarLogo } from './EnteBazaarLogo';
 
 interface MobileHeaderProps {
@@ -31,10 +31,23 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
     : 'R';
 
   return (
-    <header className="lg:hidden sticky top-0 z-30 bg-white backdrop-blur-sm px-3.5 sm:px-5 py-3 border-b border-[#EAEFF0] font-sans">
-      <div className="flex items-center justify-between gap-1.5 sm:gap-2">
-        {/* Left: PeediaCart Brand Logo */}
-        <EnteBazaarLogo size="md" className="h-7 sm:h-8" />
+    <header className="lg:hidden sticky top-0 z-30 bg-white backdrop-blur-sm px-4 sm:px-5 py-3 border-b border-[#EAEFF0] font-sans">
+      <div className="flex items-center justify-between gap-2">
+        {/* Left: Menu (3 Lines) Toggle & Brand Logo */}
+        <div className="flex items-center gap-2 shrink-0">
+          {onOpenDrawer && (
+            <button
+              type="button"
+              onClick={onOpenDrawer}
+              className="flex items-center justify-center w-8.5 h-8.5 rounded-xl bg-[#F4F8F5] hover:bg-[#EAF3EE] border border-[#D8E6DE] text-[#0D6344] transition-all cursor-pointer active:scale-95 shadow-2xs"
+              title="മെനു തുറക്കുക (Open Menu)"
+              aria-label="Open Menu"
+            >
+              <Menu className="w-5 h-5 text-[#0D6344] stroke-[2.2]" />
+            </button>
+          )}
+          <EnteBazaarLogo size="md" className="h-7 sm:h-8" />
+        </div>
 
         {/* Right Controls: Agent Pill, Location Pill, Chat, Bell, Avatar */}
         <div className="flex items-center gap-1 sm:gap-1.5">
