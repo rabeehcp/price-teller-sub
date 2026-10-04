@@ -70,7 +70,7 @@ export const MobileProfileView: React.FC<MobileProfileViewProps> = ({
   const locationName = currentLocation?.name || 'Areekode';
 
   const savedListsCount = consumerData?.savedLists?.length || 0;
-  const favoritesCount = consumerData?.favorites?.length || 1;
+  const favoritesCount = consumerData?.favorites?.length || 0;
 
   const handleItemClick = (id: string) => {
     if (id === 'orders') {

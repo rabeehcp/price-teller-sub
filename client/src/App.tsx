@@ -1166,13 +1166,41 @@ export const App: React.FC = () => {
       handleOpenAuthModal('consumer-login');
       return;
     }
+
+    const currentFavs = consumerData?.favorites || [];
+    const isCurrentlyFav = currentFavs.includes(product.id);
+    const updatedFavs = isCurrentlyFav
+      ? currentFavs.filter((id) => id !== product.id)
+      : [...currentFavs, product.id];
+
+    // Optimistic UI update
+    setConsumerData((prev) =>
+      prev
+        ? { ...prev, favorites: updatedFavs }
+        : {
+            userId: authUser.id,
+            basket: [],
+            savedLists: [],
+            favorites: updatedFavs,
+            tripHistory: [],
+            preferredLocationId: authUser.locationId || 'tirur',
+            lastActive: new Date().toISOString(),
+          }
+    );
+
     try {
       const res = await toggleConsumerFavoriteApi(authUser.id, product.id, authUser.token);
-      if (res && res.data) {
-        setConsumerData((prev) => prev ? { ...prev, favorites: res.data.favorites } : null);
+      if (res && Array.isArray(res.favorites)) {
+        setConsumerData((prev) =>
+          prev ? { ...prev, favorites: res.favorites } : null
+        );
       }
     } catch (e) {
       console.warn('Failed to toggle favorite', e);
+      // Revert on error
+      setConsumerData((prev) =>
+        prev ? { ...prev, favorites: currentFavs } : null
+      );
     }
   };
 
@@ -1670,7 +1698,7 @@ export const App: React.FC = () => {
               onOpenAuthModal={handleOpenAuthModal}
               onOpenFavorites={() => {
                 if (!authUser) handleOpenAuthModal('consumer-login');
-                else setShopperTab('profile');
+                else setShopperTab('favorites');
               }}
               onOpenOrders={() => {
                 if (!authUser) handleOpenAuthModal('consumer-login');
@@ -1697,6 +1725,7 @@ export const App: React.FC = () => {
               onLogout={handleLogout}
               basketCount={totalBasketCount}
               basketSubtotal={basketSubtotal}
+              favoritesCount={consumerData?.favorites?.length || 0}
               isRightSidebarOpen={isDesktopRightSidebarOpen}
               onToggleRightSidebar={() => setIsDesktopRightSidebarOpen((prev) => !prev)}
             />
@@ -1713,6 +1742,7 @@ export const App: React.FC = () => {
                   category={selectedMobileCategory}
                   products={products}
                   basket={basket}
+                  favorites={consumerData?.favorites || []}
                   onBack={() => {
                     setSelectedMobileCategory(null);
                     setSelectedCategoryId('all');
@@ -1721,6 +1751,7 @@ export const App: React.FC = () => {
                   onSelectProduct={(p) => setSelectedMobileProduct(p)}
                   onAddToBasket={handleAddToBasket}
                   onQuantityChange={handleQuantityChange}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               ) : (
                 <MobileHomeView
@@ -1851,7 +1882,7 @@ export const App: React.FC = () => {
                     else setIsConsumerDashboardOpen(true);
                   } else if (tabId === 'favorites') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
-                    else setShopperTab('profile');
+                    else setShopperTab('favorites');
                   }
                 }}
               />
@@ -2052,6 +2083,28 @@ export const App: React.FC = () => {
                 products={products}
                 currentLocation={currentLocation}
                 initialTab="orders"
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onLogout={handleLogout}
+                onLoadListIntoBasket={handleLoadSavedList}
+                onDeleteList={handleDeleteNamedList}
+                onAddFavoriteToBasket={(p) => handleAddToBasket(p, p.defaultUnit)}
+                onRemoveFavorite={(prodId) => {
+                  const p = products.find((x) => x.id === prodId);
+                  if (p) handleToggleFavorite(p);
+                }}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onGoShopping={() => setShopperTab('home')}
+              />
+            )}
+
+            {shopperTab === 'favorites' && (
+              <DesktopProfileView
+                authUser={authUser}
+                consumerData={consumerData}
+                products={products}
+                currentLocation={currentLocation}
+                initialTab="favorites"
                 onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
                 onLogout={handleLogout}
@@ -2555,6 +2608,7 @@ export const App: React.FC = () => {
         <MobileProductDetailModal
           product={selectedMobileProduct}
           basket={basket}
+          isFavorite={Boolean(consumerData?.favorites?.includes(selectedMobileProduct.id))}
           onClose={() => setSelectedMobileProduct(null)}
           onOpenCart={() => {
             setSelectedMobileProduct(null);
@@ -2563,6 +2617,7 @@ export const App: React.FC = () => {
           onOpenChat={() => handleOpenChat()}
           onAdd={(p, u) => handleAddToBasket(p, u)}
           onQuantityChange={handleQuantityChange}
+          onToggleFavorite={handleToggleFavorite}
         />
       )}
 

@@ -18,6 +18,7 @@ interface DesktopHeaderProps {
   onLogout: () => void;
   basketCount?: number;
   basketSubtotal?: number;
+  favoritesCount?: number;
   isRightSidebarOpen?: boolean;
   onToggleRightSidebar?: () => void;
 }
@@ -38,6 +39,7 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
   onLogout,
   basketCount = 0,
   basketSubtotal = 0,
+  favoritesCount = 0,
   isRightSidebarOpen = false,
   onToggleRightSidebar,
 }) => {
@@ -142,10 +144,15 @@ export const DesktopHeader: React.FC<DesktopHeaderProps> = ({
           <button
             type="button"
             onClick={onOpenFavorites}
-            className="p-2 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer"
+            className="p-2 text-[#2D3E35] hover:bg-[#F5F8F6] rounded-full transition-colors cursor-pointer relative"
             aria-label="Favorites"
           >
-            <Heart className="w-4 h-4 text-[#2D3E35]" />
+            <Heart className={`w-4 h-4 ${favoritesCount > 0 ? 'text-[#E11D48] fill-[#E11D48]' : 'text-[#2D3E35]'}`} />
+            {favoritesCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-[#E11D48] text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center ring-2 ring-white shadow-2xs font-sans">
+                {favoritesCount > 99 ? '99+' : favoritesCount}
+              </span>
+            )}
           </button>
 
           {/* User Profile Avatar Dropdown (Matching Mockup) */}
