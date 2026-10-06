@@ -1294,7 +1294,9 @@ export const App: React.FC = () => {
           spices: ['spices', 'oils-spices', 'oils-sugar'],
           'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
           beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
-          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'snacks', 'bread-bakery'],
+          snacks: ['snacks', 'evening-snacks'],
+          'evening-snacks': ['snacks', 'evening-snacks'],
+          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'bread-bakery'],
           'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
           household: ['household', 'cleaning-household', 'storage-containers'],
         };

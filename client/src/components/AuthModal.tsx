@@ -87,6 +87,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     { id: 'dairy', label: 'പാൽ & മുട്ട', icon: '🥛' },
     { id: 'staples', label: 'ധാന്യങ്ങൾ', icon: '🍚' },
     { id: 'oils-spices', label: 'എണ്ണ & മസാല', icon: '🫗' },
+    { id: 'snacks', label: 'നാലുമണി പലഹാരം', icon: '🥟' },
     { id: 'bakery-breakfast', label: 'ബേക്കറി', icon: '🍞' },
     { id: 'organic', label: 'ഓർഗാനിക്', icon: '🌿' },
   ];

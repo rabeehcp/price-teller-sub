@@ -741,8 +741,10 @@ const newShop: Shop = {
           sql += ` AND category_id IN ('spices', 'oils-spices')`;
         } else if (cat === 'grocery') {
           sql += ` AND category_id IN ('grocery', 'oils-sugar', 'sauces-condiments', 'staples', 'spices', 'pulses-legumes')`;
-        } else if (cat === 'biscuits-snacks') {
-          sql += ` AND category_id IN ('biscuits-snacks', 'beverages', 'bakery-breakfast', 'snacks-beverages')`;
+        } else if (cat === 'snacks' || cat === 'evening-snacks') {
+          sql += ` AND category_id = 'snacks'`;
+        } else if (cat === 'biscuits-snacks' || cat === 'bakery-breakfast' || cat === 'bakery') {
+          sql += ` AND category_id IN ('biscuits-snacks', 'beverages', 'bakery-breakfast', 'snacks-beverages', 'bakery')`;
         } else {
           queryParams.push(cat);
           sql += ` AND category_id = $${queryParams.length}`;

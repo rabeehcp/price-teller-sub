@@ -29,7 +29,8 @@ const CATEGORY_ALIASES: Record<string, string[]> = {
   staples: ['staples', 'rice-grains', 'pulses-legumes'],
   'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
   household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
-  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'snacks'],
+  snacks: ['snacks', 'evening-snacks'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
   beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
 };
 

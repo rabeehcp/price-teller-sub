@@ -129,6 +129,14 @@ const CATEGORY_CONFIG: Record<
     sampleBadge: '100% Pure',
     photoPresets: [],
   },
+  snacks: {
+    emojis: ['🥟', '🍌', '🫓', '🍩', '🧆', '🥐', '🍟', '🧅'],
+    defaultUnit: '1 pc',
+    placeholder: 'e.g. Pazhampori, Samosa, Parippuvada, Egg Puffs, Unniyappam...',
+    defaultPrice: '15',
+    sampleBadge: 'നാടൻ സ്പെഷ്യൽ',
+    photoPresets: [],
+  },
   'bakery-breakfast': {
     emojis: ['🍞', '🥐', '🥖', '🥯', '☕', '🍪', '🥞', '🧇'],
     defaultUnit: '1 pack',

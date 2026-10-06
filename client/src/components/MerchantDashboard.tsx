@@ -120,6 +120,7 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'dairy', label: 'Dairy & Eggs', labelMl: 'പാൽ & മുട്ട', icon: '🥛' },
   { id: 'staples', label: 'Staples & Grains', labelMl: 'ധാന്യങ്ങൾ', icon: '🍚' },
   { id: 'oils-spices', label: 'Oils & Spices', labelMl: 'എണ്ണ & മസാല', icon: '🫗' },
+  { id: 'snacks', label: 'Evening Snacks', labelMl: 'നാലുമണി പലഹാരം', icon: '🥟' },
   { id: 'bakery-breakfast', label: 'Bakery', labelMl: 'ബേക്കറി', icon: '🍞' },
   { id: 'electronics', label: 'Electronics', labelMl: 'ഇലക്ട്രോണിക്സ്', icon: '🔌' },
   { id: 'utensils', label: 'Kitchen Utensils', labelMl: 'പാത്രങ്ങൾ', icon: '🍳' },
@@ -1072,7 +1073,8 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     staples: ['staples', 'rice-grains', 'pulses-legumes'],
     'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
     household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
-    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'snacks'],
+    snacks: ['snacks', 'evening-snacks'],
+    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
     beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
   };
 

@@ -272,6 +272,11 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
       image: '/categories/beverages.jpg',
     },
     {
+      id: 'snacks',
+      label: 'Evening Snacks',
+      image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/kerala-snack-pazhampori.jpg',
+    },
+    {
       id: 'bakery-breakfast',
       label: 'Bakery',
       image: '/categories/bakery.jpg',
@@ -319,7 +324,9 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
         spices: ['spices', 'oils-spices', 'oils-sugar'],
         'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
         beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
-        'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'snacks', 'bread-bakery'],
+        snacks: ['snacks', 'evening-snacks'],
+        'evening-snacks': ['snacks', 'evening-snacks'],
+        'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'bread-bakery'],
         'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
         household: ['household', 'cleaning-household', 'storage-containers'],
       };
@@ -328,6 +335,13 @@ export const DesktopHomeView: React.FC<DesktopHomeViewProps> = ({
     }
 
     return [...filtered].sort((a, b) => {
+      // In Evening Snacks category, prioritize fresh hot Kerala evening snacks at the top
+      if (selectedCategoryId === 'snacks' || selectedCategoryId === 'evening-snacks') {
+        const aIsKeralaSnack = a.id.startsWith('snack-') ? 0 : 1;
+        const bIsKeralaSnack = b.id.startsWith('snack-') ? 0 : 1;
+        if (aIsKeralaSnack !== bIsKeralaSnack) return aIsKeralaSnack - bIsKeralaSnack;
+      }
+
       const aName = a.name.toLowerCase();
       const bName = b.name.toLowerCase();
 

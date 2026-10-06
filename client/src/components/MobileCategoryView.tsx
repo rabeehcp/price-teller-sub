@@ -52,8 +52,11 @@ function matchesCategory(productCatId: string | undefined, selectedCatId: string
   if (s === 'beverages') {
     return p === 'beverages' || p === 'drinks' || p === 'tea-coffee' || p === 'juices';
   }
+  if (s === 'snacks' || s === 'evening-snacks') {
+    return p === 'snacks' || p === 'evening-snacks';
+  }
   if (s === 'biscuits-snacks' || s === 'bakery-breakfast') {
-    return p === 'biscuits-snacks' || p === 'bakery-breakfast' || p === 'snacks' || p === 'bread-bakery';
+    return p === 'biscuits-snacks' || p === 'bakery-breakfast' || p === 'bread-bakery';
   }
   return p.includes(s) || s.includes(p);
 }
@@ -261,6 +264,14 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
         { id: 'sauces', label: 'സോസ് & അച്ചാർ' },
       ];
     }
+    if (category.id === 'snacks' || category.id === 'evening-snacks') {
+      return [
+        { id: 'all', label: 'എല്ലാം' },
+        { id: 'hot', label: 'ചൂടൻ പലഹാരങ്ങൾ' },
+        { id: 'sweet', label: 'മധുര പലഹാരങ്ങൾ' },
+        { id: 'puffs_cutlet', label: 'പഫ്സ് & കട്ട്ലറ്റ്' },
+      ];
+    }
     return [
       { id: 'all', label: 'എല്ലാം' },
       { id: 'fresh', label: 'പുതിയത്' },
@@ -404,6 +415,15 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
       }
       if (activeSubFilter === 'sauces') {
         return pName.includes('sauce') || pName.includes('സോസ്') || pName.includes('pickle') || pName.includes('അച്ചാർ') || pName.includes('ketchup') || pName.includes('paste');
+      }
+      if (activeSubFilter === 'hot') {
+        return pName.includes('samosa') || pName.includes('സമോസ') || pName.includes('പൊരി') || pName.includes('വട') || pName.includes('ബോണ്ട') || pName.includes('ബജ്ജി') || pName.includes('റോൾ');
+      }
+      if (activeSubFilter === 'sweet') {
+        return pName.includes('ഉണ്ണിയപ്പം') || pName.includes('നെയ്യപ്പം') || pName.includes('സുഖിയൻ') || pName.includes('ഇലയട') || pName.includes('കൊഴുക്കട്ട') || pName.includes('നിറച്ചത്') || pName.includes('ഉന്നക്കായ') || pName.includes('മടക്ക്') || pName.includes('കായ്പോള') || pName.includes('അവൽ') || pName.includes('അച്ചപ്പം') || pName.includes('കിണ്ണത്തപ്പം') || pName.includes('ശർക്കര');
+      }
+      if (activeSubFilter === 'puffs_cutlet') {
+        return pName.includes('puff') || pName.includes('പഫ്സ്') || pName.includes('cutlet') || pName.includes('കട്ട്ലറ്റ്') || pName.includes('roll') || pName.includes('റോൾ');
       }
 
       return true;

@@ -67,8 +67,13 @@ const CATEGORY_CONFIG = [
     image: '/categories/oils-spices.jpg',
   },
   {
+    id: 'snacks',
+    label: 'നാലുമണി പലഹാരം',
+    image: 'https://ik.imagekit.io/rcparkd3663/priceteller-catalog/kerala-snack-pazhampori.jpg',
+  },
+  {
     id: 'bakery-breakfast',
-    label: 'മാംസം & മീൻ',
+    label: 'ബേക്കറി',
     image: '/categories/bakery.jpg',
   },
   {
@@ -307,6 +312,8 @@ export const MobileHomeView: React.FC<MobileHomeViewProps> = ({
         dairy: ['dairy', 'dairy-eggs'],
         'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
         beverages: ['beverages', 'tea-coffee', 'juices'],
+        snacks: ['snacks', 'evening-snacks'],
+        'evening-snacks': ['snacks', 'evening-snacks'],
         'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
         'cleaning-household': ['cleaning-household', 'household', 'detergents', 'pooja-needs'],
       };

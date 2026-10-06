@@ -19,6 +19,7 @@ export const ALL_SYSTEM_CATEGORIES: CatalogCategoryDef[] = [
   { id: 'dairy', name: 'Dairy & Eggs', slug: 'dairy', icon: '🥛', description: 'Fresh milk, curd, ghee, paneer, butter & eggs' },
   { id: 'sauces-condiments', name: 'Sauces & Pickles', slug: 'sauces-condiments', icon: '🥫', description: 'Ketchup, vinegar, pickles, papad & condiments' },
   { id: 'biscuits-snacks', name: 'Biscuits & Snacks', slug: 'biscuits-snacks', icon: '🍪', description: 'Biscuits, rusks, bread, chips, murukku & snacks' },
+  { id: 'snacks', name: 'Evening Snacks', slug: 'snacks', icon: '🥟', description: 'Fresh Kerala tea-time snacks, samosa, pazhampori, puffs & savouries' },
   { id: 'beverages', name: 'Tea, Coffee & Drinks', slug: 'beverages', icon: '☕', description: 'Tea powder, coffee, Horlicks, Boost & fruit drinks' },
   { id: 'utensils', name: 'Kitchen Utensils', slug: 'utensils', icon: '🍳', description: 'Cookware, pots, pressure cookers, tawas & cutlery' },
   { id: 'cleaning-household', name: 'Cleaning & Household', slug: 'cleaning-household', icon: '🧹', description: 'Detergents, soaps, dishwash, brooms & mops' },
