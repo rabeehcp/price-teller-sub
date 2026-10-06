@@ -23,6 +23,7 @@ import {
   fetchMerchantSalesApi,
   fetchMerchantSalesSummaryApi,
 } from '../services/api';
+import { useHorizontalScroll } from '../utils/useHorizontalScroll';
 import {
   Store,
   Save,
@@ -120,6 +121,8 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'dairy', label: 'Dairy & Eggs', labelMl: 'പാൽ & മുട്ട', icon: '🥛' },
   { id: 'staples', label: 'Staples & Grains', labelMl: 'ധാന്യങ്ങൾ', icon: '🍚' },
   { id: 'oils-spices', label: 'Oils & Spices', labelMl: 'എണ്ണ & മസാല', icon: '🫗' },
+  { id: 'sauces-condiments', label: 'Sauces & Pickles', labelMl: 'സോസുകൾ & അച്ചാറുകൾ', icon: '🥫' },
+  { id: 'beverages', label: 'Tea, Coffee & Drinks', labelMl: 'ചായ & പാനീയങ്ങൾ', icon: '☕' },
   { id: 'snacks', label: 'Evening Snacks', labelMl: 'നാലുമണി പലഹാരം', icon: '🥟' },
   { id: 'bakery-breakfast', label: 'Bakery', labelMl: 'ബേക്കറി', icon: '🍞' },
   { id: 'electronics', label: 'Electronics', labelMl: 'ഇലക്ട്രോണിക്സ്', icon: '🔌' },
@@ -127,6 +130,7 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'household', label: 'Cleaning & Home', labelMl: 'വീട്ടുസാധനങ്ങൾ', icon: '🧼' },
   { id: 'organic', label: 'Organic Produce', labelMl: 'ഓർഗാനിക്', icon: '🌿' },
 ];
+
 
 export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   shops,
@@ -156,6 +160,14 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
     return 'dashboard';
   });
   const [inventoryCategoryFilter, setInventoryCategoryFilter] = useState<string>('all');
+  const {
+    containerRef: invCatScrollRef,
+    canScrollLeft: canInvCatScrollLeft,
+    canScrollRight: canInvCatScrollRight,
+    scrollLeft: scrollInvCatLeft,
+    scrollRight: scrollInvCatRight,
+    hasMovedRef: invCatDragMovedRef,
+  } = useHorizontalScroll<HTMLDivElement>();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
   // Subscription State & Days Remaining
@@ -1071,10 +1083,11 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
   // the older 'staples' specialization.
   const CATEGORY_ALIASES: Record<string, string[]> = {
     staples: ['staples', 'rice-grains', 'pulses-legumes'],
-    'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+    'oils-spices': ['oils-spices', 'oils-sugar', 'spices', 'sauces-condiments'],
+    'sauces-condiments': ['sauces-condiments', 'sauces', 'pickles'],
     household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
     snacks: ['snacks', 'evening-snacks'],
-    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
+    'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'bakery'],
     beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
   };
 
@@ -1452,6 +1465,7 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                   selectedShopName={selectedShopName}
                   shops={shops}
                   products={products}
+                  shopCategories={shopCategories}
                   preBookings={preBookings}
                   todaySummary={todaySalesSummary}
                   salesList={salesList}
@@ -1607,58 +1621,106 @@ export const MerchantDashboard: React.FC<MerchantDashboardProps> = ({
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar scroll-smooth font-malayalam">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setInventoryCategoryFilter('all');
-                          setInventoryCurrentPage(1);
-                        }}
-                        className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap border ${
-                          inventoryCategoryFilter === 'all'
-                            ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
-                            : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
-                        }`}
-                      >
-                        <span>✨ എല്ലാം</span>
-                        <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
-                          inventoryCategoryFilter === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
-                        }`}>
-                          {carriedProducts.length.toLocaleString()}
-                        </span>
-                      </button>
-                      {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
-                        const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
-                        const count = carriedProducts.filter(
-                          (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
-                        ).length;
-                        if (count === 0 && inventoryCategoryFilter !== cat.id) return null;
-                        const isSelected = inventoryCategoryFilter === cat.id;
-
-                        return (
+                    <div className="relative group/catscroll">
+                      {/* Left Scroll Navigation Button */}
+                      {canInvCatScrollLeft && (
+                        <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pr-2 bg-gradient-to-r from-white via-white/90 to-transparent pointer-events-none">
                           <button
-                            key={cat.id}
                             type="button"
-                            onClick={() => {
-                              setInventoryCategoryFilter(cat.id);
-                              setInventoryCurrentPage(1);
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              scrollInvCatLeft();
                             }}
-                            className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap border ${
-                              isSelected
-                                ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
-                                : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
-                            }`}
+                            className="pointer-events-auto w-7 h-7 rounded-full bg-white text-[#0D6344] hover:bg-[#EAF5F0] hover:text-[#094831] shadow-md border border-[#E3ECE7] flex items-center justify-center transition-all cursor-pointer active:scale-90"
+                            title="മുമ്പത്തെ വിഭാഗങ്ങൾ (Scroll Left)"
+                            aria-label="Scroll left categories"
                           >
-                            <span>{cat.icon}</span>
-                            <span>{cat.labelMl || cat.label}</span>
-                            <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
-                              isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
-                            }`}>
-                              {count.toLocaleString()}
-                            </span>
+                            <ChevronLeft className="w-4 h-4" />
                           </button>
-                        );
-                      })}
+                        </div>
+                      )}
+
+                      <div
+                        ref={invCatScrollRef}
+                        onClickCapture={(e) => {
+                          if (invCatDragMovedRef.current) {
+                            e.stopPropagation();
+                          }
+                        }}
+                        className="flex items-center gap-2 overflow-x-auto py-1 no-scrollbar scroll-smooth font-malayalam select-none touch-pan-x"
+                      >
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            setInventoryCategoryFilter('all');
+                            setInventoryCurrentPage(1);
+                            (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                          }}
+                          className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-2 whitespace-nowrap border ${
+                            inventoryCategoryFilter === 'all'
+                              ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
+                              : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
+                          }`}
+                        >
+                          <span>✨ എല്ലാം</span>
+                          <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
+                            inventoryCategoryFilter === 'all' ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            {carriedProducts.length.toLocaleString()}
+                          </span>
+                        </button>
+                        {AVAILABLE_PROVIDER_CATEGORIES.filter((cat) => shopCategories.includes(cat.id)).map((cat) => {
+                          const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+                          const count = carriedProducts.filter(
+                            (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+                          ).length;
+                          if (count === 0 && inventoryCategoryFilter !== cat.id) return null;
+                          const isSelected = inventoryCategoryFilter === cat.id;
+
+                          return (
+                            <button
+                              key={cat.id}
+                              type="button"
+                              onClick={(e) => {
+                                setInventoryCategoryFilter(cat.id);
+                                setInventoryCurrentPage(1);
+                                (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                              }}
+                              className={`px-3.5 py-2 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap border ${
+                                isSelected
+                                  ? 'bg-[#0D6344] text-white border-[#0D6344] shadow-xs scale-102'
+                                  : 'bg-white hover:bg-[#F9FBF9] text-slate-700 border-[#E3ECE7] hover:border-[#0D6344]/30 shadow-2xs'
+                              }`}
+                            >
+                              <span>{cat.icon}</span>
+                              <span>{cat.labelMl || cat.label}</span>
+                              <span className={`text-[10px] font-sans px-1.5 py-0.2 rounded-md font-black ${
+                                isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                              }`}>
+                                {count.toLocaleString()}
+                              </span>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Right Scroll Navigation Button */}
+                      {canInvCatScrollRight && (
+                        <div className="absolute right-0 top-0 bottom-0 z-10 flex items-center pl-2 bg-gradient-to-l from-white via-white/90 to-transparent pointer-events-none">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              scrollInvCatRight();
+                            }}
+                            className="pointer-events-auto w-7 h-7 rounded-full bg-white text-[#0D6344] hover:bg-[#EAF5F0] hover:text-[#094831] shadow-md border border-[#E3ECE7] flex items-center justify-center transition-all cursor-pointer active:scale-90"
+                            title="കൂടുതൽ വിഭാഗങ്ങൾ (Scroll Right)"
+                            aria-label="Scroll right categories"
+                          >
+                            <ChevronRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

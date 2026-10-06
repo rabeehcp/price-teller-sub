@@ -19,6 +19,7 @@ import {
   Smartphone,
   Banknote,
   Printer,
+  ChevronLeft,
   ChevronRight,
   ChevronDown,
   RefreshCw,
@@ -34,6 +35,7 @@ import {
   ArrowRight,
   X,
 } from 'lucide-react';
+import { useHorizontalScroll } from '../utils/useHorizontalScroll';
 
 const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'vegetables', label: 'Vegetables', labelMl: 'പച്ചക്കറികൾ', icon: '🥬' },
@@ -43,6 +45,8 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
   { id: 'dairy', label: 'Dairy & Eggs', labelMl: 'പാൽ & മുട്ട', icon: '🥛' },
   { id: 'staples', label: 'Staples & Grains', labelMl: 'ധാന്യങ്ങൾ', icon: '🍚' },
   { id: 'oils-spices', label: 'Oils & Spices', labelMl: 'എണ്ണ & മസാല', icon: '🫗' },
+  { id: 'sauces-condiments', label: 'Sauces & Pickles', labelMl: 'സോസുകൾ & അച്ചാറുകൾ', icon: '🥫' },
+  { id: 'beverages', label: 'Tea, Coffee & Drinks', labelMl: 'ചായ & പാനീയങ്ങൾ', icon: '☕' },
   { id: 'snacks', label: 'Evening Snacks', labelMl: 'നാലുമണി പലഹാരം', icon: '🥟' },
   { id: 'bakery-breakfast', label: 'Bakery', labelMl: 'ബേക്കറി', icon: '🍞' },
   { id: 'electronics', label: 'Electronics', labelMl: 'ഇലക്ട്രോണിക്സ്', icon: '🔌' },
@@ -53,10 +57,11 @@ const AVAILABLE_PROVIDER_CATEGORIES = [
 
 const CATEGORY_ALIASES: Record<string, string[]> = {
   staples: ['staples', 'rice-grains', 'pulses-legumes'],
-  'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices', 'sauces-condiments'],
+  'sauces-condiments': ['sauces-condiments', 'sauces', 'pickles'],
   household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
   snacks: ['snacks', 'evening-snacks'],
-  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'bakery'],
   beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
 };
 
@@ -100,6 +105,14 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
   // Product Search & Filter for POS
   const [productSearch, setProductSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const {
+    containerRef: categoryScrollRef,
+    canScrollLeft: canCategoryScrollLeft,
+    canScrollRight: canCategoryScrollRight,
+    scrollLeft: scrollCategoriesLeft,
+    scrollRight: scrollCategoriesRight,
+    hasMovedRef: categoryDragMovedRef,
+  } = useHorizontalScroll<HTMLDivElement>();
 
   // Sales History & Summary State
   const [selectedDate, setSelectedDate] = useState<string>(() => new Date().toISOString().substring(0, 10));
@@ -578,40 +591,92 @@ export const MerchantBillingWorkspace: React.FC<MerchantBillingWorkspaceProps> =
                 </button>
               </div>
 
-              {/* Category Filter Pills (Matches Mockup) */}
-              <div className="flex items-center gap-2 overflow-x-auto pb-1 pt-0.5 no-scrollbar scroll-smooth">
-                <button
-                  onClick={() => setSelectedCategory('all')}
-                  className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap ${
-                    selectedCategory === 'all'
-                      ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
-                      : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                  }`}
-                >
-                  എല്ലാം ({eligibleProducts.length.toLocaleString()})
-                </button>
-                {availableCategories.map((cat) => {
-                  const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
-                  const count = eligibleProducts.filter(
-                    (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
-                  ).length;
-                  const isSelected = selectedCategory === cat.id;
-                  return (
+              {/* Category Filter Pills with Desktop & Mobile Side-Scroll Navigation */}
+              <div className="relative group/catscroll">
+                {/* Left Scroll Navigation Button */}
+                {canCategoryScrollLeft && (
+                  <div className="absolute left-0 top-0 bottom-0 z-10 flex items-center pr-2 bg-gradient-to-r from-[#F5F8F6] via-[#F5F8F6]/90 to-transparent pointer-events-none">
                     <button
-                      key={cat.id}
-                      onClick={() => setSelectedCategory(cat.id)}
-                      className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
-                        isSelected
-                          ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
-                          : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
-                      }`}
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollCategoriesLeft();
+                      }}
+                      className="pointer-events-auto w-7 h-7 rounded-full bg-white text-[#0D6344] hover:bg-[#EAF5F0] hover:text-[#094831] shadow-md border border-[#E3ECE7] flex items-center justify-center transition-all cursor-pointer active:scale-90"
+                      title="മുമ്പത്തെ വിഭാഗങ്ങൾ (Scroll Left)"
+                      aria-label="Scroll left categories"
                     >
-                      <span>{cat.icon}</span>
-                      <span>{cat.labelMl || cat.label}</span>
-                      <span className="text-[10px] opacity-80">({count.toLocaleString()})</span>
+                      <ChevronLeft className="w-4 h-4" />
                     </button>
-                  );
-                })}
+                  </div>
+                )}
+
+                <div
+                  ref={categoryScrollRef}
+                  onClickCapture={(e) => {
+                    if (categoryDragMovedRef.current) {
+                      e.stopPropagation();
+                    }
+                  }}
+                  className="flex items-center gap-2 overflow-x-auto pb-1.5 pt-0.5 no-scrollbar scroll-smooth select-none touch-pan-x"
+                >
+                  <button
+                    onClick={(e) => {
+                      setSelectedCategory('all');
+                      (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                    }}
+                    className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer whitespace-nowrap ${
+                      selectedCategory === 'all'
+                        ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
+                        : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                    }`}
+                  >
+                    എല്ലാം ({eligibleProducts.length.toLocaleString()})
+                  </button>
+                  {availableCategories.map((cat) => {
+                    const targetCats = CATEGORY_ALIASES[cat.id] || [cat.id];
+                    const count = eligibleProducts.filter(
+                      (p) => targetCats.includes(p.categoryId) || (cat.id === 'organic' && p.isOrganic)
+                    ).length;
+                    const isSelected = selectedCategory === cat.id;
+                    return (
+                      <button
+                        key={cat.id}
+                        onClick={(e) => {
+                          setSelectedCategory(cat.id);
+                          (e.currentTarget as HTMLElement).scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        }}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer flex items-center gap-1.5 whitespace-nowrap ${
+                          isSelected
+                            ? 'bg-[#EAF5F0] text-[#0D6344] border-2 border-[#0D6344] font-extrabold shadow-2xs'
+                            : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
+                        }`}
+                      >
+                        <span>{cat.icon}</span>
+                        <span>{cat.labelMl || cat.label}</span>
+                        <span className="text-[10px] opacity-80">({count.toLocaleString()})</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Right Scroll Navigation Button */}
+                {canCategoryScrollRight && (
+                  <div className="absolute right-0 top-0 bottom-0 z-10 flex items-center pl-2 bg-gradient-to-l from-[#F5F8F6] via-[#F5F8F6]/90 to-transparent pointer-events-none">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        scrollCategoriesRight();
+                      }}
+                      className="pointer-events-auto w-7 h-7 rounded-full bg-white text-[#0D6344] hover:bg-[#EAF5F0] hover:text-[#094831] shadow-md border border-[#E3ECE7] flex items-center justify-center transition-all cursor-pointer active:scale-90"
+                      title="കൂടുതൽ വിഭാഗങ്ങൾ (Scroll Right)"
+                      aria-label="Scroll right categories"
+                    >
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Products 2-col Grid (Matches Mockup) */}

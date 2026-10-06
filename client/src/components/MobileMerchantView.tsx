@@ -30,6 +30,7 @@ interface MobileMerchantViewProps {
   preBookings?: PreBooking[];
   todaySummary?: DailySalesSummary | null;
   salesList?: MerchantSale[];
+  shopCategories?: string[];
   onOpenDrawer: () => void;
   onBackToShopper: () => void;
   onNavigateTab: (tab: 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
@@ -38,11 +39,22 @@ interface MobileMerchantViewProps {
   preBookingsCount?: number;
 }
 
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  staples: ['staples', 'rice-grains', 'pulses-legumes'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices', 'sauces-condiments'],
+  'sauces-condiments': ['sauces-condiments', 'sauces', 'pickles'],
+  household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
+  snacks: ['snacks', 'evening-snacks'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'bakery'],
+  beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
+};
+
 export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
   authUser,
   selectedShopName,
   shops,
   products,
+  shopCategories,
   preBookings = [],
   todaySummary = null,
   salesList = [],
@@ -56,7 +68,17 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
   const [chartDays, setChartDays] = useState<'7' | '30'>('7');
 
   const currentShop = shops.find((s) => s.name.toLowerCase() === selectedShopName.toLowerCase());
-  const carriedProducts = products.filter(
+  const activeShopCats = (shopCategories && shopCategories.length > 0) ? shopCategories : (currentShop?.categories || []);
+
+  const eligibleProducts = products.filter((p) => {
+    if (!activeShopCats || activeShopCats.length === 0) return true;
+    const eligibleCategoryIds = new Set(
+      activeShopCats.flatMap((category) => CATEGORY_ALIASES[category] || [category])
+    );
+    return eligibleCategoryIds.has(p.categoryId) || (p.isOrganic && activeShopCats.includes('organic'));
+  });
+
+  const carriedProducts = eligibleProducts.filter(
     (p) => p.prices && typeof p.prices[selectedShopName] === 'number' && p.prices[selectedShopName] > 0
   );
   const shopProductsCount = carriedProducts.length;

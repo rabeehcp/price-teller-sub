@@ -26,10 +26,11 @@ const CATEGORY_ALIASES: Record<string, string[]> = {
   vegetables: ['vegetables'],
   fruits: ['fruits'],
   staples: ['staples', 'rice-grains', 'pulses-legumes'],
-  'oils-spices': ['oils-spices', 'oils-sugar', 'spices'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices', 'sauces-condiments'],
+  'sauces-condiments': ['sauces-condiments', 'sauces', 'pickles'],
   household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
   snacks: ['snacks', 'evening-snacks'],
-  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'bakery'],
   beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
 };
 
