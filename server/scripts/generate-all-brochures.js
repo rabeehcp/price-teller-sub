@@ -81,7 +81,7 @@ async function getAuthenticatedUsers() {
         }),
       });
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Seed 150+ master catalogue items to Kalyan Hypermarket
   try {
@@ -106,7 +106,7 @@ async function getAuthenticatedUsers() {
         }),
       });
     }
-  } catch (e) {}
+  } catch (e) { }
 
   return {
     consumerUser: consumerRes.user,
