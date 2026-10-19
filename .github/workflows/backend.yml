@@ -40,17 +40,10 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          ACR_SERVER=$(az acr show \
-            --name pricetelleracr \
-            --query loginServer \
-            -o tsv)
-
+          ACR_SERVER=$(az acr show --name pricetelleracr --query loginServer -o tsv)
           IMAGE="$ACR_SERVER/priceteller-backend:${GITHUB_SHA}"
 
-          docker build \
-            -t "$IMAGE" \
-            ./server
-
+          docker build -t "$IMAGE" ./server
           docker push "$IMAGE"
 
           echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"

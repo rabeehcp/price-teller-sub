@@ -193,92 +193,92 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-16 animate-in fade-in duration-150">
       
-      {/* 1. HERO PROFILE BANNER */}
-      <div className="bg-gradient-to-r from-[#063B2A] via-[#084D37] to-[#0B8F68] text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
-        {/* Subtle decorative circles */}
-        <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-white/5 pointer-events-none blur-2xl" />
-        <div className="absolute bottom-0 right-1/3 -mb-20 w-80 h-80 rounded-full bg-emerald-400/10 pointer-events-none blur-3xl" />
+      {/* 1. HERO PROFILE CARD (Modern, Clean, Warm Kerala Aesthetic) */}
+      <div className="bg-white rounded-3xl p-6 sm:p-7 border border-[#E2DDD0] shadow-sm relative overflow-hidden">
+        {/* Subtle decorative background accents */}
+        <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-gradient-to-br from-[#EAF5EF] via-[#FEF9F0] to-transparent pointer-events-none blur-3xl opacity-70" />
+        <div className="absolute bottom-0 left-1/3 w-64 h-64 rounded-full bg-emerald-500/5 pointer-events-none blur-2xl" />
 
         <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             {/* Big Avatar */}
-            <div className="w-20 h-20 rounded-2xl bg-[#10A978] text-[#063B2A] border-2 border-white/30 flex items-center justify-center text-3xl font-black shadow-lg shrink-0 select-none">
+            <div className="w-20 h-20 rounded-2xl bg-[#064E3B] text-white border-2 border-[#D5EADF] flex items-center justify-center text-3xl font-black shadow-md ring-4 ring-emerald-500/10 shrink-0 select-none font-sans">
               {userLetter}
             </div>
 
-            <div>
+            <div className="space-y-1.5">
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-black text-white m-0 tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-black text-[#14231A] m-0 tracking-tight font-['Baloo_Chettan_2',sans-serif]">
                   {userName}
                 </h1>
-                <span className="inline-flex items-center gap-1 bg-[#10A978]/20 border border-[#10A978]/50 text-emerald-300 text-xs font-bold px-2.5 py-0.5 rounded-full">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
+                <span className="inline-flex items-center gap-1.5 bg-[#EAF5EF] border border-[#CCE7D8] text-[#064E3B] text-xs font-extrabold px-3 py-1 rounded-full font-['Baloo_Chettan_2',sans-serif] shadow-2xs">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>പരിശോധിച്ച ഉപഭോക്താവ്</span>
                 </span>
               </div>
 
-              <div className="flex items-center gap-4 text-xs text-white/80 font-medium mt-1.5 flex-wrap">
-                <span className="flex items-center gap-1">
-                  <Mail className="w-3.5 h-3.5 text-emerald-300" />
+              <div className="flex items-center gap-2.5 text-xs text-[#4E6257] font-medium flex-wrap font-['Baloo_Chettan_2',sans-serif]">
+                <span className="flex items-center gap-1.5 bg-[#F4F1EA] border border-[#E2DDD0] px-3 py-1 rounded-xl text-[#3C5046]">
+                  <Mail className="w-3.5 h-3.5 text-[#064E3B]" />
                   <span>{userEmail}</span>
                 </span>
                 {authUser?.phone && (
-                  <span className="flex items-center gap-1">
-                    <Phone className="w-3.5 h-3.5 text-emerald-300" />
+                  <span className="flex items-center gap-1.5 bg-[#F4F1EA] border border-[#E2DDD0] px-3 py-1 rounded-xl text-[#3C5046]">
+                    <Phone className="w-3.5 h-3.5 text-[#064E3B]" />
                     <span>{authUser.phone}</span>
                   </span>
                 )}
-                <span className="flex items-center gap-1 bg-black/20 px-2 py-0.5 rounded-lg">
-                  <MapPin className="w-3.5 h-3.5 text-emerald-300" />
-                  <span className="font-malayalam">{locationName}</span>
+                <span className="flex items-center gap-1.5 bg-[#EAF5EF] border border-[#CCE7D8] text-[#064E3B] font-bold px-3 py-1 rounded-xl">
+                  <MapPin className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>{locationName}</span>
                 </span>
               </div>
             </div>
           </div>
 
           {/* Action buttons on hero */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 shrink-0 font-['Baloo_Chettan_2',sans-serif]">
             <button
               type="button"
               onClick={onOpenLocationModal}
-              className="px-3.5 py-2 bg-white/10 hover:bg-white/20 border border-white/20 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer font-malayalam"
+              className="px-4 py-2 bg-white hover:bg-[#F4F1EA] border border-[#D5CDBC] text-[#064E3B] rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95"
             >
-              <MapPin className="w-3.5 h-3.5 text-emerald-300" />
+              <MapPin className="w-3.5 h-3.5 text-emerald-600" />
               <span>ലൊക്കേഷൻ മാറ്റുക</span>
             </button>
             <button
               type="button"
               onClick={onLogout}
-              className="px-3.5 py-2 bg-rose-500/20 hover:bg-rose-500/30 border border-rose-400/30 text-rose-200 hover:text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer font-malayalam"
+              className="px-4 py-2 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs hover:shadow-xs active:scale-95"
             >
-              <LogOut className="w-3.5 h-3.5" />
+              <LogOut className="w-3.5 h-3.5 text-rose-600" />
               <span>ലോഗ് ഔട്ട്</span>
             </button>
           </div>
         </div>
       </div>
 
-      {/* 2. STATS QUICK-JUMP BAR */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 font-malayalam">
+      {/* 2. STATS QUICK-JUMP BENTO GRID */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 font-['Baloo_Chettan_2',sans-serif]">
         <button
           type="button"
           onClick={() => setActiveTab('orders')}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             activeTab === 'orders'
-              ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-sm ring-1 ring-[#0B8F68]'
-              : 'bg-white border-[#E3ECE7] hover:border-[#C3EEDC] hover:bg-[#F5F8F6] shadow-2xs'
+              ? 'bg-white border-2 border-[#064E3B] ring-4 ring-[#064E3B]/10 shadow-md scale-[1.01]'
+              : 'bg-white border-[#E2DDD0] hover:border-[#BCDDC8] hover:bg-[#FAF9F5] shadow-2xs'
           }`}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-[#4D6158]">ഓർഡറുകൾ (Orders)</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#0B8F68] flex items-center justify-center">
+            <span className="text-xs font-bold text-[#4E6257]">ഓർഡറുകൾ (Orders)</span>
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === 'orders' ? 'bg-[#064E3B] text-white' : 'bg-emerald-50 text-[#064E3B]'}`}>
               <Package className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#17221D] font-sans">
+          <div className="text-2xl font-black text-[#14231A] font-sans">
             {bookings.length}
           </div>
-          <div className="text-[11px] text-[#66756E] mt-0.5">മുൻകൂട്ടി ബുക്കിംഗുകൾ</div>
+          <div className="text-[11px] text-[#60796D] mt-0.5 font-['Anek_Malayalam',sans-serif]">മുൻകൂട്ടി ബുക്കിംഗുകൾ</div>
         </button>
 
         <button
@@ -286,20 +286,20 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
           onClick={() => setActiveTab('lists')}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             activeTab === 'lists'
-              ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-sm ring-1 ring-[#0B8F68]'
-              : 'bg-white border-[#E3ECE7] hover:border-[#C3EEDC] hover:bg-[#F5F8F6] shadow-2xs'
+              ? 'bg-white border-2 border-[#D97706] ring-4 ring-amber-500/10 shadow-md scale-[1.01]'
+              : 'bg-white border-[#E2DDD0] hover:border-[#FDE68A] hover:bg-[#FAF9F5] shadow-2xs'
           }`}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-[#4D6158]">സേവ് ചെയ്ത ലിസ്റ്റുകൾ</span>
-            <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#0B8F68] flex items-center justify-center">
+            <span className="text-xs font-bold text-[#4E6257]">സേവ് ചെയ്ത ലിസ്റ്റുകൾ</span>
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === 'lists' ? 'bg-[#D97706] text-white' : 'bg-amber-50 text-amber-700'}`}>
               <Bookmark className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#17221D] font-sans">
+          <div className="text-2xl font-black text-[#14231A] font-sans">
             {consumerData?.savedLists?.length || 0}
           </div>
-          <div className="text-[11px] text-[#66756E] mt-0.5">ഷോപ്പിംഗ് ലിസ്റ്റുകൾ</div>
+          <div className="text-[11px] text-[#60796D] mt-0.5 font-['Anek_Malayalam',sans-serif]">ഷോപ്പിംഗ് ലിസ്റ്റുകൾ</div>
         </button>
 
         <button
@@ -307,20 +307,20 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
           onClick={() => setActiveTab('favorites')}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             activeTab === 'favorites'
-              ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-sm ring-1 ring-[#0B8F68]'
-              : 'bg-white border-[#E3ECE7] hover:border-[#C3EEDC] hover:bg-[#F5F8F6] shadow-2xs'
+              ? 'bg-white border-2 border-rose-500 ring-4 ring-rose-500/10 shadow-md scale-[1.01]'
+              : 'bg-white border-[#E2DDD0] hover:border-rose-200 hover:bg-[#FAF9F5] shadow-2xs'
           }`}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-[#4D6158]">പ്രിയപ്പെട്ടവ (Favorites)</span>
-            <div className="w-8 h-8 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+            <span className="text-xs font-bold text-[#4E6257]">പ്രിയപ്പെട്ടവ (Favorites)</span>
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === 'favorites' ? 'bg-rose-500 text-white' : 'bg-rose-50 text-rose-600'}`}>
               <Heart className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-2xl font-black text-[#17221D] font-sans">
+          <div className="text-2xl font-black text-[#14231A] font-sans">
             {favoriteProducts.length}
           </div>
-          <div className="text-[11px] text-[#66756E] mt-0.5">സേവ് ചെയ്ത ഉൽപ്പന്നങ്ങൾ</div>
+          <div className="text-[11px] text-[#60796D] mt-0.5 font-['Anek_Malayalam',sans-serif]">സേവ് ചെയ്ത ഉൽപ്പന്നങ്ങൾ</div>
         </button>
 
         <button
@@ -328,71 +328,71 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
           onClick={() => setActiveTab('profile')}
           className={`p-4 rounded-2xl border text-left transition-all cursor-pointer ${
             activeTab === 'profile'
-              ? 'bg-[#E8F5EE] border-[#0B8F68] shadow-sm ring-1 ring-[#0B8F68]'
-              : 'bg-white border-[#E3ECE7] hover:border-[#C3EEDC] hover:bg-[#F5F8F6] shadow-2xs'
+              ? 'bg-white border-2 border-[#064E3B] ring-4 ring-teal-500/10 shadow-md scale-[1.01]'
+              : 'bg-white border-[#E2DDD0] hover:border-teal-200 hover:bg-[#FAF9F5] shadow-2xs'
           }`}
         >
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-xs font-bold text-[#4D6158]">പ്രൊഫൈൽ വിവരങ്ങൾ</span>
-            <div className="w-8 h-8 rounded-xl bg-brand-50 text-[#0B8F68] flex items-center justify-center">
+            <span className="text-xs font-bold text-[#4E6257]">പ്രൊഫൈൽ വിവരങ്ങൾ</span>
+            <div className={`w-8 h-8 rounded-xl flex items-center justify-center ${activeTab === 'profile' ? 'bg-[#064E3B] text-white' : 'bg-teal-50 text-teal-700'}`}>
               <UserIcon className="w-4 h-4" />
             </div>
           </div>
-          <div className="text-base font-black text-[#17221D] truncate">
+          <div className="text-base font-black text-[#14231A] truncate font-sans">
             {userName.split(' ')[0]}
           </div>
-          <div className="text-[11px] text-[#66756E] mt-0.5">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ</div>
+          <div className="text-[11px] text-[#60796D] mt-0.5 font-['Anek_Malayalam',sans-serif]">അക്കൗണ്ട് ക്രമീകരണങ്ങൾ</div>
         </button>
       </div>
 
-      {/* 3. TAB NAVIGATION */}
-      <div className="flex items-center gap-2 border-b border-[#E3ECE7] pb-1 font-malayalam">
+      {/* 3. TAB NAVIGATION (Clean Segmented Pill Design) */}
+      <div className="bg-[#EFECE3] p-1.5 rounded-2xl flex items-center gap-1.5 overflow-x-auto no-scrollbar font-['Baloo_Chettan_2',sans-serif]">
         <button
           type="button"
           onClick={() => setActiveTab('profile')}
-          className={`px-4 py-2.5 rounded-t-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
             activeTab === 'profile'
-              ? 'bg-white border-t-2 border-t-[#0B8F68] border-x border-[#E3ECE7] text-[#063B2A] -mb-1.5'
-              : 'text-[#66756E] hover:text-[#17221D]'
+              ? 'bg-white text-[#064E3B] shadow-sm font-black'
+              : 'text-[#5C7267] hover:text-[#14231A]'
           }`}
         >
-          <UserIcon className="w-4 h-4 text-[#0B8F68]" />
+          <UserIcon className="w-4 h-4" />
           <span>പ്രൊഫൈൽ (Profile)</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('orders')}
-          className={`px-4 py-2.5 rounded-t-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
             activeTab === 'orders'
-              ? 'bg-white border-t-2 border-t-[#0B8F68] border-x border-[#E3ECE7] text-[#063B2A] -mb-1.5'
-              : 'text-[#66756E] hover:text-[#17221D]'
+              ? 'bg-white text-[#064E3B] shadow-sm font-black'
+              : 'text-[#5C7267] hover:text-[#14231A]'
           }`}
         >
-          <Package className="w-4 h-4 text-[#0B8F68]" />
+          <Package className="w-4 h-4" />
           <span>ഓർഡറുകൾ ({bookings.length})</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('lists')}
-          className={`px-4 py-2.5 rounded-t-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
             activeTab === 'lists'
-              ? 'bg-white border-t-2 border-t-[#0B8F68] border-x border-[#E3ECE7] text-[#063B2A] -mb-1.5'
-              : 'text-[#66756E] hover:text-[#17221D]'
+              ? 'bg-white text-[#064E3B] shadow-sm font-black'
+              : 'text-[#5C7267] hover:text-[#14231A]'
           }`}
         >
-          <Bookmark className="w-4 h-4 text-[#0B8F68]" />
+          <Bookmark className="w-4 h-4" />
           <span>സേവ് ചെയ്ത ലിസ്റ്റുകൾ ({consumerData?.savedLists?.length || 0})</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveTab('favorites')}
-          className={`px-4 py-2.5 rounded-t-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 ${
+          className={`px-4 py-2 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
             activeTab === 'favorites'
-              ? 'bg-white border-t-2 border-t-[#0B8F68] border-x border-[#E3ECE7] text-[#063B2A] -mb-1.5'
-              : 'text-[#66756E] hover:text-[#17221D]'
+              ? 'bg-white text-[#064E3B] shadow-sm font-black'
+              : 'text-[#5C7267] hover:text-[#14231A]'
           }`}
         >
           <Heart className="w-4 h-4 text-rose-500" />
@@ -531,11 +531,11 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
             {/* Top Bar: Title & Refresh */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-2xl font-black text-slate-900 tracking-tight m-0 font-sans">
+                <h2 className="text-2xl font-black text-[#14231A] tracking-tight m-0 font-['Baloo_Chettan_2',sans-serif]">
                   My Orders & Pre-Bookings
                 </h2>
-                <p className="text-xs text-slate-500 mt-1 font-malayalam">
-                  നിങ്ങൾ അടുത്തുള്ള സൂപ്പർമാർക്കറ്റുകളിൽ ബുക്ക് ചെയ്ത സാധനങ്ങളുടെ തത്സമയ സ്റ്റാറ്റസ്.
+                <p className="text-xs text-[#526B5F] mt-1 font-['Anek_Malayalam',sans-serif]">
+                  നിങ്ങൾ സമീപത്തെ കടകളിൽ ബുക്ക് ചെയ്ത സാധനങ്ങളുടെ തത്സമയ സ്റ്റാറ്റസ്.
                 </p>
               </div>
 
@@ -543,7 +543,7 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                 type="button"
                 onClick={() => loadBookings()}
                 disabled={isLoadingBookings}
-                className="p-2.5 text-[#0D6344] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold"
+                className="p-2.5 text-[#064E3B] bg-white hover:bg-[#F3EFE6] border border-[#D5CDBC] rounded-xl transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold shadow-2xs active:scale-95 font-['Baloo_Chettan_2',sans-serif]"
                 title="Refresh orders"
               >
                 <RefreshCw className={`w-4 h-4 ${isLoadingBookings ? 'animate-spin' : ''}`} />
@@ -552,7 +552,7 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
             </div>
 
             {/* Filter Pills & Search Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#E2DDD0] pb-4 font-['Baloo_Chettan_2',sans-serif]">
               {/* Filter Pills */}
               <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
                 <button
@@ -560,8 +560,8 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                   onClick={() => setOrderFilterStatus('all')}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                     orderFilterStatus === 'all'
-                      ? 'bg-[#0D6344] text-white shadow-2xs'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                      ? 'bg-[#064E3B] text-white shadow-xs'
+                      : 'bg-white text-[#425248] border border-[#E2DDD0] hover:bg-[#FAF9F5]'
                   }`}
                 >
                   All Orders ({bookings.length})
@@ -572,8 +572,8 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                   onClick={() => setOrderFilterStatus('pending')}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                     orderFilterStatus === 'pending'
-                      ? 'bg-[#0D6344] text-white shadow-2xs'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                      ? 'bg-[#064E3B] text-white shadow-xs'
+                      : 'bg-white text-[#425248] border border-[#E2DDD0] hover:bg-[#FAF9F5]'
                   }`}
                 >
                   In Progress ({pendingCount})
@@ -584,8 +584,8 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                   onClick={() => setOrderFilterStatus('approved')}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                     orderFilterStatus === 'approved'
-                      ? 'bg-[#0D6344] text-white shadow-2xs'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                      ? 'bg-[#064E3B] text-white shadow-xs'
+                      : 'bg-white text-[#425248] border border-[#E2DDD0] hover:bg-[#FAF9F5]'
                   }`}
                 >
                   Ready for Pickup ({readyCount})
@@ -596,8 +596,8 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                   onClick={() => setOrderFilterStatus('completed')}
                   className={`px-4 py-1.5 rounded-full text-xs font-bold shrink-0 transition-all cursor-pointer ${
                     orderFilterStatus === 'completed'
-                      ? 'bg-[#0D6344] text-white shadow-2xs'
-                      : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                      ? 'bg-[#064E3B] text-white shadow-xs'
+                      : 'bg-white text-[#425248] border border-[#E2DDD0] hover:bg-[#FAF9F5]'
                   }`}
                 >
                   Completed ({completedCount})
@@ -611,7 +611,7 @@ export const DesktopProfileView: React.FC<DesktopProfileViewProps> = ({
                   value={orderSearchQuery}
                   onChange={(e) => setOrderSearchQuery(e.target.value)}
                   placeholder="Order Search"
-                  className="w-full pl-3.5 pr-9 py-2 bg-white border border-slate-200 rounded-full text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-[#0D6344] focus:ring-1 focus:ring-[#0D6344] shadow-2xs"
+                  className="w-full pl-3.5 pr-9 py-2 bg-white border border-[#E2DDD0] rounded-full text-xs text-[#14231A] placeholder-slate-400 focus:outline-none focus:border-[#064E3B] focus:ring-1 focus:ring-[#064E3B] shadow-2xs font-sans"
                 />
                 <Search className="w-4 h-4 text-slate-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
               </div>

@@ -75,6 +75,7 @@ import {
   toggleConsumerFavoriteApi,
   fetchMerchantSubscriptionStatusApi,
   fetchCurrentUserApi,
+  updateUserLocationApi,
   getAuthToken,
 } from './services/api';
 import { ShoppingCart, X, Home, Store, MapPin, Heart, Clock, User as UserIcon, Search, Shield, ChevronRight, Scale, MessageCircle, ArrowLeft, ShoppingBag } from 'lucide-react';
@@ -191,7 +192,16 @@ export const App: React.FC = () => {
   const [isVerifyingSession, setIsVerifyingSession] = useState<boolean>(() => !!getAuthToken());
 
   // Shopper Main View Tab ('home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals')
-  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals'>('home');
+  const [shopperTab, setShopperTab] = useState<'home' | 'search' | 'cart' | 'compare' | 'orders' | 'profile' | 'shops' | 'map' | 'favorites' | 'categories' | 'deals'>(() => {
+    try {
+      const params = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+      const tab = params.get('tab') || params.get('shopperTab');
+      if (tab && ['home', 'search', 'cart', 'compare', 'orders', 'profile', 'shops', 'map', 'favorites', 'categories', 'deals'].includes(tab)) {
+        return tab as any;
+      }
+    } catch {}
+    return 'home';
+  });
 
   // App View State ('welcome' | 'consumer' | 'merchant' | 'admin' | 'partner')
   const [appView, setAppView] = useState<'welcome' | 'consumer' | 'merchant' | 'admin' | 'partner'>(() => {
@@ -278,6 +288,9 @@ export const App: React.FC = () => {
             localStorage.setItem('priceteller_auth_user', JSON.stringify(user));
             sessionStorage.setItem('priceteller_token', tokenToPersist);
             sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
+            if (user.locationId) {
+              localStorage.setItem('priceteller_consumer_location_id', user.locationId);
+            }
           } catch { }
 
           const wantsAdmin = isExplicitAdminRoute();
@@ -637,14 +650,30 @@ export const App: React.FC = () => {
     }
   }, [products]);
 
-  // Location Selection Handler with Strict Persistence
+  // Location Selection Handler with Strict Persistence & Backend Profile Sync
   const handleSelectLocation = useCallback((loc: Location) => {
     setCurrentLocation(loc);
     try {
       localStorage.setItem('priceteller_consumer_location_id', loc.id);
       localStorage.setItem('priceteller_location_manually_selected', 'true');
     } catch { }
-  }, []);
+
+    // If user is logged in, sync location to user's backend profile so other computers automatically inherit it
+    if (authUser?.token) {
+      setAuthUser((prev) => {
+        if (!prev) return null;
+        const updated = { ...prev, locationId: loc.id };
+        try {
+          localStorage.setItem('priceteller_auth_user', JSON.stringify(updated));
+          sessionStorage.setItem('priceteller_auth_user', JSON.stringify(updated));
+        } catch { }
+        return updated;
+      });
+      updateUserLocationApi(loc.id, authUser.token).catch((err) => {
+        console.warn('Could not sync user location to cloud profile:', err);
+      });
+    }
+  }, [authUser?.token]);
 
   const [isDetectingGps, setIsDetectingGps] = useState<boolean>(false);
   const [gpsFeedback, setGpsFeedback] = useState<{ text: string; isWarning?: boolean } | null>(null);
@@ -735,22 +764,20 @@ export const App: React.FC = () => {
       setCategories(cats);
 
       // Determine Initial Consumer Hyperlocal Region:
-      // 1. Check saved location in LocalStorage (e.g. Areekode, Tirur)
+      // 1. Check logged-in user's saved account location (top priority across all devices)
       let chosenLoc: Location | null = null;
-      let hasExplicitSavedLoc = false;
-      try {
-        const savedLocId = localStorage.getItem('priceteller_consumer_location_id');
-        if (savedLocId) {
-          chosenLoc = locs.find((l) => l.id === savedLocId) || null;
-          if (chosenLoc) {
-            hasExplicitSavedLoc = true;
-          }
-        }
-      } catch { }
-
-      // 2. Or auth user preferred location
-      if (!chosenLoc && authUser?.locationId) {
+      if (authUser?.locationId) {
         chosenLoc = locs.find((l) => l.id === authUser.locationId) || null;
+      }
+
+      // 2. Check saved location in LocalStorage (e.g. Areekode, Tirur)
+      if (!chosenLoc) {
+        try {
+          const savedLocId = localStorage.getItem('priceteller_consumer_location_id');
+          if (savedLocId) {
+            chosenLoc = locs.find((l) => l.id === savedLocId) || null;
+          }
+        } catch { }
       }
 
       // 3. Fallback to first registered hub
@@ -761,11 +788,23 @@ export const App: React.FC = () => {
       if (chosenLoc) {
         setCurrentLocation(chosenLoc);
       }
-
-      // 4. Default to saved or first registered hub without auto-overriding via IP geolocation
     }
     loadInitialData();
   }, [authUser?.locationId]);
+
+  // Auto-switch to user's saved previous/default location whenever auth user or consumer data updates
+  useEffect(() => {
+    const targetLocId = authUser?.locationId || consumerData?.preferredLocationId;
+    if (targetLocId && locations.length > 0) {
+      const match = locations.find((l) => l.id === targetLocId);
+      if (match && currentLocation?.id !== match.id) {
+        setCurrentLocation(match);
+        try {
+          localStorage.setItem('priceteller_consumer_location_id', match.id);
+        } catch { }
+      }
+    }
+  }, [authUser?.locationId, consumerData?.preferredLocationId, locations, currentLocation?.id]);
 
   // Admin/merchant catalog loading is intentionally isolated from consumer loading.
   // This prevents consumer location/search changes from restarting protected catalog requests.
@@ -1026,6 +1065,18 @@ export const App: React.FC = () => {
       sessionStorage.setItem('priceteller_token', token);
       sessionStorage.setItem('priceteller_auth_user', JSON.stringify(user));
     } catch { }
+
+    // Auto-switch to user's saved/previous default location when logging in from any computer!
+    if (user.locationId) {
+      try {
+        localStorage.setItem('priceteller_consumer_location_id', user.locationId);
+      } catch { }
+      const matchedLoc = locations.find((l) => l.id === user.locationId);
+      if (matchedLoc) {
+        setCurrentLocation(matchedLoc);
+      }
+    }
+
     setIsAuthModalOpen(false);
     if (user.role === 'admin') {
       window.history.pushState({}, '', '/admin');
@@ -1115,13 +1166,41 @@ export const App: React.FC = () => {
       handleOpenAuthModal('consumer-login');
       return;
     }
+
+    const currentFavs = consumerData?.favorites || [];
+    const isCurrentlyFav = currentFavs.includes(product.id);
+    const updatedFavs = isCurrentlyFav
+      ? currentFavs.filter((id) => id !== product.id)
+      : [...currentFavs, product.id];
+
+    // Optimistic UI update
+    setConsumerData((prev) =>
+      prev
+        ? { ...prev, favorites: updatedFavs }
+        : {
+            userId: authUser.id,
+            basket: [],
+            savedLists: [],
+            favorites: updatedFavs,
+            tripHistory: [],
+            preferredLocationId: authUser.locationId || 'tirur',
+            lastActive: new Date().toISOString(),
+          }
+    );
+
     try {
       const res = await toggleConsumerFavoriteApi(authUser.id, product.id, authUser.token);
-      if (res && res.data) {
-        setConsumerData((prev) => prev ? { ...prev, favorites: res.data.favorites } : null);
+      if (res && Array.isArray(res.favorites)) {
+        setConsumerData((prev) =>
+          prev ? { ...prev, favorites: res.favorites } : null
+        );
       }
     } catch (e) {
       console.warn('Failed to toggle favorite', e);
+      // Revert on error
+      setConsumerData((prev) =>
+        prev ? { ...prev, favorites: currentFavs } : null
+      );
     }
   };
 
@@ -1215,7 +1294,9 @@ export const App: React.FC = () => {
           spices: ['spices', 'oils-spices', 'oils-sugar'],
           'oils-spices': ['oils-spices', 'spices', 'oils-sugar'],
           beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
-          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'snacks', 'bread-bakery'],
+          snacks: ['snacks', 'evening-snacks'],
+          'evening-snacks': ['snacks', 'evening-snacks'],
+          'bakery-breakfast': ['bakery-breakfast', 'bakery', 'biscuits-snacks', 'bread-bakery'],
           'cleaning-household': ['household', 'cleaning-household', 'storage-containers'],
           household: ['household', 'cleaning-household', 'storage-containers'],
         };
@@ -1259,7 +1340,7 @@ export const App: React.FC = () => {
           </div>
           <div className="flex items-center gap-2">
             <div className="w-4 h-4 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PeediyaCart Session...</span>
+            <span className="text-sm font-bold tracking-wide text-gray-200">Verifying PeediaCart Session...</span>
           </div>
           <p className="text-xs text-gray-500 font-medium">Validating credentials with secure server authority</p>
         </div>
@@ -1323,6 +1404,8 @@ export const App: React.FC = () => {
             categories={categories}
             shops={shops}
             initialCategoryId={addProductInitialCategory}
+            token={authUser?.token}
+            shopName={authUser?.shopName}
             onClose={() => {
               setIsAddProductModalOpen(false);
               setAddProductInitialCategory(undefined);
@@ -1505,6 +1588,8 @@ export const App: React.FC = () => {
             categories={categories}
             shops={shops}
             initialCategoryId={addProductInitialCategory}
+            token={authUser?.token}
+            shopName={authUser?.shopName}
             onClose={() => {
               setIsAddProductModalOpen(false);
               setAddProductInitialCategory(undefined);
@@ -1595,6 +1680,10 @@ export const App: React.FC = () => {
           onOpenDrawer={() => setIsMobileDrawerOpen(true)}
           onOpenProfile={() => setShopperTab('profile')}
           onOpenChat={() => handleOpenChat()}
+          onOpenPartnerPortal={() => {
+            window.history.pushState({}, '', '/partner');
+            setAppView('partner');
+          }}
           authUser={authUser}
           unreadNotificationsCount={1}
         />
@@ -1611,7 +1700,7 @@ export const App: React.FC = () => {
               onOpenAuthModal={handleOpenAuthModal}
               onOpenFavorites={() => {
                 if (!authUser) handleOpenAuthModal('consumer-login');
-                else setShopperTab('profile');
+                else setShopperTab('favorites');
               }}
               onOpenOrders={() => {
                 if (!authUser) handleOpenAuthModal('consumer-login');
@@ -1622,6 +1711,10 @@ export const App: React.FC = () => {
                 else setShopperTab('profile');
               }}
               onOpenFlashDeals={() => setShopperTab('deals')}
+              onOpenPartnerPortal={() => {
+                window.history.pushState({}, '', '/partner');
+                setAppView('partner');
+              }}
               onSelectRole={(r) => {
                 if (r === 'shopper') {
                   setAppView('consumer');
@@ -1634,6 +1727,7 @@ export const App: React.FC = () => {
               onLogout={handleLogout}
               basketCount={totalBasketCount}
               basketSubtotal={basketSubtotal}
+              favoritesCount={consumerData?.favorites?.length || 0}
               isRightSidebarOpen={isDesktopRightSidebarOpen}
               onToggleRightSidebar={() => setIsDesktopRightSidebarOpen((prev) => !prev)}
             />
@@ -1650,6 +1744,7 @@ export const App: React.FC = () => {
                   category={selectedMobileCategory}
                   products={products}
                   basket={basket}
+                  favorites={consumerData?.favorites || []}
                   onBack={() => {
                     setSelectedMobileCategory(null);
                     setSelectedCategoryId('all');
@@ -1658,6 +1753,7 @@ export const App: React.FC = () => {
                   onSelectProduct={(p) => setSelectedMobileProduct(p)}
                   onAddToBasket={handleAddToBasket}
                   onQuantityChange={handleQuantityChange}
+                  onToggleFavorite={handleToggleFavorite}
                 />
               ) : (
                 <MobileHomeView
@@ -1771,6 +1867,10 @@ export const App: React.FC = () => {
                 consumerData={consumerData}
                 onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
                 onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onOpenPartnerPortal={() => {
+                  window.history.pushState({}, '', '/partner');
+                  setAppView('partner');
+                }}
                 onLogout={handleLogout}
                 onBack={() => setShopperTab('home')}
                 onSelectSubTab={(tabId) => {
@@ -1784,7 +1884,7 @@ export const App: React.FC = () => {
                     else setIsConsumerDashboardOpen(true);
                   } else if (tabId === 'favorites') {
                     if (!authUser) handleOpenAuthModal('consumer-login');
-                    else setShopperTab('profile');
+                    else setShopperTab('favorites');
                   }
                 }}
               />
@@ -2000,6 +2100,28 @@ export const App: React.FC = () => {
               />
             )}
 
+            {shopperTab === 'favorites' && (
+              <DesktopProfileView
+                authUser={authUser}
+                consumerData={consumerData}
+                products={products}
+                currentLocation={currentLocation}
+                initialTab="favorites"
+                onOpenLocationModal={() => setIsMobileLocationModalOpen(true)}
+                onOpenAuthModal={() => handleOpenAuthModal('consumer-login')}
+                onLogout={handleLogout}
+                onLoadListIntoBasket={handleLoadSavedList}
+                onDeleteList={handleDeleteNamedList}
+                onAddFavoriteToBasket={(p) => handleAddToBasket(p, p.defaultUnit)}
+                onRemoveFavorite={(prodId) => {
+                  const p = products.find((x) => x.id === prodId);
+                  if (p) handleToggleFavorite(p);
+                }}
+                onOpenChat={(shopName) => handleOpenChat(shopName)}
+                onGoShopping={() => setShopperTab('home')}
+              />
+            )}
+
             {/* Desktop Full Cart Page */}
             {shopperTab === 'cart' && (
               <div className="max-w-3xl mx-auto py-4">
@@ -2082,8 +2204,8 @@ export const App: React.FC = () => {
               <div className="w-6 h-6 rounded-lg bg-brand-50 text-brand-700 flex items-center justify-center text-xs">
                 🛒
               </div>
-              <span className="font-bold text-slate-dark">PeediyaCart</span>
-              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PeediyaCart”</span>
+              <span className="font-bold text-slate-dark">PeediaCart</span>
+              <span className="font-malayalam text-slate-muted">· “നിങ്ങളുടെ പൈസയ്ക്ക് ഏറ്റവും നല്ലത് — PeediaCart”</span>
             </div>
             <div className="flex items-center gap-3 text-[11px] font-medium text-slate-muted">
               <span>📍 Serving Kerala Supermarkets</span>
@@ -2290,6 +2412,8 @@ export const App: React.FC = () => {
         <AddProductModal
           categories={categories}
           shops={shops}
+          token={authUser?.token}
+          shopName={authUser?.shopName}
           onClose={() => setIsAddProductModalOpen(false)}
           onProductCreated={(newProd, andAddToBasket) => {
             setProducts((prev) => [newProd, ...prev]);
@@ -2449,6 +2573,11 @@ export const App: React.FC = () => {
             handleOpenAuthModal('merchant-login');
           }
         }}
+        onOpenPartnerPortal={() => {
+          setIsMobileDrawerOpen(false);
+          window.history.pushState({}, '', '/partner');
+          setAppView('partner');
+        }}
         onOpenAdminPortal={() => {
           if (authUser?.role === 'admin') {
             window.history.pushState({}, '', '/admin');
@@ -2481,6 +2610,7 @@ export const App: React.FC = () => {
         <MobileProductDetailModal
           product={selectedMobileProduct}
           basket={basket}
+          isFavorite={Boolean(consumerData?.favorites?.includes(selectedMobileProduct.id))}
           onClose={() => setSelectedMobileProduct(null)}
           onOpenCart={() => {
             setSelectedMobileProduct(null);
@@ -2489,6 +2619,7 @@ export const App: React.FC = () => {
           onOpenChat={() => handleOpenChat()}
           onAdd={(p, u) => handleAddToBasket(p, u)}
           onQuantityChange={handleQuantityChange}
+          onToggleFavorite={handleToggleFavorite}
         />
       )}
 
@@ -2503,12 +2634,12 @@ export const App: React.FC = () => {
           <button
             type="button"
             onClick={() => handleOpenChat()}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-[#063B2A] hover:bg-[#0B8F68] text-white rounded-full shadow-[0_4px_16px_rgba(6,59,42,0.3)] border border-[#10A978]/40 active:scale-95 transition-all cursor-pointer font-malayalam ring-2 ring-black/5"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-full shadow-[0_4px_16px_rgba(4,120,87,0.3)] border border-emerald-500/40 active:scale-95 transition-all cursor-pointer font-malayalam ring-2 ring-black/5"
             title="കടകളുമായി ചാറ്റ് ചെയ്യുക (Chat with Store)"
             aria-label="Chat with Store"
           >
-            <div className="relative w-5 h-5 rounded-full bg-[#10A978] flex items-center justify-center text-[#063B2A] shrink-0 shadow-xs">
-              <MessageCircle className="w-3 h-3 text-[#063B2A]" />
+            <div className="relative w-5 h-5 rounded-full bg-emerald-400 flex items-center justify-center text-emerald-950 shrink-0 shadow-xs">
+              <MessageCircle className="w-3 h-3 text-emerald-950" />
             </div>
             <span className="text-xs font-black text-white tracking-tight">ചാറ്റ്</span>
           </button>

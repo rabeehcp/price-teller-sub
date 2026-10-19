@@ -2,11 +2,21 @@
   "globalHeaders": {
     "Cross-Origin-Opener-Policy": "same-origin-allow-popups"
   },
+  "routes": [
+    {
+      "route": "/PeediaCart_Official_Brochure.pdf",
+      "redirect": "/PeediaCart_Merchant_Brochure.pdf",
+      "statusCode": 301
+    }
+  ],
   "navigationFallback": {
     "rewrite": "/index.html",
     "exclude": [
-      "/*.{css,js,json,ico,png,jpg,jpeg,gif,svg,webp,woff,woff2,ttf}",
+      "/*.{css,js,json,ico,png,jpg,jpeg,gif,svg,webp,woff,woff2,ttf,pdf}",
       "/api/*"
     ]
+  },
+  "mimeTypes": {
+    ".pdf": "application/pdf"
   }
 }

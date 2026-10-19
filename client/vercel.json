@@ -12,6 +12,13 @@
       ]
     }
   ],
+  "redirects": [
+    {
+      "source": "/PeediaCart_Official_Brochure.pdf",
+      "destination": "/PeediaCart_Merchant_Brochure.pdf",
+      "permanent": true
+    }
+  ],
   "rewrites": [
     {
       "source": "/api/:path*",

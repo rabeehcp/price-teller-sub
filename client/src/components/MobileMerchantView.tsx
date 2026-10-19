@@ -19,6 +19,7 @@ import {
   CalendarCheck,
   BarChart3,
   CheckCircle2,
+  Truck,
 } from 'lucide-react';
 
 interface MobileMerchantViewProps {
@@ -29,19 +30,31 @@ interface MobileMerchantViewProps {
   preBookings?: PreBooking[];
   todaySummary?: DailySalesSummary | null;
   salesList?: MerchantSale[];
+  shopCategories?: string[];
   onOpenDrawer: () => void;
   onBackToShopper: () => void;
-  onNavigateTab: (tab: 'inventory' | 'billing' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
+  onNavigateTab: (tab: 'inventory' | 'billing' | 'delivery' | 'prebookings' | 'chats' | 'profile' | 'deals') => void;
   onOpenAddProduct: () => void;
   onOpenSubscriptionPaywall?: () => void;
   preBookingsCount?: number;
 }
+
+const CATEGORY_ALIASES: Record<string, string[]> = {
+  staples: ['staples', 'rice-grains', 'pulses-legumes'],
+  'oils-spices': ['oils-spices', 'oils-sugar', 'spices', 'sauces-condiments'],
+  'sauces-condiments': ['sauces-condiments', 'sauces', 'pickles'],
+  household: ['household', 'cleaning-household', 'storage-containers', 'baby-family', 'personal-care'],
+  snacks: ['snacks', 'evening-snacks'],
+  'bakery-breakfast': ['bakery-breakfast', 'biscuits-snacks', 'bread-bakery', 'bakery'],
+  beverages: ['beverages', 'drinks', 'tea-coffee', 'juices'],
+};
 
 export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
   authUser,
   selectedShopName,
   shops,
   products,
+  shopCategories,
   preBookings = [],
   todaySummary = null,
   salesList = [],
@@ -55,7 +68,17 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
   const [chartDays, setChartDays] = useState<'7' | '30'>('7');
 
   const currentShop = shops.find((s) => s.name.toLowerCase() === selectedShopName.toLowerCase());
-  const carriedProducts = products.filter(
+  const activeShopCats = (shopCategories && shopCategories.length > 0) ? shopCategories : (currentShop?.categories || []);
+
+  const eligibleProducts = products.filter((p) => {
+    if (!activeShopCats || activeShopCats.length === 0) return true;
+    const eligibleCategoryIds = new Set(
+      activeShopCats.flatMap((category) => CATEGORY_ALIASES[category] || [category])
+    );
+    return eligibleCategoryIds.has(p.categoryId) || (p.isOrganic && activeShopCats.includes('organic'));
+  });
+
+  const carriedProducts = eligibleProducts.filter(
     (p) => p.prices && typeof p.prices[selectedShopName] === 'number' && p.prices[selectedShopName] > 0
   );
   const shopProductsCount = carriedProducts.length;
@@ -260,6 +283,22 @@ export const MobileMerchantView: React.FC<MobileMerchantViewProps> = ({
             <b className="text-xs font-black text-[#17221D] block">ഓർഡറുകൾ</b>
             <span className="text-[10px] text-[#0B8F68] font-bold">
               {totalBookingsCount} പ്രീ-ബുക്കിംഗ്
+            </span>
+          </div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => onNavigateTab('delivery')}
+          className="p-3.5 bg-white border border-[#E3ECE7] rounded-2xl shadow-2xs hover:border-[#0B8F68] active:scale-98 transition-all flex items-center gap-2.5 text-left cursor-pointer"
+        >
+          <div className="w-9 h-9 rounded-xl bg-[#DDF5EA] text-[#0B8F68] flex items-center justify-center shrink-0">
+            <Truck className="w-5 h-5" />
+          </div>
+          <div>
+            <b className="text-xs font-black text-[#17221D] block">ഹോം ഡെലിവറി</b>
+            <span className="text-[10px] text-[#0B8F68] font-bold">
+              {currentShop?.isDeliveryAvailable !== false ? 'സജീവം (Active)' : 'ഓഫ് (Off)'}
             </span>
           </div>
         </button>

@@ -1,2 +1,3 @@
+/PeediaCart_Official_Brochure.pdf  /PeediaCart_Merchant_Brochure.pdf  301
 /api/*  https://priceteller-api.delightfulwater-3f47513c.koreacentral.azurecontainerapps.io/api/:splat  200
 /*       /index.html  200

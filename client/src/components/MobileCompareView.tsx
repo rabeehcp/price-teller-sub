@@ -397,13 +397,13 @@ export const MobileCompareView: React.FC<MobileCompareViewProps> = ({
         
         {/* Top Dark Green Navigation Header (Exact match to Mockup top bar) */}
         <div className="w-full bg-[#173C2C] text-white px-6 py-3.5 flex items-center justify-between rounded-2xl shadow-md mb-6">
-          {/* Left: PeediyaCart Logo */}
+          {/* Left: PeediaCart Logo */}
           <div className="flex items-center gap-2.5">
             <div className="w-7 h-7 rounded-lg bg-emerald-700/60 flex items-center justify-center text-white">
               <ShoppingCart className="w-4 h-4" />
             </div>
             <span className="text-base font-extrabold tracking-tight text-white font-sans">
-              PeediyaCart
+              PeediaCart
             </span>
           </div>
 

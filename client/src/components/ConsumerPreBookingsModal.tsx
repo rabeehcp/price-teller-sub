@@ -18,6 +18,8 @@ import {
   ChevronUp,
   Sparkles,
   Phone,
+  Truck,
+  MapPin,
 } from 'lucide-react';
 
 interface ConsumerPreBookingsModalProps {
@@ -258,7 +260,7 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
                   <div className="bg-[#f5f8f3] rounded-xl p-2.5 sm:p-3 grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
                     <div>
                       <span className="text-gray-400 text-[10px] uppercase font-bold block">
-                        Locked Total
+                        Total Amount
                       </span>
                       <span className="font-black text-brand-700 text-xs sm:text-sm">
                         ₹{booking.totalAmount}
@@ -266,21 +268,42 @@ export const ConsumerPreBookingsModal: React.FC<ConsumerPreBookingsModalProps> =
                     </div>
                     <div>
                       <span className="text-gray-400 text-[10px] uppercase font-bold block">
-                        Items / Units
+                        Fulfillment
                       </span>
-                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs">
-                        {booking.itemCount} items ({booking.totalQuantity} units)
+                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs flex items-center gap-1">
+                        {booking.fulfillmentType === 'delivery' ? (
+                          <span className="text-purple-700 flex items-center gap-1">
+                            <Truck className="w-3.5 h-3.5" /> Home Delivery
+                          </span>
+                        ) : (
+                          <span className="text-emerald-700 flex items-center gap-1">
+                            <Store className="w-3.5 h-3.5" /> Store Pickup
+                          </span>
+                        )}
                       </span>
                     </div>
                     <div className="col-span-2 sm:col-span-1">
                       <span className="text-gray-400 text-[10px] uppercase font-bold block">
-                        Pickup Window
+                        {booking.fulfillmentType === 'delivery' ? 'ETA' : 'Pickup Window'}
                       </span>
-                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs">
+                      <span className="font-bold text-slate-dark text-[11px] sm:text-xs truncate">
                         {booking.pickupTime || 'Today'}
                       </span>
                     </div>
                   </div>
+
+                  {booking.deliveryAddress && (
+                    <div className="text-xs bg-purple-50/70 border border-purple-200/60 rounded-xl p-2.5 text-purple-950 flex items-start gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-purple-600 shrink-0 mt-0.5" />
+                      <div>
+                        <b className="text-[10px] uppercase text-purple-800 block mb-0.5">Delivery Address</b>
+                        <span>{booking.deliveryAddress}</span>
+                        {booking.deliveryLandmark && (
+                          <span className="text-gray-500 block text-[11px]">Landmark: {booking.deliveryLandmark}</span>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   {/* Order Notes / Instructions if any */}
                   {booking.notes && (

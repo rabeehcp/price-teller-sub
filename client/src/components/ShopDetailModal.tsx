@@ -1,6 +1,6 @@
 import React from 'react';
 import { Shop, FullComparisonResponse } from '../types';
-import { X, MapPin, Clock, Phone, Star, ShieldCheck, Navigation, MessageCircle, BookOpen } from 'lucide-react';
+import { X, MapPin, Clock, Phone, Star, ShieldCheck, Navigation, MessageCircle, BookOpen, Truck } from 'lucide-react';
 import { ProductImage } from './ProductImage';
 
 interface ShopDetailModalProps {
@@ -65,7 +65,7 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
         </div>
 
         {/* Store Meta Details */}
-        <div className="space-y-2.5 bg-gray-50 border border-gray-200 rounded-2xl p-4 text-xs text-gray-700 mb-4">
+        <div className="space-y-2.5 bg-gray-50 border border-gray-200 rounded-2xl p-4 text-xs text-gray-700 mb-3">
           <div className="flex items-start gap-2.5">
             <MapPin className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
             <div>
@@ -99,6 +99,38 @@ export const ShopDetailModal: React.FC<ShopDetailModalProps> = ({
               </a>
             )}
           </div>
+        </div>
+
+        {/* Delivery Information Box */}
+        <div
+          className={`p-3.5 rounded-2xl border text-xs mb-4 ${
+            shop.isDeliveryAvailable !== false
+              ? 'bg-emerald-50/60 border-emerald-200/80 text-emerald-950'
+              : 'bg-amber-50/60 border-amber-200/80 text-amber-950'
+          }`}
+        >
+          <div className="flex items-center justify-between font-bold mb-1">
+            <span className="flex items-center gap-1.5 font-black">
+              <Truck className="w-4 h-4 text-[#0D6344]" />
+              <span>
+                {shop.isDeliveryAvailable !== false ? 'Home Delivery Available' : 'Store Pickup Only'}
+              </span>
+            </span>
+            {shop.isDeliveryAvailable !== false && (
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full">
+                ⚡ {shop.estimatedDeliveryTime || '30-45 mins'}
+              </span>
+            )}
+          </div>
+          {shop.isDeliveryAvailable !== false ? (
+            <p className="text-[11px] text-emerald-800 leading-snug">
+              Standard fee: <b>₹{shop.deliveryFee ?? 30}</b> · Free delivery on orders above <b>₹{shop.freeDeliveryThreshold ?? 500}</b> within <b>{shop.deliveryRadiusKm ?? 5} km</b>.
+            </p>
+          ) : (
+            <p className="text-[11px] text-amber-800 leading-snug">
+              ഈ കടയിൽ നേരിട്ടെത്തി വാങ്ങൽ (Store Pickup) മാത്രമേ ലഭ്യമായിട്ടുള്ളൂ.
+            </p>
+          )}
         </div>
 
         {/* Basket breakdown at this shop if basket is active */}

@@ -446,17 +446,46 @@ apiRouter.post('/products', authenticateToken, requireMerchant, async (req: Auth
     const cleanPrices: Record<string, number> = {};
     const cleanStock: Record<string, 'in_stock' | 'low_stock' | 'out_of_stock'> = {};
 
+    let merchantShopName = req.user.role === 'merchant' ? (req.user.shopName || '') : '';
+    if (req.user.role === 'merchant' && !merchantShopName && req.user.shopId) {
+      const allShops = await db.getAllShopsAdmin();
+      const matched = allShops.find((s) => s.id.toLowerCase() === String(req.user.shopId).toLowerCase());
+      if (matched) merchantShopName = matched.name;
+    }
+
     if (prices && typeof prices === 'object') {
-      for (const [sName, pVal] of Object.entries(prices)) {
-        const num = Number(pVal);
-        if (!Number.isFinite(num) || num <= 0) continue;
-        const targetShop = req.user.role === 'merchant' ? req.user.shopName : sName;
-        if (!targetShop) continue;
-        cleanPrices[targetShop] = num;
-        const requestedStock = stockStatus && stockStatus[sName];
-        cleanStock[targetShop] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
-          ? requestedStock
-          : 'in_stock';
+      if (req.user.role === 'merchant') {
+        const targetShop = merchantShopName || req.user.shopName || req.body.shopName || Object.keys(prices)[0];
+        if (targetShop) {
+          let priceVal = Number(prices[targetShop]);
+          if (!Number.isFinite(priceVal) || priceVal <= 0) {
+            for (const val of Object.values(prices)) {
+              const n = Number(val);
+              if (Number.isFinite(n) && n > 0) {
+                priceVal = n;
+                break;
+              }
+            }
+          }
+          if (Number.isFinite(priceVal) && priceVal > 0) {
+            cleanPrices[targetShop] = priceVal;
+            const requestedStock = (stockStatus && (stockStatus[targetShop] || Object.values(stockStatus)[0])) as any;
+            cleanStock[targetShop] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
+              ? requestedStock
+              : 'in_stock';
+          }
+        }
+      } else {
+        // Admin: can populate prices for multiple shops
+        for (const [sName, pVal] of Object.entries(prices)) {
+          const num = Number(pVal);
+          if (!Number.isFinite(num) || num <= 0) continue;
+          cleanPrices[sName] = num;
+          const requestedStock = stockStatus && stockStatus[sName];
+          cleanStock[sName] = ['in_stock', 'low_stock', 'out_of_stock'].includes(requestedStock)
+            ? requestedStock
+            : 'in_stock';
+        }
       }
     }
 
@@ -778,8 +807,11 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
     );
 
     const allowedFields = [
-      'name', 'address', 'phone', 'shopType', 'openingHours', 'deliveryFee',
-      'freeDeliveryThreshold', 'categories', 'lat', 'lng',
+      'name', 'address', 'phone', 'shopType', 'openingHours',
+      'isDeliveryAvailable', 'deliveryFee', 'freeDeliveryThreshold',
+      'deliveryRadiusKm', 'minDeliveryOrderAmount', 'estimatedDeliveryTime',
+      'deliveryHours', 'deliveryNotes',
+      'categories', 'lat', 'lng',
     ];
     const updates = Object.fromEntries(
       allowedFields
@@ -1275,6 +1307,43 @@ apiRouter.post('/auth/logout', async (req: Request, res: Response) => {
   }
 });
 
+// 22c. Auth: Update User Default Location (Syncs seamlessly across devices)
+apiRouter.put('/auth/location', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user.id;
+    const { locationId } = req.body;
+    if (!locationId) {
+      return res.status(400).json({ success: false, error: 'locationId is required' });
+    }
+    const updatedUser = await db.updateUserLocation(userId, locationId);
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    const { password: _, ...safeUser } = updatedUser;
+    res.json({ success: true, user: safeUser, message: 'Default location updated successfully' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+apiRouter.post('/auth/location', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const userId = req.user.id;
+    const { locationId } = req.body;
+    if (!locationId) {
+      return res.status(400).json({ success: false, error: 'locationId is required' });
+    }
+    const updatedUser = await db.updateUserLocation(userId, locationId);
+    if (!updatedUser) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+    const { password: _, ...safeUser } = updatedUser;
+    res.json({ success: true, user: safeUser, message: 'Default location updated successfully' });
+  } catch (err: any) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+});
+
 // 23. Auth: Quick Merchant Accounts for easy demo
 apiRouter.get('/auth/quick-merchants', async (req: Request, res: Response) => {
   try {
@@ -1669,6 +1738,10 @@ apiRouter.post('/pre-bookings', authenticateToken, async (req: AuthenticatedRequ
       itemCount,
       totalQuantity,
       totalAmount,
+      fulfillmentType,
+      deliveryAddress,
+      deliveryLandmark,
+      deliveryFee,
       pickupTime,
       notes,
       consumerPhone,
@@ -1693,6 +1766,10 @@ apiRouter.post('/pre-bookings', authenticateToken, async (req: AuthenticatedRequ
       itemCount: Number(itemCount) || items.length,
       totalQuantity: Number(totalQuantity) || items.reduce((acc: number, it: any) => acc + (it.quantity || 1), 0),
       totalAmount: Number(totalAmount) || items.reduce((acc: number, it: any) => acc + (it.lineTotal || 0), 0),
+      fulfillmentType: fulfillmentType || 'pickup',
+      deliveryAddress,
+      deliveryLandmark,
+      deliveryFee: Number(deliveryFee) || 0,
       pickupTime,
       notes,
     });

@@ -26,7 +26,7 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
 
   // Generate formatted WhatsApp message text
   const generateWhatsAppMessage = (): string => {
-    let msg = `🛒 *PeediyaCart Smart Shopping List*\n`;
+    let msg = `🛒 *PeediaCart Smart Shopping List*\n`;
     msg += `📍 Location: ${locationName} · ${dateStr}\n`;
     if (bestShop) {
       msg += `🏆 Recommended Shop: *${bestShop.shopName}* (Lowest total: ₹${Math.round(bestShop.total)})\n`;
@@ -46,7 +46,7 @@ export const WhatsAppExportModal: React.FC<WhatsAppExportModalProps> = ({
     if (comparison && comparison.maxSavings > 0) {
       msg += `✨ Saved ₹${Math.round(comparison.maxSavings)} comparing across ${comparison.shops.length} shops!\n`;
     }
-    msg += `\nShared via PeediyaCart · https://peediacart.vercel.app`;
+    msg += `\nShared via PeediaCart · https://peediacart.vercel.app`;
     return msg;
   };
 

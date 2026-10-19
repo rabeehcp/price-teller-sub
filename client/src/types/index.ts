@@ -25,8 +25,14 @@ export interface Shop {
   openingHours: string;
   phone: string;
   isVerified: boolean;
+  isDeliveryAvailable?: boolean;
   deliveryFee: number;
   freeDeliveryThreshold: number;
+  deliveryRadiusKm?: number;
+  minDeliveryOrderAmount?: number;
+  estimatedDeliveryTime?: string;
+  deliveryHours?: string;
+  deliveryNotes?: string;
   color: string;
   categories?: string[];
 }
@@ -331,6 +337,10 @@ export interface PreBooking {
   totalQuantity: number;
   totalAmount: number;
   status: PreBookingStatus;
+  fulfillmentType?: 'pickup' | 'delivery';
+  deliveryAddress?: string;
+  deliveryLandmark?: string;
+  deliveryFee?: number;
   pickupTime?: string;
   notes?: string;
   merchantNote?: string;
@@ -522,6 +532,7 @@ export interface SubscriptionStats {
 export interface ClientPartner {
   id: string;
   clientCode: string;
+  password?: string;
   name: string;
   phone: string;
   upiId: string;

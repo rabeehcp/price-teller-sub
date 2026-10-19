@@ -275,10 +275,11 @@ export async function compareBasketApi(
   throw new Error(json.error || 'Failed to compare basket');
 }
 
-export async function uploadProductImageApi(imageBase64: string): Promise<string> {
+export async function uploadProductImageApi(imageBase64: string, token?: string): Promise<string> {
+  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/upload-product-image`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ imageBase64 }),
   });
   const json = await res.json();
@@ -286,10 +287,11 @@ export async function uploadProductImageApi(imageBase64: string): Promise<string
   throw new Error(json.error || 'Failed to upload image');
 }
 
-export async function fetchRemoteImageApi(url: string): Promise<{ dataUrl: string; contentType: string; sizeKB: number }> {
+export async function fetchRemoteImageApi(url: string, token?: string): Promise<{ dataUrl: string; contentType: string; sizeKB: number }> {
+  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/fetch-remote-image`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify({ url }),
   });
   const json = await res.json();
@@ -305,10 +307,11 @@ export function getProxiedImageUrl(url: string): string {
   return `${API_BASE}/proxy-image?url=${encodeURIComponent(url)}`;
 }
 
-export async function createProductApi(productData: Partial<Product>): Promise<Product> {
+export async function createProductApi(productData: Partial<Product>, token?: string): Promise<Product> {
+  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/products`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: JSON.stringify(productData),
   });
   const json = await res.json();
@@ -400,10 +403,14 @@ export async function updateShopApi(id: string, updates: Partial<Shop>): Promise
   throw new Error(json.error || 'Failed to update shop');
 }
 
-export async function updateMerchantShopApi(updates: Partial<Shop>): Promise<Shop> {
+export async function updateMerchantShopApi(updates: Partial<Shop>, token?: string): Promise<Shop> {
+  const headers: Record<string, string> = {
+    ...getAuthHeaders(),
+    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+  };
   const res = await fetch(`${API_BASE}/merchant/shop`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
+    headers,
     body: JSON.stringify(updates),
   });
   const json = await res.json();
@@ -423,10 +430,11 @@ export async function deleteShopApi(id: string): Promise<boolean> {
   return true;
 }
 
-export async function updateProductApi(id: string, updates: Partial<Product>): Promise<Product> {
+export async function updateProductApi(id: string, updates: Partial<Product>, token?: string): Promise<Product> {
+  const headers = token ? { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/admin/products/${id}`, {
     method: 'PUT',
-    headers: getAuthHeaders(),
+    headers,
     body: JSON.stringify(updates),
   });
   const json = await res.json();
@@ -434,10 +442,11 @@ export async function updateProductApi(id: string, updates: Partial<Product>): P
   throw new Error(json.error || 'Failed to update product');
 }
 
-export async function deleteProductApi(id: string): Promise<boolean> {
+export async function deleteProductApi(id: string, token?: string): Promise<boolean> {
+  const headers = token ? { Authorization: `Bearer ${token}` } : getAuthHeaders();
   const res = await fetch(`${API_BASE}/admin/products/${id}`, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
+    headers,
   });
   const json = await res.json();
   if (!res.ok || !json.success) {
@@ -610,6 +619,20 @@ export async function fetchCurrentUserApi(token: string) {
   const json = await res.json();
   if (json.success) return json.user;
   throw new Error(json.error || 'Failed to fetch user');
+}
+
+export async function updateUserLocationApi(locationId: string, token: string) {
+  const res = await fetch(`${API_BASE}/auth/location`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ locationId }),
+  });
+  const json = await res.json();
+  if (json.success) return json.user;
+  throw new Error(json.error || 'Failed to update location');
 }
 
 export async function fetchQuickMerchantsApi() {
@@ -876,6 +899,10 @@ export async function createPreBookingApi(
     itemCount: number;
     totalQuantity: number;
     totalAmount: number;
+    fulfillmentType?: 'pickup' | 'delivery';
+    deliveryAddress?: string;
+    deliveryLandmark?: string;
+    deliveryFee?: number;
     pickupTime?: string;
     notes?: string;
     consumerPhone?: string;
@@ -926,9 +953,18 @@ export async function fetchPreBookingByIdApi(
 export async function updatePreBookingStatusApi(
   bookingId: string,
   status: PreBookingStatus,
-  merchantNote?: string,
-  token?: string
+  merchantNoteOrToken?: string,
+  tokenArg?: string
 ): Promise<PreBooking> {
+  let merchantNote = merchantNoteOrToken;
+  let token = tokenArg;
+
+  // Handle case where token was passed as 3rd argument without merchantNote
+  if (!token && merchantNoteOrToken && (merchantNoteOrToken.startsWith('eyJ') || merchantNoteOrToken.includes('.'))) {
+    token = merchantNoteOrToken;
+    merchantNote = undefined;
+  }
+
   const res = await fetch(`${API_BASE}/pre-bookings/${bookingId}/status`, {
     method: 'PATCH',
     headers: {
@@ -1315,6 +1351,7 @@ export async function fetchClientsApi(
 export async function createClientApi(
   data: {
     clientCode?: string;
+    password?: string;
     name: string;
     phone: string;
     upiId: string;

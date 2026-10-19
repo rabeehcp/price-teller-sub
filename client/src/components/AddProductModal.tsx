@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Category, Product, Shop } from '../types';
-import { createProductApi, uploadProductImageApi, fetchRemoteImageApi } from '../services/api';
+import { createProductApi, uploadProductImageApi, fetchRemoteImageApi, getAuthToken } from '../services/api';
 import { compressProductImage, CompressionResult } from '../utils/imageCompressor';
 import { ProductImage } from './ProductImage';
 import {
@@ -24,6 +24,8 @@ interface AddProductModalProps {
   onClose: () => void;
   onProductCreated: (newProduct: Product, andAddToBasket: boolean) => void;
   initialCategoryId?: string;
+  token?: string;
+  shopName?: string;
 }
 
 const STANDARD_UNITS = [
@@ -125,6 +127,14 @@ const CATEGORY_CONFIG: Record<
     placeholder: 'e.g. Pure Coconut Oil, Wayanad Black Pepper, Turmeric Powder...',
     defaultPrice: '190',
     sampleBadge: '100% Pure',
+    photoPresets: [],
+  },
+  snacks: {
+    emojis: ['🥟', '🍌', '🫓', '🍩', '🧆', '🥐', '🍟', '🧅'],
+    defaultUnit: '1 pc',
+    placeholder: 'e.g. Pazhampori, Samosa, Parippuvada, Egg Puffs, Unniyappam...',
+    defaultPrice: '15',
+    sampleBadge: 'നാടൻ സ്പെഷ്യൽ',
     photoPresets: [],
   },
   'bakery-breakfast': {
@@ -255,7 +265,21 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
   onClose,
   onProductCreated,
   initialCategoryId,
+  token,
+  shopName,
 }) => {
+  const effectiveToken = token || getAuthToken() || undefined;
+  const effectiveShopName = shopName || (() => {
+    try {
+      const uStr = sessionStorage.getItem('priceteller_auth_user') || localStorage.getItem('priceteller_auth_user');
+      if (uStr) {
+        const u = JSON.parse(uStr);
+        return u.shopName || undefined;
+      }
+    } catch {}
+    return undefined;
+  })();
+
   const validCategories = categories.filter((c) => c.id !== 'all');
   const startingCatId =
     initialCategoryId && initialCategoryId !== 'all'
@@ -459,7 +483,7 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
     // If the image is a base64 Data URL (from photo upload), upload it to server
     if (finalImageUrl && finalImageUrl.startsWith('data:image/')) {
       try {
-        const uploadedUrl = await uploadProductImageApi(finalImageUrl);
+        const uploadedUrl = await uploadProductImageApi(finalImageUrl, effectiveToken);
         finalImageUrl = uploadedUrl;
       } catch (uploadErr) {
         console.warn('Backend image upload failed, falling back to embedded data URL:', uploadErr);
@@ -476,6 +500,11 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
       shopPrices[shop.name] = Math.round(numBase * (1 + variance));
       stockStatus[shop.name] = 'in_stock';
     });
+
+    if (effectiveShopName) {
+      shopPrices[effectiveShopName] = numBase;
+      stockStatus[effectiveShopName] = 'in_stock';
+    }
 
     // Generate unit multipliers
     let availableUnits = [defaultUnit];
@@ -509,7 +538,7 @@ export const AddProductModal: React.FC<AddProductModalProps> = ({
         nutritionalNote: nutritionalNote.trim() || undefined,
         prices: shopPrices,
         stockStatus,
-      });
+      }, effectiveToken);
 
       onProductCreated(created, addToBasketImmediately);
       onClose();

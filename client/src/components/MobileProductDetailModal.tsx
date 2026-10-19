@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Product, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
-import { ArrowLeft, ShoppingBag, Star, Plus, Minus, Check, Leaf, ShieldCheck, Sprout, X, MessageCircle } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Star, Plus, Minus, Check, Leaf, ShieldCheck, Sprout, X, MessageCircle, Heart } from 'lucide-react';
 
 interface MobileProductDetailModalProps {
   product: Product | null;
   basket: BasketItem[];
+  isFavorite?: boolean;
   onClose: () => void;
   onOpenCart?: () => void;
   onOpenChat?: () => void;
   onAdd: (product: Product, unit: string) => void;
   onQuantityChange: (productId: string, delta: number) => void;
+  onToggleFavorite?: (product: Product) => void;
 }
 
 function getProductMultiplier(product: Product, unit: string): number {
@@ -60,11 +62,13 @@ function getProductAvailableUnits(product: Product): string[] {
 export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> = ({
   product,
   basket,
+  isFavorite = false,
   onClose,
   onOpenCart,
   onOpenChat,
   onAdd,
   onQuantityChange,
+  onToggleFavorite,
 }) => {
   if (!product) return null;
 
@@ -123,21 +127,38 @@ export const MobileProductDetailModal: React.FC<MobileProductDetailModalProps> =
             <X className="w-5 h-5 text-[#17221D]" />
           </button>
 
-          {/* Floating Cart Button */}
-          {onOpenCart && (
-            <button
-              type="button"
-              onClick={onOpenCart}
-              className="absolute top-3.5 right-3.5 z-20 w-9 h-9 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center text-[#2D3E35] shadow-sm hover:bg-white border border-[#E3ECE7] transition-all cursor-pointer active:scale-95"
-            >
-              <ShoppingBag className="w-4 h-4 text-[#2D3E35]" />
-              {basketTotalCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#E11D48] text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-2xs">
-                  {basketTotalCount}
-                </span>
-              )}
-            </button>
-          )}
+          {/* Floating Top-Right Controls: Heart & Cart */}
+          <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-2">
+            {onToggleFavorite && (
+              <button
+                type="button"
+                onClick={() => onToggleFavorite(product)}
+                className="w-9 h-9 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center text-[#2D3E35] shadow-sm hover:bg-white border border-[#E3ECE7] transition-all cursor-pointer active:scale-95"
+                title={isFavorite ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
+              >
+                <Heart
+                  className={`w-4 h-4 transition-colors ${
+                    isFavorite ? 'fill-[#E11D48] text-[#E11D48]' : 'text-[#2D3E35] hover:text-[#E11D48]'
+                  }`}
+                />
+              </button>
+            )}
+
+            {onOpenCart && (
+              <button
+                type="button"
+                onClick={onOpenCart}
+                className="relative w-9 h-9 bg-white/95 backdrop-blur-md rounded-full flex items-center justify-center text-[#2D3E35] shadow-sm hover:bg-white border border-[#E3ECE7] transition-all cursor-pointer active:scale-95"
+              >
+                <ShoppingBag className="w-4 h-4 text-[#2D3E35]" />
+                {basketTotalCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-[#E11D48] text-white text-[10px] font-black w-4 h-4 rounded-full flex items-center justify-center border-2 border-white shadow-2xs">
+                    {basketTotalCount}
+                  </span>
+                )}
+              </button>
+            )}
+          </div>
 
           {/* Main Product Hero Image */}
           <div className="w-36 h-36 flex items-center justify-center p-2 relative bg-white">

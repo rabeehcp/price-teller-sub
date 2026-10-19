@@ -2,17 +2,19 @@ import React, { useState, useMemo } from 'react';
 import { Product, Category, BasketItem } from '../types';
 import { ProductImage } from './ProductImage';
 import { formatPerUnitLabel } from '../utils/unitFormatter';
-import { ArrowLeft, ShoppingBag, Search, Star, Plus, Minus, X } from 'lucide-react';
+import { ArrowLeft, ShoppingBag, Search, Star, Plus, Minus, X, Heart } from 'lucide-react';
 
 interface MobileCategoryViewProps {
   category: Category;
   products: Product[];
   basket: BasketItem[];
+  favorites?: string[];
   onBack: () => void;
   onOpenCart: () => void;
   onSelectProduct: (product: Product) => void;
   onAddToBasket: (product: Product, unit?: string) => void;
   onQuantityChange: (productId: string, delta: number) => void;
+  onToggleFavorite?: (product: Product) => void;
 }
 
 function matchesCategory(productCatId: string | undefined, selectedCatId: string): boolean {
@@ -50,8 +52,11 @@ function matchesCategory(productCatId: string | undefined, selectedCatId: string
   if (s === 'beverages') {
     return p === 'beverages' || p === 'drinks' || p === 'tea-coffee' || p === 'juices';
   }
+  if (s === 'snacks' || s === 'evening-snacks') {
+    return p === 'snacks' || p === 'evening-snacks';
+  }
   if (s === 'biscuits-snacks' || s === 'bakery-breakfast') {
-    return p === 'biscuits-snacks' || p === 'bakery-breakfast' || p === 'snacks' || p === 'bread-bakery';
+    return p === 'biscuits-snacks' || p === 'bakery-breakfast' || p === 'bread-bakery';
   }
   return p.includes(s) || s.includes(p);
 }
@@ -59,17 +64,21 @@ function matchesCategory(productCatId: string | undefined, selectedCatId: string
 interface CategoryProductCardItemProps {
   product: Product;
   qty: number;
+  isFav?: boolean;
   onSelectProduct: (product: Product) => void;
   onAddToBasket: (product: Product, unit?: string) => void;
   onQuantityChange: (productId: string, delta: number) => void;
+  onToggleFavorite?: (product: Product) => void;
 }
 
 const CategoryProductCardItem: React.FC<CategoryProductCardItemProps> = React.memo(({
   product: p,
   qty,
+  isFav = false,
   onSelectProduct,
   onAddToBasket,
   onQuantityChange,
+  onToggleFavorite,
 }) => {
   const priceValues = Object.values(p.prices || {});
   const price = priceValues.length > 0 ? Math.round(Math.min(...priceValues)) : 30;
@@ -84,7 +93,7 @@ const CategoryProductCardItem: React.FC<CategoryProductCardItemProps> = React.me
   return (
     <div
       onClick={() => onSelectProduct(p)}
-      className={`flex items-center justify-between p-3 bg-white border rounded-2xl shadow-2xs transition-all cursor-pointer ${
+      className={`flex items-center justify-between p-3 bg-white border rounded-2xl shadow-2xs transition-all cursor-pointer relative group ${
         isOutOfStock ? 'border-red-100 bg-red-50/20 opacity-80' : 'border-[#E3ECE7] hover:border-[#0B8F68]'
       }`}
     >
@@ -133,11 +142,29 @@ const CategoryProductCardItem: React.FC<CategoryProductCardItemProps> = React.me
         </div>
       </div>
 
-      {/* Right Action Button */}
+      {/* Right Action Button & Wishlist Heart */}
       <div
-        className="shrink-0"
+        className="shrink-0 flex items-center gap-1.5"
         onClick={(e) => e.stopPropagation()}
       >
+        {onToggleFavorite && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onToggleFavorite(p);
+            }}
+            className="p-1.5 text-slate-300 hover:text-[#E11D48] transition-colors cursor-pointer rounded-full hover:bg-slate-50"
+            title={isFav ? 'പ്രിയപ്പെട്ടവയിൽ നിന്ന് മാറ്റുക' : 'പ്രിയപ്പെട്ടവയിൽ ചേർക്കുക'}
+          >
+            <Heart
+              className={`w-4 h-4 transition-colors ${
+                isFav ? 'fill-[#E11D48] text-[#E11D48]' : 'text-slate-300 hover:text-slate-400'
+              }`}
+            />
+          </button>
+        )}
+
         {isOutOfStock ? (
           <span className="text-[10px] font-black font-malayalam text-red-600 bg-red-50 border border-red-200 px-2 py-1 rounded-lg select-none">
             തീർന്നു
@@ -180,16 +207,19 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
   category,
   products,
   basket,
+  favorites = [],
   onBack,
   onOpenCart,
   onSelectProduct,
   onAddToBasket,
   onQuantityChange,
+  onToggleFavorite,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSubFilter, setActiveSubFilter] = useState('all');
 
   const basketCount = basket.reduce((sum, item) => sum + item.quantity, 0);
+  const favoriteSet = useMemo(() => new Set(favorites), [favorites]);
 
   // Logical market subcategory filter chips
   const filterChips = useMemo(() => {
@@ -232,6 +262,14 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
         { id: 'oils', label: 'എണ്ണ & നെയ്യ്' },
         { id: 'staples', label: 'നിത്യോപയോഗ സാധനങ്ങൾ' },
         { id: 'sauces', label: 'സോസ് & അച്ചാർ' },
+      ];
+    }
+    if (category.id === 'snacks' || category.id === 'evening-snacks') {
+      return [
+        { id: 'all', label: 'എല്ലാം' },
+        { id: 'hot', label: 'ചൂടൻ പലഹാരങ്ങൾ' },
+        { id: 'sweet', label: 'മധുര പലഹാരങ്ങൾ' },
+        { id: 'puffs_cutlet', label: 'പഫ്സ് & കട്ട്ലറ്റ്' },
       ];
     }
     return [
@@ -377,6 +415,15 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
       }
       if (activeSubFilter === 'sauces') {
         return pName.includes('sauce') || pName.includes('സോസ്') || pName.includes('pickle') || pName.includes('അച്ചാർ') || pName.includes('ketchup') || pName.includes('paste');
+      }
+      if (activeSubFilter === 'hot') {
+        return pName.includes('samosa') || pName.includes('സമോസ') || pName.includes('പൊരി') || pName.includes('വട') || pName.includes('ബോണ്ട') || pName.includes('ബജ്ജി') || pName.includes('റോൾ');
+      }
+      if (activeSubFilter === 'sweet') {
+        return pName.includes('ഉണ്ണിയപ്പം') || pName.includes('നെയ്യപ്പം') || pName.includes('സുഖിയൻ') || pName.includes('ഇലയട') || pName.includes('കൊഴുക്കട്ട') || pName.includes('നിറച്ചത്') || pName.includes('ഉന്നക്കായ') || pName.includes('മടക്ക്') || pName.includes('കായ്പോള') || pName.includes('അവൽ') || pName.includes('അച്ചപ്പം') || pName.includes('കിണ്ണത്തപ്പം') || pName.includes('ശർക്കര');
+      }
+      if (activeSubFilter === 'puffs_cutlet') {
+        return pName.includes('puff') || pName.includes('പഫ്സ്') || pName.includes('cutlet') || pName.includes('കട്ട്ലറ്റ്') || pName.includes('roll') || pName.includes('റോൾ');
       }
 
       return true;
@@ -524,14 +571,18 @@ export const MobileCategoryView: React.FC<MobileCategoryViewProps> = ({
             {visibleFilteredProducts.map((p) => {
               const qty = basketQuantityMap[p.id] || 0;
 
+              const isFav = favoriteSet.has(p.id);
+
               return (
                 <CategoryProductCardItem
                   key={p.id}
                   product={p}
                   qty={qty}
+                  isFav={isFav}
                   onSelectProduct={onSelectProduct}
                   onAddToBasket={onAddToBasket}
                   onQuantityChange={onQuantityChange}
+                  onToggleFavorite={onToggleFavorite}
                 />
               );
             })}
