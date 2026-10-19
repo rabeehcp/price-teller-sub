@@ -18,7 +18,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
   withTagline = false,
   className = '',
   onClick,
-  alt = 'PeediaCart',
+  alt = 'Markit',
 }) => {
   const isDark = theme === 'dark';
 
@@ -47,7 +47,7 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
         className={`relative flex items-center justify-center shrink-0 overflow-hidden shadow-2xs select-none transition-transform hover:scale-105 active:scale-95 rounded-xl border border-slate-200/80 bg-white p-1 ${
           iconSizes[size] || iconSizes.md
         } ${onClick ? 'cursor-pointer' : ''} ${className}`}
-        title="PeediaCart"
+        title="Markit"
       >
         <img
           src="/pwa-192x192.png"
@@ -102,7 +102,8 @@ export const EnteBazaarLogo: React.FC<EnteBazaarLogoProps> = ({
   );
 };
 
-// Aliased export for convenience
+// Aliased exports for convenience
+export const MarkitLogo = EnteBazaarLogo;
 export const PeediaCartLogo = EnteBazaarLogo;
 export const PeediyaCartLogo = EnteBazaarLogo;
 

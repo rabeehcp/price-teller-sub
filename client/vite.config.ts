@@ -19,9 +19,9 @@ export default defineConfig({
       ],
       manifest: {
         id: '/',
-        name: 'PeediaCart - Smart Basket & Local Price Comparison',
-        short_name: 'PeediaCart',
-        description: 'Find products from local shops at the best available rate.',
+        name: 'Markit - Smart Basket & Local Price Comparison',
+        short_name: 'Markit',
+        description: 'Find products from local shops at the best available rate with Markit.',
         theme_color: '#16a34a',
         background_color: '#ffffff',
         display: 'standalone',
