@@ -397,7 +397,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         <footer className="w-full bg-white/90 border-t border-[#E8E4D8] py-3 px-8 text-center text-xs text-gray-500 font-['Baloo_Chettan_2',sans-serif] mt-auto">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="font-extrabold text-[#14231A]">PeediaCart</span>
+              <span className="font-extrabold text-[#14231A]">Markit</span>
               <span>·</span>
               <span>കേരളത്തിലെ പ്രാദേശിക വ്യാപാര ശൃംഖല</span>
             </div>
@@ -680,7 +680,7 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
         {/* Mobile Bottom Bar */}
         <footer className="w-full bg-white border-t border-[#E8E4D8] py-2.5 px-4 text-center text-xs text-gray-500 font-['Baloo_Chettan_2',sans-serif] shrink-0">
           <div className="flex items-center justify-between max-w-md mx-auto">
-            <span className="font-extrabold text-[#14231A]">PeediaCart</span>
+            <span className="font-extrabold text-[#14231A]">Markit</span>
             <span className="text-[#064E3B] font-bold">കേരള പ്രാദേശിക വ്യാപാര ശൃംഖല</span>
           </div>
         </footer>

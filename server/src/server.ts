@@ -32,6 +32,7 @@ const isAllowedOrigin = (origin: string | undefined): boolean => {
     lower.endsWith('.azurestaticapps.net') ||
     lower.includes('azurestaticapps.net') ||
     lower.includes('azurecontainerapps.io') ||
+    lower.includes('markit') ||
     lower.includes('peediacart') ||
     lower.includes('entebazaar') ||
     lower.includes('priceteller')

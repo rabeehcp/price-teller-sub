@@ -33,7 +33,7 @@ export const MobileHeader: React.FC<MobileHeaderProps> = ({
   return (
     <header className="lg:hidden sticky top-0 z-30 bg-white backdrop-blur-sm px-3.5 sm:px-5 py-3 border-b border-[#EAEFF0] font-sans">
       <div className="flex items-center justify-between gap-1.5 sm:gap-2">
-        {/* Left: PeediaCart Brand Logo */}
+        {/* Left: Markit Brand Logo */}
         <EnteBazaarLogo size="md" className="h-7 sm:h-8" />
 
         {/* Right Controls: Agent Pill, Location Pill, Chat, Bell, Avatar */}

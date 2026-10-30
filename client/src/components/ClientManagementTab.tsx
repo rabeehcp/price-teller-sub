@@ -236,7 +236,7 @@ export const ClientManagementTab: React.FC<ClientManagementTabProps> = ({ token 
   const handleWhatsAppShare = (client: ClientPartner) => {
     const portalUrl = `${window.location.origin}/partner`;
     const refUrl = `${window.location.origin}/merchant?ref=${client.clientCode}`;
-    const text = `PeediaCart Agent Login Credentials:\n\n` +
+    const text = `Markit Agent Login Credentials:\n\n` +
       `Agent Portal: ${portalUrl}\n` +
       `Username / Code: ${client.clientCode}\n` +
       `Password: ${client.password || 'Agent@123'}\n\n` +
