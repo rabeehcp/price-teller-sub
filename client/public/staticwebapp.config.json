@@ -5,7 +5,17 @@
   "routes": [
     {
       "route": "/PeediaCart_Official_Brochure.pdf",
-      "redirect": "/PeediaCart_Merchant_Brochure.pdf",
+      "redirect": "/Markit_Merchant_Brochure_Trifold_A4.pdf",
+      "statusCode": 301
+    },
+    {
+      "route": "/PeediaCart_Merchant_Brochure.pdf",
+      "redirect": "/Markit_Merchant_Brochure_Trifold_A4.pdf",
+      "statusCode": 301
+    },
+    {
+      "route": "/PeediaCart_Consumer_Brochure.pdf",
+      "redirect": "/Markit_Consumer_Brochure_Trifold_A4.pdf",
       "statusCode": 301
     }
   ],

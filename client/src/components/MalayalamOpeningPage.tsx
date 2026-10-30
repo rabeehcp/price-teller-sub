@@ -145,8 +145,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
 
               {/* Brochures */}
               <a
-                href="/PeediaCart_Merchant_Brochure.pdf?v=20261002"
-                download="PeediaCart_Merchant_Brochure.pdf"
+                href="/Markit_Merchant_Brochure_Trifold_A4.pdf?v=20261030"
+                download="Markit_Merchant_Brochure_Trifold_A4.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-[#D5E5DC] text-[#064E3B] text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95"
@@ -156,8 +156,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               </a>
 
               <a
-                href="/PeediaCart_Consumer_Brochure.pdf?v=20261002"
-                download="PeediaCart_Consumer_Brochure.pdf"
+                href="/Markit_Consumer_Brochure_Trifold_A4.pdf?v=20261030"
+                download="Markit_Consumer_Brochure_Trifold_A4.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white hover:bg-emerald-50 border border-[#D5E5DC] text-[#064E3B] text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-95"
@@ -614,8 +614,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
             {/* Mobile Quick Action Strip (Brochures) */}
             <div className="grid grid-cols-2 gap-3 pt-1 font-['Baloo_Chettan_2',sans-serif]">
               <a
-                href="/PeediaCart_Merchant_Brochure.pdf?v=20261002"
-                download="PeediaCart_Merchant_Brochure.pdf"
+                href="/Markit_Merchant_Brochure_Trifold_A4.pdf?v=20261030"
+                download="Markit_Merchant_Brochure_Trifold_A4.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-3 px-3 rounded-2xl bg-white border border-[#E2DDD0] text-center text-xs font-bold text-[#064E3B] flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs active:scale-95"
@@ -625,8 +625,8 @@ export const MalayalamOpeningPage: React.FC<MalayalamOpeningPageProps> = ({
               </a>
 
               <a
-                href="/PeediaCart_Consumer_Brochure.pdf?v=20261002"
-                download="PeediaCart_Consumer_Brochure.pdf"
+                href="/Markit_Consumer_Brochure_Trifold_A4.pdf?v=20261030"
+                download="Markit_Consumer_Brochure_Trifold_A4.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="py-3 px-3 rounded-2xl bg-white border border-[#E2DDD0] text-center text-xs font-bold text-[#064E3B] flex items-center justify-center gap-1.5 shadow-2xs hover:shadow-xs active:scale-95"

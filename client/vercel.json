@@ -15,7 +15,17 @@
   "redirects": [
     {
       "source": "/PeediaCart_Official_Brochure.pdf",
-      "destination": "/PeediaCart_Merchant_Brochure.pdf",
+      "destination": "/Markit_Merchant_Brochure_Trifold_A4.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/PeediaCart_Merchant_Brochure.pdf",
+      "destination": "/Markit_Merchant_Brochure_Trifold_A4.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/PeediaCart_Consumer_Brochure.pdf",
+      "destination": "/Markit_Consumer_Brochure_Trifold_A4.pdf",
       "permanent": true
     }
   ],
