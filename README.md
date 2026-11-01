@@ -24,3 +24,10 @@ Do not use `compose.dev.yaml` for a normal Docker host. It is only a Codespaces 
 ## DevOps
 
 PediaCart deployment and monitoring workflow.
+## Security tests and administrator recovery
+
+- Server security/authorization tests run against a disposable local PostgreSQL only:
+  `cd server && npm run test:db:up && DATABASE_URL=postgresql://markit:localtestonly@127.0.0.1:55432/markit_test npm test && npm run test:db:down`.
+  The test guard refuses any non-localhost or non-`*_test` database.
+- The server never seeds or resets accounts at startup. To bootstrap or recover administrator access, see
+  [docs/ADMIN_ACCESS_RECOVERY.md](docs/ADMIN_ACCESS_RECOVERY.md).

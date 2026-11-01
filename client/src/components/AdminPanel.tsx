@@ -109,6 +109,7 @@ import { EnteBazaarLogo } from './EnteBazaarLogo';
 import { DesktopAdminOverview } from './DesktopAdminOverview';
 import { ClientManagementTab } from './ClientManagementTab';
 import { AdminSubscriptionTab } from './AdminSubscriptionTab';
+import { ChangePasswordCard } from './ChangePasswordCard';
 
 export const MASTER_CATALOG_CATEGORIES: { id: string; name: string; icon: string; description: string }[] = [
   { id: 'all', name: 'All Master Items', icon: '✨', description: 'Browse and manage all platform master products' },
@@ -229,7 +230,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
   const [newStoreLat, setNewStoreLat] = useState<number | undefined>(undefined);
   const [newStoreLng, setNewStoreLng] = useState<number | undefined>(undefined);
   const [newStoreEmail, setNewStoreEmail] = useState('');
-  const [newStorePassword, setNewStorePassword] = useState('password123');
+  const [newStorePassword, setNewStorePassword] = useState('');
   const [createdStoreCredential, setCreatedStoreCredential] = useState<{ email: string; username?: string; password: string; shopName: string } | null>(null);
 
   // Edit Store Form State
@@ -590,21 +591,22 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
         freeDeliveryThreshold: 500,
         color: '#249044',
         email: newStoreEmail.trim() || undefined,
-        password: newStorePassword.trim() || 'password123',
+        password: newStorePassword.trim() || undefined,
       });
+      const enteredPassword = newStorePassword.trim();
       onShopsUpdated([...shops, created]);
       setIsAddStoreOpen(false);
       setNewStoreName('');
       setNewStoreAddress('');
       setNewStoreEmail('');
-      setNewStorePassword('password123');
+      setNewStorePassword('');
       setNewStoreLat(undefined);
       setNewStoreLng(undefined);
       if (created.merchantAccount) {
         setCreatedStoreCredential({
           email: created.merchantAccount.email,
           username: created.merchantAccount.username,
-          password: created.merchantAccount.password,
+          password: created.merchantAccount.temporaryPassword || (created.merchantAccount.created ? enteredPassword : ''),
           shopName: created.name,
         });
       }
@@ -1157,6 +1159,9 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
       {/* 1. OVERVIEW TAB */}
       {effectiveTab === 'overview' && (
         <>
+          <div className="mb-4">
+            <ChangePasswordCard />
+          </div>
           {/* Mobile Admin View */}
           <div className="md:hidden">
             <MobileAdminView
@@ -3113,7 +3118,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
                       type="text"
                       value={newStorePassword}
                       onChange={(e) => setNewStorePassword(e.target.value)}
-                      placeholder="password123"
+                      placeholder="Leave blank to auto-generate"
                       className="w-full px-2.5 py-1.5 bg-white border border-blue-200 rounded-lg text-xs outline-none"
                     />
                   </div>
@@ -3505,7 +3510,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({
               <div className="flex justify-between items-center text-xs">
                 <span className="text-gray-500">Password:</span>
                 <span className="font-mono font-bold text-emerald-800 bg-white px-2 py-0.5 rounded border border-emerald-200">
-                  {createdStoreCredential.password}
+                  {createdStoreCredential.password || 'Unchanged (existing account)'}
                 </span>
               </div>
             </div>

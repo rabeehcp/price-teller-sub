@@ -1,7 +1,24 @@
+import crypto from 'crypto';
 import bcrypt from 'bcryptjs';
 import { query } from './db/pool';
 
 const BCRYPT_HASH_PATTERN = /^\$2[aby]\$\d{2}\$/;
+
+export const SESSION_TOKEN_PATTERN = /^[a-f0-9]{64}$/;
+
+export function generateSessionToken(): string {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+export function generateTemporaryPassword(): string {
+  return crypto.randomBytes(12).toString('base64url');
+}
+
+export class HttpError extends Error {
+  constructor(public statusCode: number, message: string) {
+    super(message);
+  }
+}
 
 async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
@@ -888,31 +905,10 @@ const newProduct: Product = {
   }
 
   public async wipeAllData(): Promise<void> {
-
       await query(`
-        TRUNCATE TABLE price_histories, price_reports, flash_deals, pre_bookings, messages, conversations, merchant_sales, consumer_data, products, shops, users CASCADE;
+        TRUNCATE TABLE price_histories, price_reports, flash_deals, pre_bookings, messages, conversations, merchant_sales, consumer_data, products, shops CASCADE;
       `);
-      await query(
-        `INSERT INTO users (id, email, username, name, role, password, phone, created_at, token)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-         ON CONFLICT (id) DO UPDATE SET
-           email = EXCLUDED.email,
-           username = EXCLUDED.username,
-           name = EXCLUDED.name,
-           role = EXCLUDED.role,
-           password = EXCLUDED.password`,
-        [
-          'admin-1',
-          'admin@priceteller.com',
-          'priceteller10',
-          'Super Admin',
-          'admin',
-          await hashPassword('pcart3663'),
-          '+91 99999 00000',
-          new Date().toISOString(),
-          'tok-admin-1',
-        ]
-      );
+      await query(`DELETE FROM users WHERE role <> 'admin'`);
   }
 
   public async updateProduct(id: string, updates: Partial<Product>): Promise<Product | null> {
@@ -1346,17 +1342,6 @@ const newDeal: FlashDeal = {
       };
   }
 
-  public async getQuickMerchants() {
-
-      const res = await query(
-        `SELECT id, email, name, shop_name AS "shopName", shop_id AS "shopId" 
-         FROM users 
-         WHERE role = 'merchant' 
-         ORDER BY name ASC`
-      );
-      return res.rows;
-  }
-
   public async registerMerchant(params: {
     name: string;
     email: string;
@@ -1371,6 +1356,9 @@ const newDeal: FlashDeal = {
 const cleanEmail = params.email.trim().toLowerCase();
 
 
+      if (!params.password) {
+        throw new HttpError(400, 'Password is required');
+      }
       const existingRes = await query(`SELECT id FROM users WHERE LOWER(email) = $1`, [cleanEmail]);
       if (existingRes.rows.length > 0) {
         throw new Error('An account with this email already exists');
@@ -1396,10 +1384,7 @@ const cleanEmail = params.email.trim().toLowerCase();
           categories: params.categories && params.categories.length > 0 ? params.categories : ['vegetables', 'fruits', 'staples', 'dairy'],
         });
       } else {
-        shop = shopRes.rows[0];
-        if (params.categories && params.categories.length > 0) {
-          await this.updateShop(shop.id, { categories: params.categories });
-        }
+        throw new HttpError(409, 'A shop with this name is already registered. Contact support to be added to an existing shop.');
       }
 
       const newUser: User = {
@@ -1407,10 +1392,10 @@ const cleanEmail = params.email.trim().toLowerCase();
         email: cleanEmail,
         name: params.name || `${params.shopName} Partner`,
         role: 'merchant',
-        password: await hashPassword(params.password || 'merchant123'),
+        password: await hashPassword(params.password),
         shopId: shop.id,
         shopName: shop.name,
-        token: `tok-merchant-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+        token: generateSessionToken(),
       };
 
       await query(
@@ -1430,11 +1415,11 @@ const cleanEmail = params.email.trim().toLowerCase();
     name?: string;
     phone?: string;
     locationId?: string;
-  }): Promise<{ user: User; rawPassword: string; created: boolean }> {
+  }): Promise<{ user: User; temporaryPassword?: string; created: boolean }> {
 const shopSlug = params.shopId.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 const email = (params.email || `${shopSlug}@gmail.com`).trim().toLowerCase();
 const username = (params.username || shopSlug).trim().toLowerCase();
-const rawPassword = params.password || 'password123';
+const rawPassword = params.password || generateTemporaryPassword();
 const name = params.name || `${params.shopName} Manager`;
 
 
@@ -1448,7 +1433,7 @@ const name = params.name || `${params.shopName} Manager`;
       );
 
       if (existingRes.rows.length > 0) {
-        return { user: existingRes.rows[0], rawPassword, created: false };
+        return { user: existingRes.rows[0], created: false };
       }
 
       const hashedPassword = await hashPassword(rawPassword);
@@ -1464,7 +1449,7 @@ const name = params.name || `${params.shopName} Manager`;
         phone: params.phone,
         locationId: params.locationId,
         createdAt: new Date().toISOString(),
-        token: `tok-merchant-${shopSlug}-${Date.now()}`,
+        token: generateSessionToken(),
       };
 
       await query(
@@ -1492,7 +1477,7 @@ const name = params.name || `${params.shopName} Manager`;
         ]
       );
 
-      return { user: newUser, rawPassword, created: true };
+      return { user: newUser, temporaryPassword: params.password ? undefined : rawPassword, created: true };
   }
 
   public async authenticateUser(
@@ -1543,8 +1528,8 @@ const cleanId = (identifier || '').trim().toLowerCase();
         }
       }
 
-      if (!user.token) {
-        user.token = `tok-${user.role}-${user.id}-${Date.now()}`;
+      if (!user.token || !SESSION_TOKEN_PATTERN.test(user.token)) {
+        user.token = generateSessionToken();
         await query(`UPDATE users SET token = $1 WHERE id = $2`, [user.token, user.id]);
       }
 
@@ -1564,7 +1549,7 @@ if (!cleanToken) return true;
   public async getUserByToken(token: string): Promise<User | null> {
 if (!token) return null;
 const cleanToken = token.replace('Bearer ', '').trim();
-if (!cleanToken) return null;
+if (!SESSION_TOKEN_PATTERN.test(cleanToken)) return null;
 
 
       const res = await query(
@@ -1608,24 +1593,6 @@ if (!cleanToken) return null;
     return userRes.rows[0] || null;
   }
 
-  public async getQuickConsumers(): Promise<{ id: string; name: string; email: string; phone?: string; locationId?: string; listCount: number; favoritesCount: number }[]> {
-
-      const res = await query(
-        `SELECT u.id, u.name, u.email, u.phone, u.location_id AS "locationId",
-                COALESCE(jsonb_array_length(c.saved_lists), 0) AS "listCount",
-                COALESCE(jsonb_array_length(c.favorites), 0) AS "favoritesCount"
-         FROM users u
-         LEFT JOIN consumer_data c ON u.id = c.user_id
-         WHERE u.role = 'consumer'
-         ORDER BY u.name ASC`
-      );
-      return res.rows.map((r: any) => ({
-        ...r,
-        listCount: parseInt(r.listCount || '0', 10),
-        favoritesCount: parseInt(r.favoritesCount || '0', 10),
-      }));
-  }
-
   public async getAllUsers(): Promise<Omit<User, 'password'>[]> {
     const res = await query(
       `SELECT id, email, username, name, role, shop_id AS "shopId", 
@@ -1635,6 +1602,22 @@ if (!cleanToken) return null;
        ORDER BY created_at DESC NULLS LAST`
     );
     return res.rows;
+  }
+
+  public async countAdmins(): Promise<number> {
+    const res = await query(`SELECT COUNT(*) AS count FROM users WHERE role = 'admin'`);
+    return parseInt(res.rows[0]?.count || '0', 10);
+  }
+
+  public async changePassword(userId: string, currentPassword: string, newPassword: string): Promise<string> {
+    const res = await query(`SELECT password FROM users WHERE id = $1`, [userId]);
+    const stored: string | undefined = res.rows[0]?.password;
+    if (!stored || !(await verifyPassword(currentPassword, stored))) {
+      throw new HttpError(401, 'Current password is incorrect');
+    }
+    const token = generateSessionToken();
+    await query(`UPDATE users SET password = $1, token = $2 WHERE id = $3`, [await hashPassword(newPassword), token, userId]);
+    return token;
   }
 
   public async deleteUser(id: string): Promise<boolean> {
@@ -1652,6 +1635,9 @@ if (!cleanToken) return null;
 const cleanEmail = params.email.trim().toLowerCase();
 
 
+      if (!params.password) {
+        throw new HttpError(400, 'Password is required');
+      }
       const existing = await query(`SELECT id FROM users WHERE LOWER(email) = $1`, [cleanEmail]);
       if (existing.rows.length > 0) {
         throw new Error('An account with this email already exists');
@@ -1662,11 +1648,11 @@ const cleanEmail = params.email.trim().toLowerCase();
         email: cleanEmail,
         name: params.name.trim() || 'Consumer Shopper',
         role: 'consumer',
-        password: await hashPassword(params.password || 'consumer123'),
+        password: await hashPassword(params.password),
         phone: params.phone || '',
         locationId: params.locationId || 'tirur',
         createdAt: new Date().toISOString().split('T')[0],
-        token: `consumer-token-${Date.now()}-${Math.random().toString(36).substring(2, 8)}`,
+        token: generateSessionToken(),
       };
 
       await query(
@@ -1723,13 +1709,13 @@ const expectedRole = params.expectedRole || 'consumer';
           };
         }
 
-        user.token = `tok-${user.role}-${user.id}-${Date.now()}`;
+        user.token = generateSessionToken();
         await query(`UPDATE users SET token = $1 WHERE id = $2`, [user.token, user.id]);
         return { user, isNewUser: false };
       }
 
       const newUserId = `usr-${expectedRole === 'merchant' ? 'merchant' : 'consumer'}-${Date.now()}`;
-      const newUserToken = `tok-${expectedRole === 'merchant' ? 'merchant' : 'consumer'}-${newUserId}-${Date.now()}`;
+      const newUserToken = generateSessionToken();
       const createdAt = new Date().toISOString().split('T')[0];
 
       const newUser: User = {
@@ -1737,7 +1723,7 @@ const expectedRole = params.expectedRole || 'consumer';
         email: cleanEmail,
         name: cleanName,
         role: expectedRole === 'merchant' ? 'merchant' : 'consumer',
-        password: `google-oauth-${Date.now()}`,
+        password: await hashPassword(crypto.randomBytes(32).toString('hex')),
         locationId: 'tirur',
         createdAt,
         token: newUserToken,

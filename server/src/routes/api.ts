@@ -1,6 +1,6 @@
 import '../utils/dns-fallback';
 import { Router, Request, Response } from 'express';
-import { db, Location } from '../db';
+import { db, Location, HttpError } from '../db';
 import { query } from '../db/pool';
 import { compareBasket, BasketRequestItem } from '../services/comparisonEngine';
 import { calculateHyperlocalDistance } from '../services/locationService';
@@ -131,10 +131,7 @@ apiRouter.get('/merchant/shop', authenticateToken, requireMerchant, async (req: 
   try {
     const user = req.user;
     const shops = await db.getAllShopsAdmin();
-    let shop = shops.find((s) =>
-      (user.shopId && s.id.toLowerCase() === String(user.shopId).toLowerCase()) ||
-      (user.shopName && s.name.toLowerCase() === String(user.shopName).toLowerCase())
-    );
+    let shop = findMerchantShop(shops, user);
     if (!shop && (user.shopName || user.shopId)) {
       const shopName = String(user.shopName || user.shopId).trim();
       shop = await db.addShop({
@@ -527,6 +524,9 @@ apiRouter.post('/products/clear-all-images', authenticateToken, requireAdmin, as
 // 4d-2. Wipe all products, shops, users, transactions, and reports
 apiRouter.post('/admin/wipe-all-data', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
   try {
+    if (req.body?.confirm !== 'WIPE ALL DATA') {
+      return res.status(400).json({ success: false, error: 'Confirmation required: send {"confirm":"WIPE ALL DATA"}. Administrator accounts are kept.' });
+    }
     await db.wipeAllData();
     res.json({ success: true, message: 'All product, store, user, and transaction data purged successfully' });
   } catch (err: any) {
@@ -539,6 +539,14 @@ apiRouter.patch('/products/:id/image', authenticateToken, requireMerchant, async
   try {
     const { id } = req.params;
     const { image } = req.body;
+    if (req.user.role === 'merchant') {
+      const product: any = await db.getProductById(id, true);
+      if (!product) return res.status(404).json({ success: false, error: 'Product not found' });
+      const shopKeys = Object.keys(product.prices || {});
+      if (!shopKeys.some((key) => sameId(key, req.user.shopName) || sameId(key, req.user.shopId))) {
+        return res.status(403).json({ success: false, error: 'You can only update images of products your shop sells' });
+      }
+    }
     const updated = await db.updateProductImage(id, image ? String(image).trim() : null);
     if (!updated) {
       return res.status(404).json({ success: false, error: 'Product not found' });
@@ -771,10 +779,13 @@ apiRouter.post('/admin/shops', authenticateToken, requireAdmin, async (req: Auth
       merchantAccount: {
         email: merchantResult.user.email,
         username: merchantResult.user.username,
-        password: merchantResult.rawPassword,
         name: merchantResult.user.name,
+        created: merchantResult.created,
+        ...(merchantResult.temporaryPassword ? { temporaryPassword: merchantResult.temporaryPassword } : {}),
       },
-      message: `Store '${newShop.name}' and merchant login created successfully! Login: ${merchantResult.user.email} / ${merchantResult.rawPassword}`,
+      message: merchantResult.created
+        ? `Store '${newShop.name}' and merchant login ${merchantResult.user.email} created successfully.`
+        : `Store '${newShop.name}' created and linked to existing merchant login ${merchantResult.user.email}.`,
     });
   } catch (err: any) {
     res.status(500).json({ success: false, error: err.message });
@@ -800,11 +811,7 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
   try {
     const user = req.user;
     const shops = await db.getAllShopsAdmin();
-    let shop = shops.find((candidate) =>
-      (user.shopId && candidate.id.toLowerCase() === String(user.shopId).toLowerCase()) ||
-      (user.shopName && candidate.name.toLowerCase() === String(user.shopName).toLowerCase()) ||
-      (req.body.name && candidate.name.toLowerCase() === String(req.body.name).trim().toLowerCase())
-    );
+    let shop = findMerchantShop(shops, user);
 
     const allowedFields = [
       'name', 'address', 'phone', 'shopType', 'openingHours',
@@ -820,6 +827,10 @@ apiRouter.put('/merchant/shop', authenticateToken, requireRole(['merchant']), as
     );
     if (updates.name !== undefined && !String(updates.name).trim()) {
       return res.status(400).json({ success: false, error: 'Shop name cannot be empty' });
+    }
+    const desiredName = String(updates.name || (!shop ? user.shopName || 'My Store' : '')).trim().toLowerCase();
+    if (desiredName && shops.some((s) => s.id !== shop?.id && s.name.toLowerCase().trim() === desiredName)) {
+      return res.status(409).json({ success: false, error: 'Another shop already uses this name' });
     }
 
     if (!shop) {
@@ -919,8 +930,12 @@ apiRouter.get('/admin/users', authenticateToken, requireAdmin, async (req: Authe
 apiRouter.delete('/admin/users/:id', authenticateToken, requireAdmin, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    if (id === 'admin-1' || req.user?.id === id) {
-      return res.status(400).json({ success: false, error: 'Cannot delete primary super admin account' });
+    if (req.user?.id === id) {
+      return res.status(400).json({ success: false, error: 'You cannot delete your own account' });
+    }
+    const target = await query(`SELECT role FROM users WHERE id = $1`, [id]);
+    if (target.rows[0]?.role === 'admin' && (await db.countAdmins()) <= 1) {
+      return res.status(400).json({ success: false, error: 'Cannot delete the last administrator account' });
     }
     const ok = await db.deleteUser(id);
     res.json({ success: ok, message: ok ? 'User deleted successfully' : 'User not found' });
@@ -972,8 +987,8 @@ apiRouter.post('/admin/reports/:id/moderate', authenticateToken, requireAdmin, a
 apiRouter.post('/merchant/deals', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { shopId: reqShopId, shopName: reqShopName, productId, productName, emoji, originalPrice, dealPrice, unit, expiresInMinutes, tag } = req.body;
-    const shopId = req.user.role === 'merchant' ? (req.user.shopId || reqShopId || 'custom') : (reqShopId || 'custom');
-    const shopName = req.user.role === 'merchant' ? (req.user.shopName || reqShopName) : reqShopName;
+    const shopId = req.user.role === 'merchant' ? (req.user.shopId || 'custom') : (reqShopId || 'custom');
+    const shopName = req.user.role === 'merchant' ? req.user.shopName : reqShopName;
 
     if (!shopName || !productId || !dealPrice) {
       return res.status(400).json({ success: false, error: 'Missing required flash deal fields' });
@@ -1005,7 +1020,7 @@ apiRouter.post('/merchant/deals', authenticateToken, requireMerchant, async (req
 apiRouter.delete('/merchant/deals/:id', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const shopName = req.user.role === 'merchant' ? (req.user.shopName || req.body.shopName) : req.body.shopName;
+    const shopName = req.user.role === 'merchant' ? req.user.shopName : req.body.shopName;
     const ok = await db.deleteFlashDeal(id, shopName);
     res.json({ success: ok, message: 'Flash deal ended' });
   } catch (err: any) {
@@ -1017,7 +1032,7 @@ apiRouter.delete('/merchant/deals/:id', authenticateToken, requireMerchant, asyn
 apiRouter.post('/merchant/products/:id/delist', authenticateToken, requireMerchant, async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { id } = req.params;
-    const shopName = req.user.role === 'merchant' ? (req.user.shopName || req.body.shopName) : req.body.shopName;
+    const shopName = req.user.role === 'merchant' ? req.user.shopName : req.body.shopName;
     if (!shopName) {
       return res.status(400).json({ success: false, error: 'Shop name is required' });
     }
@@ -1034,7 +1049,7 @@ apiRouter.post('/merchant/products/:id/relist', authenticateToken, requireMercha
   try {
     const { id } = req.params;
     const { price } = req.body;
-    const shopName = req.user.role === 'merchant' ? (req.user.shopName || req.body.shopName) : req.body.shopName;
+    const shopName = req.user.role === 'merchant' ? req.user.shopName : req.body.shopName;
     if (!shopName) {
       return res.status(400).json({ success: false, error: 'Shop name is required' });
     }
@@ -1272,7 +1287,7 @@ apiRouter.post('/auth/register', async (req: Request, res: Response) => {
       message: `Store '${shopName}' registered successfully! Welcome to PriceTeller Partner Network.`,
     });
   } catch (err: any) {
-    res.status(400).json({ success: false, error: err.message || 'Registration failed' });
+    res.status(err instanceof HttpError ? err.statusCode : 400).json({ success: false, error: err.message || 'Registration failed' });
   }
 });
 
@@ -1344,23 +1359,21 @@ apiRouter.post('/auth/location', authenticateToken, async (req: AuthenticatedReq
   }
 });
 
-// 23. Auth: Quick Merchant Accounts for easy demo
-apiRouter.get('/auth/quick-merchants', async (req: Request, res: Response) => {
+// 23. Auth: Change own password (rotates the session token)
+apiRouter.post('/auth/change-password', authenticateToken, async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const merchants = await db.getQuickMerchants();
-    res.json({ success: true, data: merchants });
+    const { currentPassword, newPassword } = req.body || {};
+    const minLength = req.user.role === 'admin' ? 12 : 8;
+    if (!currentPassword || typeof newPassword !== 'string' || newPassword.length < minLength) {
+      return res.status(400).json({ success: false, error: `Current password and a new password of at least ${minLength} characters are required` });
+    }
+    if (newPassword === currentPassword) {
+      return res.status(400).json({ success: false, error: 'New password must be different from the current password' });
+    }
+    const token = await db.changePassword(req.user.id, currentPassword, newPassword);
+    res.json({ success: true, token, message: 'Password changed. Other sessions have been signed out.' });
   } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
-  }
-});
-
-// 24. Auth: Quick Consumer Accounts for easy testing
-apiRouter.get('/auth/quick-consumers', async (req: Request, res: Response) => {
-  try {
-    const consumers = await db.getQuickConsumers();
-    res.json({ success: true, data: consumers });
-  } catch (err: any) {
-    res.status(500).json({ success: false, error: err.message });
+    res.status(err instanceof HttpError ? err.statusCode : 500).json({ success: false, error: err.message });
   }
 });
 
@@ -1546,17 +1559,28 @@ apiRouter.post('/conversations', authenticateToken, async (req: AuthenticatedReq
 });
 
 // Helper function to check conversation access permission
+function sameId(a?: string | null, b?: string | null): boolean {
+  return Boolean(a) && Boolean(b) && String(a).toLowerCase().trim() === String(b).toLowerCase().trim();
+}
+
+// Shop IDs are authoritative. Names are only compared when the merchant or the record has no real shop ID (legacy rows).
+function merchantOwnsShop(user: any, shopId?: string | null, shopName?: string | null): boolean {
+  if (!user || user.role !== 'merchant') return false;
+  const recordHasShopId = Boolean(shopId) && shopId !== 'custom';
+  if (user.shopId && recordHasShopId) return sameId(user.shopId, shopId);
+  return sameId(user.shopName, shopName);
+}
+
+function findMerchantShop<T extends { id: string; name: string }>(shops: T[], user: any): T | undefined {
+  if (user.shopId) return shops.find((s) => sameId(s.id, user.shopId));
+  return shops.find((s) => sameId(s.name, user.shopName));
+}
+
 function canAccessConversation(user: any, conversation: any): boolean {
   if (!user || !conversation) return false;
   if (user.role === 'admin') return true;
   if (user.id === conversation.consumerId) return true;
-  if (user.role === 'merchant') {
-    const userShopName = (user.shopName || '').toLowerCase().trim();
-    const convShopName = (conversation.shopName || '').toLowerCase().trim();
-    if (user.shopId && conversation.shopId && user.shopId === conversation.shopId) return true;
-    if (userShopName && convShopName && userShopName === convShopName) return true;
-  }
-  return false;
+  return merchantOwnsShop(user, conversation.shopId, conversation.shopName);
 }
 
 // 34. Conversations: Get Messages for a specific conversation
@@ -1712,15 +1736,10 @@ apiRouter.put('/conversations/:id/basket', authenticateToken, async (req: Authen
 
 // Helper function to check pre-booking access permission
 function canAccessPreBooking(user: any, booking: any): boolean {
+  if (!user || !booking) return false;
   if (user.role === 'admin') return true;
   if (user.id === booking.consumerId) return true;
-  if (user.role === 'merchant') {
-    const userShopName = (user.shopName || '').toLowerCase().trim();
-    const bookingShopName = (booking.shopName || '').toLowerCase().trim();
-    if (user.shopId && booking.shopId && user.shopId === booking.shopId) return true;
-    if (userShopName && bookingShopName && userShopName === bookingShopName) return true;
-  }
-  return false;
+  return merchantOwnsShop(user, booking.shopId, booking.shopName);
 }
 
 // 37. Pre-Bookings: Create a new basket pre-booking
@@ -1863,9 +1882,7 @@ const handleUpdatePreBookingStatus = async (req: Request, res: Response) => {
         return res.status(400).json({ success: false, error: `Cannot cancel booking with current status: ${booking.status}` });
       }
     } else if (user.role === 'merchant') {
-      const userShopName = (user.shopName || '').toLowerCase().trim();
-      const bookingShopName = (booking.shopName || '').toLowerCase().trim();
-      const isOwnerShop = (user.shopId && user.shopId === booking.shopId) || (userShopName === bookingShopName);
+      const isOwnerShop = merchantOwnsShop(user, booking.shopId, booking.shopName);
       if (!isOwnerShop) {
         return res.status(403).json({ success: false, error: 'Access denied: You do not own the shop for this booking.' });
       }
@@ -2067,9 +2084,7 @@ apiRouter.get('/merchant/sales/:id', authenticateToken, requireMerchant, async (
     }
 
     if (user.role === 'merchant') {
-      const userShop = (user.shopName || '').toLowerCase().trim();
-      const saleShop = (sale.shopName || '').toLowerCase().trim();
-      const owns = user.id === sale.merchantId || (user.shopId && user.shopId === sale.shopId) || userShop === saleShop;
+      const owns = user.id === sale.merchantId || merchantOwnsShop(user, sale.shopId, sale.shopName);
       if (!owns) {
         return res.status(403).json({ success: false, error: 'Access denied: Not your store sale record' });
       }
@@ -2091,9 +2106,7 @@ apiRouter.delete('/merchant/sales/:id', authenticateToken, requireMerchant, asyn
     }
 
     if (user.role === 'merchant') {
-      const userShop = (user.shopName || '').toLowerCase().trim();
-      const saleShop = (sale.shopName || '').toLowerCase().trim();
-      const owns = user.id === sale.merchantId || (user.shopId && user.shopId === sale.shopId) || userShop === saleShop;
+      const owns = user.id === sale.merchantId || merchantOwnsShop(user, sale.shopId, sale.shopName);
       if (!owns) {
         return res.status(403).json({ success: false, error: 'Access denied: Not your store sale record' });
       }

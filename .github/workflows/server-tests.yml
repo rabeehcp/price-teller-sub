@@ -1,0 +1,41 @@
+name: Server security tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, staging]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: markit
+          POSTGRES_PASSWORD: localtestonly
+          POSTGRES_DB: markit_test
+        ports: ['55432:5432']
+        options: >-
+          --health-cmd "pg_isready -U markit" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://markit:localtestonly@localhost:55432/markit_test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Server build and tests
+        working-directory: server
+        run: |
+          npm ci
+          npm run build
+          npm test
+      - name: Client build
+        working-directory: client
+        run: |
+          npm ci
+          npm run build
