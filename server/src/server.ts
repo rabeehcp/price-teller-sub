@@ -95,6 +95,10 @@ app.get('/health', (req, res) => {
 // Database initialization state
 let dbReady = false;
 
+export function setDbReady(ready: boolean): void {
+  dbReady = ready;
+}
+
 // Gate API requests until database is ready
 app.use('/api', (req, res, next) => {
   if (req.method === 'OPTIONS') {
@@ -194,6 +198,8 @@ function startServer() {
   return server;
 }
 
-startServer();
+if (require.main === module) {
+  startServer();
+}
 
 export { app, dbReady, startServer };

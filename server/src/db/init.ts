@@ -118,37 +118,6 @@ export async function initDb(): Promise<boolean> {
         ON messages (conversation_id, client_msg_id)
         WHERE client_msg_id IS NOT NULL AND client_msg_id <> ''
       `);
-      // Ensure Super Admin account is always restored with secure bcrypt hash (pcart3663)
-      const adminPasswordHash = await hashSeedPassword('pcart3663');
-      await client.query(
-        `INSERT INTO users (id, email, username, name, role, password, phone, created_at, token)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-         ON CONFLICT (email) DO UPDATE SET
-           username = EXCLUDED.username,
-           name = EXCLUDED.name,
-           role = EXCLUDED.role,
-           password = EXCLUDED.password,
-           phone = EXCLUDED.phone,
-           token = EXCLUDED.token`,
-        [
-          'admin-1',
-          'admin@priceteller.com',
-          'priceteller10',
-          'Super Admin',
-          'admin',
-          adminPasswordHash,
-          '+91 99999 00000',
-          new Date().toISOString(),
-          'tok-admin-1',
-        ]
-      );
-
-      // Explicitly guarantee all admin accounts have updated bcrypt hash
-      await client.query(
-        `UPDATE users SET password = $1 WHERE email = 'admin@priceteller.com' OR role = 'admin'`,
-        [adminPasswordHash]
-      );
-
       // Security guarantee: hash any legacy unhashed passwords across all users in DB
       const unhashedUsers = await client.query("SELECT id, password FROM users WHERE password NOT LIKE '$2%'");
       for (const u of unhashedUsers.rows) {
@@ -177,7 +146,7 @@ export async function initDb(): Promise<boolean> {
          ON CONFLICT (id) DO UPDATE SET price_paise = EXCLUDED.price_paise, is_active = true;`
       );
 
-      console.log('✅ PostgreSQL tables verified, subscription plans, and Super Admin account active.');
+      console.log('✅ PostgreSQL tables and subscription plans verified.');
     }
 
     // Baseline Locations
@@ -211,61 +180,10 @@ export async function initDb(): Promise<boolean> {
       );
     }
 
-    // Ensure demo merchant account for Al-Iqwan exists
-    const iqwanShopRes = await client.query("SELECT id, name, phone, location_id FROM shops WHERE id = 'al-iqwan'");
-    if (iqwanShopRes.rows.length > 0) {
-      const s = iqwanShopRes.rows[0];
-      const existingIqwan = await client.query(
-        "SELECT id FROM users WHERE email = 'iqwan@gmail.com' OR shop_id = 'al-iqwan'"
-      );
-      if (existingIqwan.rowCount === 0) {
-        const defaultHash = await hashSeedPassword('password123');
-        await client.query(
-          `INSERT INTO users (id, email, username, name, role, password, shop_id, shop_name, phone, location_id, created_at, token)
-           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-           ON CONFLICT (email) DO UPDATE SET
-             shop_id = EXCLUDED.shop_id,
-             shop_name = EXCLUDED.shop_name`,
-          [
-            'usr-merchant-iqwan',
-            'iqwan@gmail.com',
-            'iqwan',
-            'Al-Iqwan Manager',
-            'merchant',
-            defaultHash,
-            s.id,
-            s.name,
-            s.phone || null,
-            s.location_id || null,
-            new Date().toISOString(),
-            'tok-merchant-iqwan',
-          ]
-        );
-      }
-    }
-
-    // Ensure demo consumer account for rabeehsp3663@gmail.com exists
-    const existingDemoConsumer = await client.query(
-      "SELECT id FROM users WHERE email = 'rabeehsp3663@gmail.com'"
-    );
-    if (existingDemoConsumer.rowCount === 0) {
-      const defaultHash = await hashSeedPassword('password123');
-      await client.query(
-        `INSERT INTO users (id, email, username, name, role, password, phone, created_at, token)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-         ON CONFLICT (email) DO NOTHING`,
-        [
-          'usr-consumer-demo',
-          'rabeehsp3663@gmail.com',
-          'rabeeh',
-          'Rabeeh CP',
-          'consumer',
-          defaultHash,
-          '+91 98470 12345',
-          new Date().toISOString(),
-          'tok-consumer-demo',
-        ]
-      );
+    // Accounts are never created or modified at startup; use scripts/admin-cli.ts to bootstrap or recover admins.
+    const adminCountRes = await client.query("SELECT COUNT(*) AS count FROM users WHERE role = 'admin'");
+    if (parseInt(adminCountRes.rows[0]?.count || '0', 10) === 0) {
+      console.warn('⚠️ No administrator account exists. Create one with: npx tsx scripts/admin-cli.ts create-admin --email <email>');
     }
 
     // Seed default active flash deals if table is empty
@@ -339,7 +257,7 @@ export async function initDb(): Promise<boolean> {
       }
     }
 
-    console.log('🎉 PostgreSQL clean locations, categories, and Super Admin synced.');
+    console.log('🎉 PostgreSQL locations and categories synced.');
     client.release();
     return true;
   } catch (error: any) {

@@ -7,7 +7,11 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "db:init": "tsx src/db/init.ts"
+    "db:init": "tsx src/db/init.ts",
+    "admin": "tsx src/cli/adminCli.ts",
+    "test": "vitest run",
+    "test:db:up": "docker run -d --rm --name markit-test-pg -e POSTGRES_USER=markit -e POSTGRES_PASSWORD=localtestonly -e POSTGRES_DB=markit_test -p 127.0.0.1:55432:5432 postgres:16-alpine",
+    "test:db:down": "docker stop markit-test-pg"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
@@ -24,7 +28,10 @@
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.24",
     "@types/pg": "^8.23.1",
+    "@types/supertest": "^6.0.3",
+    "supertest": "^7.3.1",
     "tsx": "^4.7.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^2.1.9"
   }
 }

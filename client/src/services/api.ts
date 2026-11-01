@@ -635,16 +635,19 @@ export async function updateUserLocationApi(locationId: string, token: string) {
   throw new Error(json.error || 'Failed to update location');
 }
 
-export async function fetchQuickMerchantsApi() {
-  const json = await safeFetchJson<{ success: boolean; data: any[] }>(`${API_BASE}/auth/quick-merchants`);
-  if (json?.success && Array.isArray(json.data)) return json.data;
-  return [];
-}
-
-export async function fetchQuickConsumersApi() {
-  const json = await safeFetchJson<{ success: boolean; data: any[] }>(`${API_BASE}/auth/quick-consumers`);
-  if (json?.success && Array.isArray(json.data)) return json.data;
-  return [];
+export async function changePasswordApi(currentPassword: string, newPassword: string): Promise<string> {
+  const res = await fetch(`${API_BASE}/auth/change-password`, {
+    method: 'POST',
+    headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+    body: JSON.stringify({ currentPassword, newPassword }),
+  });
+  const json = await res.json();
+  if (!json.success) throw new Error(json.error || 'Failed to change password');
+  try {
+    const stored = sessionStorage.getItem('priceteller_auth_user') || localStorage.getItem('priceteller_auth_user');
+    setAuthSession({ ...(stored ? JSON.parse(stored) : {}), token: json.token });
+  } catch {}
+  return json.token;
 }
 
 export async function registerConsumerApi(consumerData: {
