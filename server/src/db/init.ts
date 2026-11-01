@@ -183,7 +183,7 @@ export async function initDb(): Promise<boolean> {
     // Accounts are never created or modified at startup; use scripts/admin-cli.ts to bootstrap or recover admins.
     const adminCountRes = await client.query("SELECT COUNT(*) AS count FROM users WHERE role = 'admin'");
     if (parseInt(adminCountRes.rows[0]?.count || '0', 10) === 0) {
-      console.warn('⚠️ No administrator account exists. Create one with: npx tsx scripts/admin-cli.ts create-admin --email <email>');
+      console.warn('⚠️ No administrator account exists. Create one with: npm run admin -- create-admin --email <email>');
     }
 
     // Seed default active flash deals if table is empty
